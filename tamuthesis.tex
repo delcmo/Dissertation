@@ -22,6 +22,23 @@
  \usepackage{tamuconfig}
 \usepackage{rotating}
 
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathbbol}
+%\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{setspace}
+%\usepackage{listings}
+%\lstset{language=C++}
+%\usepackage{lscape} 
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+%\usepackage{subcaption}
+%\usepackage{color}
+%\textwidth = 450pt
+
 % Added to fix issues with pdf searching in some versions of LaTeX
 %\usepackage[T1]{fontenc}\usepackage{lmodern}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -50,22 +67,39 @@
 % } 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newcommand{\eqt}[1]{Eq.~(\ref{#1})}                     % equation
+\newcommand{\fig}[1]{Fig.~\ref{#1}}                      % figure
+\newcommand{\tbl}[1]{Table~\ref{#1}}                     % table
+\newcommand{\sect}[1]{Section~\ref{#1}}                     % section
+\newcommand{\subsect}[1]{Subsection~\ref{#1}}                     % subsection
+\newcommand{\app}[1]{Appendix~\ref{#1}}                     % appendix
+%
+\newcommand{\ie}{i.e.,\@\xspace}
+\newcommand{\eg}{e.g.,\@\xspace}
+\newcommand{\psc}[1]{{\sc {#1}}}
+\newcommand{\rs}{\psc{R7}\xspace}
+%
+\newcommand{\comment}[1]{{\textcolor{red}{#1}}}
+% operators
+\renewcommand{\div}{\vec{\nabla}\! \cdot \!}
+\newcommand{\grad}{\vec{\nabla}}
+
 \begin{document}
 
-\renewcommand{\tamumanuscripttitle}{Type in your default title here: You may need to change the spacing if the title is too long and pushes the copyright off of the titlepage }
+\renewcommand{\tamumanuscripttitle}{Extension of the entropy viscosity method to the multi-D Euler equations and the seven equations model.}
 \renewcommand{\tamupapertype}{Dissertation}
-\renewcommand{\tamufullname}{First Middle Lastname}
+\renewcommand{\tamufullname}{Marc-Olivier Gerard Delchini}
 \renewcommand{\tamudegree}{Doctor of Philosophy}
-\renewcommand{\tamuchairone}{Chair Name}
+\renewcommand{\tamuchairone}{Jean C. Ragusa}
 % Uncomment out the next line if you have co-chairs.  You will also need to edit the titlepage.tex file.
-%\newcommand{\tamuchairtwo}{Additional Chair Name}
-\renewcommand{\tamumemberone}{Committee Member1}
-\newcommand{\tamumembertwo}{Committee Member2}
-\newcommand{\tamumemberthree}{Committee Member3}
-\renewcommand{\tamudepthead}{Head of Department}
+\newcommand{\tamuchairtwo}{Jean Luc Guermond}
+\renewcommand{\tamumemberone}{Jim Morel}
+\newcommand{\tamumembertwo}{Yassin Hassan}
+\newcommand{\tamumemberthree}{Ray Berry}
+\renewcommand{\tamudepthead}{Yassin Hassan}
 \renewcommand{\tamugradmonth}{December}
-\renewcommand{\tamugradyear}{2012}
-\renewcommand{\tamudepartment}{Department Name}
+\renewcommand{\tamugradyear}{2014}
+\renewcommand{\tamudepartment}{Nuclear Engineering Department}
 
 
 \include{titlepage} % This is simply a file that formats and adds your titlepage, please do not edit this unless you have a specific need. .

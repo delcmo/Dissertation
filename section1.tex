@@ -14,52 +14,19 @@
 %%                           SECTION I
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 \pagestyle{plain} % No headers, just page numbers
 \pagenumbering{arabic} % Arabic numerals
 \setcounter{page}{1}
 
-
 \chapter{\uppercase {Introduction: The Importance of Research}}
 
-
-Text goes here.
-
 \section{This is a Very Long Section Title This is a Very Long Section Title This is a Very Long Section Title }
-
-A landscape figure should be shown below. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{sidewaysfigure}[H]
-\centering
-\includegraphics[scale=.50]{figures/Penguins.jpg}
-\caption{TAMU figure - This is an example of a long figure title with a landscape figure.  Figure titles need to be single-spaced within and double spaced between in the list of figures.}
-\label{fig:tamu-fig1-1}
-\end{sidewaysfigure}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-More text here goes here.
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi augue urna, varius quis facilisis ac, imperdiet et nunc. Vestibulum ante ipsum primis in faucibus. 
-
-\section{Testing the Top of the Page}
-Maecenas accumsan lobortis dui fringilla suscipit. Quisque congue fringilla dui, sed eleifend sapien fringilla euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas venenatis posuere magna quis tempus. Cras at leo massa, eu ultricies tellus. Nunc nec dictum augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus purus felis, mollis id scelerisque in, viverra in elit. Nulla iaculis ultrices justo, ac pharetra nisl rhoncus pulvinar. Duis vitae mauris velit, in congue massa.
-
-Donec lectus orci, bibendum ut blandit dignissim, molestie non eros. Praesent aliquet feugiat dignissim. Morbi porttitor sollicitudin nisl, non mollis quam ultrices sit amet. Cras feugiat lacinia diam ut convallis. Nam nec varius ante. Nunc a ultrices felis. Quisque luctus sapien et ligula ornare quis consequat urna aliquet. Vestibulum vulputate lorem a tellus auctor id commodo risus sodales. Suspendisse quis tortor a felis molestie laoreet ut a nunc. Donec gravida sapien eget mauris condimentum lacinia. Proin eu purus libero. Nullam augue mi, vestibulum in convallis eu, adipiscing ac arcu. Donec nisi libero, egestas et molestie in, mollis quis ipsum. Sed gravida quam sit amet ante tempus rutrum non in mi. Cras viverra facilisis eros, id vestibulum sapien malesuada eget. Maecenas imperdiet luctus nisi vitae suscipit.
-
-
-
-Aliquam erat volutpat. Integer ut mauris elit. Nam et lectus vel neque vehicula commodo. Integer at risus ligula. Fusce mollis mauris sed lorem aliquam bibendum porttitor tellus blandit. Curabitur enim nibh, accumsan eu elementum id, rutrum a ipsum. Vivamus ultricies, elit id ornare iaculis, metus justo posuere quam, sit amet bibendum arcu dolor a eros. Sed in nisl nibh. Aenean egestas est ut tortor volutpat vehicula. Maecenas aliquet placerat nunc hendrerit dictum. In et nisi massa. Pellentesque luctus, sapien quis dignissim vulputate, sapien libero bibendum velit, vitae auctor ipsum nulla at augue. Nulla ac eros vitae tortor elementum vehicula.
-
-Morbi tristique egestas placerat. Cras faucibus eleifend porta. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut a pellentesque neque. Donec sollicitudin metus varius nulla egestas laoreet. Duis non mauris ut nunc adipiscing volutpat. Nam vitae est sed turpis tristique varius. 
-
-\subsection{This is a Very Long Subsection Title This is a Very Long Subsection Title}
-
-More text
-\subsection{Subsection}
-
-Subsection text
-
-\section{Another Section}
-
-Section text
+Hyperbolic systems of equations are encountered in various engineering fields (extraction of oil, turbine technology, nuclear reactors, etc $\dots$). Improving numerical solution techniques for such equations are an ongoing topic of research. This is obviously the case for fluid equations. Being able to accurately solve and predict the behavior of a fluid in a turbine or in a reactor, for example, can lead to a safe decrease in conservative safety margins, which translates into a decrease in production cost. Thus, we can see the importance of having a good understanding of the mathematical theory behind these wave-dominated systems of equations, and also, the importance of developing robust and accurate numerical methods.\\
+A large number of theoretical studies has shown the role played by characteristic equations and the corresponding eigenvalues on how and at what speed the physical information propagates: physical shocks or discontinuities can form, leading to unphysical instabilities and oscillations that pollute the numerical solution due to entropy production \cite{Toro}. Thus, a question rises: how to accurately resolve shocks and conserve the physical solution at the same time? A lot of work is available in the literature and include Riemann solvers, Godunov-type fluxes, flux limiter and artificial viscosity methods. Toro's book \cite{Toro} gives a good overview of the theory related to hyperbolic systems of equations and focuses on Riemann solvers and Godunov-type fluxes that can be used with discontinuous spatial discretizations: finite volume (FV) and discontinuous Galerkin finite element method (DGFEM).
+Flux limiters \cite{FluxLimiter1, FluxLimiter3} can achieve high-order accuracy with DGFEM \cite{FluxLimiter2} but suffer from some drawbacks: difficulties were found to reach steady-state solution when using time-stepping schemes and generalization to unstructured grids is not obvious \cite{FluxLimiter4}. The artificial viscosity method was first introduced by Neumann and Richtmeyer \cite{Neumann} but was found over-dissipative and, thus, abandoned. It is only, later with the development of high-order schemes and because of their simple implementation that they have regained interest: Lapidus \cite{Lapidus_paper, Lapidus_book} developed a high-order viscosity method by making the viscosity coefficient proportional to the gradient of the velocity in 1-D. Lohner et al. \cite{LMP} extended this concept to multi-dimension by introducing a vector that will measure the direction of maximum change in the absolute value of the velocity norm, so that shear layers are not smeared. Pressure-based viscosities were also studied \cite{PBV_book} where the viscosity coefficient is set proportional to the Laplace of pressure, allowing to detect curvature changes in the pressure profile. Since pressure is nearly constant but in shocks, it is a good indicator of the presence of a shock.
+Recently, Reisner et al. \cite{Reisner} introduced the C-method for the compressible Euler equations with artificial dissipative terms: instead of computing the viscosity coefficient on the fly as for Lapidus and pressure-based methods, a partial differential equation (PDE) is added to the original system of equations. This additional PDE allows to solve for the viscosity coefficient and contains a source term that is function of the gradient of velocity. The method seems to yield good results in 1-D for a wide range of tests. 
+Guermond et .al \cite{jlg1, jlg2, jlg3} proposed an entropy-based viscosity method for conservative hyperbolic system of equations: artificial dissipative terms are added to the system of equations with a viscosity coefficient modulated by the entropy production that is known to be large in shocks and small everywhere else. The method was successfully applied in various schemes \cite{jlg2, jlg3, valentin} and showed high-order convergence with smooth solutions. Results using the ideal gas equation of state were run for 1-D Sod tube and showed good agreement with the exact solutions. 2-D tests were also performed on unstructured grids and behaved very satisfactorily \cite{valentin}. The method is fairly simple to implement and is consistent with the entropy inequality.\\
+The objective of this research is to solve hyperbolic system of equations using a continuous Galerkin finite element method (CGFEM) and an implicit temporal discretization under the Moose framework \cite{Moose}. We are particularly interested in simulating the flow behavior occurring in nuclear reactors. The set of equations that will be considered are the multi-D Euler equations with variable area \cite{Toro} and the multi-D seven equations model for two-phase fluids \cite{SEM}. These systems of equations are well defined in a sense that they possess real eigenvalues. To numerically solve these equations, we need to rely on a numerical method that will allow us to resolve shocks and discontinuity that may form. More importantly, we need a method that is accurate for a wide range of Mach numbers and is not restricted to any type of equation of state. These previous requirements can be hard to fulfill. Numerical methods are often tested with the ideal gas equation of state which can not be used for liquid phase. The difficulty rises once a numerical method used for resolving shocks, is required to work for low Mach flows that are isentropic: in this particular case, a compressible model is used to simulate a flow in the incompressible limit. Recent publications \cite{LowMach1, LowMach2} highlighted the difficulties related to such a choice: asymptotic studies have shown that some of the numerical methods become ill-scaled in the low Mach limit, making the numerical solution unphysical. For example, the Roe scheme requires a fix in the low Mach limit while conserving its accuracy when shocks occur \cite{Roe}. \\
+We propose to use the entropy-based viscosity method introduced by Guermond et al. to solve for the hyperbolic systems previously enumerated since the method has shown good results when used for solving the multi-D Euler equations with various discretization schemes. More importantly, it is simple to implement, can be used with unstructured grids,  and its dissipative terms are consistent with the entropy minimum principle and proven valid for any equation of state under certain conditions \cite{jlg}. However, a few questions remains: the low Mach limit has not been investigated and the current definition requires an analytical expression of the entropy which can be difficult to obtain for some equation of state. These two issues will be addressed. A particular attention will be brought to the low Mach problem and the available literature related to the asymptotic limit of the Navier-Stokes \cite{Muller} and Euler equations \cite{LowMach1, LowMach2} should be of great insight in order to understand how the dissipative terms behave. \\
+It is also proposed to investigate how the entropy viscosity method can be applied to the multi-D radiation-hydrodynamic equations \cite{LowrieMorelHittinger}. These equations are known to develop solutions with shocks \cite{Balsara}. They consist of coupling the multi-D Euler equations with a radiation-diffusion equation through some source terms.  Most of the current solvers are based on the study of the hyperbolic terms in order to derive a Riemann-type solver \cite{LowrieMorel}. Flux-limiter technique \cite{EdwardsMorelLowrie} are also used and suffer from the same drawbacks as for the pure multi-D Euler equations. Therefore, it will be valuable to assess how the entropy viscosity method can adapt to this multi-physics system, and if successful, will offer an alternative to the current available numerical methods.\\
+Thus, the proposal is organized as follows: Section 1 will recall the main feature of the current version of the entropy-based viscosity method. Section 2 will introduce the system of equations under considerations. A short description of the equations and their properties will be given. In Section 3, the problem formulation is discussed for each system of equations and suggestions of test cases are given in order to test the numerical method.
