@@ -264,7 +264,7 @@ In order to apply the continuous finite element method, \eqt{eq:form} is multipl
 \end{equation}
 The integrals over the elements $e$ are evaluated using quadrature-point rules. The Moose framework provides a wide range of test function and quadrature rules: trapezoidal and Gauss rules among others. Linear Lagrange polynomials will be used as test functions and should ensure second-order convergence for smooth functions. The order of convergence will be demonstrated.
 %---------------------------------------------------------------------------------------------------
-\subsubsection{Temporal integrator} 
+\subsubsection{Temporal integrator}\label{sec:temp_integ}
 %---------------------------------------------------------------------------------------------------
 The MOOSE framework offers both first- and second-order explicit and implicit temporal integrators. In all of the numerical examples presented in \sect{sec:results}, the time-dependent term $\int_{e} \partial_t U \phi$ will be evaluated using the second-order temporal integrator BDF2. By considering three solutions, $U^{n-1}$, $U^n$ and $U^{n+1}$ at three different time $t^{n-1}$, $t^n$ and $t^{n+1}$, respectively, it yields:
 \begin{eqnarray}
@@ -278,7 +278,20 @@ where $\Delta t^{n} = t^n-t^{n-1}$ and $\Delta t^{n+1} = t^{n+1}-t^{n}$.
 %---------------------------------------------------------------------------------------------------
 \subsection{Boundary conditions} \label{sec:bc}
 %---------------------------------------------------------------------------------------------------
-The boundary conditions will be treated by either using Dirichlet or Neumann conditions. The multi-D Euler equations are wave-dominated systems that require great care when dealing with boundary conditions. It is often recommended to use the characteristic equations to compute the correct flux at the boundaries. Our implementation of the subsonic boundary conditions will follow the method described in \cite{SEM} that was developed for Ideal Gas and Stiffened Gas equation of states. For each numerical solution presented in \sect{sec:results}, the type of boundary conditions used will be specified and taken amping the followings: supersonic inlet, subsonic inlet (stagnation pressure boundary), supersonic outlet and subsonic inlet (static pressure boundary).
+Because of the hyperbolic nature of the multi-D Euler equations, implementation of the boundary conditions requires great care. Most of the methods available in the literature, are based on the study of the characteristic equations and the sign of the eigenvalues. In this section, three types of boundary conditions will be described: supersonic, subsonic and wall boundary conditions. For each of them, details regarding the theory in $1$-D and the implementations for a time implicit solver described in \sect{sec:temp_integ} will be given. The characteristic equations and eigenvalues are independent of the equation of states. However, derivation of the relations to implement for the subsonic and supersonic boundary conditions will depend on the equation of state: the Stiffened Gas equation of state is considered here. The method used here is partly derived from the work of Berry et al. \cite{SEM} that was applied to the two-phase flow seven equations model solved with a time explicit solver.\\
+The $1$-D characteristic equations and the eigenvalues for the multi-D Euler equations are recalled:
+\begin{equation}\label{eq:chara_equ}
+\left\{
+\begin{array}{lll}
+dP - \rho c du = 0 \text{ along } \frac{dx}{dt} = u-c = \lambda_1\\
+d\rho + \text{ along } \frac{dx}{dt} = u = \lambda_2\\
+dP + \rho c du = 0 \text{ along } \frac{dx}{dt} = u +c = \lambda_3
+\end{array}
+\right.
+\end{equation}
+The $1$-D characteristic equations can be derived by either performing matrix calculations or by combining the conservative form of the $1$-D Euler equations. These two approach are equivalent and lead to the same form of the characteristic equations given in \eqt{eq:chara_equ}. The three eigenvalues $\lambda_i$ in $1$-D are also recalled in \eqt{eq:chara_equ}. For academic purpose, let us consider a subsonic flow in $1$-D computational domain with a left inlet and right outlet boundaries. with a \emph{subsonic flow}: under this assumption, the flow is assumed to enter the computational domain and the sign of the eigenvalues can be determine
+%Their sign depend on the flow type under consideration. In the event of a supersonic flow, all eigenvalues have the same sign. On the other hand, when considering a subsonic flow, only two of the eigenvalues will have the same sign. 
+%The boundary conditions will be treated by either using Dirichlet or Neumann conditions. The multi-D Euler equations are wave-dominated systems that require great care when dealing with boundary conditions. It is often recommended to use the characteristic equations to compute the correct flux at the boundaries. Our implementation of the subsonic boundary conditions will follow the method described in \cite{SEM} that was developed for Ideal Gas and Stiffened Gas equation of states. For each numerical solution presented in \sect{sec:results}, the type of boundary conditions used will be specified and taken amping the followings: supersonic inlet, subsonic inlet (stagnation pressure boundary), supersonic outlet and subsonic inlet (static pressure boundary).
 %---------------------------------------------------------------------------------------------------
 \subsection{Solver} \label{sec:solver}
 %---------------------------------------------------------------------------------------------------
