@@ -23,6 +23,388 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %==============================================================================
+\section{Spatial and Temporal Discretization Method:}
+%==============================================================================
+Because the stabilization of the numerical solution of hyperbolic equation systems is intimately connected with the temporal and
+spatial discretization, before discussing the entropy viscosity stabilization method used in RELAP-7, a short summary of the
+numerical methods it employs is given.
+%
+\subsection{Spatial Discretization Algorithm\label{sec:spatial_discretization}}
+%
+RELAP-7 currently employs the continuous finite element method implemented
+via the INL MOOSE framework.  For simplicity of exposition this section focuses on
+the weak statement associated to the strong form of the one-dimensional, variable
+cross-sectional area form of the Euler equations~\eqref{E-S:18}--\eqref{E-S:20}
+summarized in Section~\ref{sec:single_phase_equations}.  Start by writing the
+equations in ``vector'' form as
+\begin{align}
+  \label{eqn:va_system_notation}
+  \vec{R}(\vec{U}) \equiv \frac{\partial \vec{U}}{\partial t} + \frac{\partial \vec{F}}{\partial x} - \vec{S} = \vec{0}
+\end{align}
+where
+\begin{align}
+  \vec{U} \equiv
+  \begin{bmatrix}
+    \rho A
+    \\
+    \rho u A
+    \\
+    \rho E A
+  \end{bmatrix},
+  \qquad
+  \vec{F} \equiv
+  \begin{bmatrix}
+    \rho u A
+    \\
+    \left(\rho u^2 + p\right) A
+    \\
+    \rho u H A
+  \end{bmatrix}
+\end{align}
+and $\vec{S} = \vec{S}(\vec{U})$ consists of the remaining source
+terms.  Note that $\vec{U}$ and $\vec{F}$ are identical to their
+meanings in the ``constant-area'' equations, up to multiplication by
+the area, $A$.
+%
+The variational statement proceeds by
+dotting~\eqref{eqn:va_system_notation} by an ``admissible'' vector test function
+$\vec{W}$ (more details of which will be subsequently given),
+integrating over the domain $\Omega$, and applying the divergence
+theorem.  Solutions $\vec{U}$ are sought such that
+\begin{align}
+  \label{eqn:va_system_weak}
+  \int_{\Omega} \left(\frac{\partial \vec{U}}{\partial t} \cdot \vec{W} - \vec{F}\cdot \frac{\partial \vec{W}}{\partial x} - \vec{S}\cdot\vec{W} \right) \text{d}\Omega
+  + \int_{\Gamma} \left( \vec{F} \cdot \vec{W} \right) \vec{n}_x \;\text{d}\Gamma = 0
+\end{align}
+holds for \emph{all} admissible $\vec{W}$.
+%(RAB--I don't think the following two sentences are valid!!!)
+%Note that~\eqref{eqn:va_system_weak} remains in a ``continuous''
+%setting, that is, we have not yet introduced a mesh or finite element
+%discretization.  Equation~\eqref{eqn:va_system_weak} is merely a
+%``weak'' restatement of the ``strong'' equations~\eqref{eqn:va_system_notation}.
+%
+Note that the test function $\vec{W}$ is not chosen arbitrarily.
+In particular, it is required that $\vec{W}$ come from the space of
+vector functions
+\begin{align}
+  \label{eqn:W_set}
+  \vec{W} \in \left\{
+      \begin{bmatrix}
+        w \\ 0 \\ 0
+      \end{bmatrix},
+      \begin{bmatrix}
+        0 \\ w \\ 0
+      \end{bmatrix},
+      \begin{bmatrix}
+        0 \\ 0 \\ w
+      \end{bmatrix}
+    \right\}
+\end{align}
+where $w \in \mathcal{W}$ is a scalar test function.  In the present
+work, and in general practice, the space $\mathcal{W}$ is taken to be
+(a subspace of) the Hilbert space $H^1(\Omega)$. This choice, for
+instance, guarantees enough smoothness that~\eqref{eqn:va_system_weak}
+makes sense.
+%
+The approximate problem then proceeds by selecting only test functions
+from a finite-dimensional subspace of $\mathcal{W}$, denoted by
+$\mathcal{W}^h$, which is spanned by the basis $\{\phi_i\}$,
+$i=1,\ldots,N$.  We then seek $\vec{U}^h$ with components in the same
+space as $\mathcal{W}^h$, satisfying the boundary conditions, and such
+that
+\begin{align}
+  \label{eqn:va_system_weak_h}
+  \int_{\Omega} \left(\frac{\partial \vec{U}^h}{\partial t} \cdot \vec{W}^h
+    - \vec{F}^h\cdot \frac{\partial \vec{W}^h}{\partial x} - \vec{S}^h\cdot\vec{W}^h \right) \text{d}\Omega
+  + \int_{\Gamma} \left( \vec{F}^h \cdot \vec{W}^h \right) \vec{n}_x \;\text{d}\Gamma = 0
+\end{align}
+holds for all $\vec{W}^h$ defined analogously to~\eqref{eqn:W_set},
+with components in $\mathcal{W}^h$. Note that~\eqref{eqn:va_system_weak_h} 
+has been placed in a ``continuous'' setting, that is, a mesh and finite element
+discretization has been introduced requiring a continuous solution.  
+Equation~\eqref{eqn:va_system_weak_h} remains a ``weak'' restatement of the ``strong'' 
+equations~\eqref{eqn:va_system_notation} in the sense that derivatives of the  
+solution and its flux need not be continuous. More will be said of this subsequently,
+in the upcoming section on stabilization methods.  Written out in component form,
+and denoting the components of $\vec{U}^h$ by $U_0^h$, $U_1^h$, and
+$U_2^h$, \eqref{eqn:va_system_weak_h} expands to:
+\begin{align}
+  \label{eqn:1Dmass_weak}
+  &
+  % F_i^{(U_0)} \equiv
+  \int_{\Omega} \left( \frac{\partial U_0^h}{\partial t} \phi_i -
+    U_1^h \frac{\partial \phi_i}{\partial x} \right) \text{d}{\Omega}
+  + \int_{\Gamma} U_1^h \vec{n}_x \phi_i \; \text{d}{\Gamma} = 0
+  \\[12pt]
+  % Momentum equation
+  \nonumber
+  &
+  % F_i^{(U_1)} \equiv
+  \int_{\Omega} \left[ \left(\frac{\partial U_1^h}{\partial t}
+      - U_0^h g_x + \frac{f}{2 d_h}  U_1^h \left|\frac{U_1^h}{U_0^h}\right| - p^h \frac{\partial A}{\partial x} \right) \phi_i
+    - \left( \frac{(U_1^h)^2}{U_0^h} + p^hA \right) \frac{\partial\phi_i }{\partial x} \right] \text{d}{\Omega}
+  \\
+  \label{eqn:1Dmomentum_weak}
+  &\qquad + \int_{\Gamma} \left( \frac{(U_1^h)^2}{U_0^h} + p^hA \right) \vec{n}_x \phi_i \; \text{d}{\Gamma} = 0
+  \\[12pt]
+  % Energy equation
+  \nonumber
+  &
+  % F_i^{(U_2)} \equiv
+  \int_{\Omega}
+  \left[
+  \left(
+    \frac{\partial U_2^h}{\partial t} + H_w a_w (T^h-T_w) A - U_1^h g_x
+  \right)
+  \phi_i
+    -  U_1^h H^h \frac{\partial \phi_i}{\partial x}
+  \right]
+  \text{d}{\Omega}
+  \\
+  \label{eqn:1Denergy_3eq_weak}
+  &\qquad
+  +
+  \int_{\Gamma} U_1^h H^h \vec{n}_x \phi_i \; \text{d}{\Gamma} = 0
+\end{align}
+Equations~\eqref{eqn:1Dmass_weak}--\eqref{eqn:1Denergy_3eq_weak} must
+hold for $i=1,\ldots,N$.  Note that the approximate pressure, $p^h$,
+temperature, $T^h$, and enthalpy, $H^h$ are functions of the conserved
+variables $U_0^h, U_1^h, U_2^h$.  As mentioned, a continuous
+Galerkin formulation is employed, and therefore the unknowns are expressed in
+the same basis used for the test functions, i.e.
+\begin{align}
+  U_0^h &= \sum_j (U_0)_j \phi_j
+  \\
+  U_1^h &= \sum_j (U_1)_j \phi_j
+  \\
+  U_2^h &= \sum_j (U_2)_j \phi_j
+\end{align}
+The coefficients $(U_0)_j$, $(U_1)_j$, and $(U_2)_j$ vary in time only, and comprise the
+solution vector at each iteration.  Note
+that~\eqref{eqn:1Dmass_weak}--\eqref{eqn:1Denergy_3eq_weak} are
+so-called ``semi-discrete'' equations: they have been discretized in
+space, but the temporal derivatives remain in continuous form.  In
+Section~\ref{sec:time_integration} the various time discretization methods
+employed in RELAP-7, to approximately time-integrate the equations,
+are summarized.  Furthermore, it is well-known
+that a continuous Galerkin discretization of this set of hyperbolic
+equations is equivalent to a central difference method for a certain
+choice of integration rule, and therefore will exhibit oscillatory
+instabilities unless some artificial diffusion is added to stabilize
+the method.  In Section~\ref{sec:entropy_viscosity}, stabilization will be
+discussed further, and in particular the new entropy viscosity 
+stabilization scheme will be presented in detail.
+%
+\subsubsection{Backward Euler\label{sec:backward_euler}}
+%
+The backward Euler method~\cite{Butcher_2003} is a well-known, first-order, A-stable
+implicit time integration method.  Given a generic
+semi-discrete equation in a form similar to~\eqref{eqn:1Dmass_weak}--\eqref{eqn:1Denergy_3eq_weak},
+\begin{align}
+  \int_{\Omega} \left(\frac{\partial u^h}{\partial t} + G(u^h) \right) \phi_i \; \text{d}{\Omega} = 0
+\end{align}
+the backward Euler method results in the temporal discretization
+\begin{align}
+  \label{eqn:backward_euler_fully_discrete}
+  \int_{\Omega} \left( \frac{u^{n+1} - u^n}{\Delta t} + G(u^{n+1}) \right) \phi_i \; \text{d}{\Omega} = 0
+\end{align}
+where $\Delta t$ is the timestep, $t^{n+1} = t^n + \Delta t$, and $u^n
+\equiv u^h(t^n)$ is a shorthand notation used to refer to the finite
+element solution at time level
+$n$. Equation~\eqref{eqn:backward_euler_fully_discrete} is a
+fully-discrete (possibly nonlinear) equation which must be satisfied
+for each $i$.
+
+Note that the backward Euler method, when applied to the linear convection equation
+\begin{align}
+  \label{eqn:convection}
+  \frac{\partial u}{\partial t} + a \frac{\partial u}{\partial x} = 0
+\end{align}
+yields a leading-order truncation error term of the form
+\begin{align}
+  \nonumber
+  \left. \frac{\partial u}{\partial t} \right|_{t^{n+1}}  &=
+  \frac{u^{n+1} - u^n}{\Delta t} + \frac{\Delta t}{2}\left.\frac{\partial^2 u}{\partial t^2}\right|_{t^{n+1}} + \mathcal{O}(\Delta t^2)
+  \\
+  \label{eqn:truncation}
+  &= \frac{u^{n+1} - u^n}{\Delta t} + \frac{a^2 \Delta t}{2}\left.\frac{\partial^2 u}{\partial x^2}\right|_{t^{n+1}} + \mathcal{O}(\Delta t^2)
+\end{align}
+where~\eqref{eqn:truncation} follows from differentiating the
+continuous equation~\eqref{eqn:convection} with respect to time:
+\begin{align}
+  \label{eqn:second_wave}
+  \frac{\partial^2 u}{\partial t^2} = -a \frac{\partial }{\partial t} \left( \frac{\partial u}{\partial x} \right)
+  = -a \frac{\partial }{\partial x} \left( \frac{\partial u}{\partial t} \right)
+  = -a \frac{\partial }{\partial x} \left( -a \frac{\partial u}{\partial x} \right)
+  = a^2 \frac{\partial^2 u}{\partial x^2} \,\,.
+\end{align}
+Rearranging terms in~\eqref{eqn:truncation} and adding $a\frac{\partial u}{\partial x}$ to both sides allows us to write
+\begin{align}
+  \label{eqn:truncation_rearranged}
+    \frac{u^{n+1} - u^n}{\Delta t}
+    + a \frac{\partial u}{\partial x}
+    =
+    \frac{\partial u}{\partial t}
+    + a \frac{\partial u}{\partial x}
+    - \frac{a^2 \Delta t}{2} \frac{\partial^2 u}{\partial x^2}
+    + \mathcal{O}(\Delta t^2)
+\end{align}
+where all the continuous derivatives are assumed to be evaluated at
+time level $t^{n+1}$.  Thus, the semi-discrete form of the linear convection on
+the left-hand side of~\eqref{eqn:truncation_rearranged} is equal to
+the continuous parabolic partial differential equation on the
+right-hand side, which includes ``artificial'' diffusion or viscosity of
+$\mathcal{O}(\frac{a^2 \Delta t}{2})$, to within $\mathcal{O}(\Delta
+t^2)$.
+% This in turn implies that the solution to the semi-discrete equation
+% \begin{align}
+%     \frac{u^{n+1} - u^n}{\Delta t}
+%     + a \frac{\partial u}{\partial x} = 0
+% \end{align}
+% coincides with the solution of a ``diffuse'' version of the original
+% equation to within $\mathcal{O}(\Delta t^2)$.
+For this reason, we often say that the backward Euler time
+discretization is inherently stabilizing for the hyperbolic
+equation~\eqref{eqn:convection}.  Obviously, the artificial viscosity for the
+complete scheme is a composite of the artificial viscosity of both the time
+and spatial discretization. 
+
+The backward Euler time integration method may generate excessive artificial
+viscosity and should, therefore, only be used for transients with RELAP-7
+as an initial scoping calculation, or if only the steady-state solution is of
+interest. For accurate transient solutions with RELAP-7, the BDF2 time
+integration method, described next, is highly recommended because it is
+a second-order (in time) discretization.
+%
+\subsubsection{BDF2\label{sec:bdf2}}
+%
+The backward differentiation formula (BDF) is a family of implicit
+methods for numerically integrating ordinary differential equations.
+Some notable members of this family include BDF1, which is equivalent
+to the backward Euler~\cite{Ascher_1998} method discussed in
+Section~\ref{sec:backward_euler}, and BDF2, which is the highest-order
+BDF method which is still A-stable.  For fixed step-size $\Delta t$, the BDF2 method 
+applied to the ordinary differential equation
+\begin{align}
+  \frac{\partial u}{\partial t} &= f(t, u)
+  \\
+  u(t=0) &= u_0
+\end{align}
+yields the update step:
+\begin{align}
+\label{eqn:bdf2}
+u^{n+1} = \frac{4}{3}u^n - \frac{1}{3}u^{n-1} + \frac{2}{3} \Delta t f(u^{n+1}, t^{n+1})
+\end{align}
+Dividing through by $\frac{2}{3} \Delta t$, equation~\eqref{eqn:bdf2} can be 
+alternatively written as
+\begin{align}
+\label{eqn:bdf2_scaled}
+\frac{\frac{3}{2}u^{n+1} - 2u^n  + \frac{1}{2}u^{n-1}}{\Delta t} = f(u^{n+1}, t^{n+1})
+\end{align}
+The left-hand side of~\eqref{eqn:bdf2_scaled} can be interpreted as a
+backward-difference approximation to the continuous time derivative
+$\frac{\partial u}{\partial t}$, and may be employed in a manner analogous
+to~\eqref{eqn:backward_euler_fully_discrete} to derive a fully-discrete
+system of equations:
+\begin{align}
+  \label{eqn:bdf2_fully_discrete}
+  \int_{\Omega} \left( \frac{\frac{3}{2}u^{n+1} - 2u^n  + \frac{1}{2}u^{n-1}}{\Delta t} + G(u^{n+1}) \right) \phi_i \; \text{d}{\Omega} = 0
+\end{align}
+based on the semi-discrete equations~\eqref{eqn:1Dmass_weak}--\eqref{eqn:1Denergy_3eq_weak}.
+Since BDF2 requires two old timesteps, the method must be
+``bootstrapped'' by a lower-order method, such as backward Euler, when
+starting.  This means that a much smaller time step size should be used
+for start-up, at the beginning of a transient.  The BDF2 method is 
+recommended for most transient simulations with RELAP-7.
+%
+\subsection{Jacobian-Free Newton Krylov Solver\label{sec:jfnk}}
+%
+The RELAP-7 code solves coupled multi-physics problems using the
+Jacobian-Free Newton Krylov (JFNK) approach via the MOOSE
+framework. Field equations solved in the current RELAP-7 code include
+PDEs to describe one-dimensional fluid flow in pipe systems and heat
+conduction in solids, as well as ODEs to describe physics in
+zero-dimensional components and the point kinetics equations.
+
+The JFNK method is a fully-coupled, multi-level method for solving large
+nonlinear equation systems. In general, it consists of at least two
+levels: the outer Newton loop for the nonlinear solve and the inner
+Krylov loop for the linear systems of equations associated to Newton
+iteration.  The JFNK method has become an increasingly popular option
+for solving large nonlinear equation systems arising from
+multi-physics problems over the last 20 years, and has branched out
+into a number of different disciplines~\cite{Knoll_2004}.
+
+In what follows, a brief description of the JFNK method as it
+applies to the RELAP-7 application is given.  The FEM-discretized field
+equations are first written as
+\begin{equation}
+  \label{eqn:F}
+  \vec{F} (\vec{u}) = \vec{0}
+\end{equation}
+where $\vec{F}$ represents the nonlinear equation system and $\vec{u}$
+is the solution vector. Newton's method requires an initial guess,
+$\vec{u}^0$, to start the iteration process. For the transient
+problems of interest here, the solution at a previous time step is
+generally used as the initial guess for the method. At the $k^{th}$
+iteration, the residual vector is defined as
+\begin{align}
+  \vec{r}^k \equiv \vec{F}(\vec{u}^k) \,.
+\end{align}
+Clearly if $\vec{u}^k$ satisfies~\eqref{eqn:F} \emph{exactly}, the
+$k^{th}$ residual will be zero.  To update the solution vector, the
+following equation is solved for the update vector, $\delta
+\vec{u}^{k+1}$:
+\begin{equation}
+  \label{eqn:newton_correction}
+%  \tensor{J}(\vec{u}^k) \delta \vec{u}^{k+1} = - \vec{r}^k
+J (\vec{u}^k) \delta \vec{u}^{k+1} = - \vec{r}^k
+\end{equation}
+where $J(\vec{u}^k)$ is the Jacobian
+matrix evaluated at $\vec{u}^k$.  In index notation,
+\begin{equation}
+  \label{eqn:jacobian_matrix}
+  J_{ij} \equiv \frac {\partial F_i} {\partial u_j} \,\,.
+\end{equation}
+After $\delta \vec{u}^{k+1}$ is obtained, the $(k+1)^{st}$ solution iterate
+is computed by
+\begin{equation}
+  \vec{u}^{k+1} = \vec{u}^{k} + \delta \vec{u}^{k+1} \,\,.
+\end{equation}
+The Newton iteration is terminated when one of the following conditions is met:
+\begin{enumerate}
+\item The residual vector norm, $|\vec{r}^k|$, is sufficiently small.
+\item The relative residual vector norm $\frac{|\vec{r}^k|}{|\vec{r}^0|}$  is sufficiently small.
+\item The step size norm, $|\delta \vec{u}^{k+1}|$ is sufficiently small.
+\end{enumerate}
+
+Note that~\eqref{eqn:newton_correction} represents a large
+linear system of equations.  In the JFNK method, we need not
+explicitly form the matrix $J$: only its action on a vector
+(via matrix-vector product) is required.
+Effective preconditioning is generally required for Krylov subspace
+methods to be efficient, i.e., for the method to converge in a
+reasonable number of iterations. A preconditioned version of
+equation~\eqref{eqn:newton_correction} can be expressed as (using
+right preconditioning as an example),
+\begin{equation}
+  \label{eqn:newton_correction_preconditioned}
+%  \tensor{J}^k \tensor{P}^{-1} \left(\tensor{P} \delta \vec{u}^{k+1} \right)= -\vec{r}^k
+  J^k P^{-1} \left(P \delta \vec{u}^{k+1} \right)= -\vec{r}^k
+\end{equation}
+where $P$ is the preconditioning matrix. In the approach current
+used in RELAP-7, an analytical Jacobian matrix is computed according
+to~\eqref{eqn:jacobian_matrix}, and passed to the underlying numerical solver
+library as the matrix $P$ for preconditioning purposes.
+%==============================================================================
+\section{Hyperbolic system of equation and boundary conditions:}
+\begin{itemize}
+\item describe general way for bc: waves, characteristic equations, variables, ...
+\item Look at Burger's equations.
+\item Do multi-D Euler equations.
+\end{itemize}
+%==============================================================================
+%==============================================================================
 \section{Implementation of the entropy viscosity method (EVM) with continuous Galerkin finite element method:}
 %==============================================================================
 After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient, this section focuses on the implementation of the method: details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Most of the explanation given in this section can be applied to any schemes other than the Galerkin continuous finite element method. Special attention is required for the jump since their definition is scheme dependent. In this section, to explain the steps involved in the implementation of the EVM, we consider a on-uniform $2$-D mesh family $\Omega$. Each member of this family is called element, $e$, and the set of its faces is denoted by $\delta e = \left\{ \delta e_k \right\}$, where $k$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta e$, a quadrature rule, $Q = \left\{ q \right\}$ is used. For the purpose of this section, the EVM is applied to a hyperbolic system of $n$ equations given in \eqt{eq:system}. 

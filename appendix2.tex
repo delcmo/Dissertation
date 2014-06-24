@@ -14,18 +14,44 @@
 %%                           APPENDIX B
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{\uppercase {Second Appendix with a longer title - much longer in fact}}
+\chapter{\uppercase {Derivation of the entropy residual as a function of density, pressure and speed of sound}} \label{app:ent_res}
 
-Text for the Appendix follows.
-
-\begin{figure}[H]
-\centering
-\includegraphics[scale=.50]{figures/Penguins.jpg}
-\caption{TAMU figure}
-\label{fig:tamu-fig6}
-\end{figure}
-
-\section{Appendix Section}
-
+The entropy residual is as follows:
+%
+\begin{equation*}
+\resi(\vec{r},t) = \partial_t s (\vec{r},t) + \vec{u} \cdot \div s (\vec{r},t) ,
+\end{equation*}
+%
+where all variables were defined previously. This form of the entropy residual is not suitable for the low-Mach limit as explained in \sect{sec:background}. In this appendix, we recast the entropy residual $\resi(\vec{r},t)$ as a function of the primitive variables (pressure, velocity and density) and the speed of sound. The first step of this derivation is to use the chain rule, recalling that the entropy is a function of the internal energy $e$ and the density $\rho$, yielding
+%
+\begin{equation*}
+\resi(\vec{r},t) = s_e  \matder{e} + s_{\rho}  \matder{\rho} ,
+\end{equation*}
+%
+where $s_e$ denotes the partial derivative of $s$ with respect to the variable $e$. We recall that $\matder{\ }$ denotes the material derivative. Since the internal energy $e$ is a function of pressure $P$ and density $\rho$ (through the equation of state), we use again the chain rule to re-express the previous equation as a function of of the material derivatives in $P$ and $\rho$:
+%
+\begin{eqnarray*}
+\resi(\vec{r},t) &=&  s_e e_P \matder{P} + ( s_e e_{\rho} + s_{\rho} ) \matder{\rho} \\
+&=& s_e e_P \left( \matder{P} + \frac{1}{s_e e_P} ( s_e e_{\rho} + s_{\rho} )  \matder{\rho}\right) \\
+&=& s_e e_P \left( \matder{P} + ( \frac{e_{\rho}}{e_P} + \frac{s_{\rho}}{s_e e_P} )  \matder{\rho} \right) .
+\end{eqnarray*}
+%
+We are now close to the final result (see \eqt{eq:ent_res}). To prove that the term multiplying the material derivative of the density is indeed equal to the square of the speed of sound, we recall that the speed of sound is defined as the partial derivative of pressure with respect to density at constant entropy, which can be recast as a function of the entropy as follows (see Appendix A.2 of \cite{jlg}):
+%
+\begin{equation*}
+c^2 := \left. \frac{\partial P}{\partial \rho} \right|_{s=cst} = P_{\rho} - \frac{s_{\rho}}{s_e} P_e   \, .
+\end{equation*}
+%
+Using the following relations (see Appendix A.1 of \cite{jlg})
+%
+\begin{equation*}
+P_e = \frac{1}{e_P} \text{ and } P_{\rho} = -\frac{e_{\rho}}{e_P}  \, ,
+\end{equation*}
+%
+\eqt{eq:ent_res} is obtained and recalled below for completeness:
+%
+\begin{equation*}
+\resi(\vec{r},t) := \partial_t s + \vec{u} \cdot \grad s = \matder{s} = \frac{s_e}{P_e} \left( \underbrace{\matder{P} - c^2 \matder{\rho} }_{\resinew(\vec{r},t)} \right) \, .
+\end{equation*} 
 
 \pagebreak{}
