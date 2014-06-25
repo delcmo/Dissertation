@@ -195,7 +195,7 @@ the method.  In Section~\ref{sec:entropy_viscosity}, stabilization will be
 discussed further, and in particular the new entropy viscosity 
 stabilization scheme will be presented in detail.
 %
-\subsubsection{Backward Euler\label{sec:backward_euler}}
+\subsection{Backward Euler\label{sec:backward_euler}}
 %
 The backward Euler method~\cite{Butcher_2003} is a well-known, first-order, A-stable
 implicit time integration method.  Given a generic
@@ -276,7 +276,7 @@ interest. For accurate transient solutions with RELAP-7, the BDF2 time
 integration method, described next, is highly recommended because it is
 a second-order (in time) discretization.
 %
-\subsubsection{BDF2\label{sec:bdf2}}
+\subsection{BDF2\label{sec:bdf2}}
 %
 The backward differentiation formula (BDF) is a family of implicit
 methods for numerically integrating ordinary differential equations.
@@ -407,25 +407,90 @@ library as the matrix $P$ for preconditioning purposes.
 %==============================================================================
 \section{Implementation of the entropy viscosity method (EVM) with continuous Galerkin finite element method:}
 %==============================================================================
-After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient, this section focuses on the implementation of the method: details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Most of the explanation given in this section can be applied to any schemes other than the Galerkin continuous finite element method. Special attention is required for the jump since their definition is scheme dependent. In this section, to explain the steps involved in the implementation of the EVM, we consider a on-uniform $2$-D mesh family $\Omega$. Each member of this family is called element, $e$, and the set of its faces is denoted by $\delta e = \left\{ \delta e_k \right\}$, where $k$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta e$, a quadrature rule, $Q = \left\{ q \right\}$ is used. For the purpose of this section, the EVM is applied to a hyperbolic system of $n$ equations given in \eqt{eq:system}. 
-\begin{equation}\label{eq:system}2
-\partial_t U(\vec{r},t) + \div F(U(\vec{r},t)) = \div G(U(\vec{r},t))
+After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient, this section focuses on the implementation of the method in a Galerkin continuous finite element scheme. Details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Special attention is required for the jump since their definition is scheme dependent. A non-uniform $2$-D mesh family $\Omega$ is considered. Each member of this family is called element, $k$, and the set of its faces is denoted by $\delta k = \left\{ \delta k_j \right\}$, where $j$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta k$, a quadrature rule, $Q = \left\{ q \right\}$ is used.
+
+For academic purpose, the multi-D Burger's equations are considered and recalled here along with the definition of the viscosity coefficients \eqt{eq:system_sct2}: 
+\begin{subequations}
+\label{eq:system_sct2}
+\begin{equation}\label{eq:bg_sct2}
+\partial_t u(\vec{r},t) + \div \left[ \vec{n} \frac{u(\vec{r},t)^2}{2} \right] = \div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right) = \div \vec{g}
 \end{equation}
-where $U(\vec{r},t)$ and $F(U(\vec{r},t))$ are the vector conservative variables and the hyperbolic flux, respectively. The term $G(U(\vec{r},t))$ denotes the artificial dissipative terms that are assumed consistent with the entropy minimum principle \cite{jlg3}. All of the terms depend on space, $\vec{r}$ and time, $t$. It is also assumed that the eigenvalues, $\lambda = \left\{ \lambda_1, \lambda_2, \dots, \lambda_n \right\}$ are known. Lastly, the entropy residual is assumed to be of the following form:
-\begin{equation}\label{eq:ent_residual_ex}
-\partial_t S \left( U(\vec{r},t) \right) +  \grad \Phi \left( U(\vec{r},t) \right) \geq 0
+%
+\begin{equation}\label{eq:res_sct2}
+R_e(\vec{r},t) = \partial_t \left( s(\vec{r},t)\right) +  \grad \left( \vec{n} \Phi(\vec{r},t) \right) \leq 0
 \end{equation}
-where $S$ is the entropy function and $\Phi$ is the associated entropy flux. \\ 
-The first step in the implementation of the EVM is the integration of the dissipative terms over each element of the mesh. The continuous finite element approach consists of multiplying each term by a test function and then, integrating over the volume of each element. Since the dissipative terms are second-order spatial derivatives, an integration per part is performed leading to:
-\begin{equation}
-\div G(U(\vec{r},t)) \rightarrow \int_e \div G(U(\vec{r},t)) \phi(\vec{r}) = \int_{\delta e} G(U(\vec{r},t)) \phi(\vec{r}) - \int_e G(U(\vec{r},t)) \grad \phi(\vec{r}) \nonumber
+%
+\begin{equation}\label{eq:visc_sct2}
+\mu(\vec{r},t) = \max \left( \mu_e(\vec{r},t), \mu_{max}(\vec{r},t) \right)
+\end{equation}
+%
+\begin{equation}\label{eq:visc_max_sct2}
+\mu_{max}(\vec{r},t) = \frac{h}{2} |u(\vec{r},t)|
+\end{equation}
+%
+\begin{equation}\label{eq:visc_ev_sct2}
+\mu_{e}(\vec{r},t) = h^2 \frac{\max\left( R_e(\vec{r},t), J \right)}{|| s - \bar{s} ||_\infty}
+\end{equation}
+\end{subequations}
+where $u(\vec{r},t)$ is a conservative variable that depends on both space and time. The entropy function $s$ and the conservative flux in the entropy residual $R_e$ are defined as $s(\vec{r},t) = \frac{u(\vec{r},t)}{2}$ and $\Phi = \frac{u(\vec{r},t)^3}{3}$, respectively. The Burger's equation is known to admit an unique eigenvalue $\lambda = u(\vec{r},t)$. The vector $\vec{n}$ has the same definition as in \sect{sec:section2}. The jump $J$ is assumed piecewise constant and details regarding its evaluation are given later in this section. The normalization parameter $|| s - \bar{s} ||_\infty$ used in \eqt{eq:visc_ev_sct2} denotes the infinite norm over the entire computational domain of the quantity $s - \bar{s}$ where $\bar{s}$ is the average entropy over the computational domain as well.\\
+The first step in the implementation of the EVM is the integration of the dissipative terms over each element of the mesh. The continuous finite element approach consists of multiplying each term by a test function and then, integrating over the computational domain. Since the dissipative terms are second-order spatial derivatives, an integration per part is performed leading to:
+%
+\begin{equation}\label{eq:diss_term_sct2}
+\div \vec{g} \rightarrow \int_\Omega W^h \cdot \div \vec{g}^h\text{d}\Omega  = \int_\Omega \grad W^h \cdot \vec{g}^h\text{d}\Omega - \int_\Gamma \hat{n} \cdot \vec{g}^h W^h \text{d}\Gamma
 \end{equation} 
-where $\phi$ is a test function. Then, each integral is evaluating using the quadrature rule at the set of quadrature points $\vec{r}_q$:
-\begin{equation}
-\int_{\delta e} G(U(\vec{r},t)) \phi(\vec{r}) - \int_e G(U(\vec{r},t)) \grad \phi(\vec{r}) = \sum_{q,\delta e} G(U(\vec{r}_q,t)) \phi(\vec{r}_q) - \sum_{q,e} G(U(\vec{r}_q,t)) \grad \phi(\vec{r}_q) \nonumber
+%
+In \eqt{eq:diss_term_sct2}, the integral over the domain $\Omega$ is transformed into a sum over the elements and evaluated by using the quadrature rule. The other term, consists of an integral over the boundary of the computational domain $\Gamma$. It requires to compute the dissipative flux $g$, and thus, the viscosity coefficient $\mu$ at the boundary. The evaluation of the integral over $\Gamma$ can be avoided by assuming that the viscosity coefficient is zero at the boundary which yields:
+ %
+\begin{equation}\label{eq:diss_term2_sct2}
+\div \vec{g} \rightarrow \int_\Omega W^h \cdot \div \vec{g}^h\text{d}\Omega  = \int_\Omega \grad W^h \cdot \vec{g}^h\text{d}\Omega
+\end{equation} 
+%
+The dissipative term $\vec{g}^h$ is function of the viscosity coefficient and the derivative of the conservative variable $u$ that need to be evaluated at the quadrature points. Obtaining the derivative values at the quadrature points with a continuous finite element discretization type is straightforward. On the other hand, computing the viscosity coefficient at the same quadrature points require a little bit more of computational work and is explained in the following. \\
+
+The next step consists of determining the viscosity coefficient $\mu$ that is not obtained by solving a PDE, but computed on the fly from the definition recalled in \eqt{eq:visc_sct2}. The definition of the viscosity coefficient $\mu(\vec{r},t)$ involves two other viscosity coefficients: a first-order viscosity coefficient $\mu_{max}(\vec{r},t)$ that is an upper bound, and a high-order viscosity coefficient often also called entropy-viscosity coefficient that is denoted by $\mu_e(\vec{r},t)$. A common element to the definition of $\mu_{max}(\vec{r},t)$ and $\mu_e(\vec{r},t)$ is the mesh size $h$ that can vary through the computational domain and is defined as the shortest distance between two nodes of an element. Thus, when considering a $1$-D mesh with linear test function, the local mesh size is simply $\Delta x$. For a shape regular mesh, the mesh size is finite and usually available through a function call. For instance, when using libMesh (REF), a function can be called in order to get the mesh size or diameter of the cell under consideration. Once the mesh size $h$ is available, it remains to compute the local maximum eigenvalue, the residual $R_e$ and the jump $J$. \\
+Obtaining the local maximum eigenvalue is self explanatory using the test functions, $u^q_k = \sum_j u_{k,j} \phi^q_j$ , and has to be done for each quadrature point in a given element $k$: at this point, the first-order viscosity coefficient $\mu_{max}$ is available at each quadrature point and is referred to as $\mu_{max,k}^q = \frac{h_k}{2} | u^q_k |$. The high-order viscosity coefficient is trickier to compute since it involves the entropy residual $R_e$ at the quadrature points and the jumps $J$ at the interface between cells. The entropy residual $R_e$ is a PDE but is not discretized in a finite element sense. Instead, each term of the entropy residual is locally computed using the test functions but without integration over the computational domain as follows:
+%
+\begin{equation}\label{eq:res_disc_sct2}
+R_{e,k}^{q,n} = w_0 s^{n,q}_k + w_1 s^{n-1,q}_k + w_2 s^{n-2,q}_k +  \vec{n} \cdot  \sum_j \Phi_{k,j}\grad \phi^q_j
 \end{equation}
-The dissipative term $G(U(\vec{r},t))$ is function of the viscosity coefficient and the derivative of the conservative variables that need to be evaluated at the quadrature points. Obtaining the derivative values at the quadrature points with a continuous finite element discretization type is straightforward. On the other hand, computing the viscosity coefficient at the same quadrature points require a little bit more of computational work and is explained in the following. Details about the integral over the faces of each element will be given in the next paragraph.\\
-The viscosity coefficient is not obtained by solving a PDE, but simply computed on the fly from the conservative variables. The definition of the viscosity coefficient $\mu(\vec{r},t)$ involves two other viscosity coefficients: a first-order viscosity coefficient $\mu_{max}(\vec{r},t)$ that is an upper bound, and a high-order viscosity coefficient often also called entropy viscosity coefficient that is denoted by $\mu_e(\vec{r},t)$. It is assumed that these viscosity coefficients are function of both space and time. The first-order viscosity coefficient is function of the local maximum eigenvalues and the mesh size $d$: $\mu_{max}(\vec{r},t) = \frac{d}{2} \max \lambda_k (\vec{r},t)$. For a shape regular mesh, the mesh size $d$ is expected to be finite. It is assumed that each element has its own finite mesh size denoted by $d_e$. For instance, when using libMesh (REF), a function can be called in order to get the mesh size or diameter of the cell under consideration. Obtaining the local maximum eigenvalue is self explanatory and has to be done for each quadrature point. At this point, in each element, $q$ different values of the first-order viscosity coefficient is available to us that we denote by the set: $\mu_{max}^e = \left\{ \mu_{max}(\vec{r}_q,t) \right\}$. \\
-The high-order viscosity coefficient is trickier to compute since it involves the entropy residual and the jumps at the interface between cells.   
+when considering three successive solutions $s^{n,q}_k$, $s^{n-1,q}_k$ and $s^{n-2,q}_k$ in time. The weights $w_0$, $w_1$ and $w_2$ are defined in (SECTION). The values of the entropy function $s$ at the quadrature points is computed using the test function: $s^q_k = \sum_j s_{k,j} \phi^q_j = \sum_j \frac{u_{k,j}^2}{2} \phi^q_j$, which requires to access the values of $u^2$ at the nodes $j$. The same method is used for the conservative flux $\Phi$. It is noted that the entropy residual can be recast under a non-conservative form as shown in \eqt{eq:res_disc2_sct2} that can be easier to evaluate depending on what is available to the user.
+%
+\begin{equation}\label{eq:res_disc2_sct2}
+R_e(\vec{r},t) = \partial_t \left( \frac{u(\vec{r},t)^2}{2} \right) +  u(\vec{r},t)^2 \grad \left( \vec{n} u(\vec{r},t) \right)
+\end{equation}
+%
+It remains, now, to compute the jump $J$ that is set constant in each element. In Galerkin continuous finite elements, the variables are continuous at the faces, but their derivative are discontinuous. Thus, the jump of the gradient of a variable to choose, seems to be a good entropy production indicator since it will inform us on the presence of a sharp discontinuity. In the remaining of this section, a generic method is detailed to compute the jump of the gradient of a variable when using Galerkin finite element method. Then, the jump used in the definition of the viscosity coefficient for solving Burger's equation is given. 
+
+To be more specific, let us consider an element $k$ and its set of $n$ boundaries $\delta k = \left\{ \delta k_1, \cdots, \delta k_n \right\}$. We also assume that the outward normal $\hat{n}_i$ to each boundary $\delta k_i$ is available to us. The objective is to compute the jump $J_k$ of the gradient of the variable $v(\vec{r},t)$ for the element $k$. Since an element $k$ shares $n$ boundaries with $n$ other elements of the computational domain, a jump $J_{k.i}$ can be computed for each boundary $\delta k_i$, and is defined as follows:
+%
+\begin{equation}\label{eq:jump_def_sct2}
+J_{k,i} = | \left( \grad v(\vec{r},t)_{k,i} - \grad v(\vec{r},t)_{neighbor,i} \right) \cdot \hat{n}_i |
+\end{equation}
+% 
+where the quantity $\grad v(\vec{r},t)_{neighbor,i}$ denotes the gradient of $v(\vec{r},t)$ in the neighbor cell to the element $k$ sharing the interface $\delta k_i$. The difference of gradients between the two elements sharing the interface $\delta k_i$ is multiplied by the outward normal vector $\hat{n}_i$ to obtain the jump normal to the interface. Once all the jumps $J_{k,i}$ are computed for each face $i$ of the element $k$ (a loop over the faces $i$ of element $k$ applies), the jump $J_k$ is computed by choosing the maximum over the $J_{k,i}$:
+%
+\begin{equation}\label{eq:jump_def2_sct2}
+J_k = \max_i \left( J_{k,i} \right)
+\end{equation}
+%
+With the definition given in \eqt{eq:jump_def2_sct2}, the jump $J_k$ is constant in each element $k$ of the computational domain $\Omega$. From this point, the entropy residual $R_e$ and the jump $J$ are known in the element $k$, at a given time $n$ and at every quadrature points $q$. It remains to compute the normalization parameters $|| s - \bar{s} ||_\infty$ that is obtained from a post processing for every new non-linear iteration of the solver and thus is a function of time. The average value of the entropy function of the computational domain is computed from an integral as follows:
+%
+\begin{equation}\label{eq:sbar_sct2}
+\bar{s} = \frac{1}{\Omega} \int_{\Omega} s(\vec{r},t) \text{d}\Omega
+\end{equation}
+%   
+The high-order viscosity coefficient $\mu_{e,k}^{q,n}$ can now be computed at a given quadrature potions $q$ and given time $n$:
+%
+\begin{equation}\label{eq:visc_ev2_sct2}
+\mu_{e,k}^{q,n} = h_k^2 \frac{\max \left( R_{e,k}^{q,n}, J_k^n \right)}{|| s - \bar{s} ||_\infty^n}
+\end{equation}
+%
+The definition of the viscosity coefficient $\mu$ from \eqt{eq:visc2_sct2} follows:
+%
+\begin{equation}\label{eq:visc2_sct2}
+\mu_{k}^{q,n} = \min \left( \mu_{e,k}^{q,n}, \mu_{max,k}^{q,n} \right)
+\end{equation}
+%
+From this point, all variables are known to compute the integral of the dissipative term $\int_{k} \mu \grad u(\vec{r},t) \grad \phi = \sum_q \mu_{k}^{q,n} \grad u_k^{q,n} \grad \phi^q$.
 %The dissipative terms consist of second order spatial derivatives that are reduced to first order derivative by integrating per part after multiplying by the test function and integrating over the computational domain. An integral over the boundary of the computational domain also appears and raises the question of how to treat the dissipative terms on the boundary. It is often suitable to set the viscosity coefficients to zero on the boundary so that the boundary term coming from integrating per part the dissipative terms is also zero. Hyperbolic systems of equations alike the multi-D Euler equations, require particular treatment to compute the flux on the boundaries based on the study of the characteristic and the eigenvalues: the boundary terms of the dissipative terms could interfere with the hyperbolic flux and lead to the wrong value at the boundaries. The dissipative terms require to evaluate at each quadrature points of each cell the first-order spatial derivatives of one or multiple variables. With Galerkin finite element method, this task is easily done by using the derivative of the test functions. \\
 %Once the dissipative terms are implemented, the viscosity coefficient has to be computed: the viscosity coefficient is evaluated on the fly from the entropy residual and the jumps. The viscosity coefficient requires to compute the first-order viscosity and the high-order viscosity coefficients at the quadrature points.
