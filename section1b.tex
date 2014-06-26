@@ -13,15 +13,68 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                           SECTION I
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\pagestyle{plain} % No headers, just page numbers
-\pagenumbering{arabic} % Arabic numerals
-\setcounter{page}{1}
-
+%
 \chapter{\uppercase {Hyperbolic scalar and system of equations:}}
+%
+In this chapter, some key properties of the hyperbolic system of equations are recalled. The objective is to introduce the reader to the notion of shock, weak solution and entropy minimum principle by studying a simple hyperbolic scalar equation through a linear progression. First, the mathematical properties of the hyperbolic scalar equation are studied and include the derivation of the eigenvalue and the characteristic equation. Then, it is explained how shock are formed which will bring us to show that the solution is non-unique. The reader will be introduced to the notion of weak solution. Lastly, it will be explained how the entropy condition is used to ensure uniqueness of the solution and more importantly, ensure convergence of the numerical solution to the physical one. In the last section of this chapter, the notions introduced for the hyperbolic scalar equation are generalized to systems of equation.
 %
 \section{Hyperbolic scalar equations:}
 %
+For academic purpose, we consider a simple hyperbolic scalar equation with initial conditions to form what is called an \emph{Initial Boundary Value Problem} (IBVP) as shown in \eqt{eq:ivp_sct1b}. We define a computational domain $\Omega$ of dimension $d$, bounded by the boundary $\Gamma$ of dimension $d-1$. Each variable is assumed to be a function of space, $\vec{r} \in R^d$, and time, $t \in R_+$.
+%
+\begin{equation}\label{eq:ivp_sct1b}
+\left\{
+\begin{array}{l}
+\partial_t u(\vec{r},t) + \div ( f(u) \vec{n} ) = 0 \text{, } \left( \vec{r}, t \right) \in R^d \times R_+  \nonumber \\
+u(\vec{r},0) = u( \vec{r}_0) 
+\end{array}
+\right.
+\end{equation}
+%
+where $u$ and $f(u)$ are the solution and the inviscid flux, respectively. The inviscid flux $f(u)$ is assumed to be a differential function of the solution $u$. Two definitions of the inviscid flux will be considered in this chapter in order to illustrate the differences between linear and non-linear hyperbolic scalar systems: a linear flux $\vec{f}_1$ and a non-linear flux $\vec{f}_2$, as follows:
+%
+\begin{subequations}\label{eq:ivp2_sct1b}
+%
+\begin{equation}\label{eq:trans_sct1b}
+\partial_t u(\vec{r},t) + \div \vec{f}_1(u) = \partial_t u(\vec{r},t) + \div \left( au \right) = 0
+\end{equation}
+%
+\begin{equation}\label{eq:burger_sct1b}
+\partial_t u(\vec{r},t) + \div \vec{f}_2(u) = \partial_t u(\vec{r},t) + \div \left( \frac{u^2}{2} \right) = 0
+\end{equation}
+%
+\end{subequations}
+%
+\eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b} are respectively known as the transport and Burger's equations. They have been widely studied in the literature and are well understood (REFS). 
+
+The eigenvalue, $\lambda$, of the hyperbolic equation is obtained by looking at the derivative of the inviscid flux, $f(u)$, with respect to the solution $u$, and corresponds to the wave propagation speed. When considering the fluxes $f_1$ and $f_2$, it is found that their eigenvalues are $\lambda_1 = a$ and $\lambda_2 = u$, respectively. For the linear advection equation, the wave speed is a constant through the computational domain. On the other hand, the wave speed is a function of space and time since equal to the solution itself, for the Burger's equation.
+
+Once the eigenvalues are determined, the next step consists of deriving the characteristic equation and the characteristic curve. For implicitly purpose, we limit ourself to the $x-t$ plane. Under this assumption, a characteristic curve is defined as curves $x = x(t)$ in the plane $x-t$ along with the PDE becomes an ODE \cite{Toro}. To determine the characteristic curve, \eqt{eq:ivp_sct1b} is recast as a function of the eigenvalue, $\lambda$, by using the chain rule as shown in 
+%
+\begin{eqnarray}\label{eq:ivp3_sct1b}
+&&\partial_t u(\vec{r},t) + \frac{df}{du}\partial_x u = 0 \nonumber\\
+&&\partial_t u(\vec{r},t) + \lambda \partial_x u = 0 \nonumber \\
+&&\partial_t u(\vec{r},t) + \frac{dx}{dt} \partial_x u = 0 \text{ along } \frac{dx}{dt} = f'(u) = \lambda 
+\end{eqnarray}
+%
+\eqt{eq:ivp3_sct1b} tells us that the solution $u$ is constant along the curve $\frac{dx}{dt} = \lambda$ since its rate of change is zero. The eigenvalue is the slope of characteristic curve and is referred to as the characteristic speed. For the linear advection equation, the characteristic speed is constant and equal to $a$, whereas it is a function of space and time for Burger's equation since equal to the solution itself. For a given characteristic curve, the characteristic speed is a constant given by the initial condition, $f'(u)=f'(u_0)$ which allows us to integrate in order to obtain an analytical expression:
+%
+\begin{eqnarray}\label{eq:ivp4_sct1b}
+\frac{dx}{dt} &=& a \nonumber \\
+\Leftrightarrow x(t) &=& x_0 + f'(u_0)t
+\end{eqnarray}
+%
+where we set $x(t=0) = x_0$ that can be seen as the initial position of a particle traveling along the characteristic curve. It is current to represent the characteristic curves in a $t-x$ place as shown in (FIGURE). \\
+
+Let assume that the initial value for the solution is $u(x_0) = u_0$. Along the characteristic curve $x = x_0 +at$, the solution $u(x,t)$ remains constant which can be put in the following mathematical form:
+%
+\begin{equation}
+u(x,t) = u(x_0) = u(x-at)
+\end{equation}
+%  
+Assuming an initial profile for the solution $u(x_0)$, the linear advection equation will simply translate the initial solution at speed $\lambda=a$ to the right if $a \geq 0$ and to the left if $a \leq 0$. In the case of $a=0$, there is not advection.   
+
+In the case of Burger's equation, the eigenvalue is not constant. However, along the characteristic curves, the solution remains constant which allows us to integrate to obtain an analytical expression for the characteristic curve. For the purpose of plotting the characteristic curves, we assume a computational domain of length one and that the initial condition for the solution is of the form $u(x_0) = \sin (\pi x)$. With such initial condition, the slope of the characteristic curve is no longer constant but vary both in time and space. As a result, some of the characteristic curves will intersect  
 \subsection{Formation of shocks:}
 Use Burger's equations as an example.
 \begin{itemize}
