@@ -1,0 +1,69 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  New template code for TAMU Theses and Dissertations starting Fall 2012.  
+%  For more info about this template or the 
+%  TAMU LaTeX User's Group, see http://www.howdy.me/.
+%
+%  Author: Wendy Lynn Turner 
+%	 Version 1.0 
+%  Last updated 8/5/2012
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           SECTION III
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{\uppercase {Application of the entropy viscosity method to the multi-D Burger's equation:}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The multi-D Burger's equation is solved using the entropy viscosity method described in (SECTION). The equation with the viscous regularization and the definition of the viscosity coefficients are recalled, and treatment of the boundary condition in also explained in \sect{sec:burger_sct2b}. $1$- and $2$-D numerical results are presented in \sect{sec:num_sct2b}. The objective of this section is to present numerical results obtained with the entropy viscosity method for the simple hyperbolic scalar Burger's equation before dealing with hyperbolic system of equations.
+%==============================================================================
+\section{The multi-D Burger's equation:}\label{sec:burger_sct2b}
+%==============================================================================
+We recall the multi-D Burger's equation (\eqt{eq:burger_eq_sct2b}) with the viscous regularization and the definition of the viscosity coefficient (\eqt{eq:burger_visc_sct2b}).
+%
+\begin{subequations}\label{eq:burger_sct2b}
+%
+\begin{equation}\label{eq:burger_eq_sct2b}
+\partial_t u(\vec{r},t) + \div \left( \frac{u(\vec{r},t)^2}{2} \vec{n} \right) = \div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right)
+\end{equation}
+%
+\begin{equation}\label{eq:burger_visc_sct2b}
+\left\{
+\begin{array}{l}
+\mu(\vec{r},t) = \min \left( \mu_{max} (\vec{r},t),  \mu_e(\vec{r},t)\right) \\
+\mu_{max} (\vec{r},t) = \frac{h}{2} | u(\vec{r},t) | \\
+\mu_e(\vec{r},t) = h^2 \frac{\max\left( R_e(\vec{r},t), J \right)}{|| s(\vec{r},t) - \bar{s}(t) ||_\infty}
+\end{array}
+\right.
+\end{equation}
+%
+\begin{equation}\label{eq:burger_res_sct2b}
+\left\{
+\begin{array}{l}
+R_e(\vec{r},t) = \partial_t s(\vec{r},t) + \grad \left( u(\vec{r},t) s(\vec{r},t) \right) \\
+J = \left[ u(\vec{r},t) s(\vec{r},t) \right]
+\end{array}
+\right.
+\end{equation}
+%
+\end{subequations}
+%
+where $\vec{n}$ is a vector whom definition depends on the dimension of the domain: $\vec{n} = \left(1, 0, 0 \right)$ in $1$-D, $\vec{n} = \left(1, 1, 0 \right)$ in $2$-D and $\vec{n} = \left(1, 1, 1 \right)$ in $3$-D. The entropy function is denoted by $s$ and is taken equal to the convex function $s(\vec{r},t) = u(\vec{r},t)^2/2$ for the two examples presented in \sect{sec:num_sct2b}. The continuous Galerkin finite element method described in (SECTION) along with the second-order temporal integrator $BDF2$ are used to discretize \eqt{eq:burger_eq_sct2b}. Such discretization requires to compute the flux at the boundary of the computational domain (EQUATION). Our implementation of the boundary condition for Burger's equation is based on the sign of the dot product $u(\vec{r},t) \vec{n} \cdot \hat{n} $ at the boundary, where $\hat{n}$ is the outward normal to the boundary. For Burger's equation it was demonstrated in SECTION that the eigenvalue is the solution itself $\lambda = u$. Being at the boundary, two cases have to be distinguished: 
+\begin{itemize}
+\item $u(\vec{r},t) \vec{n} \cdot \hat{n} $ is negative: the wave enters the computational domain and thus, information needs to be supplied to the code and used to compute the flux.
+\item $u(\vec{r},t) \vec{n} \cdot \hat{n} $ is negative: the wave exits the computational domain. The flux is computed with the value of the solution from the last Krylov iteration supplied by the temporal implicit solver. Because of the iterative process, information, normally carried by the waves, is transmitted to the boundary. This approach is only valid with an implicit solver.
+\end{itemize}
+The above method for is a-dimensional and was used to obtain the numerical results presented in \eqt{sec:num_sct2b}.
+%==============================================================================
+\section{Numerical results:}\label{sec:num_sct2b}
+%==============================================================================
+Two typical numerical tests are presented in order to illustrate the main features of the entropy viscosity method when applied to the multi-D Burger's equation.
+%
+\subsection{1-D numerical result:}\label{sec:1dnum_sct2b}
+We consider a $1$-D computational domain of length $L=1$ $m$.
+%
+\subsection{2-D numerical result: Riemann problem.}\label{sec:2dnum_sct2b}
+%

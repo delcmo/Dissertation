@@ -84,8 +84,54 @@ Hyperbolic scalar equations are known to develop shocks even from a smooth initi
 
 When considering the linear advection equation recalled in \eqt{eq:trans_sct1b} with the flux $f_1(u) = au$, the eigenvalue is found equal to $\lambda_1=a$ and constant. Thus, the slope of the characteristic curve remains constant and each particle travels at the same velocity through the computational domain. In other word, the initial profile of the solution is simply translated at speed $a$ to the right if $a \geq 0$ and to the left if $a \leq 0$. Obviously, if $a=0$, the flux is also null and the solution remains static. A representation of the characteristic curve for the linear advection equation, \eqt{eq:trans_sct1b}, is given in (FIGURE) in a $t-x$ plane: all of the characteristic curves are parallel since the eigenvalue is constant.
 
-In the case of Burger's equation, the eigenvalue is, once again, obtained by computing the derivative of the flux $f_2(u) = u^2/2$, to obtain $\lambda_2 = u$. The slope of the characteristic curves is a function of the initial profile of the solution which requires the study of two distinct cases: a constant initial solution and a non-constant initial solution. In the former case, the slope of the characteristic is constant which  not be parallel, when plotted in a $t-x$ plane, unless the initial solution $u_0$ is constant.
-
+In the case of Burger's equation, the eigenvalue is, once again, obtained by computing the derivative of the flux $f_2(u) = u^2/2$, to obtain $\lambda_2 = u$. The slope of the characteristic curves is a function of the initial profile of the solution which requires the study of two distinct cases: a constant initial solution and a non-constant initial solution. In the former case, the slope of the characteristic is constant which is the identical case to the linear advection equation. In the later case, the characteristic curve will not have the same slope and may intersect. When two characteristic curves intersect, it means that at a given time and position, two values of the solution are allowed (each characteristic curve carries a different initial values of the solution): the solution displays an infinite gradient also called shock wave and can eventually leads to breaking wave type solution as shown in FIGURE. The time the shock occurs at can be analytically determined. Let consider a non-linear flux $f(u)$ and two characteristic curves originating from the position $x_0$ and $x_0+dx$ and carrying the initial values $u_0(x_0)$ and $u_0(x_0+dx)$, respectively. The characteristic curves are:
+%
+\begin{eqnarray}\label{eq:cc1_sct1b}
+&&x_1 = x_0 + f'(u_0(x_0)) t \nonumber \\ 
+&&x_2 = (x_0 + dx) + f'(u_0(x_0+dx)) t \nonumber 
+\end{eqnarray}
+%
+Let now assume that the characteristic curves intersect at time $\tau_{shock}$, which implies $x_1 = x_2$. $\tau_{shock}$ is often referred to as the breaking time. Using \eqt{eq:cc1_sct1b}, an expression for $\tau_{shock}$ can be derived as follows: 
+\begin{equation}
+\tau_{shock} = \frac{-dx}{f'(u_0(x_0+dx))-f'(u_0(x_0))}
+\end{equation} 
+Taking the limit $dx \lim 0$ and using the definition of derivative, the above expression yields:
+\begin{equation}\label{eq:cc2_sct1b}
+\tau_{shock} = \frac{-1}{f''(u_0) u'_0} = \frac{-1}{f'(u_0)},
+\end{equation} 
+The trivial case $f''(u) = 0$ is ruled out since it was assumed a non-linear flux. However, let assume that the flux is linear. In that case, the second-order derivative is null and by taking the limit of \eqt{eq:cc2_sct1b}, it yields $\tau_{shock} \to \infty$ which means that a shock wave never forms. This result is consistent with conclusion made earlier in this section when studying the linear advection equation (\eqt{eq:trans_sct1b}). Going back to a non-linear flux, breaking first occurs where the derivative of the flux is negative and its absolute value is maximum.   \\
+Knowing the breaking time $\tau_{shock}$ and position is not sufficient information to track a shock wave once it is formed. An useful information will be to derive an expression that provides us with the speed of the shock. One of the reason for deriving such expression is, to obtain an analytical solution that can be used for comparison against numerical solutions in order to assess their accuracy. To do so, we consider, one again, a general $1$-D hyperbolic scalar equation for simplicity as shown in 
+%
+\begin{equation}\label{eq:rh_sct1b}
+\partial_t u(x,t) + \partial_x f(u(x,t)) = 0
+\end{equation}
+%
+We assume that the position of the shock is given by a function of time denoted by $s(t)$ and that the associated speed is $S = \frac{ds}{dt}$. At this particular position, the derivatives of the solution $u$ and the flux $f(u)$ are not continuous. We also define a control volume $\left[ x_1; x_2 \right]$ that contains the shock wave so that $x_1 \leq s(t) \leq x_2$. \eqt{eq:rh_sct1b} is integrated over the control volume as shown in \eqt{eq:rh2_sct1b}:
+%
+\begin{equation}\label{eq:rh2_sct1b}
+\frac{d}{dt} \int_{x_1}^{s(t)} u(x,t) dx + \frac{d}{dt} \int_{s(t)}^{x_2} u(x,t) dx + f(x_2,t) - f(x_1,t) = 0
+\end{equation}
+% 
+The first two integrals can be recast by using the following chain rule:
+%
+\begin{equation}\label{eq:rh3_sct1b}
+\frac{d}{dt} \int_{y_1(t)}^{y_2(t)} g(y,t) dy =  \int_{y_1(t)}^{y_2(t)} g(y,t) dy + g(y_2,t) \frac{d y_2(t)}{dt} - g(y_1,t) \frac{d y_1(t)}{dt},
+\end{equation}
+% 
+which yields by noticing that $x_1$ and $x_2$ are not a function of time:
+%
+\begin{equation}\label{eq:rh4_sct1b}
+\int_{x_1}^{s(t)} \partial_t u(x,t) dx - \int_{s(t)}^{x_2} \partial_t u(x,t) dx + \left( u(s^-(t)) - u(s^+(t)) \right) S + f(x_2,t) - f(x_1,t) = 0
+\end{equation}
+%
+where $u(s^-(t),t)$ and $u(s^+(t),t)$ are the values of the solution $u$ before and after the shock, respectively. We now assume that the $x_1$ and $x_2$ approach the shock position $s(t)$ from the left and right, respectively, and that $\partial_t u$ is bounded, the integrals vanish to yield the following expression for the speed of shock $S$:
+%
+\begin{equation}\label{eq:rh5_sct1b}
+S = \frac{f(x_2,t) - f(x_1,t)}{u(s^-(t)) - u(s^+(t))} = \frac{\Delta f}{\Delta u}
+\end{equation}
+%
+The above expression computing the speed of shock (\eqt{eq:rh5_sct1b}) is known as the Rankine-Hugoniot jump condition. The hyperbolic scalar equation given \eqt{eq:rh_sct1b} is only valid in smooth parts of the solution, and thus, require the use of the Rankine-Hugoniot jump condition in order to solve for the shock region.   
+%its speed can be determined by the Rankine-Hugoniot condition
 %However, along the characteristic curves, the solution remains constant which allows us to integrate to obtain an analytical expression for the characteristic curve. For the purpose of plotting the characteristic curves, we assume a computational domain of length one and that the initial condition for the solution is of the form $u(x_0) = \sin (\pi x)$. With such initial condition, the slope of the characteristic curve is no longer constant but vary both in time and space. As a result, some of the characteristic curves will intersect  
 \begin{itemize}
 \item hyperbolic scalar equations are known to produce shocks even with smooth initial conditions.
