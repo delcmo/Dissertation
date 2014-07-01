@@ -17,13 +17,13 @@
 \chapter{\uppercase {Hyperbolic scalar and system of equations:}}
 %
 In this chapter, some key properties of the hyperbolic system of equations are recalled. The objective is to introduce the reader to the notion of shock, weak solution and entropy minimum principle by studying a simple hyperbolic scalar equation through a linear progression. First, the mathematical properties of the hyperbolic scalar equation are studied and include the derivation of the eigenvalue and the characteristic equation. Then, it is explained how shock are formed which will bring us to show that the solution is non-unique. The reader will be introduced to the notion of weak solution. Lastly, it will be explained how the entropy condition is used to ensure uniqueness of the solution and more importantly, ensure convergence of the numerical solution to the physical one. In the last section of this chapter, the notions introduced for the hyperbolic scalar equation are generalized to systems of equation.
-%=============================
+%%%%%%%%%%%%%%%%%%%%
 \section{Hyperbolic scalar equations:}
-%=============================
+%%%%%%%%%%%%%%%%%%%%
 The study of a hyperbolic scalar equation is detailed in order to provide the reader with a better understanding of its mathematical properties that are useful to the comprehension of shock formation among others.
-%%%%%%%%%%%%%%%%%%%%
+%=============================
 \subsection{Eigenvalue and characteristic curves:}\label{sec:mat_ppr}
-%%%%%%%%%%%%%%%%%%%%
+%=============================
 For academic purpose, we consider a simple hyperbolic scalar equation with initial conditions to form what is called an \emph{Initial Boundary Value Problem} (IBVP) as shown in \eqt{eq:ivp_sct1b}. We define a computational domain $\Omega$ of dimension $d$, bounded by the boundary $\Gamma$ of dimension $d-1$. Each variable is assumed to be a function of space, $\vec{r} \in R^d$, and time, $t \in R_+$.
 %
 \begin{equation}\label{eq:ivp_sct1b}
@@ -77,9 +77,9 @@ u(x,t) = u_0(x_0) = u_0(x - f'(u_0)t)
 \end{equation}
 %
 \label{eq:ivp5_sct1b} can be seen as an analytical solution of the hyperbolic scalar equation (\eqt{eq:ivp_sct1b}). It is also understood that the derivative of the flux that corresponds to the eigenvalue of the system, has profound consequence on the behavior of the solution as explained in \sect{sec:shock_form}. 
-%%%%%%%%%%%%%%%%%%%%
+%=============================
 \subsection{Formation of shocks}\label{sec:shock_form}
-%%%%%%%%%%%%%%%%%%%%
+%=============================
 Hyperbolic scalar equations are known to develop shocks even from a smooth initial profile. This section aims at detailing how shocks form based on the mathematical properties introduced in \sect{sec:mat_ppr} and the two examples of \eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b}, i.e., the $1$-D linear advection and Burger's equations.\\
 
 When considering the linear advection equation recalled in \eqt{eq:trans_sct1b} with the flux $f_1(u) = au$, the eigenvalue is found equal to $\lambda_1=a$ and constant. Thus, the slope of the characteristic curve remains constant and each particle travels at the same velocity through the computational domain. In other word, the initial profile of the solution is simply translated at speed $a$ to the right if $a \geq 0$ and to the left if $a \leq 0$. Obviously, if $a=0$, the flux is also null and the solution remains static. A representation of the characteristic curve for the linear advection equation, \eqt{eq:trans_sct1b}, is given in (FIGURE) in a $t-x$ plane: all of the characteristic curves are parallel since the eigenvalue is constant.
@@ -139,16 +139,24 @@ The above expression computing the speed of shock (\eqt{eq:rh5_sct1b}) is known 
 \item talk about diffusion equation that does not produce shocks -> same equation but with diffusion term that smoothes out shocks. Solution is unique and smooth.
 \item idea is to add diffusion to the hyperbolic equation in order to control the shock.
 \end{itemize}
-%
+%=============================
 \subsection{Weak solution:}
+%=============================
 introduce the notion of weak solution and non-uniqueness of the weak solution.
-%
+%===============================
 \subsection{Entropy minimum principle:}
+%===============================
+%===============================
+\subsection{Entropy viscosity method for the multi-D Burger equation:}
+%===============================
 Condition for uniqueness of the solution. Show an example of the derivation for Burger's equations.
-%
+%%%%%%%%%%%%%%%%%%%%%
 \section{Hyperbolic system of equations:}
-%
+%%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
 \item hyperbolic system of equations can also produce shocks.
 \item same treatment as scalar equations.
 \end{itemize}
+%%%%%%%%%%%%%%%%%%%%%
+\section{Remarks concerning the application of the entropy viscosity method to hyperbolic system of equations:}
+%%%%%%%%%%%%%%%%%%%%%

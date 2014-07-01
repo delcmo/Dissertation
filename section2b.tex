@@ -18,7 +18,7 @@
 \chapter{\uppercase {Application of the entropy viscosity method to the multi-D Burger's equation:}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-The multi-D Burger's equation is solved using the entropy viscosity method described in (SECTION). The equation with the viscous regularization and the definition of the viscosity coefficients are recalled, and treatment of the boundary condition in also explained in \sect{sec:burger_sct2b}. $1$- and $2$-D numerical results are presented in \sect{sec:num_sct2b}. The objective of this section is to present numerical results obtained with the entropy viscosity method for the simple hyperbolic scalar Burger's equation before dealing with hyperbolic system of equations.
+The multi-D Burger's equation is solved using the entropy viscosity method described in (SECTION). The equation with the viscous regularization and the definition of the viscosity coefficients are recalled, and treatment of the boundary condition in also explained in \sect{sec:burger_sct2b}. $1$- and $2$-D numerical results are presented in \sect{sec:num_sct2b}. The objective of this section is to present numerical results obtained with the entropy viscosity method for the simple hyperbolic scalar Burger's equation before dealing with hyperbolic system of equations. The multi-physics framework Moose \cite{moose} was to implement the multi-D Burger's equation. The code name is Badger.
 %==============================================================================
 \section{The multi-D Burger's equation:}\label{sec:burger_sct2b}
 %==============================================================================
@@ -53,8 +53,8 @@ J = \left[ u(\vec{r},t) s(\vec{r},t) \right]
 %
 where $\vec{n}$ is a vector whom definition depends on the dimension of the domain: $\vec{n} = \left(1, 0, 0 \right)$ in $1$-D, $\vec{n} = \left(1, 1, 0 \right)$ in $2$-D and $\vec{n} = \left(1, 1, 1 \right)$ in $3$-D. The entropy function is denoted by $s$ and is taken equal to the convex function $s(\vec{r},t) = u(\vec{r},t)^2/2$ for the two examples presented in \sect{sec:num_sct2b}. The continuous Galerkin finite element method described in (SECTION) along with the second-order temporal integrator $BDF2$ are used to discretize \eqt{eq:burger_eq_sct2b}. Such discretization requires to compute the flux at the boundary of the computational domain (EQUATION). Our implementation of the boundary condition for Burger's equation is based on the sign of the dot product $u(\vec{r},t) \vec{n} \cdot \hat{n} $ at the boundary, where $\hat{n}$ is the outward normal to the boundary. For Burger's equation it was demonstrated in SECTION that the eigenvalue is the solution itself $\lambda = u$. Being at the boundary, two cases have to be distinguished: 
 \begin{itemize}
-\item $u(\vec{r},t) \vec{n} \cdot \hat{n} $ is negative: the wave enters the computational domain and thus, information needs to be supplied to the code and used to compute the flux.
-\item $u(\vec{r},t) \vec{n} \cdot \hat{n} $ is negative: the wave exits the computational domain. The flux is computed with the value of the solution from the last Krylov iteration supplied by the temporal implicit solver. Because of the iterative process, information, normally carried by the waves, is transmitted to the boundary. This approach is only valid with an implicit solver.
+\item $u(\vec{r},t) \vec{n} \cdot \hat{n} $ is negative: the wave enters the computational domain and thus, information needs to be supplied to the code. This boundary condition can be enforced either weakly or strongly. In the former case, the boundary value is specified in the input file, for instance, and used to compute the flux at the boundary. In the later case, the boundary value is still specified but strongly enforce with Dirichlet method.
+\item $u(\vec{r},t) \vec{n} \cdot \hat{n} $ is positive: the wave exits the computational domain. The flux is computed with the value of the solution from the last Krylov iteration supplied by the temporal implicit solver. Because of the iterative process, the information normally carried by the waves, is transmitted to the boundary. This approach is only valid with an implicit solver.
 \end{itemize}
 The above method for is a-dimensional and was used to obtain the numerical results presented in \eqt{sec:num_sct2b}.
 %==============================================================================
@@ -63,7 +63,22 @@ The above method for is a-dimensional and was used to obtain the numerical resul
 Two typical numerical tests are presented in order to illustrate the main features of the entropy viscosity method when applied to the multi-D Burger's equation.
 %
 \subsection{1-D numerical result:}\label{sec:1dnum_sct2b}
-We consider a $1$-D computational domain of length $L=1$ $m$.
+We consider a $1$-D computational domain of length $L=1$ $m$ discretized by an uniform mesh of $100$ elements. The initial condition consists of a smooth sinusoidal function $u(x,0) = \sin \left( 2 \pi x \right)$. The values at the left and right boundaries are set to zero and enforced by Dirichlet method. The numerical solution is run until $t=0.2$ $s$ with a $CFL$ of one. In order to investigate the effect of the entropy viscosity method onto the numerical solution, three tests are performed. In the first test, the numerical solution is run with first-order viscosity coefficient which implies $\mu(x,t) = \mu_{max}(x,t)$ at all point of the computational domain and for all time. Then, the same run is performed using the definition of $\mu(x,t)$ recalled in \eqt{eq:burger_visc_sct2b}. Lastly, the code is run without stabilization, $\mu(x,t) = 0$. The objective of running the three previous tests, it to demonstrate the usefulness of the stabilization method and also, the gain in accuracy of a high-order stabilization method. Numerical results are shown in FIGURES.
 %
 \subsection{2-D numerical result: Riemann problem.}\label{sec:2dnum_sct2b}
 %
+We now consider a typical $2$-D benchmark problem known as Riemann problem. The computational domain consists of a $1 \times 1$ square and the following initial conditions are used:
+%
+\begin{equation}\label{eq:bg_2d_ic_sct2b}
+u(\vec{r},0) = u_0 = \left\{
+\begin{array}{l}
++0.5 \text{ for } x \leq 0.5 \text{ and } y \leq 0.5 \\
++0.8 \text{ for } x \geq 0.5 \text{ and } y \leq 0.5 \\
+-0.2 \text{ for } x \leq 0.5 \text{ and } y \geq 0.5 \\
+-1. \text{ for } x \geq 0.5 \text{ and } y \geq 0.5
+\end{array}
+\nonumber
+\right.
+\end{equation}
+%
+The solution is run until $t=0.5$ $s$ with a $CFL$ of one. The numerical solution and the viscosity coefficient profiles are plotted at $t=0.2$, $0.3$ and $0.5$ $s$. 
