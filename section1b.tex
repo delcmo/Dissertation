@@ -29,7 +29,7 @@ For academic purpose, we consider a simple hyperbolic scalar equation with initi
 \begin{equation}\label{eq:ivp_sct1b}
 \left\{
 \begin{array}{l}
-\partial_t u(\vec{r},t) + \div ( f(u) \vec{n} ) = 0 \text{, } \left( \vec{r}, t \right) \in R^d \times R_+  \nonumber \\
+\partial_t u(\vec{r},t) + \div ( f(u) \vec{n} ) = 0 \text{, } \left( \vec{r}, t \right) \in R^d \times R_+  \\
 u(\vec{r},0) = u( \vec{r}_0) 
 \end{array}
 \right.
@@ -78,7 +78,7 @@ u(x,t) = u_0(x_0) = u_0(x - f'(u_0)t)
 %
 \label{eq:ivp5_sct1b} can be seen as an analytical solution of the hyperbolic scalar equation (\eqt{eq:ivp_sct1b}). It is also understood that the derivative of the flux that corresponds to the eigenvalue of the system, has profound consequence on the behavior of the solution as explained in \sect{sec:shock_form}. 
 %=============================
-\subsection{Formation of shocks}\label{sec:shock_form}
+\subsection{Formation of shocks and vanishing viscosity equation/solution}\label{sec:shock_form}
 %=============================
 Hyperbolic scalar equations are known to develop shocks even from a smooth initial profile. This section aims at detailing how shocks form based on the mathematical properties introduced in \sect{sec:mat_ppr} and the two examples of \eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b}, i.e., the $1$-D linear advection and Burger's equations.\\
 
@@ -91,7 +91,7 @@ In the case of Burger's equation, the eigenvalue is, once again, obtained by com
 &&x_2 = (x_0 + dx) + f'(u_0(x_0+dx)) t \nonumber 
 \end{eqnarray}
 %
-Let now assume that the characteristic curves intersect at time $\tau_{shock}$, which implies $x_1 = x_2$. $\tau_{shock}$ is often referred to as the breaking time. Using \eqt{eq:cc1_sct1b}, an expression for $\tau_{shock}$ can be derived as follows: 
+Let now assume that two characteristic curves intersect at time $\tau_{shock}$, which implies $x_1 = x_2$. $\tau_{shock}$ is often referred to as the breaking time or the time the first shock forms at. Using \eqt{eq:cc1_sct1b}, an expression for $\tau_{shock}$ can be derived as follows: 
 \begin{equation}
 \tau_{shock} = \frac{-dx}{f'(u_0(x_0+dx))-f'(u_0(x_0))}
 \end{equation} 
@@ -99,8 +99,31 @@ Taking the limit $dx \lim 0$ and using the definition of derivative, the above e
 \begin{equation}\label{eq:cc2_sct1b}
 \tau_{shock} = \frac{-1}{f''(u_0) u'_0} = \frac{-1}{f'(u_0)},
 \end{equation} 
-The trivial case $f''(u) = 0$ is ruled out since it was assumed a non-linear flux. However, let assume that the flux is linear. In that case, the second-order derivative is null and by taking the limit of \eqt{eq:cc2_sct1b}, it yields $\tau_{shock} \to \infty$ which means that a shock wave never forms. This result is consistent with conclusion made earlier in this section when studying the linear advection equation (\eqt{eq:trans_sct1b}). Going back to a non-linear flux, breaking first occurs where the derivative of the flux is negative and its absolute value is maximum.   \\
-Knowing the breaking time $\tau_{shock}$ and position is not sufficient information to track a shock wave once it is formed. An useful information will be to derive an expression that provides us with the speed of the shock. One of the reason for deriving such expression is, to obtain an analytical solution that can be used for comparison against numerical solutions in order to assess their accuracy. To do so, we consider, one again, a general $1$-D hyperbolic scalar equation for simplicity as shown in 
+The trivial case $f''(u) = 0$ is ruled out since it was assumed a non-linear flux. However, let assume that the flux is linear. In that case, the second-order derivative is null and by taking the limit of \eqt{eq:cc2_sct1b}, it yields $\tau_{shock} \to \infty$ which means that a shock wave never forms. This result is consistent with the conclusion made earlier in this section when studying the linear advection equation (\eqt{eq:trans_sct1b}). Going back to a non-linear flux, breaking first occurs where the derivative of the flux is negative (to ensure positivity of $\tau_{shock}$) and its absolute value is maximum (so that $\frac{1}{f'(u_0)}$ is minimal). For a time $t \geq \tau_{shock}$, more than two characteristic curves may intersect leading to a tripled-value situation as shown in (FIGURE). In this case, uniqueness of the solution is not ensured since for a given position and time the solution admits three values. This particular phenomenon makes sense when solving the shallow-water equation that is used to model a breaking wave on a sloping beach. However, when considering a gas flow, uniqueness of the thermodynamic properties is required to ensure a point-wise singled-value density. From the last example, we understand that preventing the tripled-value situation from forming may be the key to obtain the correct physical behavior when solving hyperbolic scalar and system of equations alike Euler equations (SECTION). A solution to this problem could come from the study of an advection-diffusion equation type that is used, for instance, to model the propagation of particles in a material by both advection and diffusion. This type of equation is known to have unconditionally \emph{smooth solution} for all time and spatial location and a $1$-D generic form is given \eqt{eq:adv_diff_sct1b}.
+%
+\begin{equation}\label{eq:adv_diff_sct1b}
+\partial_t u(xt) + \partial_x f(x,t) = \epsilon \partial_{xx} u(x,t),
+\end{equation}
+% 
+where $\epsilon$ is a diffusion coefficient that can be solution-dependent in theory but is assumed constant for the purpose of this section. Since the main difference between the hyperbolic problem given in \eqt{eq:ivp_sct1b} and \eqt{eq:adv_diff_sct1b} lies in the diffusion term $\epsilon \partial_xx u(x,t)$, it is proposed to investigate its effect on the numerical solution when assuming a finite value for the diffusion coefficient $\epsilon$. If the solution $u(x,t)$ is smooth, the diffusion term $\epsilon \partial_{xx} u(x,t)$ in \eqt{eq:adv_diff_sct1b} is negligible and the numerical solution is driven by the advection term $\partial_x f(u(x,t))$ so that \eqt{eq:adv_diff_sct1b} and \eqt{eq:ivp_sct1b} have similar behaviors. As the solution becomes stiffer, the diffusion terms becomes large enough to influence the behavior of the numerical solution and will prevent the wave from braking as it happens in hyperbolic problems. In other terms, the diffusion term, by monitoring the change of curvature in the numerical solution, locally affects the numerical solution when needed. The diffusion coefficient $\epsilon$ can be seen as a tuning coefficient that will also affect the smoothness of the numerical solution as shown in (FIGURE). As $\epsilon$ goes to zero, the numerical solution becomes sharper and tends to the solution obtained when solving the hyperbolic problem given in \eqt{eq:adv_diff_sct1b}. 
+
+Thus, by adding a diffusion term also called viscosity term, the numerical solution remains smooth and single valued, and should allow us to retrieve the correct physical behavior of a hyperbolic problem in the limit $\epsilon \to 0$. This approach is referred to as a \emph{vanishing viscosity method} and the numerical solution obtained with this method is denoted by $u^{\epsilon}(x,t)$. Thus, we can now give the definition of a \emph{generalized solution}. 
+%
+\begin{definition}
+\emph{
+A generalized definition $u$ of a hyperbolic scalar equation conservation law 
+\begin{equation}
+\partial_t u + \grad f(u) = 0, \nonumber
+\end{equation}
+is called admissible vanishing viscosity solution if there is a sequence of smooth unique solution $u^{\epsilon}$ of the parabolic equation 
+\begin{equation}
+\partial_t u^{\epsilon} +  \grad f(u^{\epsilon}) = \epsilon \nabla u^{\epsilon}, \nonumber
+\end{equation}
+that converges to $u$ as $\epsilon \to 0$.}
+\end{definition}
+%
+%To  make the distinction between Buger's equation with and without viscosity term, the former one is referred to as inviscid Burger's equation whereas the later one corresponds to the viscid Burger's equation. 
+It is now clear that by adding a viscosity term to an hyperbolic equation as previously explained, a generalized solution can be obtained with the vanishing viscosity approach. We will see in \sect{weak_sct1b}, that a generalized solution can be also defined by the use of a mathematical technique resulting in a weak formulation of the hyperbolic scalar equation. Before doing so, it is proposed to investigate one more property of a shock wave: its speed. Knowing the breaking time $\tau_{shock}$ and position is not sufficient information to track a shock wave once it is formed. An useful information will be to derive an expression that provides us with the speed of the shock. One of the reason for deriving such expression is, to obtain an analytical solution that can be used for comparison against numerical solutions in order to assess their accuracy. To do so, we consider, one again, a general $1$-D hyperbolic scalar equation for simplicity as shown in 
 %
 \begin{equation}\label{eq:rh_sct1b}
 \partial_t u(x,t) + \partial_x f(u(x,t)) = 0
@@ -133,19 +156,16 @@ S = \frac{f(x_2,t) - f(x_1,t)}{u(s^-(t)) - u(s^+(t))} = \frac{\Delta f}{\Delta u
 The above expression computing the speed of shock (\eqt{eq:rh5_sct1b}) is known as the Rankine-Hugoniot jump condition. The hyperbolic scalar equation given \eqt{eq:rh_sct1b} is only valid in smooth parts of the solution, and thus, require the use of the Rankine-Hugoniot jump condition in order to solve for the shock region.   
 %its speed can be determined by the Rankine-Hugoniot condition
 %However, along the characteristic curves, the solution remains constant which allows us to integrate to obtain an analytical expression for the characteristic curve. For the purpose of plotting the characteristic curves, we assume a computational domain of length one and that the initial condition for the solution is of the form $u(x_0) = \sin (\pi x)$. With such initial condition, the slope of the characteristic curve is no longer constant but vary both in time and space. As a result, some of the characteristic curves will intersect  
-\begin{itemize}
-\item hyperbolic scalar equations are known to produce shocks even with smooth initial conditions.
-\item explain how shocks can form with characteristic equations.
-\item talk about diffusion equation that does not produce shocks -> same equation but with diffusion term that smoothes out shocks. Solution is unique and smooth.
-\item idea is to add diffusion to the hyperbolic equation in order to control the shock.
-\end{itemize}
-%=============================
-\subsection{Weak solution:}
-%=============================
-introduce the notion of weak solution and non-uniqueness of the weak solution.
+%\begin{itemize}
+%\item hyperbolic scalar equations are known to produce shocks even with smooth initial conditions.
+%\item explain how shocks can form with characteristic equations.
+%\item talk about diffusion equation that does not produce shocks -> same equation but with diffusion term that smoothes out shocks. Solution is unique and smooth.
+%\item idea is to add diffusion to the hyperbolic equation in order to control the shock.
+%\end{itemize}
 %===============================
-\subsection{Entropy minimum principle:}
+\subsection{Weak solution and entropy condition:}\label{weak_sct1b}
 %===============================
+As mentioned in \sect{sec:shock_form}, another way to define a generalized solution is to use a mathematical technique that consists of multiplying the hyperbolic scalar equation by a smooth test function $\phi \in C^1_0$ that are continuously differentiable within a contact support. Then, integration per part is performed in order to transfer the derivative off the solution $u$ and onto the test function $\phi$. The resulting equation involves fewer derivative on $u$ and, hence, requires less smoothness. 
 %===============================
 \subsection{Entropy viscosity method for the multi-D Burger equation:}
 %===============================
