@@ -169,7 +169,25 @@ As mentioned in \sect{sec:shock_form}, another way to define a generalized solut
 %===============================
 \subsection{Entropy viscosity method for the multi-D Burger equation:}
 %===============================
-Condition for uniqueness of the solution. Show an example of the derivation for Burger's equations.
+This section aims at making the link between the theoretical results presented from \sect{sec:mat_ppr} through \sect{weak_sct1b}, and the entropy viscosity method that is the focus of this dissertation. For academic purpose, we limit our scope to the multi-D Burger's equation and rely on the work by Guermond et al. \cite{jlg1, jlg2, jlg3, valentin}. However, the reader must keep in mind that the objective of this dissertation is to apply the entropy-viscosity method to hyperbolic system of equation.
+
+In the previous sections, it was demonstrated the importance of ensuring uniqueness of the weak solution: it is achieved (i) by adding a viscosity term to the hyperbolic scalar equation in order to prevent tripled-value point from forming, and (ii) by using an entropy condition. When applied to the viscid multi-D Burger's equation, it yields:
+%
+\begin{subequations}\label{eq:bg1_ev_sct1b}
+%
+\begin{equation}\label{eq:bg2_ev_sct1b}
+\partial_t u(\vec{r},t) + \div \left( \frac{u(\vec{r},t)^2}{2} \vec{n} \right) = \div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right)
+\end{equation}
+%
+\begin{equation}\label{eq:bg3_ev_sct1b}
+R(\vec{r},t) = \partial_t \eta(\vec{r},t) + \div \Phi \leq 0
+\end{equation}
+%
+\end{subequations}
+%
+where $\mu(\vec{r},t)$ is a spatial-dependent viscosity coefficient and $R(\vec{r},t)$ denotes the entropy residual. Assuming that $\mu$ is constant, \eqt{eq:adv_diff_sct1b} is retrieved. All of the other variables in \eqt{eq:bg1_ev_sct1b} were defined previously. It was shown in \sect{weak_sct1b} that the sign of the entropy residual, \eqt{eq:bg3_ev_sct1b}, is conditioned to the convexity of the entropy function $\eta$, to the positivity of the viscosity coefficient $\mu(\vec{r},t)$, and also to the form of the viscous term $\div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right)$. In other word, the entropy condition could be used to derive the proper viscous term that will ensure the correct sign for the entropy residual in the shock region. In the case of the multi-D Burger's equation, the choice of the viscous term is obvious and probably unique. However, when considering hyperbolic system of equation alike the multi-D Euler equations, deriving the viscous terms consistent with the entropy condition is no longer trivial and can lead to long and fastidious derivation. This aspect of the method is detailed in SECTION. 
+
+Once the viscous term is derived and known to be consistent with the entropy condition, it remains to define the viscosity coefficient $\mu(\vec{r},t)$ that is known to be positive. Such a step is crucial and should not be underestimated since it will determine the accuracy of the numerical method. The easiest definition we can think of, is to set $\mu$ to a constant large enough so that 
 %%%%%%%%%%%%%%%%%%%%%
 \section{Hyperbolic system of equations:}
 %%%%%%%%%%%%%%%%%%%%%
