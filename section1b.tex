@@ -187,13 +187,58 @@ R(\vec{r},t) = \partial_t \eta(\vec{r},t) + \div \Phi \leq 0
 %
 where $\mu(\vec{r},t)$ is a spatial-dependent viscosity coefficient and $R(\vec{r},t)$ denotes the entropy residual. Assuming that $\mu$ is constant, \eqt{eq:adv_diff_sct1b} is retrieved. All of the other variables in \eqt{eq:bg1_ev_sct1b} were defined previously. It was shown in \sect{weak_sct1b} that the sign of the entropy residual, \eqt{eq:bg3_ev_sct1b}, is conditioned to the convexity of the entropy function $\eta$, to the positivity of the viscosity coefficient $\mu(\vec{r},t)$, and also to the form of the viscous term $\div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right)$. In other word, the entropy condition could be used to derive the proper viscous term that will ensure the correct sign for the entropy residual in the shock region. In the case of the multi-D Burger's equation, the choice of the viscous term is obvious and probably unique. However, when considering hyperbolic system of equation alike the multi-D Euler equations, deriving the viscous terms consistent with the entropy condition is no longer trivial and can lead to long and fastidious derivation. This aspect of the method is detailed in SECTION. 
 
-Once the viscous term is derived and known to be consistent with the entropy condition, it remains to define the viscosity coefficient $\mu(\vec{r},t)$ that is known to be positive. Such a step is crucial and should not be underestimated since it will determine the accuracy of the numerical method. The easiest definition we can think of, is to set $\mu$ to a constant large enough so that 
+Once the viscous term is derived and known to be consistent with the entropy condition, it remains to define the viscosity coefficient $\mu(\vec{r},t)$ that is known to be positive. Such a step is crucial and should not be underestimated since it will determine the accuracy of the numerical method. The easiest definition we can think of, is to set $\mu$ to a constant value. By doing so, dissipation will be added to the shock region, preventing the wave from braking, and also to the smooth region of the solution that does not need dissipation. Such a behavior is not ideal and will not accurately resolve the shock. Another option would be to to track the shock position in order to only add a significant amount of dissipation in the shock region. We also require the viscosity coefficient to be smooth based on the work from REF that a discontinuous viscosity coefficient could yield instabilities in the numerical solution. Such a behavior can be easily understood by considering the following example. Let us assume that the viscosity coefficient jumps from zero to a large value as closing to the shock region. Because the dissipative term is conservative, the gradient of the solution, $\grad u$, will have to experience the same discontinuity as the viscosity coefficient, thus, yielding the same type of behavior in the solution itself.   
+Defining a smart viscosity capable of detecting and tracking a shock is not a straightforward task and needs to rely on a good understanding of the theory related to the shock formation. For example, we can think of monitoring the gradient of the solution itself that will become large in the shock region. Following this reasoning, a possible definition in $1$-D would be $\mu(x,t) \propto \left| \partial_x u(x,t) \right|$. Another approach consists of using the entropy residual $R_e$ defined in \sect{weak_sct1b}. The entropy residual was initially studied to ensure uniqueness of the weak solution, but its variations are intimately related to the solution: $R_e$ is small as the solution is smooth and become large (in absolute value) in the shock region. Thus, by monitoring the variation of the entropy residual, the shock can be detected and also tracked. This approach was used by Guermond et al. \cite{jlg1, jlg2, jlg3} to solve for hyperbolic scalar equations such as the multi-D Burger's equation and named after the Entropy Viscosity Method (EVM). Their method requires the definition of three viscosity coefficients: a high-order viscosity coefficient, $\mu_e(\vec{r},t)$, defined proportional to the absolute value of the entropy residual $R_e$,  a first-order viscosity coefficient denoted by $\mu_{max}(\vec{r},t)$ set proportional to the local maximum eigenvalue, and the viscosity coefficient $\mu(\vec{r},t)$ such as $\mu(\vec{r},t) = \min \left( \mu_{max}(\vec{r},t), \mu_e(\vec{r},t) \right)$, used in the dissipative term $\div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right)$. The idea is to detect the entropy production characteristic of a shock wave. By defining $\mu_e(\vec{r},t)$ proportional to $\left| R_e \right|$, the high-order viscosity will be large in the shock region and small anywhere else. The first-order viscosity serves as an upper bound for $\mu(\vec{r},t)$ and its definition lies onto two criteria:
+\begin{enumerate}
+\item the definition of $\mu_{max}(\vec{r},t)$ is determined so that the viscous regularization in \eqt{eq:bg2_ev_sct1b} is equivalent to the upwind-scheme when assuming $\mu(\vec{r},t) = \mu_{max}(\vec{r},t)$, which yields: $\mu_{max}(\vec{r},t) = \frac{h}{2} f'(u(\vec{r},t))$. Derivation of the expression for $\mu_{max}$ can be found in REF and is easily done in $1$-D when discretizing Burger's equation with a finite difference method. 
+\item the first-order viscosity coefficient is related to the Curant-Friedrichs-Lewy number (CFL) and more precisely to the stability of the numerical solution when using temporal explicitly schemes.
+\end{enumerate}
+Proof of a maximum principle for the EVM is under investigation and thus, will affect the definition of the first-order viscosity coefficient $\mu_{max}$. Based on the definition of the high- and first-order viscosity coefficients, the variation of the $\mu(\vec{r},t)$ are the followings: as the solution is smooth, the entropy production measured by the entropy residual, $R$, is small and thus $\mu(\vec{r},t) = \mu_e(\vec{r},t)$. In the shock region, the entropy residual is peaked and the high-order viscosity coefficient saturates to the first-order viscosity coefficient that is known to be over-dissipative since equivalent to upwind-scheme. With such definition, the viscosity coefficient $\mu(\vec{r},t)$ is peaked in the shock region and small anywhere else, while experiencing smooth variations. 
+
+It remains now to complete the definition of the high-order viscosity coefficient $\mu_e(\vec{r},t)$ which can be achieved by performing a dimensional analysis. Noticing that the units of $\mu(\vec{r},t)$ are $m^2 \cdot s^{-1}$, a suitable definition for $\mu_e(\vec{r},t)$ is:
+%
+\begin{equation}
+\mu_e(\vec{r},t) = h^2 \frac{\left| R(\vec{r},t) \right|}{norm(s)} \nonumber
+\end{equation}
+%
+where $norm(s)$ is a normalization function of the same unit as the entropy $s$, and $h$ is a characteristic length of the mesh. At this stage, the choice of the normalization function is unclear. Guermont et al. proposed to use $norm(s) = || s - \bar{s} ||_\infty$ where $\bar{s}$ is the average value of the entropy function over the computational domain, and $|| \cdot ||_\infty$ denotes the infinity norm. Their definition of the EVM when applied to hyperbolic scalar equation is the following:
+%
+\begin{subequations}
+%
+\begin{equation}
+\partial_t u(\vec{r},t) + \div \left( f(u(\vec{r},t)) \vec{n} \right) = \div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right)
+\end{equation}
+%
+\begin{equation}
+R(\vec{r},t) = \partial_t \eta(\vec{r},t) + \div \Phi
+\end{equation}
+%
+\begin{equation}\label{eq:evm_def_sct1b}
+\left\{
+\begin{array}{l}
+\mu(\vec{r},t) = \min \left( \mu_e(\vec{r},t), \mu_{max}(\vec{r},t) \right) \\
+\mu_{max}(\vec{r},t) = \frac{h}{2} \left| f'(u(\vec{r},t)) \right| \\
+\mu_e(\vec{r},t) = h^2 \frac{\max \left(\left| R(\vec{r},t), J \right) \right|}{|| s - \bar{s} ||_\infty}
+\end{array}
+\right.
+\end{equation}
+%
+\end{subequations}
+%
+where $h$ is defined as the gird size and $J$ denotes the jump of the entropy flux $\Phi$ at the interface of each element. Information relative to the computation of the jump with continuous Galerkin finite element method (CGFEM) will be detailed in SECTION. For the case of discontinuous schemes, the reader can refer to \cite{valentin}. Numerical results for the multi-D Burger's equation solved with the EVM  with CGFEM are presented in SECTION
+%
+\begin{remark}
+The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} requires a isentropic mesh in order to be able to define the gird size $h$. An alternative definition without $h$ is under investigation for the case of hyperbolic scalar equations.
+\end{remark}
 %%%%%%%%%%%%%%%%%%%%%
 \section{Hyperbolic system of equations:}
 %%%%%%%%%%%%%%%%%%%%%
 \begin{itemize}
 \item hyperbolic system of equations can also produce shocks.
 \item same treatment as scalar equations.
+\item Lapidus, pressure-based ...
+\item low Mach
+\item 
 \end{itemize}
 %%%%%%%%%%%%%%%%%%%%%
 \section{Remarks concerning the application of the entropy viscosity method to hyperbolic system of equations:}
