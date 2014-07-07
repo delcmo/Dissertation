@@ -15,7 +15,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{\uppercase {Application of the entropy viscosity method to the seven equations model.}}
+\chapter{\uppercase {Application of the entropy viscosity method to the seven equations model.}}\label{chap:seven}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %===================================================================================
 \section{Description of the seven equation model:}
@@ -217,7 +217,7 @@ volume of two-phase mixture) which must be specified from some type of
 flow regime map or function.  The DEM model for two-phase flow of
 water and its vapor in a one dimensional duct of spatially varying
 cross-section was derived and demonstrated with these closures by
-Berry et al.~\cite{Berry_2010}.
+Berry et al.~\cite{SEM}.
 
 Remark (1): From this specification of $\lambda$ and $\mu$ it is clear
 that special coupling is rendered.  To relax the 7-equation model to
@@ -244,7 +244,7 @@ is noted, however, that relaxation of pressure only by making $\mu$
 large without relaxing velocity will indeed give ill-posed and
 unstable numerical solutions, just as the classical 6-equation
 two-phase model does, with sufficiently fine spatial resolution, as
-confirmed in~\cite{Berry_2010,Herrard_2005}.
+confirmed in~\cite{SEM,Herrard_2005}.
 
 Remark (3): Even though the implementation of the 7-equation two-phase
 model within RELAP-7 (or any other code for that matter) does not use
@@ -396,7 +396,7 @@ With the 7-equation two-phase model each phase is compressible and
 behaves with its own convex equation of state (EOS).  For initial
 development purposes it was decided to use a simple form capable of
 capturing the essential physics.  For this purpose the stiffened
-gas equation of state (SGEOS)~\cite{Metayer_2004} was selected (as
+gas equation of state (SGEOS)~\cite{SGEOS} was selected (as
 it was also for single phase)
 \begin{equation}
   \label{E-R:96}
@@ -414,7 +414,7 @@ in this SGEOS are determined by using a reference curve, usually in
 the $\left(p, \frac{1}{\rho}\right)$ plane.
 
 To extend this equation of state for two phases,
-LeMetayer~\cite{Metayer_2004} uses the saturation curves as this
+LeMetayer~\cite{SGEOS} uses the saturation curves as this
 reference curve to determine the stiffened gas parameters for liquid
 and vapor phases.  The SGEOS is the simplest prototype that contains
 the main physical properties of pure fluids, repulsive and attractive
@@ -442,7 +442,7 @@ additional material constants have been introduced, the constant
 volume specific heat $c_v$ and the parameter $q'$.  The method to
 determine these parameters in liquid-vapor systems, and in particular
 the coupling of liquid and vapor parameters, is given
-in~\cite{Metayer_2004}.  The values for water and its vapor from that
+in~\cite{SGEOS}.  The values for water and its vapor from that
 reference are given in Table 2.  These parameter values appear to
 yield reasonable approximations over a temperature range from 298 to
 473K.  For higher temperature range the parameters can easily be
@@ -468,7 +468,7 @@ It is necessary to determine the saturation temperature $T_{sat}(p)$
 for given pressure $p=\bar{p}_{int}$ and the heat of vaporization
 $L_v\left(T_{sat}(\bar{p}_{int}) \right)$ at this saturation temperature
 with the SGEOS for each phase.  For this calculation the procedure
-of~\cite{Metayer_2004} is adopted.  This procedure for the
+of~\cite{SGEOS} is adopted.  This procedure for the
 determination of SGEOS parameters can be made very accurate provided
 the two reference states are picked sufficiently close to represent
 the experimental saturation curves as locally quasi-linear.
