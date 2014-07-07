@@ -63,11 +63,44 @@ The above method for is a-dimensional and was used to obtain the numerical resul
 Two typical numerical tests are presented in order to illustrate the main features of the entropy viscosity method when applied to the multi-D Burger's equation.
 %
 \subsection{1-D numerical result:}\label{sec:1dnum_sct2b}
-We consider a $1$-D computational domain of length $L=1$ $m$ discretized by an uniform mesh of $100$ elements. The initial condition consists of a smooth sinusoidal function $u(x,0) = \sin \left( 2 \pi x \right)$. The values at the left and right boundaries are set to zero and enforced by Dirichlet method. The numerical solution is run until $t=0.2$ $s$ with a $CFL$ of one. In order to investigate the effect of the entropy viscosity method onto the numerical solution, three tests are performed. In the first test, the numerical solution is run with first-order viscosity coefficient which implies $\mu(x,t) = \mu_{max}(x,t)$ at all point of the computational domain and for all time. Then, the same run is performed using the definition of $\mu(x,t)$ recalled in \eqt{eq:burger_visc_sct2b}. Lastly, the code is run without stabilization, $\mu(x,t) = 0$. The objective of running the three previous tests, it to demonstrate the usefulness of the stabilization method and also, the gain in accuracy of a high-order stabilization method. Numerical results are shown in FIGURES.
+We consider a $1$-D computational domain of length $L=1$ $m$ discretized by an uniform mesh of $100$ elements. The initial condition consists of a smooth sinusoidal function $u(x,0) = \sin \left( 2 \pi x \right)$. The values at the left and right boundaries are set to zero and enforced by Dirichlet method. The numerical solution is run until $t=0.2$ $s$ with a $CFL$ of one. In order to investigate the effect of the entropy viscosity method onto the numerical solution, three tests are performed. In the first test, the numerical solution is run with first-order viscosity coefficient which implies $\mu(x,t) = \mu_{max}(x,t)$ at all point of the computational domain and for all time. Then, the same run is performed using the definition of $\mu(x,t)$ recalled in \eqt{eq:burger_visc_sct2b}. Lastly, the code is run without stabilization, $\mu(x,t) = 0$. The objective of running the three previous tests, it to demonstrate the usefulness of the stabilization method and also, the gain in accuracy of a high-order stabilization method. Numerical results are shown from \fig{fig:1d_burger_free} through \fig{fig:1d_burger_visc}. 
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/1D_sol_free.png}
+                \caption{Solution profile without stabilization.}
+                \label{fig:1d_burger_free}
+        \end{subfigure}%
+%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/1D_sol_fo.png}
+                \caption{Solution profile with first-order viscosity.}
+                \label{fig:1d_burger_fo}
+        \end{subfigure}
+        
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/1D_sol_ev.png}
+                \caption{Solution profile with the EVM.}
+                \label{fig:1d_burger_ev}
+        \end{subfigure}
+%       
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/1D_visc.png}
+                \caption{Viscosity coefficient profiles.}
+                \label{fig:1d_burger_visc}
+        \end{subfigure}
+\end{figure}
+%
+In \fig{fig:1d_burger_free}, none stabilization method is used and numerical instabilities are observed in the shock region. When run with the over-dissipative first-order viscosity coefficient, the solution does not display any instabilities but the shock amplitude is smoothed as shown in \fig{fig:1d_burger_fo}. Lastly, the numerical solution obtained with the EVM in \fig{fig:1d_burger_ev}, is very close to the exact solution: the shock amplitude is preserved and the solution is stable. The viscosity coefficients are shown in \fig{fig:1d_burger_visc} on a log-scale: the hight-order viscosity coefficient $\mu_e$ is peaked in the shock region and is small anywhere else. This behavior is expected and corresponds to the theoretical approach detailed in SECTION. It was demonstrated in \cite{valentin} that high-order accuracy is preserved with the EVM when the solution is smooth (i.e. away from the shock region). It is also noticed the difference of order of magnitude between the high- and first-order viscosity coefficients away from the shock region.
 %
 \subsection{2-D numerical result: Riemann problem.}\label{sec:2dnum_sct2b}
 %
-We now consider a typical $2$-D benchmark problem known as Riemann problem. The computational domain consists of a $1 \times 1$ square and the following initial conditions are used:
+We now consider a typical $2$-D benchmark problem known as Riemann problem. The computational domain consists of a $1 \times 1$ $m^2$ square and the following initial conditions are used:
 %
 \begin{equation}\label{eq:bg_2d_ic_sct2b}
 u(\vec{r},0) = u_0 = \left\{
@@ -81,4 +114,36 @@ u(\vec{r},0) = u_0 = \left\{
 \right.
 \end{equation}
 %
-The solution is run until $t=0.5$ $s$ with a $CFL$ of one. The numerical solution and the viscosity coefficient profiles are plotted at $t=0.2$, $0.3$ and $0.5$ $s$. 
+An uniform mesh of $100 \times 100$ elements is used. The solution is run until $t=0.5$ $s$ with a $CFL$ of $0.5$. The numerical solution and the viscosity coefficient profiles are plotted at $t=0.2$ and $t=0.5$ $s$. 
+%
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/Burger2D_sol_t0p2.png}
+	\caption{Solution profile at $t=0.2$ $s$.}
+	\label{fig:2d_burger_sol_t0p2}
+\end{figure}
+%
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/Burger2D_visc_t0p2.png}
+	\caption{Solution profile at $t=0.2$ $s$.}
+	\label{fig:2d_burger_visc_t0p2}
+\end{figure}
+%
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/Burger2D_sol_t0p5.png}
+	\caption{Solution profile at $t=0.5$ $s$.}
+	\label{fig:2d_burger_sol_t0p5}
+\end{figure}
+%
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{figures/Burger2D_visc_t0p5.png}
+	\caption{Solution profile at $t=0.5$ $s$.}
+	\label{fig:2d_burger_visc_t0p5}
+\end{figure}
+%
+The numerical solution is plotted in \fig{fig:2d_burger_sol_t0p2} and \fig{fig:2d_burger_sol_t0p5} at $t=0.2$ and $t=0.5$ $s$, respectively. The numerical solution does not display any oscillations and the shocks are well resolved. The high-order viscosity coefficient is showed in \fig{fig:2d_burger_visc_t0p2} and \fig{fig:2d_burger_visc_t0p5}: the shock is well tracked by the EVM and sufficient dissipation is only added in the shock regions, where saturation to the first-order viscosity is achieved.\\
+
+The above examples are a simple illustration of the capabilities of the EVM when applied to hyperbolic scalar equations. We now focus our attention to the application of the EVM to various hyperbolic systems of equation.

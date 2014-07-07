@@ -231,15 +231,115 @@ where $h$ is defined as the gird size and $J$ denotes the jump of the entropy fl
 The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} requires a isentropic mesh in order to be able to define the gird size $h$. An alternative definition without $h$ is under investigation for the case of hyperbolic scalar equations.
 \end{remark}
 %%%%%%%%%%%%%%%%%%%%%
-\section{Hyperbolic system of equations:}
+\section{Hyperbolic system of equations:}\label{sec:hyp_sect1b}
 %%%%%%%%%%%%%%%%%%%%%
-\begin{itemize}
-\item hyperbolic system of equations can also produce shocks.
-\item same treatment as scalar equations.
-\item Lapidus, pressure-based ...
-\item low Mach
-\item 
-\end{itemize}
-%%%%%%%%%%%%%%%%%%%%%
-\section{Remarks concerning the application of the entropy viscosity method to hyperbolic system of equations:}
+In this section, application of the EVM to non-linear hyperbolic system of equations is discussed. The reader can refer to Toro \cite{Toro} and Leveque for an extension to the non-linear hyperbolic conservation laws, of the theoretical notions (eigenvalues, characteristic curves, $\dots$) introduced in \sect{sec:hyp_sect1b}. The objective of this section, is to provide the reader with a methodology on how to apply the EVM to any hyperbolic system of equations. For academic purpose, we will rely on the latest published version of the EVM \cite{valentin} for the multi-D Euler equations in order to understand the main steps of the method. Other more recent publications will be also used. \cite{jlg, jlg2} are good pre-requites to \cite{valentin} to see the theoretical evolution of the EVM. For hyperbolic system of equation, it is custom of using the physical solution $s$ that is of opposite sign as the mathematical entropy denoted by $\eta$.\\
+
+To the best of our knowledge, the EVM was successfully applied to one hyperbolic system of equation: the multi-D Euler equations with the Ideal gas equation of state \cite{jlg, valentin}. Good agreements with the exact solutions were obtained in $1$- and $2$-D results when using discontinuous schemes (finite volume and discontinuous Galerkin finite element methods). We now recall the details of the latest version of the method \cite{valentin} and remind the reader that this version will be used as a starting point and modified during this dissertation. The viscous regularization derived from the entropy condition for the multi-D Euler equations with the Ideal Gas equation of state, is the following:
+%
+\begin{subequations}\label{eq:euler_visc_sct1b}
+%
+\begin{equation}
+\partial_t \rho + \div \left( \rho \vec{u} \right) = \div \left( \mu \grad \rho \right) 
+\end{equation}
+%
+\begin{equation}
+\partial_t \left( \rho \vec{u} \right) + \grad \left( \rho \vec{u} \otimes \vec{u} \right) + \grad P = \div \left( \rho \mu \grad^s \vec{u} \right)
+\end{equation}
+%
+\begin{equation}
+\partial_t \left( \rho E \right) + \div \left[ \vec{u} \left( \rho E +P \right) \right] = \div \left( \kappa \vec{u} \grad^s \vec{u} + \kappa \grad T \right)
+\end{equation}
+%
+\begin{equation}\label{eq:eos_sct1b}
+P = \left( \gamma-1 \right) \rho e = \left( \gamma-1 \right) C_v \rho T
+\end{equation}
+%
+\end{subequations}
+%
+where $\rho$, $\rho \vec{u}$ and $\rho E $ are the fluid density, momentum and total energy, respectively, and will be referred to as the conservative variables. The pressure $P$ and the temperature $T$ are computed from the Ideal gas equation of state (IGEOS) recalled in \eqt{eq:eos_sct1b} which is a function of the density $\rho$ and the specific internal energy $e$. The heat capacity $C_v$ is constant by definition. The viscosity coefficients $\mu$ and $\kappa$ are spatial and temporal dependent and are defined proportional to an entropy residual $R$ as follows:
+% 
+\begin{subequations}
+%
+\begin{equation}
+\left\{
+\begin{array}{l}
+\mu\left( \vec{r},t \right) = \min \left( \mu_e\left( \vec{r},t \right), \mu_{max}\left( \vec{r},t \right) \right) \\
+\kappa\left( \vec{r},t \right) = \frac{\gamma \Pr}{\gamma-1} \mu\left( \vec{r},t \right),
+\end{array}
+\right.
+\end{equation}
+and
+\begin{eqnarray}\label{eq:visc_def_sct1b}
+&&\mu_{max}\left( \vec{r},t \right) = \frac{h}{2} \left( ||\vec{u}\left( \vec{r},t \right)|| + c\left( \vec{r},t \right)  \right) \nonumber \\
+&&\mu_e\left( \vec{r},t \right) = C_E h^2 \frac{\max \left( \left|| R\left( \vec{r},t \right) \right|, J \right)}{|| s\left( \vec{r},t \right) - \bar{s}(t) ||_\infty} \\
+&&R\left( \vec{r},t \right) = \partial_t s\left( \vec{r},t \right)  + \vec{u} \cdot \grad s\left( \vec{r},t \right), \nonumber
+\end{eqnarray}
+%
+\end{subequations}
+%
+where $C_E$ is a constant coefficient of order one, $h$ is the grid size, $c = \sqrt{\gamma P / \rho}$ is the speed of sound and $\Pr$ is a Prandtl number taken in the interval $\in \left[ 0; \frac{1}{4} \right]$. The variable $J$ denotes the jump of the entropy flux $\vec{u} s$ and is pice-wise constant. It is computed at the interfaces between each cell and its direct neighbors. Further details can be found in \cite{valentin}. The entropy $s$ is function of the density and the pressure:
+%
+\begin{equation}
+s\left( \rho, P \right) = C_v \ln \left( \frac{P}{\rho^\gamma} \right),
+\end{equation}
+%
+and can also be recast as a function of the density and the internal energy using the IGEOS. It remains to define the symmetric gradient $\grad^s \vec{u}$ with the following entries $\grad^s \vec{u}_{i,j} = \frac{1}{2} \left( \frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i} \right)$. The current definition of the EVM suffers from some theoretical gap. The normalization parameters $|| s\left( \vec{r},t \right) - \bar{s}(t) ||_\infty$ used in the definition of the high-order viscosity coefficient $\mu_e$ in \eqt{eq:visc_def_sct1b} does not currently have any theoretical justification. The same remark can be made for the Prandtl number that is set by the user based on its experience. Plus, the viscous regularization given in \eqt{eq:euler_visc_sct1b} is only valid for the IGEOS which is limiting for engineering applications. However, new developments in the theory extended the validity of the method to any equation of state \cite{jlg} which makes it a good candidate for nuclear reactor applications for instance. Thus, based on the work done in \cite{jlg} and with the experience of \cite{jlg2, valentin} the following methodology is proposed. We consider the generic non-linear hyperbolic system in order to detail our methodology:
+%
+\begin{equation}\label{eq:hyp_syst_sct1b}
+\partial_t \boldsymbol{U}(\vec{r},t) + \div \boldsymbol{F} \left( \boldsymbol{U} \right) = 0,
+\end{equation}
+%
+where $\boldsymbol{U} = \left( U_1, \dots, U_n \right)$ is a vector solution and $\boldsymbol{F} \left( \boldsymbol{U} \right)$ is a hyperbolic flux whom eigenvalues are denoted by $\left( \lambda_1, \dots, \lambda_n \right)$.
+\begin{enumerate}
+\item The first step consists of deriving an entropy equation for an entropy function denoted by $s\left(\boldsymbol{U}\right)$ of the form: 
+%
+\begin{equation}
+R\left(\boldsymbol{U}\right) = \partial_t s\left(\boldsymbol{U}\right) + \boldsymbol{F}_{\boldsymbol{U}} \cdot \grad s \left(\boldsymbol{U}\right) = 0,
+\end{equation}
+%
+where $\boldsymbol{F}_{\boldsymbol{U}} = \frac{\partial \boldsymbol{F}}{\partial \boldsymbol{U}}$ is the jacobian matrix of the hyperbolic flux $\boldsymbol{F} \left( \boldsymbol{U} \right)$.
+This entropy equation/residual is obtained from the hyperbolic system of equation given in \eqt{eq:hyp_syst_sct1b} either by multiplying by the matrix $s_{\boldsymbol{U}} = \frac{\partial s (\boldsymbol{U})}{\partial \boldsymbol{U}}$ and using the chain rule, or by doing combination of the equations of the hyperbolic system. This step is well documented for the multi-D Euler equation \cite{Toro}. The objective is to understand the steps that lead to the derivation of the entropy equations since the same steps will be used to obtain the viscous terms.
+\item We now want to derive the dissipative terms consistent with the entropy condition. The method is inspired of what is done for the multi-D Euler equations in \cite{jlg}. To do so, we first modify \eqt{eq:hyp_syst_sct1b} by adding a viscous flux $\boldsymbol{G} \left( \boldsymbol{U} \right)$:
+%
+\begin{equation}\label{eq:hyp_syst2_sct1b}
+\partial_t \boldsymbol{U}(\vec{r},t) + \div \boldsymbol{F} \left( \boldsymbol{U} \right) = \div \boldsymbol{G} \left( \boldsymbol{U} \right),
+\end{equation}
+%
+Then, the entropy residual is derived again:
+%
+\begin{eqnarray}\label{eq:hyp_syst3_sct1b}
+R\left(\boldsymbol{U}\right) = \partial_t s\left(\boldsymbol{U}\right) + \boldsymbol{F}_{\boldsymbol{U}} \cdot \grad s \left(\boldsymbol{U}\right) &=& s_{\boldsymbol{U}} \div \boldsymbol{G} \left( \boldsymbol{U} \right) \nonumber \\
+R\left(\boldsymbol{U}\right) = \partial_t s\left(\boldsymbol{U}\right) + \boldsymbol{F}_{\boldsymbol{U}} \cdot \grad s \left(\boldsymbol{U}\right) &=& \nonumber \\
+\div ( s_{\boldsymbol{U}} \boldsymbol{G}  \left( \boldsymbol{U} \right) ) &-& \boldsymbol{G}  \left( \boldsymbol{U} \right) \cdot \grad s_{\boldsymbol{U}}.
+\end{eqnarray}
+%
+To prove that the entropy residual $R$ remains positive, the non-conservative terms of the right hand-side has to be positive. Thus, positivity of the entropy residual is tied to the definition of the viscous term $\boldsymbol{G}  \left( \boldsymbol{U} \right)$ and the entropy function $s$. For the multi-D Euler equation, Guermond et al. \cite{jlg} proved that the entropy function $s$ needs to be concave ($-s$ is convex) in order to ensure positivity of the entropy residual for any equation of state. This condition is tied to a particular choice of the dissipative terms that will be detailed in SECTION, and also positivity of the viscosity coefficients. In the general case, the parabolic regularization (REF) can be used and consists of dissipating on the vector solution $\boldsymbol{U}$ as shown in \eqt{eq:hyp_syst4_sct1b}: 
+%
+\begin{equation}\label{eq:hyp_syst4_sct1b}
+\partial_t \boldsymbol{U}(\vec{r},t) + \div \boldsymbol{F} \left( \boldsymbol{U} \right) = \div \left( \mu \grad \left( \boldsymbol{U} \right) \right),
+\end{equation}
+%
+where $\mu$ is a positive viscosity coefficient. \eqt{eq:hyp_syst4_sct1b} obeys to the entropy condition under the condition of having a concave entropy $s$ \cite{Parabolic}. Using the entropy condition, other viscous regularizations can be found with multiple viscosity coefficients (see \cite{jlg} for the case of the multi-D Euler equation). However, it is expected that they all degenerate to the parabolic regularization when assuming that all viscosity coefficients are equal to each other. Plus, for consistency with the parabolic regularization \cite{Parabolic}, the entropy function $s$ is required to be concave. In other terms, the parabolic regularization can be used as a hint in order to derive a viscous regularization with multiple viscosity coefficients. We will see in SECTION that having a viscous regularization with two viscosity coefficients is required for the multi-D Euler equation in order to have well-scaled viscous terms in the non-isentropic low Mach limit. Before moving forward to the next step it is proposed to recast the entropy residual $R$ as a function of the conservative variables. This step is justified by the difficulty encountered to obtain an analytical expression of the entropy function. This is particular true for the multi-D Euler equation when dealing with complex equation of states. We assume that the entropy residual was successfully recast as a function of the conservative variables and that the new entropy residual is denoted by $\tilde{R}$. The reader can refer to SECTION as an example.
+\item Once the entropy residual is proven to be positive, it remains to define the viscosity coefficient(s). Assuming that a viscous regularization was derived in step 2 with $n$ viscosity coefficients denoted by $\mu_i$, $i\in \left[1, \dots, n\right]$, a general definition can be given under the form:
+%
+\begin{equation}
+\left\{
+\begin{array}{l}
+\mu_i(\vec{r},t) = \max \left( \mu_{i,e}(\vec{r},t), \mu_{max}(\vec{r},t) \right) \nonumber \\
+\mu_{max}(\vec{r},t) = \frac{h}{2} \max_{i\in \left[1,n\right]} |\lambda_i(\vec{r},t)| \nonumber \\
+\mu_{i,e}(\vec{r},t) = h^2 \frac{\max\left(\tilde{R}(\vec{r},t), J\right)}{norm_i(\vec{r},t)}, \nonumber
+\end{array}
+\right.
+\end{equation}
+%
+where $\mu_{e,i}$ and $\mu_{max}$ are the high- and first-order viscosity coefficients, respectively. The high-order viscosity coefficient $\mu_{e,i}$ is defined proportional to the local entropy residual $R(\vec{r},t)$ and also function of a normalization parameter $norm_i(\vec{r},t)$ that will be further detailed. The first-order viscosity coefficient $\mu_{max}(\vec{r},t)$ is set proportional to the maximum eigenvalue and is unique for all viscosity coefficients $\mu_i(\vec{r},t)$. $h$ still denoted the grid size. In order to have a complete definition for the $\mu_e(\vec{r},t)$, the normalization parameter $norm_i(\vec{r},t)$ needs to be defined. It is well known that hyperbolic system of equations suffer from ill-scaled dissipative term in some particular asymptotic limit. This is particular true for the stabilization methods used for the multi-D Euler equations, that require a fix in the low Mach asymptotic limit in order to yield the correct asymptotic behavior \cite{LowMach1, LowMach2}. Thus, by non-dimensionalizing the equations, the normalization parameter $\norm_i(\vec{r},t)$ can be determined for each viscosity coefficients $\mu_i(\vec{r},t)$ to ensure well-scaled dissipative terms. 
+\end{enumerate}
+This three steps process is applied to the multi-D Euler equations with variable area (SECTION), the seven-equation model (SECTION) and the radiation-hydrodynamic equations (SECTION) to determine the dissipative terms and to define the viscosity coefficients. Details about the implementation of the EVM with continuous Galerkin finite element method are provided in SECTION. The jump $J$ is given on a case by case basis since its definition depends on the variables involved in the expression of the new entropy residual $\tilde{R}$.
+%\item hyperbolic system of equations can also produce shocks.
+%\item same treatment as scalar equations.
+%\item Lapidus, pressure-based ...
+%\item low Mach
+%\item 
+%\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%
