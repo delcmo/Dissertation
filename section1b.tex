@@ -75,9 +75,9 @@ where we set $x(t=0) = x_0$ that can be seen as the initial position of a partic
 u(x,t) = u_0(x_0) = u_0(x - f'(u_0)t)
 \end{equation}
 %
-\eqt{eq:ivp5_sct1b} can be seen as an analytical solution of the hyperbolic scalar equation (\eqt{eq:ivp_sct1b}). It is also understood that the derivative of the flux that corresponds to the eigenvalue of the system, has profound consequences on the behavior of the solution as explained in \sect{sec:shock_form}. 
+\eqt{eq:ivp5_sct1b} can be seen as an analytical solution of the hyperbolic scalar equation (\eqt{eq:ivp_sct1b}). It is also understood that the derivative of the flux that corresponds to the eigenvalue of the system, has profound consequences on the behavior of the solution as explained in \sect{sec:shock_form_sct1b}. 
 %=============================
-\subsection{Formation of shocks and vanishing viscosity equation/solution}\label{sec:shock_form}
+\subsection{Formation of shocks and vanishing viscosity equation/solution}\label{sec:shock_form_sct1b}
 %=============================
 Hyperbolic scalar equations are known to develop shocks even from a smooth initial profile. This section aims at detailing how shocks form based on the mathematical properties introduced in \sect{sec:mat_ppr_sct1b} and the two examples of \eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b}, i.e., the $1$-D linear advection and Burger's equations.\\
 
@@ -190,18 +190,174 @@ S = \frac{f(x_2,t) - f(x_1,t)}{u(s^-(t)) - u(s^+(t))} = \frac{\Delta f}{\Delta u
 \end{equation}
 %
 The above expression computing the speed of shock (\eqt{eq:rh5_sct1b}) is known as the Rankine-Hugoniot jump condition. The hyperbolic scalar equation given \eqt{eq:rh_sct1b} is only valid in smooth parts of the solution, and thus, require the use of the Rankine-Hugoniot jump condition in order to solve for the shock region.   
-%its speed can be determined by the Rankine-Hugoniot condition
-%However, along the characteristic curves, the solution remains constant which allows us to integrate to obtain an analytical expression for the characteristic curve. For the purpose of plotting the characteristic curves, we assume a computational domain of length one and that the initial condition for the solution is of the form $u(x_0) = \sin (\pi x)$. With such initial condition, the slope of the characteristic curve is no longer constant but vary both in time and space. As a result, some of the characteristic curves will intersect  
-%\begin{itemize}
-%\item hyperbolic scalar equations are known to produce shocks even with smooth initial conditions.
-%\item explain how shocks can form with characteristic equations.
-%\item talk about diffusion equation that does not produce shocks -> same equation but with diffusion term that smoothes out shocks. Solution is unique and smooth.
-%\item idea is to add diffusion to the hyperbolic equation in order to control the shock.
-%\end{itemize}
 %===============================
 \subsection{Weak solution and entropy condition:}\label{weak_sct1b}
 %===============================
-As mentioned in \sect{sec:shock_form}, another way to define a generalized solution is to use a mathematical technique that consists of multiplying the hyperbolic scalar equation by a smooth test function $\phi \in C^1_0$ that are continuously differentiable within a contact support. Then, integration per part is performed in order to transfer the derivative off the solution $u$ and onto the test function $\phi$. The resulting equation involves fewer derivative on $u$ and, hence, requires less smoothness. 
+As mentioned in \sect{sec:shock_form_sct1b}, another way to define a generalized solution is to use a mathematical technique that consists of multiplying the hyperbolic scalar equation by a smooth test function that are continuously differentiable within a contact support. Then, integration per part is performed in order to transfer the derivative off the solution $u$ and onto the test function. The resulting equation involves fewer derivative on $u$ and, hence, requires less smoothness. It is assumed that the test functions are only non-zero and continuously differentiable within a bounded set: $\phi(\mbold{r},t) \in C_0^1 \left( \mathbb{R}^d \times \mathbb{R} \right)$. 
+
+If the simple $1$-D conservation law $\partial_t u(x,t) + \partial_x f(u) = 0$ is multiplied by the a test function $\phi(x,t)$ and integrated over space and time, it yields:
+%
+\begin{equation}\label{eq:weak_sol_sct1b}
+\int_0^{+\infty}\int_{-\infty}^{+\infty} \left[ \partial_t u(x,t) + \partial_x f(u) \right] \phi(x,t) dx dt = 0
+\end{equation}
+% 
+Then, \eqt{eq:weak_sol_sct1b} is integrating by parts to obtain:
+%
+\begin{eqnarray}\label{eq:weak_sol2_sct1b}
+\int_0^{+\infty}\int_{-\infty}^{+\infty} \left[ u(x,t) \partial_t \phi(x,t)   + f(u) \partial_x \phi(x,t)  \right] dx dt = \nonumber \\
+-\int_{-\infty}^{+\infty} \phi(x,t) u(x,t) dx \left. \right|_0^{+\infty} - \int_0^{+\infty} \phi(x,t) u(x,t) dt \left. \right|_{-\infty}^{+\infty}
+\end{eqnarray}
+%
+where the two integrals on the right hand-side of \eqt{eq:weak_sol2_sct1b} corresponds to the boundary terms. Recalling that the test function is identically zero outside a bounded set which means $\phi(x,t) \to 0$ as $x \to \pm  \infty$ and $t \to \infty$, all of the boundary terms vanish but for $t=0$. The resulting equation contains only one boundary term that is function of the initial condition as shown in \eqt{eq:weak_sol3_sct1b}.
+%
+\begin{eqnarray}\label{eq:weak_sol3_sct1b}
+\int_0^{+\infty}\int_{-\infty}^{+\infty} \left[ u(x,t) \partial_t \phi(x,t)   + f(u) \partial_x \phi(x,t)  \right] dx dt = \nonumber \\
+-\int_{-\infty}^{+\infty} \phi(x,0) u_0(x) dx 
+\end{eqnarray}
+%
+\eqt{eq:weak_sol3_sct1b} is used in the definition of a weak solution as follows:
+%
+\begin{definition}
+\emph{The function $u(x,t)$ is called a weak solution of the conservative law
+%
+\begin{equation}
+\partial_t u(x,t) + \partial_x f(u) = 0, \nonumber
+\end{equation}
+%
+if \eqt{eq:weak_sol3_sct1b} holds for all test functions $\phi \in C_0^1 \left( \mathbb{R} \times \mathbb{R} \right)$.}
+\end{definition}
+%
+The formulation obtained in \eqt{eq:weak_sol3_sct1b} presents some similarities with the $1$-D conservation law when integrated over a rectangle $\left[ x_1,x_2 \right] \times \left[ t_1,t_2 \right]$:
+%
+\begin{eqnarray}\label{eq:weak_sol4_sct1b}
+\partial_t u(x,t) + \partial_x f(u) = 0 \to&& \nonumber \\
+\int_{x_1}^{x_2} \left[ x(x,t_2) - u(x,t_1) \right] dx &+& \int_{t_1}^{t_2} \left[ f(u(x_2,t)) - f(u(x_1,t)) \right]dt = 0
+\end{eqnarray}
+%
+As a matter of fact, we can show that \eqt{eq:weak_sol3_sct1b} and \eqt{eq:weak_sol4_sct1b} are equivalent. To do so, we consider the test function $\phi(x,t)$ with the following properties:
+%
+\begin{equation}\label{eq:weak_sol5_sct1b}
+\phi(x,t) = \left\{
+\begin{array}{l}
+1  \text{ for }  (x,t) \in \left[ x_1,x_2 \right] \times \left[ t_1,t_2 \right]  \\
+0 \text{ for } (x,t) \notin \left[ x_1-\delta,x_2+\delta \right] \times \left[ t_1-\delta,t_2+\delta \right]
+\end{array}\right.
+\end{equation}
+%
+where $\delta$ is the width of the intermediate strip. Since the test function $\phi$ verifying \eqt{eq:weak_sol5_sct1b} vanish as $x \to \pm  \infty$ and $t \to \infty$, \eqt{eq:weak_sol3_sct1b} is still valid. The temporal and spatial derivatives of the test function $\phi(x,t)$ are zero everywhere but in the intermediate strip, and approach delta function as $\delta \to 0$. Thus, in the limit $\delta \to 0$, \eqt{eq:weak_sol3_sct1b} is shown to be equivalent to the integral form of the conservation law given in \eqt{eq:weak_sol4_sct1b}. The direct consequence of this result is that the weak solution in the sense of \eqt{eq:weak_sol3_sct1b} includes the solution of the hyperbolic conservation law we are looking for, and the vanishing viscosity generalized solution. However, uniqueness of the weak solution is not ensured by \eqt{eq:weak_sol3_sct1b} which can be demonstrated by considering a $1$-D Riemann problem for a hyperbolic conservation law. The reader can refer to \cite{Toro} and LEVEQUE for details. The question arising from the previous statement is: how to identify the correct weak solution that corresponds to the physically vanishing viscosity solution? The answer lies in the entropy condition that is defined by analogy to the gas dynamic case. Mathematically, the entropy condition can be defined of multiple ways using either the speed of shock $S$ (see page 37 in LEVEQUE) or an entropy function that will be further detailed. Because our focus is to hyperbolic system of equations, it is chosen to define the entropy condition through the derivation of an entropy residual from a hyperbolic conservation law. 
+
+Before detailing the steps to obtain an entropy residual, we recall what the entropy condition states for gas dynamic. In gas dynamic, the physical entropy is constant along a smooth path flow, but experiences a jump to a higher value across a shock wave. Thus, the physical entropy is expected to increase if the flow has a shock wave, which gives us a condition in order to pick out the correct weak solution. It remains to translate this condition into a mathematical relation. Before doing so, we want to emphasize the difference between the mathematical and physical entropies in order to clear any confusion (hopefully it is not too late). The physical entropy is by definition positive and increases as a function of time to reach a maximum value at steady-state. The mathematical entropy is defined convex and decreases as a function of time. In order to avoid any confusion, the mathematical and physical entropies will be referred to as $\eta$ and $s$, respectively. These two entropies are related to each other by the following relation:
+%
+\begin{equation}
+s(u) = -\eta (u) + \eta_0
+\end{equation}
+%  
+where $\eta_0$ is taken larger than the maximum of the absolute value of the mathematical entropy $\eta$ in order to ensure positivity of the physical entropy $s$. Of course, with such relation, convexity of $\eta$ implies that $s$ is concave. It is custom to work with the mathematical entropy when dealing with hyperbolic scalar equations, whereas the physical entropy is preferred for hyperbolic system of equation alike the multi-D Euler equations. 
+
+It is now proposed to derive an entropy condition for a hyperbolic scalar conservation law of the generic form:
+%
+\begin{equation}\label{eq:weak_sol6bis_sct1b}
+\partial_t u( \mbold{r}, t) + \div \mbold f(u) = 0
+\end{equation}
+%
+We assume the existence of an entropy function $\eta(u)$ for which a conservation law holds and will be determined. We first consider the case of a smooth flow and multiply \eqt{eq:weak_sol6bis_sct1b} by the derivative of $\eta$ with respect to $u$ denoted by $\eta_u$:
+%
+\begin{subequations}\label{eq:weak_sol6_sct1b}
+\begin{equation}\label{eq:weak_sol6a_sct1b}
+\eta_u \partial_t u( \mbold{r}, t) + \eta_u  \div \mbold f(u) = 0,
+\end{equation}
+%
+and using the chain rule,
+%
+\begin{equation}\label{eq:weak_sol6b_sct1b}
+\eta_u \partial_t u( \mbold{r}, t) + \eta_u  \mbold f'(u) \cdot \grad u = 0,
+\end{equation}
+%
+which can be simplified to
+%
+\begin{equation}\label{eq:weak_sol6c_sct1b}
+\partial_t \eta( u) +  \mbold f'(u) \cdot \grad \eta(u) = 0.
+\end{equation}
+\end{subequations}
+%
+The relation given in \eqt{eq:weak_sol6c_sct1b} is a conservation law for $\eta$ which means that the mathematic entropy is conserved in a smooth flow. The entropy conservation law can also be recast as a function of the entropy flux $\mbold \psi$ by setting $\mbold \psi '(u) = \eta_u \mbold f'(u)$, which yields:
+%
+\begin{equation}
+\partial_t \eta( u) +  \div \psi(u) = 0.
+\end{equation}
+%
+The set $\left( \eta, \mbold \psi \right)$ is called an entropy pair.
+
+We now consider a solution with a discontinuity/shock. The manipulations performed above are no longer valid. Instead, it is proposed to look at the vanishing viscosity equation introduced in \eqt{eq:adv_diff_sct1b} and investigate the behavior of the vanishing viscosity weak solution as the viscosity coefficient tends to zero. Applying the vanishing viscosity method to \eqt{eq:weak_sol6_sct1b}, it yields:
+%
+\begin{equation}\label{eq:weak_sol7_sct1b}
+\partial_t u( \mbold{r}, t) + \div \mbold f(u) = \div \left( \mu(\mbold r,t ) \grad u( \mbold r,t) \right),
+\end{equation}
+%
+where $\mu(\mbold r,t )$ is a positive viscosity coefficient assumed spatial-dependent for general purpose. Because of the viscous term in \eqt{eq:weak_sol7_sct1b}, the solution remains smooth which allows us to perform the same manipulations as in \eqt{eq:weak_sol6_sct1b}. Thus, it yields:
+%
+\begin{equation}\label{eq:weak_sol8_sct1b}
+\partial_t \eta (u) + \div \mbold \psi (u) = \eta_u \div \left( \mu(\mbold r,t ) \grad u( \mbold r,t) \right),
+\end{equation}
+%
+By integrating per parts the right hand-side of \eqt{eq:weak_sol8_sct1b} becomes: 
+%
+\begin{equation}\label{eq:weak_sol9_sct1b}
+\partial_t \eta (u) + \div \mbold \psi (u) =  \div \left( \eta_u \mu(\mbold r,t ) \grad u( \mbold r,t) \right) - \mu(\mbold r,t ) \grad u( \mbold r,t) \cdot \grad \eta_u
+\end{equation}
+%
+Since we are interested in the weal solution, \eqt{eq:weak_sol9_sct1b} is integrated over the spatial-temporal domain $\Theta = \left[ \mbold r_1,\mbold r_2 \right] \times \left[ t_1,t_2 \right]$ on the same model as in \eqt{eq:weak_sol4_sct1b}. It is also assumed that the shock remains inside $\Theta$ for all time $t \in \left[ t_1, t_2 \right]$ and away from the boundaries.
+%
+\begin{eqnarray}\label{eq:weak_sol10_sct1b}
+\int_{\mbold r_1}^{\mbold r_2} \int_{t_1}^{t_2} \left[ \partial_t \eta (u) + \div \mbold \psi (u) \right] \text{d}t \text{d} \mbold r  &=&
+\int_{\mbold r_1}^{\mbold r_2} \int_{t_1}^{t_2}  \div \left( \eta_u \mu(\mbold r,t ) \grad u( \mbold r,t) \right) \text{d}t \text{d} \mbold r   \nonumber \\
+&-& \int_{\mbold r_1}^{\mbold r_2} \int_{t_1}^{t_2}  \mu(\mbold r,t ) \grad u( \mbold r,t) \cdot \grad \eta_u \text{d}t \text{d} \mbold r 
+\end{eqnarray}
+%
+The first term in the right hand-side of \eqt{eq:weak_sol10_sct1b} can be recast as follows:
+%
+\begin{multline}\label{eq:weak_sol11_sct1b}
+\int_{\mbold r_1}^{\mbold r_2} \int_{t_1}^{t_2}  \div \left( \eta_u \mu(\mbold r,t ) \grad u( \mbold r,t) \right) \text{d}t \text{d} \mbold r = \\
+\int_{t_1}^{t_2} \left[ \eta_u \mu(\mbold r_2,t ) \grad u( \mbold r_2,t) - \eta_u \mu(\mbold r_1,t ) \grad u( \mbold r_1,t) \right] \text{d}t
+\end{multline}
+%
+Since the shock position cannot be confounded with the boundary of the domain by assumption, the gradient of the solution at the points $\mbold r_1$ and $\mbold r_2$ is smooth. Then, as the viscosity coefficient tends to zero, the whole integral vanishes since all of the terms are bounded. The second term in the right hand-side of \eqt{eq:weak_sol10_sct1b} is tricker to deal with. First, the integral is recast as follows:
+%
+\begin{equation}\label{eq:weak_sol12_sct1b}
+\int_{\mbold r_1}^{\mbold r_2} \int_{t_1}^{t_2} \mu(\mbold r,t ) \grad u( \mbold r,t) \cdot \grad \eta_u = \int_{\mbold r_1}^{\mbold r_2} \int_{t_1}^{t_2} \mu(\mbold r,t ) \eta_{uu} \grad u( \mbold r,t) \cdot \grad u( \mbold r,t),
+\end{equation}
+%
+where $\eta_{uu}$ denotes the second derivative of $\eta$ with respect to $u$. As $\mu$ goes to zero, the integral does not vanish because of the terms $\grad u \cdot \grad u$ that will become larger and larger at the location of the discontinuity. However, by assuming that the entropy function is convex, i.e. $\eta_{uu} \geq 0$ and noticing that $\grad u \cdot \grad u \geq 0$ and $\mu \geq 0$, the sign of \eqt{eq:weak_sol12_sct1b} is found to be positive. Using the above results, it is concluded that the vanishing viscosity weak solution satisfies the inequality:
+%
+\begin{equation}\label{eq:weak_sol13_sct1b}
+\int_{\mbold r_1}^{\mbold r_2} \int_{t_1}^{t_2} \left[ \partial_t \eta (u) + \div \mbold \psi (u) \right] \text{d}t \text{d} \mbold r  \leq 0,
+\end{equation}
+% 
+for smooth and discontinuous solutions. Consequently, the total integral of the mathematical entropy decreases as a function of time. Since the inequality given in \eqt{eq:weak_sol13_sct1b} holds for any $\Theta$, it can be simplified to
+%
+\begin{equation}\label{eq:weak_sol14_sct1b}
+\partial_t \eta (u) + \div \mbold \psi (u) \leq 0
+\end{equation}
+%
+in the weak sense and is known as the \emph{entropy inequality}. 
+%
+\begin{definition}
+\emph{The function $u(\mbold r, t)$ is the entropy solution of the hyperbolic conservation law 
+%
+\begin{equation}
+\partial_t u( \mbold{r}, t) + \div \mbold f(u) = 0 \nonumber
+\end{equation}
+%
+if for all convex entropy pair $\left( \eta,\mbold \psi \right)$, the inequality 
+%
+\begin{equation}
+\partial_t \eta (u) + \div \mbold \psi (u) \leq 0 \nonumber
+\end{equation}
+%
+is satisfied in a weak sense.}
+\end{definition}
+%
+The entropy inequality can be used to analyze numerical methods in order to demonstrate that the numerical solution converges to the entropy solution. It is now proposed to see how the entropy inequality is used in the theoretical derivation of the entropy viscosity method for the multi-D Burger's equation. 
 %===============================
 \subsection{Entropy viscosity method for the multi-D Burger equation:}
 %===============================
@@ -216,7 +372,7 @@ In the previous sections, it was demonstrated the importance of ensuring uniquen
 \end{equation}
 %
 \begin{equation}\label{eq:bg3_ev_sct1b}
-R(\mbold{r},t) = \partial_t \eta(\mbold{r},t) + \div \Phi \leq 0
+R(\mbold{r},t) = \partial_t \eta(\mbold{r},t) + \div \mbold \psi \leq 0
 \end{equation}
 %
 \end{subequations}
@@ -246,7 +402,7 @@ where $norm(s)$ is a normalization function of the same unit as the entropy $s$,
 \end{equation}
 %
 \begin{equation}
-R(\mbold{r},t) = \partial_t \eta(\mbold{r},t) + \div \Phi
+R(\mbold{r},t) = \partial_t \eta(\mbold{r},t) + \div \mbold \psi
 \end{equation}
 %
 \begin{equation}\label{eq:evm_def_sct1b}
@@ -261,7 +417,7 @@ R(\mbold{r},t) = \partial_t \eta(\mbold{r},t) + \div \Phi
 %
 \end{subequations}
 %
-where $h$ is defined as the gird size and $J$ denotes the jump of the entropy flux $\Phi$ at the interface of each element. Information relative to the computation of the jump with continuous Galerkin finite element method (CGFEM) will be detailed in \sect{sec:spatial_discretization}. For the case of discontinuous schemes, the reader can refer to \cite{valentin}. Numerical results for the multi-D Burger's equation solved with the EVM  with CGFEM are presented in \sect{sec:burger_sct2b}.
+where $h$ is defined as the gird size and $J$ denotes the jump of the entropy flux $\mbold \psi$ at the interface of each element. Information relative to the computation of the jump with continuous Galerkin finite element method (CGFEM) will be detailed in \sect{sec:spatial_discretization}. For the case of discontinuous schemes, the reader can refer to \cite{valentin}. Numerical results for the multi-D Burger's equation solved with the EVM  with CGFEM are presented in \sect{sec:burger_sct2b}.
 %
 \begin{remark}
 The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} requires a isentropic mesh in order to be able to define the gird size $h$. An alternative definition without $h$ is under investigation for the case of hyperbolic scalar equations.
