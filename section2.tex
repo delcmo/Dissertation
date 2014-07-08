@@ -19,7 +19,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %==============================================================================
-\section{Spatial and Temporal Discretization Method:}
+\section{Spatial and Temporal Discretization Method:}\label{sec:disc_sect2}
 %==============================================================================
 Because the stabilization of the numerical solution of hyperbolic equation systems is intimately connected with the temporal and
 spatial discretization, before discussing the entropy viscosity stabilization method used in RELAP-7, a short summary of the
@@ -30,8 +30,8 @@ numerical methods it employs is given.
 RELAP-7 currently employs the continuous finite element method implemented
 via the INL MOOSE framework.  For simplicity of exposition this section focuses on
 the weak statement associated to the strong form of the one-dimensional, variable
-cross-sectional area form of the Euler equations~\eqref{E-S:18}--\eqref{E-S:20}
-summarized in Section~\ref{sec:single_phase_equations}.  Start by writing the
+cross-sectional area form of the Euler equations EQUATION
+summarized in SECTION.  Start by writing the
 equations in ``vector'' form as
 \begin{align}
   \label{eqn:va_system_notation}
@@ -180,14 +180,14 @@ solution vector at each iteration.  Note
 that~\eqref{eqn:1Dmass_weak}--\eqref{eqn:1Denergy_3eq_weak} are
 so-called ``semi-discrete'' equations: they have been discretized in
 space, but the temporal derivatives remain in continuous form.  In
-Section~\ref{sec:time_integration} the various time discretization methods
+SECTION the various time discretization methods
 employed in RELAP-7, to approximately time-integrate the equations,
 are summarized.  Furthermore, it is well-known
 that a continuous Galerkin discretization of this set of hyperbolic
 equations is equivalent to a central difference method for a certain
 choice of integration rule, and therefore will exhibit oscillatory
 instabilities unless some artificial diffusion is added to stabilize
-the method.  In Section~\ref{sec:entropy_viscosity}, stabilization will be
+the method.  In SECTION, stabilization will be
 discussed further, and in particular the new entropy viscosity 
 stabilization scheme will be presented in detail.
 %
@@ -428,7 +428,7 @@ R_e(\vec{r},t) = \partial_t \left( s(\vec{r},t)\right) +  \grad \left( \vec{n} \
 \mu_{e}(\vec{r},t) = h^2 \frac{\max\left( R_e(\vec{r},t), J \right)}{|| s - \bar{s} ||_\infty}
 \end{equation}
 \end{subequations}
-where $u(\vec{r},t)$ is a conservative variable that depends on both space and time. The entropy function $s$ and the conservative flux in the entropy residual $R_e$ are defined as $s(\vec{r},t) = \frac{u(\vec{r},t)}{2}$ and $\Phi = \frac{u(\vec{r},t)^3}{3}$, respectively. The Burger's equation is known to admit an unique eigenvalue $\lambda = u(\vec{r},t)$. The vector $\vec{n}$ has the same definition as in \sect{sec:section2}. The jump $J$ is assumed piecewise constant and details regarding its evaluation are given later in this SECTION. The normalization parameter $|| s - \bar{s} ||_\infty$ used in \eqt{eq:visc_ev_sct2} denotes the infinite norm over the entire computational domain of the quantity $s - \bar{s}$ where $\bar{s}$ is the average entropy over the computational domain as well.\\
+where $u(\vec{r},t)$ is a conservative variable that depends on both space and time. The entropy function $s$ and the conservative flux in the entropy residual $R_e$ are defined as $s(\vec{r},t) = \frac{u(\vec{r},t)}{2}$ and $\Phi = \frac{u(\vec{r},t)^3}{3}$, respectively. The Burger's equation is known to admit an unique eigenvalue $\lambda = u(\vec{r},t)$. The vector $\vec{n}$ has the same definition as in SECTION. The jump $J$ is assumed piecewise constant and details regarding its evaluation are given later in this SECTION. The normalization parameter $|| s - \bar{s} ||_\infty$ used in \eqt{eq:visc_ev_sct2} denotes the infinite norm over the entire computational domain of the quantity $s - \bar{s}$ where $\bar{s}$ is the average entropy over the computational domain as well.\\
 The first step in the implementation of the EVM is the integration of the dissipative terms over each element of the mesh. The continuous finite element approach consists of multiplying each term by a test function and then, integrating over the computational domain. Since the dissipative terms are second-order spatial derivatives, an integration per part is performed leading to:
 %
 \begin{equation}\label{eq:diss_term_sct2}
