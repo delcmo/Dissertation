@@ -29,4 +29,23 @@ We propose to use the entropy-based viscosity method introduced by Guermond et a
 It is also proposed to investigate how the entropy viscosity method (EVM) can be applied to the multi-D radiation-hydrodynamic equations \cite{LowrieMorelHittinger}. These equations are known to develop solutions with shocks \cite{Balsara}. They consist of coupling the multi-D Euler equations with a radiation-diffusion equation through some source terms.  Most of the current solvers are based on the study of the hyperbolic terms in order to derive a Riemann-type solver \cite{LowrieMorel}. Flux-limiter technique \cite{EdwardsMorelLowrie} are also used and suffer from the same drawbacks as for the pure multi-D Euler equations. Therefore, it will be valuable to assess how the entropy viscosity method can adapt to this multi-physics system, and if successful, will offer an alternative to the current available numerical methods.\\
 
 Thus, this dissertation is organized as follows: in \chap{chap:theory_chp1}, a brief background is given on the mathematical properties of the hyperbolic scalar equation and used to explain the origin of the entropy viscosity method developed by Guermont et al. \cite{jlg1}. Then, still in the same chapter, a general methodology is proposed for the application of the EVM to hyperbolic system of equations. In \chap{chap:disc_chap2}, the temporal and spatial discretization employed in the Moose platform \cite{Moose} are described and details regarding the implementation of the EVM with a CGFEM are also provided. Then, the multi-D Burger's equation is solved in order to illustrate the main features of the EVM and computational results are presented in \chap{chap:burger_chap3}. \chap{chap:euler} and \chap{chap:seven} are dedicated to the application of the EVM to the multi-D Euler equations with variable area and the $1$-D seven-equation model, respectively: a low-Mach asymptotic limit is performed and effect of the source terms on the EVM are also investigated. Various numerical results are presented in order to validate our approach. Extension of the EVM to the $1$-D radiation-hydrodynamic equation is discussed in \chap{chap:hydro}. Lastly, our conclusions are related in \chap{chap:conclusion}
-%Thus, the proposal is organized as follows: Section 1 will recall the main feature of the current version of the entropy-based viscosity method. Section 2 will introduce the system of equations under considerations. A short description of the equations and their properties will be given. In Section 3, the problem formulation is discussed for each system of equations and suggestions of test cases are given in order to test the numerical method.
+%
+%\begin{center}
+%\tikzstyle{level 1}=[sibling angle=90]
+%%\tikzstyle{level 2}=[sibling angle=60]
+%%\tikzstyle{level 3}=[sibling angle=30]
+%\tikzstyle{every node}=[
+%\includegraphics[width=\textwidth]{figures/liquid_mach_numerical_and_exact_50.png}
+%]
+%\tikzstyle{edge from parent}=[->,segment length=1mm,
+%                              segment angle=10,draw]
+%\begin{tikzpicture}[grow cyclic,shape=circle,very thick,level distance=13mm,
+%                    cap=round]
+%\node {} child [color=\A] foreach \A in {red,green,blue,gray};
+%%    { node {} child [color=\A!50!\B] foreach \B in {red,green,blue}
+%   %     { node {} child [color=\A!50!\B!50!\C] foreach \C in {black,gray,white}
+%     %       { node {} }
+%       % }
+% %   };
+%\end{tikzpicture}
+%\end{center}

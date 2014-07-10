@@ -18,67 +18,72 @@
 \chapter{\uppercase {Discretization method and implementation details of the entropy viscosity method.}}\label{chap:disc_chap2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+This chapter is organized in two mains sections. In \sect{sec:disc_sect2}, the spatial and temporal discretization method is detailed for a generic hyperbolic system of equation. Then, the implementation of the EVM is explained in \sect{sect:ev_impl_sect2}, by taking for example a hyperbolic scalar equation. 
 %==============================================================================
 \section{Spatial and Temporal Discretization Method:}\label{sec:disc_sect2}
 %==============================================================================
 Because the stabilization of the numerical solution of hyperbolic equation systems is intimately connected with the temporal and
-spatial discretization, before discussing the entropy viscosity stabilization method used in RELAP-7, a short summary of the
+spatial discretization, before discussing the implementation of the entropy viscosity stabilization method, a short summary of the
 numerical methods it employs is given.
 %
 \subsection{Spatial Discretization Algorithm\label{sec:spatial_discretization}}
 %
-RELAP-7 currently employs the continuous finite element method implemented
-via the INL MOOSE framework.  For simplicity of exposition this section focuses on
-the weak statement associated to the strong form of the one-dimensional, variable
-cross-sectional area form of the Euler equations EQUATION
-summarized in SECTION.  Start by writing the
-equations in ``vector'' form as
+The continuous Galerkin finite element method is employed
+via the INL MOOSE framework.  This section focuses on
+the weak statement associated to the strong form of a generic hyperbolic system of equations with source terms of the form:
 \begin{align}
   \label{eqn:va_system_notation}
-  \vec{R}(\vec{U}) \equiv \frac{\partial \vec{U}}{\partial t} + \frac{\partial \vec{F}}{\partial x} - \vec{S} = \vec{0}
+\partial_t \mbold U(\mbold r, t) + \div \mbold F(\mbold U(\mbold r, t)) = \mbold S(\mbold U(\mbold r, t))
 \end{align}
-where
+where the vector solution and flux are defined by
 \begin{align}
-  \vec{U} \equiv
+  \mbold U(\mbold r, t) \equiv
   \begin{bmatrix}
-    \rho A
+    U_1(\mbold r, t)
     \\
-    \rho u A
+    \vdots
     \\
-    \rho E A
+    U_i(\mbold r, t)
+    \\
+   \vdots
+    \\
+   U_n(\mbold r, t)
   \end{bmatrix},
   \qquad
-  \vec{F} \equiv
+  \mbold F \equiv
   \begin{bmatrix}
-    \rho u A
+    F_1(U(\mbold r, t))
     \\
-    \left(\rho u^2 + p\right) A
+    \vdots
     \\
-    \rho u H A
+    F_i(U(\mbold r, t))
+    \\
+    \vdots
+    \\
+    F_n(U(\mbold r, t))
   \end{bmatrix}
 \end{align}
-and $\vec{S} = \vec{S}(\vec{U})$ consists of the remaining source
-terms.  Note that $\vec{U}$ and $\vec{F}$ are identical to their
-meanings in the ``constant-area'' equations, up to multiplication by
-the area, $A$.
+and $  \mbold S(\mbold U(\mbold r, t))$ consists of the source
+terms. 
 %
-The variational statement proceeds by
-dotting~\eqref{eqn:va_system_notation} by an ``admissible'' vector test function
-$\vec{W}$ (more details of which will be subsequently given),
-integrating over the domain $\Omega$, and applying the divergence
-theorem.  Solutions $\vec{U}$ are sought such that
+The weak form of \eqt{eqn:va_system_notation} is obtained by multiplying
+by an ``admissible'' vector test function
+$\mbold W$ (more details of which will be subsequently given) and
+integrating over the domain $\Omega$ of boundaries $\Gamma$ as follows:
 \begin{align}
-  \label{eqn:va_system_weak}
-  \int_{\Omega} \left(\frac{\partial \vec{U}}{\partial t} \cdot \vec{W} - \vec{F}\cdot \frac{\partial \vec{W}}{\partial x} - \vec{S}\cdot\vec{W} \right) \text{d}\Omega
-  + \int_{\Gamma} \left( \vec{F} \cdot \vec{W} \right) \vec{n}_x \;\text{d}\Gamma = 0
+  \label{en:va_system_weak}
+  \int_{\Omega} \left[ \partial_t \mbold U(\mbold r, t) + \div \mbold F(\mbold U(\mbold r, t))\right] \cdot \mbold W 
+  =  \int_{\Omega}  \mbold S(\mbold U(\mbold r, t)) \cdot \mbold W.
 \end{align}
-holds for \emph{all} admissible $\vec{W}$.
-%(RAB--I don't think the following two sentences are valid!!!)
-%Note that~\eqref{eqn:va_system_weak} remains in a ``continuous''
-%setting, that is, we have not yet introduced a mesh or finite element
-%discretization.  Equation~\eqref{eqn:va_system_weak} is merely a
-%``weak'' restatement of the ``strong'' equations~\eqref{eqn:va_system_notation}.
-%
+\eqt{en:va_system_weak} is recast by integrating per part the second term of the left hand-side to yield:
+\begin{align}
+  \label{en:va_system_weak2}
+  \int_\Omega \partial_t \mbold U(\mbold r, t) -   \int_\Omega \mbold F(\mbold U(\mbold r, t)) \cdot \div \mbold W 
++ \int_\Gamma \left( \mbold F(\mbold U(\mbold r, t)) \cdot \mbold W \right) \cdot \mbold n   =  \int_{\Omega}  \mbold S(\mbold U(\mbold r, t)) \cdot \mbold W,
+\end{align}
+where $\mbold n$ denotes the outward normal to the boundary $\Gamma$. We note the difference with a discontinuous approach, where the integrals are first split over each element of the computational domain before integrating per part. \\
+By integrating per part, a boundary term appears in \eqt{en:va_system_weak2} and will require boundary conditions in order to compute the vector flux $\mbold F(\mbold U(\mbold r, t))$ at the boundaries. Because of the special nature of hyperbolic system of equation, a generic treatment of the boundary terms is not suitable. Instead a case by case approach is chosen and boundary conditions will be specified for each system of equations studied in this dissertation. 
+
 Note that the test function $\vec{W}$ is not chosen arbitrarily.
 In particular, it is required that $\vec{W}$ come from the space of
 vector functions
@@ -401,7 +406,7 @@ library as the matrix $P$ for preconditioning purposes.
 \end{itemize}
 %==============================================================================
 %==============================================================================
-\section{Implementation of the entropy viscosity method (EVM) with continuous Galerkin finite element method:}
+\section{Implementation of the entropy viscosity method (EVM) with continuous Galerkin finite element method:}\label{sect:ev_impl_sect2}
 %==============================================================================
 After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient, this section focuses on the implementation of the method in a Galerkin continuous finite element scheme. Details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Special attention is required for the jump since their definition is scheme dependent. A non-uniform $2$-D mesh family $\Omega$ is considered. Each member of this family is called element, $k$, and the set of its faces is denoted by $\delta k = \left\{ \delta k_j \right\}$, where $j$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta k$, a quadrature rule, $Q = \left\{ q \right\}$ is used.
 
