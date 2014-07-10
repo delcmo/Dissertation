@@ -28,24 +28,13 @@ The objective of this research is to solve hyperbolic system of equations using 
 We propose to use the entropy-based viscosity method introduced by Guermond et al. to solve for the hyperbolic systems previously enumerated since the method has shown good results when used for solving the multi-D Euler equations with various discretization schemes. More importantly, it is simple to implement, can be used with unstructured grids,  and its dissipative terms are consistent with the entropy minimum principle and proven valid for any equation of state under certain conditions \cite{jlg}. However, a few questions remains: the low Mach limit has not been investigated and the current definition requires an analytical expression of the entropy which can be difficult to obtain for some equation of state. These two issues will be addressed. A particular attention will be brought to the low Mach problem and the available literature related to the asymptotic limit of the Navier-Stokes \cite{Muller} and Euler equations \cite{LowMach1, LowMach2} should be of great insight in order to understand how the dissipative terms behave. Effect of the source terms (friction. gravity, heat source) will be also investigated in the optic of using the entropy viscosity method for nuclear reactor applications. \\
 It is also proposed to investigate how the entropy viscosity method (EVM) can be applied to the multi-D radiation-hydrodynamic equations \cite{LowrieMorelHittinger}. These equations are known to develop solutions with shocks \cite{Balsara}. They consist of coupling the multi-D Euler equations with a radiation-diffusion equation through some source terms.  Most of the current solvers are based on the study of the hyperbolic terms in order to derive a Riemann-type solver \cite{LowrieMorel}. Flux-limiter technique \cite{EdwardsMorelLowrie} are also used and suffer from the same drawbacks as for the pure multi-D Euler equations. Therefore, it will be valuable to assess how the entropy viscosity method can adapt to this multi-physics system, and if successful, will offer an alternative to the current available numerical methods.\\
 
-Thus, this dissertation is organized as follows: in \chap{chap:theory_chp1}, a brief background is given on the mathematical properties of the hyperbolic scalar equation and used to explain the origin of the entropy viscosity method developed by Guermont et al. \cite{jlg1}. Then, still in the same chapter, a general methodology is proposed for the application of the EVM to hyperbolic system of equations. In \chap{chap:disc_chap2}, the temporal and spatial discretization employed in the Moose platform \cite{Moose} are described and details regarding the implementation of the EVM with a CGFEM are also provided. Then, the multi-D Burger's equation is solved in order to illustrate the main features of the EVM and computational results are presented in \chap{chap:burger_chap3}. \chap{chap:euler} and \chap{chap:seven} are dedicated to the application of the EVM to the multi-D Euler equations with variable area and the $1$-D seven-equation model, respectively: a low-Mach asymptotic limit is performed and effect of the source terms on the EVM are also investigated. Various numerical results are presented in order to validate our approach. Extension of the EVM to the $1$-D radiation-hydrodynamic equation is discussed in \chap{chap:hydro}. Lastly, our conclusions are related in \chap{chap:conclusion}
+Thus, this dissertation is organized as follows: in \chap{chap:theory_chp1}, a brief background is given on the mathematical properties of the hyperbolic scalar equation and used to explain the origin of the entropy viscosity method developed by Guermont et al. \cite{jlg1}. Then, still in the same chapter, a general methodology is proposed for the application of the EVM to hyperbolic system of equations. In \chap{chap:disc_chap2}, the temporal and spatial discretization employed in the Moose platform \cite{Moose} are described and details regarding the implementation of the EVM with a CGFEM are also provided. Then, the multi-D Burger's equation is solved in order to illustrate the main features of the EVM and computational results are presented in \chap{chap:burger_chap3}. \chap{chap:euler} and \chap{chap:seven} are dedicated to the application of the EVM to the multi-D Euler equations with variable area and the $1$-D seven-equation model, respectively: a low-Mach asymptotic limit is performed and effect of the source terms on the EVM are also investigated. Various numerical results are presented in order to validate our approach. Extension of the EVM to the $1$-D radiation-hydrodynamic equation is discussed in \chap{chap:hydro}. Lastly, our conclusions are related in \chap{chap:conclusion}. \\
+
+All of the numerical results were obtained from codes using the Moose framework \cite{Moose}, whom names are given in \fig{fig:organigram}.
 %
-%\begin{center}
-%\tikzstyle{level 1}=[sibling angle=90]
-%%\tikzstyle{level 2}=[sibling angle=60]
-%%\tikzstyle{level 3}=[sibling angle=30]
-%\tikzstyle{every node}=[
-%\includegraphics[width=\textwidth]{figures/liquid_mach_numerical_and_exact_50.png}
-%]
-%\tikzstyle{edge from parent}=[->,segment length=1mm,
-%                              segment angle=10,draw]
-%\begin{tikzpicture}[grow cyclic,shape=circle,very thick,level distance=13mm,
-%                    cap=round]
-%\node {} child [color=\A] foreach \A in {red,green,blue,gray};
-%%    { node {} child [color=\A!50!\B] foreach \B in {red,green,blue}
-%   %     { node {} child [color=\A!50!\B!50!\C] foreach \C in {black,gray,white}
-%     %       { node {} }
-%       % }
-% %   };
-%\end{tikzpicture}
-%\end{center}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/organigram.pdf}
+\caption{The zoo (this is not a food chain). \label{fig:organigram}}
+\end{figure}
+%

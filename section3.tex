@@ -1052,8 +1052,38 @@ The numerical results are in good agreement with the exact solution and do not d
 \end{figure} 
 
 %---------------------------------------------------------------------------------------------------
-\subsection{Typical $1$-D shock tubes \cite{Toro}} \label{sec:1d_toro}
+\subsection{Typical $1$-D shock tubes from Toro's book \cite{Toro}.} \label{sec:1d_toro}
 %---------------------------------------------------------------------------------------------------
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_density.png}
+                \caption{Density}
+                \label{fig:1d_riemann_1_density}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_velocity.png}
+                \caption{Velocity}
+                \label{fig:1d_riemann_1_vel}
+        \end{subfigure}
+
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_pressure.png}
+                \caption{Pressure}
+                \label{fig:1d_riemann_1_press}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_viscosity.png}
+                \caption{Viscosity coefficients}
+                \label{fig:1d_riemann_1_visc}
+        \end{subfigure}
+        \caption{Solution profile of test $1$ at $t=0.2$ s.}
+				\label{fig:1d_riemann_1}
+\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{$2$-D numerical results for supersonic flows:} \label{sec:2d-supersonic-results}

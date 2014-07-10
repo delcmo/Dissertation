@@ -31,8 +31,7 @@ numerical methods it employs is given.
 The continuous Galerkin finite element method is employed
 via the INL MOOSE framework.  This section focuses on
 the weak statement associated to the strong form of a generic hyperbolic system of equations with source terms of the form:
-\begin{align}
-  \label{eqn:va_system_notation}
+\begin{align}\label{eqn:va_system_notation}
 \partial_t \mbold U(\mbold r, t) + \div \mbold F(\mbold U(\mbold r, t)) = \mbold S(\mbold U(\mbold r, t))
 \end{align}
 where the vector solution and flux are defined by
@@ -52,15 +51,15 @@ where the vector solution and flux are defined by
   \qquad
   \mbold F \equiv
   \begin{bmatrix}
-    F_1(U(\mbold r, t))
+    \vec{F}_1(U(\mbold r, t))
     \\
     \vdots
     \\
-    F_i(U(\mbold r, t))
+    \vec{F}_i(U(\mbold r, t))
     \\
     \vdots
     \\
-    F_n(U(\mbold r, t))
+    \vec{F}_n(U(\mbold r, t))
   \end{bmatrix}
 \end{align}
 and $  \mbold S(\mbold U(\mbold r, t))$ consists of the source
@@ -78,160 +77,138 @@ integrating over the domain $\Omega$ of boundaries $\Gamma$ as follows:
 \eqt{en:va_system_weak} is recast by integrating per part the second term of the left hand-side to yield:
 \begin{align}
   \label{en:va_system_weak2}
-  \int_\Omega \partial_t \mbold U(\mbold r, t) -   \int_\Omega \mbold F(\mbold U(\mbold r, t)) \cdot \div \mbold W 
+  \int_\Omega \partial_t \mbold U(\mbold r, t) \cdot \mbold W -   \int_\Omega \mbold F(\mbold U(\mbold r, t)) \cdot \grad \mbold W 
 + \int_\Gamma \left( \mbold F(\mbold U(\mbold r, t)) \cdot \mbold W \right) \cdot \mbold n   =  \int_{\Omega}  \mbold S(\mbold U(\mbold r, t)) \cdot \mbold W,
 \end{align}
 where $\mbold n$ denotes the outward normal to the boundary $\Gamma$. We note the difference with a discontinuous approach, where the integrals are first split over each element of the computational domain before integrating per part. \\
-By integrating per part, a boundary term appears in \eqt{en:va_system_weak2} and will require boundary conditions in order to compute the vector flux $\mbold F(\mbold U(\mbold r, t))$ at the boundaries. Because of the special nature of hyperbolic system of equation, a generic treatment of the boundary terms is not suitable. Instead a case by case approach is chosen and boundary conditions will be specified for each system of equations studied in this dissertation. 
+By integrating per part, a boundary term appears in \eqt{en:va_system_weak2} and will require boundary conditions in order to compute the vector flux $\mbold F(\mbold U(\mbold r, t))$ at the boundaries. Because of the special nature of hyperbolic system of equation, a generic treatment of the boundary terms is not suitable. Instead a case by case approach is chosen and boundary conditions will be specified further for each system of equations studied in this dissertation. 
 
-Note that the test function $\vec{W}$ is not chosen arbitrarily.
-In particular, it is required that $\vec{W}$ come from the space of
+The test function $\mbold W$ is not chosen arbitrarily.
+In particular, it is required that $\mbold W$ comes from the space of
 vector functions
 \begin{align}
   \label{eqn:W_set}
-  \vec{W} \in \left\{
+  \mbold W \in \left\{
       \begin{bmatrix}
-        w \\ 0 \\ 0
+        w \\ 0 \\ 0 \\ 0 \\ 0 \\ \vdots \\ 0
       \end{bmatrix},
       \begin{bmatrix}
-        0 \\ w \\ 0
+        0 \\ w \\ 0 \\ 0 \\ 0 \\ \vdots \\ 0
       \end{bmatrix},
+      \dots ,
       \begin{bmatrix}
-        0 \\ 0 \\ w
+        0 \\ \vdots \\ 0 \\ w \\ 0 \\ \vdots \\ 0
+      \end{bmatrix},
+      \dots ,
+     \begin{bmatrix}
+        0 \\ 0 \\ 0 \\ \vdots \\ 0 \\ w \\ 0
+      \end{bmatrix}
+      \begin{bmatrix}
+        0 \\ 0 \\ 0 \\ 0 \\ \vdots \\ 0 \\ w
       \end{bmatrix}
     \right\}
 \end{align}
 where $w \in \mathcal{W}$ is a scalar test function.  In the present
 work, and in general practice, the space $\mathcal{W}$ is taken to be
 (a subspace of) the Hilbert space $H^1(\Omega)$. This choice, for
-instance, guarantees enough smoothness that~\eqref{eqn:va_system_weak}
+instance, guarantees enough smoothness that \eqt{en:va_system_weak}
 makes sense.
 %
 The approximate problem then proceeds by selecting only test functions
 from a finite-dimensional subspace of $\mathcal{W}$, denoted by
-$\mathcal{W}^h$, which is spanned by the basis $\{\phi_i\}$,
-$i=1,\ldots,N$.  We then seek $\vec{U}^h$ with components in the same
+$\mathcal {W}^h$, which is spanned by the basis $\{\phi_k\}$,
+$k=1,\ldots,N$.  We then seek $\mbold U^h$ with components in the same
 space as $\mathcal{W}^h$, satisfying the boundary conditions, and such
 that
 \begin{align}
-  \label{eqn:va_system_weak_h}
-  \int_{\Omega} \left(\frac{\partial \vec{U}^h}{\partial t} \cdot \vec{W}^h
-    - \vec{F}^h\cdot \frac{\partial \vec{W}^h}{\partial x} - \vec{S}^h\cdot\vec{W}^h \right) \text{d}\Omega
-  + \int_{\Gamma} \left( \vec{F}^h \cdot \vec{W}^h \right) \vec{n}_x \;\text{d}\Gamma = 0
+  \label{en:va_system_weak3}
+  \int_\Omega \partial_t \mbold U^h(\mbold r, t) \cdot \mbold W -   \int_\Omega \mbold F(\mbold U^h(\mbold r, t)) \cdot \div \mbold W^h 
++ \int_\Gamma \left( \mbold F(\mbold U^h(\mbold r, t)) \cdot \mbold W^h \right) \cdot \mbold n   =  \int_{\Omega}  \mbold S(\mbold U^h(\mbold r, t)) \cdot \mbold W^h,
 \end{align}
-holds for all $\vec{W}^h$ defined analogously to~\eqref{eqn:W_set},
-with components in $\mathcal{W}^h$. Note that~\eqref{eqn:va_system_weak_h} 
+holds for all $\mbold W^h$ defined analogously to \eqt{eqn:W_set},
+with components in $\mathcal{W}^h$. Note that \eqt{en:va_system_weak3}
 has been placed in a ``continuous'' setting, that is, a mesh and finite element
 discretization has been introduced requiring a continuous solution.  
-Equation~\eqref{eqn:va_system_weak_h} remains a ``weak'' restatement of the ``strong'' 
-equations~\eqref{eqn:va_system_notation} in the sense that derivatives of the  
-solution and its flux need not be continuous. More will be said of this subsequently,
-in the upcoming section on stabilization methods.  Written out in component form,
-and denoting the components of $\vec{U}^h$ by $U_0^h$, $U_1^h$, and
-$U_2^h$, \eqref{eqn:va_system_weak_h} expands to:
+\eqt{en:va_system_weak3} remains a ``weak'' restatement of the ``strong'' 
+\eqt{eqn:va_system_notation} in the sense that derivatives of the  
+solution and its flux need not be continuous. 
+As an example, the first equation of \eqt{en:va_system_weak3} would yield:
+%
 \begin{align}
-  \label{eqn:1Dmass_weak}
-  &
-  % F_i^{(U_0)} \equiv
-  \int_{\Omega} \left( \frac{\partial U_0^h}{\partial t} \phi_i -
-    U_1^h \frac{\partial \phi_i}{\partial x} \right) \text{d}{\Omega}
-  + \int_{\Gamma} U_1^h \vec{n}_x \phi_i \; \text{d}{\Gamma} = 0
-  \\[12pt]
-  % Momentum equation
-  \nonumber
-  &
-  % F_i^{(U_1)} \equiv
-  \int_{\Omega} \left[ \left(\frac{\partial U_1^h}{\partial t}
-      - U_0^h g_x + \frac{f}{2 d_h}  U_1^h \left|\frac{U_1^h}{U_0^h}\right| - p^h \frac{\partial A}{\partial x} \right) \phi_i
-    - \left( \frac{(U_1^h)^2}{U_0^h} + p^hA \right) \frac{\partial\phi_i }{\partial x} \right] \text{d}{\Omega}
-  \\
-  \label{eqn:1Dmomentum_weak}
-  &\qquad + \int_{\Gamma} \left( \frac{(U_1^h)^2}{U_0^h} + p^hA \right) \vec{n}_x \phi_i \; \text{d}{\Gamma} = 0
-  \\[12pt]
-  % Energy equation
-  \nonumber
-  &
-  % F_i^{(U_2)} \equiv
-  \int_{\Omega}
-  \left[
-  \left(
-    \frac{\partial U_2^h}{\partial t} + H_w a_w (T^h-T_w) A - U_1^h g_x
-  \right)
-  \phi_i
-    -  U_1^h H^h \frac{\partial \phi_i}{\partial x}
-  \right]
-  \text{d}{\Omega}
-  \\
-  \label{eqn:1Denergy_3eq_weak}
-  &\qquad
-  +
-  \int_{\Gamma} U_1^h H^h \vec{n}_x \phi_i \; \text{d}{\Gamma} = 0
+  \label{en:va_system_weak4}
+  \int_\Omega \partial_t U_1^h(\mbold r, t) \phi_k -   \int_\Omega \vec{F}_1(\mbold U^h(\mbold r, t)) \cdot \div \phi_k 
++ \int_\Gamma \left( \vec{F}_1(\mbold U^h(\mbold r, t)) \phi_k \right) \cdot \mbold n   =  \int_{\Omega} S_1(\mbold U^h(\mbold r, t)) \phi_k,
 \end{align}
-Equations~\eqref{eqn:1Dmass_weak}--\eqref{eqn:1Denergy_3eq_weak} must
-hold for $i=1,\ldots,N$.  Note that the approximate pressure, $p^h$,
-temperature, $T^h$, and enthalpy, $H^h$ are functions of the conserved
-variables $U_0^h, U_1^h, U_2^h$.  As mentioned, a continuous
+%
+and must hold for $k=1,\ldots,N$. Note that the flux $\vec{F}_1$ and the source term $S_1$ are not necessarily only function of $U_1$.
+As mentioned, a continuous
 Galerkin formulation is employed, and therefore the unknowns are expressed in
 the same basis used for the test functions, i.e.
-\begin{align}
-  U_0^h &= \sum_j (U_0)_j \phi_j
+\begin{align}\label{en:va_system_weak4b}
+  U_0^h(\mbold r, t) &= \sum_{j=0}^N (U_0)_j(t) \phi_j(\mbold r)
   \\
-  U_1^h &= \sum_j (U_1)_j \phi_j
+    \vdots  \nonumber\\
+  U_i^h(\mbold r, t) &= \sum_{j=0}^N (U_i)_j(t) \phi_j(\mbold r)
   \\
-  U_2^h &= \sum_j (U_2)_j \phi_j
+  \vdots  \nonumber\\
+  U_n^h(\mbold r, t) &= \sum_{j=0}^N (U_n)_j(t) \phi_j(\mbold r)
 \end{align}
-The coefficients $(U_0)_j$, $(U_1)_j$, and $(U_2)_j$ vary in time only, and comprise the
-solution vector at each iteration.  Note
-that~\eqref{eqn:1Dmass_weak}--\eqref{eqn:1Denergy_3eq_weak} are
-so-called ``semi-discrete'' equations: they have been discretized in
-space, but the temporal derivatives remain in continuous form.  In
-SECTION the various time discretization methods
-employed in RELAP-7, to approximately time-integrate the equations,
-are summarized.  Furthermore, it is well-known
+where the coefficients $(U_i)_j$ correspond to the nodal values of the $i^{th}$ component of the vector solution $\mbold U$ and vary in time. The spatial dependence is carried by the test function $\phi_k$. \eqt{en:va_system_weak3} is numerically evaluated by splitting the integrals over the elements $e$ of the mesh, and then by using a quadrature rule denoted by $\mathcal{Q} = \left\{ \mbold r_q \right\}$ as follows:
+%
+\begin{align}\label{en:va_system_weak5}
+\int_\Omega \mbold F(\mbold U(\mbold r, t)^h) \cdot \div \mbold W^h = \sum_e \sum_q \mbold F(\mbold U(\mbold r_q, t)^h) \cdot \div \mbold W^h (\mbold r_q, t)),
+\end{align}
+%
+where the values of the vector solution at the quadrature points are obtained from \eqt{en:va_system_weak4b}. The number of elements can vary and depends on how fine the mesh is. The quadrature rule sets the number of quadrature points and is usually taken large enough to exactly integrate the test function $\phi_k$. The other integrals in \eqt{en:va_system_weak3} are treated on the same model as \eqt{en:va_system_weak5}. Note that the first term in the left hand-side of \eqt{en:va_system_weak3} still contains the continuous form of the time derivative that has not been discretized yet. Under this form \eqt{en:va_system_weak3} is referred to as a semi-discrete equation. Discretization of the time dependent term for a temporal implicit scheme is detailed in \sect{sec:temp_implicit}.
+Furthermore, it is well-known
 that a continuous Galerkin discretization of this set of hyperbolic
 equations is equivalent to a central difference method for a certain
 choice of integration rule, and therefore will exhibit oscillatory
 instabilities unless some artificial diffusion is added to stabilize
-the method.  In SECTION, stabilization will be
-discussed further, and in particular the new entropy viscosity 
-stabilization scheme will be presented in detail.
+the method. The EVM will be used in to stabilize the scheme and details of its implementation are given in \sect{sect:ev_impl_sect2}.
 %
-\subsection{Backward Euler\label{sec:backward_euler}}
+\subsection{Implicit time integration methods}\label{sec:temp_implicit}
+%
+The MOOSE framework offers both first- and second-order implicit temporal integrators: Backward Euler and BDF2.
+%
+\subsubsection{Backward Euler}\label{sec:backward_euler}
 %
 The backward Euler method~\cite{Butcher_2003} is a well-known, first-order, A-stable
 implicit time integration method.  Given a generic
-semi-discrete equation in a form similar to~\eqref{eqn:1Dmass_weak}--\eqref{eqn:1Denergy_3eq_weak},
+semi-discrete equation in a form similar to \eqt{en:va_system_weak4} (the upper-script $h$ is dropped in order to simplify the notation),
 \begin{align}
-  \int_{\Omega} \left(\frac{\partial u^h}{\partial t} + G(u^h) \right) \phi_i \; \text{d}{\Omega} = 0
+  \int_{\Omega} \left(\frac{\partial U_1(\mbold r,t)}{\partial t} + \vec{G}_1(\mbold U(\mbold r,t)) \right) \phi_k \; \text{d}{\Omega} = 0
 \end{align}
+where $\vec{G}(\mbold U^h)$ denotes the steady-state residual, 
 the backward Euler method results in the temporal discretization
 \begin{align}
   \label{eqn:backward_euler_fully_discrete}
-  \int_{\Omega} \left( \frac{u^{n+1} - u^n}{\Delta t} + G(u^{n+1}) \right) \phi_i \; \text{d}{\Omega} = 0
+  \int_{\Omega} \left( \frac{U_1^{n+1}(\mbold r) - U_1^n(\mbold r)}{\Delta t} + \vec{G}_1(\mbold U^{n+1}(\mbold r)) \right) \phi_k \; \text{d}{\Omega} = 0
 \end{align}
-where $\Delta t$ is the timestep, $t^{n+1} = t^n + \Delta t$, and $u^n
-\equiv u^h(t^n)$ is a shorthand notation used to refer to the finite
+where $\Delta t$ is the timestep, $t^{n+1} = t^n + \Delta t$, and $U_1(\mbold r, t^n)
+\equiv U_1^n(\mbold r)$ is a shorthand notation used to refer to the finite
 element solution at time level
 $n$. Equation~\eqref{eqn:backward_euler_fully_discrete} is a
 fully-discrete (possibly nonlinear) equation which must be satisfied
-for each $i$.
+for each $k$.
 
-Note that the backward Euler method, when applied to the linear convection equation
+We also propose to study the truncation error of the backward Euler method, on a simple linear convection equation
 \begin{align}
   \label{eqn:convection}
-  \frac{\partial u}{\partial t} + a \frac{\partial u}{\partial x} = 0
+  \frac{\partial u}{\partial t} + a \frac{\partial u}{\partial x} = 0.
 \end{align}
-yields a leading-order truncation error term of the form
+Using a Taylor expansion in time, an expression for the continuous time derivative is obtained:
 \begin{align}
-  \nonumber
-  \left. \frac{\partial u}{\partial t} \right|_{t^{n+1}}  &=
-  \frac{u^{n+1} - u^n}{\Delta t} + \frac{\Delta t}{2}\left.\frac{\partial^2 u}{\partial t^2}\right|_{t^{n+1}} + \mathcal{O}(\Delta t^2)
-  \\
   \label{eqn:truncation}
-  &= \frac{u^{n+1} - u^n}{\Delta t} + \frac{a^2 \Delta t}{2}\left.\frac{\partial^2 u}{\partial x^2}\right|_{t^{n+1}} + \mathcal{O}(\Delta t^2)
+  \left. \frac{\partial u}{\partial t} \right|_{t^{n+1}}  =
+  \frac{u^{n+1} - u^n}{\Delta t} + \frac{\Delta t}{2}\left.\frac{\partial^2 u}{\partial t^2}\right|_{t^{n+1}} + \mathcal{O}(\Delta t^2),
+  \end{align}
+which can be recast in,
+\begin{align}  \label{eqn:truncation2}
+  \left. \frac{\partial u}{\partial t} \right|_{t^{n+1}}    = \frac{u^{n+1} - u^n}{\Delta t} + \frac{a^2 \Delta t}{2}\left.\frac{\partial^2 u}{\partial x^2}\right|_{t^{n+1}} + \mathcal{O}(\Delta t^2),
 \end{align}
-where~\eqref{eqn:truncation} follows from differentiating the
-continuous equation~\eqref{eqn:convection} with respect to time:
+by differentiating the
+continuous equation \eqt{eqn:convection} with respect to time:
 \begin{align}
   \label{eqn:second_wave}
   \frac{\partial^2 u}{\partial t^2} = -a \frac{\partial }{\partial t} \left( \frac{\partial u}{\partial x} \right)
@@ -239,7 +216,7 @@ continuous equation~\eqref{eqn:convection} with respect to time:
   = -a \frac{\partial }{\partial x} \left( -a \frac{\partial u}{\partial x} \right)
   = a^2 \frac{\partial^2 u}{\partial x^2} \,\,.
 \end{align}
-Rearranging terms in~\eqref{eqn:truncation} and adding $a\frac{\partial u}{\partial x}$ to both sides allows us to write
+Rearranging terms in \eqt{eqn:truncation2} and adding $a\frac{\partial u}{\partial x}$ to both sides allows us to write
 \begin{align}
   \label{eqn:truncation_rearranged}
     \frac{u^{n+1} - u^n}{\Delta t}
@@ -257,13 +234,6 @@ the continuous parabolic partial differential equation on the
 right-hand side, which includes ``artificial'' diffusion or viscosity of
 $\mathcal{O}(\frac{a^2 \Delta t}{2})$, to within $\mathcal{O}(\Delta
 t^2)$.
-% This in turn implies that the solution to the semi-discrete equation
-% \begin{align}
-%     \frac{u^{n+1} - u^n}{\Delta t}
-%     + a \frac{\partial u}{\partial x} = 0
-% \end{align}
-% coincides with the solution of a ``diffuse'' version of the original
-% equation to within $\mathcal{O}(\Delta t^2)$.
 For this reason, we often say that the backward Euler time
 discretization is inherently stabilizing for the hyperbolic
 equation~\eqref{eqn:convection}.  Obviously, the artificial viscosity for the
@@ -271,62 +241,49 @@ complete scheme is a composite of the artificial viscosity of both the time
 and spatial discretization. 
 
 The backward Euler time integration method may generate excessive artificial
-viscosity and should, therefore, only be used for transients with RELAP-7
+viscosity and should, therefore, only be used for transients
 as an initial scoping calculation, or if only the steady-state solution is of
-interest. For accurate transient solutions with RELAP-7, the BDF2 time
+interest. For accurate transient solutions, the BDF2 time
 integration method, described next, is highly recommended because it is
 a second-order (in time) discretization.
 %
-\subsection{BDF2\label{sec:bdf2}}
+\subsubsection{BDF2\label{sec:bdf2}}
 %
 The backward differentiation formula (BDF) is a family of implicit
 methods for numerically integrating ordinary differential equations.
 Some notable members of this family include BDF1, which is equivalent
 to the backward Euler~\cite{Ascher_1998} method discussed in
-Section~\ref{sec:backward_euler}, and BDF2, which is the highest-order
-BDF method which is still A-stable.  For fixed step-size $\Delta t$, the BDF2 method 
-applied to the ordinary differential equation
+\sect{sec:backward_euler}, and BDF2, which is the highest-order
+BDF method which is still A-stable. We still consider the example from \sect{sec:backward_euler}: 
 \begin{align}
-  \frac{\partial u}{\partial t} &= f(t, u)
-  \\
-  u(t=0) &= u_0
+  \int_{\Omega} \left(\frac{\partial U_1(\mbold r,t)}{\partial t} + \vec{G}_1(\mbold U(\mbold r,t)) \right) \phi_k \; \text{d}{\Omega} = 0.
 \end{align}
-yields the update step:
+Considering three consecutive solutions $U_1^{n+1}(\mbold r,t)$, $U_1^n(\mbold r,t)$ and $U_1^{n-1}(\mbold r,t)$, the update steps is:
+%
 \begin{align}
 \label{eqn:bdf2}
-u^{n+1} = \frac{4}{3}u^n - \frac{1}{3}u^{n-1} + \frac{2}{3} \Delta t f(u^{n+1}, t^{n+1})
+  \int_{\Omega} \left(\omega_0 U_1^{n+1}(\mbold r,t)+\omega_1 U_1^{n}(\mbold r,t)+\omega_2 U_1^{n-1}(\mbold r,t) + \vec{G}_1(\mbold U^{n+1}(\mbold r,t)) \right) \phi_k \; \text{d}{\Omega} = 0.
 \end{align}
-Dividing through by $\frac{2}{3} \Delta t$, equation~\eqref{eqn:bdf2} can be 
-alternatively written as
-\begin{align}
-\label{eqn:bdf2_scaled}
-\frac{\frac{3}{2}u^{n+1} - 2u^n  + \frac{1}{2}u^{n-1}}{\Delta t} = f(u^{n+1}, t^{n+1})
-\end{align}
-The left-hand side of~\eqref{eqn:bdf2_scaled} can be interpreted as a
-backward-difference approximation to the continuous time derivative
-$\frac{\partial u}{\partial t}$, and may be employed in a manner analogous
-to~\eqref{eqn:backward_euler_fully_discrete} to derive a fully-discrete
-system of equations:
-\begin{align}
-  \label{eqn:bdf2_fully_discrete}
-  \int_{\Omega} \left( \frac{\frac{3}{2}u^{n+1} - 2u^n  + \frac{1}{2}u^{n-1}}{\Delta t} + G(u^{n+1}) \right) \phi_i \; \text{d}{\Omega} = 0
-\end{align}
-based on the semi-discrete equations~\eqref{eqn:1Dmass_weak}--\eqref{eqn:1Denergy_3eq_weak}.
+%
+with
+%
+\begin{multline}
+\omega_0 =\frac{2\Delta t^{n+1}+\Delta t^n}{\Delta t^{n+1} \left( \Delta t^{n+1}+\Delta t^n \right)} \,,\,
+\omega_1 = -\frac{\Delta t^{n+1}+\Delta t^n}{\Delta t^{n+1} \Delta t^n}  \\
+\text{, and } \omega_2 = \frac{\Delta t^{n+1}}{\Delta t^n \left( \Delta t^{n+1} + \Delta t^n \right)} \nonumber
+\end{multline}
+%
+where $\Delta t^{n} = t^n-t^{n-1}$ and $\Delta t^{n+1} = t^{n+1}-t^{n}$.
 Since BDF2 requires two old timesteps, the method must be
-``bootstrapped'' by a lower-order method, such as backward Euler, when
+``bootstrapped'' by either a lower-order method, such as backward Euler, or a second-order method, such as Crank-Nicolson, when
 starting.  This means that a much smaller time step size should be used
 for start-up, at the beginning of a transient.  The BDF2 method is 
-recommended for most transient simulations with RELAP-7.
+recommended for most transient simulations.
 %
 \subsection{Jacobian-Free Newton Krylov Solver\label{sec:jfnk}}
 %
-The RELAP-7 code solves coupled multi-physics problems using the
-Jacobian-Free Newton Krylov (JFNK) approach via the MOOSE
-framework. Field equations solved in the current RELAP-7 code include
-PDEs to describe one-dimensional fluid flow in pipe systems and heat
-conduction in solids, as well as ODEs to describe physics in
-zero-dimensional components and the point kinetics equations.
-
+The Moose framework allows to solve coupled multi-physics problems using the
+Jacobian-Free Newton Krylov (JFNK) approach. 
 The JFNK method is a fully-coupled, multi-level method for solving large
 nonlinear equation systems. In general, it consists of at least two
 levels: the outer Newton loop for the nonlinear solve and the inner
@@ -337,46 +294,45 @@ multi-physics problems over the last 20 years, and has branched out
 into a number of different disciplines~\cite{Knoll_2004}.
 
 In what follows, a brief description of the JFNK method as it
-applies to the RELAP-7 application is given.  The FEM-discretized field
+applies to all of the applications of this dissertation is given.  The FEM-discretized field
 equations are first written as
 \begin{equation}
   \label{eqn:F}
-  \vec{F} (\vec{u}) = \vec{0}
+  \mathcal{R} (\mbold U) = \partial_t \mbold U(\mbold r, t) + \div \mbold F(\mbold U(\mbold r, t)) - \mbold S(\mbold U(\mbold r, t)) = \vec{0}
 \end{equation}
-where $\vec{F}$ represents the nonlinear equation system and $\vec{u}$
+where $\mathcal{R}$ represents the nonlinear residual and $\mbold U$
 is the solution vector. Newton's method requires an initial guess,
-$\vec{u}^0$, to start the iteration process. For the transient
+$\mbold U^0$, to start the iteration process For the transient
 problems of interest here, the solution at a previous time step is
 generally used as the initial guess for the method. At the $k^{th}$
 iteration, the residual vector is defined as
 \begin{align}
-  \vec{r}^k \equiv \vec{F}(\vec{u}^k) \,.
+  \vec{r}^k \equiv \mathcal{R} (\mbold U^k)\,.
 \end{align}
-Clearly if $\vec{u}^k$ satisfies~\eqref{eqn:F} \emph{exactly}, the
+Clearly if $\mbold U^k$ satisfies \eqt{eqn:F} \emph{exactly}, the
 $k^{th}$ residual will be zero.  To update the solution vector, the
 following equation is solved for the update vector, $\delta
-\vec{u}^{k+1}$:
+\mbold U^{k+1}$:
 \begin{equation}
   \label{eqn:newton_correction}
-%  \tensor{J}(\vec{u}^k) \delta \vec{u}^{k+1} = - \vec{r}^k
-J (\vec{u}^k) \delta \vec{u}^{k+1} = - \vec{r}^k
+J (\mbold U^k) \delta \mbold U^{k+1} = - \vec{r}^k
 \end{equation}
-where $J(\vec{u}^k)$ is the Jacobian
-matrix evaluated at $\vec{u}^k$.  In index notation,
+where $J(\mbold U^k)$ is the Jacobian
+matrix of the residual $\mathcal{R}$ evaluated at $\mbold U^k$.  In index notation, the entries of the Jacobian matrix are:
 \begin{equation}
   \label{eqn:jacobian_matrix}
-  J_{ij} \equiv \frac {\partial F_i} {\partial u_j} \,\,.
+  J_{ij} \equiv \frac {\partial \mathcal{R}_i} {\partial \mbold U_j} \,\,.
 \end{equation}
-After $\delta \vec{u}^{k+1}$ is obtained, the $(k+1)^{st}$ solution iterate
+After $\delta \mbold U^{k+1}$ is obtained, the $(k+1)^{st}$ solution iterate
 is computed by
 \begin{equation}
-  \vec{u}^{k+1} = \vec{u}^{k} + \delta \vec{u}^{k+1} \,\,.
+  \mbold U^{k+1} = \mbold U^{k} + \delta \mbold U^{k+1} \,\,.
 \end{equation}
 The Newton iteration is terminated when one of the following conditions is met:
 \begin{enumerate}
 \item The residual vector norm, $|\vec{r}^k|$, is sufficiently small.
 \item The relative residual vector norm $\frac{|\vec{r}^k|}{|\vec{r}^0|}$  is sufficiently small.
-\item The step size norm, $|\delta \vec{u}^{k+1}|$ is sufficiently small.
+\item The step size norm, $|\delta \mbold U^{k+1}|$ is sufficiently small.
 \end{enumerate}
 
 Note that~\eqref{eqn:newton_correction} represents a large
@@ -390,35 +346,26 @@ equation~\eqref{eqn:newton_correction} can be expressed as (using
 right preconditioning as an example),
 \begin{equation}
   \label{eqn:newton_correction_preconditioned}
-%  \tensor{J}^k \tensor{P}^{-1} \left(\tensor{P} \delta \vec{u}^{k+1} \right)= -\vec{r}^k
-  J^k P^{-1} \left(P \delta \vec{u}^{k+1} \right)= -\vec{r}^k
+%  \tensor{J}^k \tensor{P}^{-1} \left(\tensor{P} \delta \mbold U^{k+1} \right)= -\vec{r}^k
+  J^k P^{-1} \left(P \delta \mbold U^{k+1} \right)= -\vec{r}^k
 \end{equation}
-where $P$ is the preconditioning matrix. In the approach current
-used in RELAP-7, an analytical Jacobian matrix is computed according
-to~\eqref{eqn:jacobian_matrix}, and passed to the underlying numerical solver
+where $P$ is the preconditioning matrix. For multi-D simulations, an analytical Jacobian matrix is computed according
+to \eqt{eqn:jacobian_matrix}, and passed to the underlying numerical solver
 library as the matrix $P$ for preconditioning purposes.
-%==============================================================================
-\section{Hyperbolic system of equation and boundary conditions:}
-\begin{itemize}
-\item describe general way for bc: waves, characteristic equations, variables, ...
-\item Look at Burger's equations.
-\item Do multi-D Euler equations.
-\end{itemize}
-%==============================================================================
 %==============================================================================
 \section{Implementation of the entropy viscosity method (EVM) with continuous Galerkin finite element method:}\label{sect:ev_impl_sect2}
 %==============================================================================
-After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient, this section focuses on the implementation of the method in a Galerkin continuous finite element scheme. Details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Special attention is required for the jump since their definition is scheme dependent. A non-uniform $2$-D mesh family $\Omega$ is considered. Each member of this family is called element, $k$, and the set of its faces is denoted by $\delta k = \left\{ \delta k_j \right\}$, where $j$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta k$, a quadrature rule, $Q = \left\{ q \right\}$ is used.
+After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient in \chap{chap:theory_chp1}, this section focuses on the implementation of the method in a Galerkin continuous finite element scheme. Details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Special attention is required for the jump since their definition is scheme dependent. A non-uniform $2$-D mesh family $\Omega$ is considered. Each member of this family is called element, $e$, and the set of its faces is denoted by $\delta e = \left\{ \delta e_f \right\}$, where $f$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta e$, a quadrature rule, $\mathcal{Q} = \left\{ q \right\}$ is used.
 
-For academic purpose, the multi-D Burger's equations are considered and recalled here along with the definition of the viscosity coefficients \eqt{eq:system_sct2}: 
+For academic purpose, the multi-D Burger's equations are considered and recalled here along with the definition of the viscosity coefficients based on \sect{sec:evm_hyp_sc_sct1b}: 
 \begin{subequations}
 \label{eq:system_sct2}
 \begin{equation}\label{eq:bg_sct2}
-\partial_t u(\vec{r},t) + \div \left[ \vec{n} \frac{u(\vec{r},t)^2}{2} \right] = \div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right) = \div \vec{g}
+\partial_t u(\vec{r},t) + \div \left[ \hat{n} \frac{u(\vec{r},t)^2}{2} \right] = \div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right) = \div \vec{g}
 \end{equation}
 %
 \begin{equation}\label{eq:res_sct2}
-R_e(\vec{r},t) = \partial_t \left( s(\vec{r},t)\right) +  \grad \left( \vec{n} \Phi(\vec{r},t) \right) \leq 0
+R(\vec{r},t) = \partial_t \left( s(\vec{r},t)\right) +  \div \left( \hat{n} \psi(\vec{r},t) \right) \leq 0
 \end{equation}
 %
 \begin{equation}\label{eq:visc_sct2}
@@ -430,68 +377,80 @@ R_e(\vec{r},t) = \partial_t \left( s(\vec{r},t)\right) +  \grad \left( \vec{n} \
 \end{equation}
 %
 \begin{equation}\label{eq:visc_ev_sct2}
-\mu_{e}(\vec{r},t) = h^2 \frac{\max\left( R_e(\vec{r},t), J \right)}{|| s - \bar{s} ||_\infty}
+\mu_e(\vec{r},t) = h^2 \frac{\max\left( R(\vec{r},t), J \right)}{|| s - \bar{s} ||_\infty}
 \end{equation}
 \end{subequations}
-where $u(\vec{r},t)$ is a conservative variable that depends on both space and time. The entropy function $s$ and the conservative flux in the entropy residual $R_e$ are defined as $s(\vec{r},t) = \frac{u(\vec{r},t)}{2}$ and $\Phi = \frac{u(\vec{r},t)^3}{3}$, respectively. The Burger's equation is known to admit an unique eigenvalue $\lambda = u(\vec{r},t)$. The vector $\vec{n}$ has the same definition as in SECTION. The jump $J$ is assumed piecewise constant and details regarding its evaluation are given later in this SECTION. The normalization parameter $|| s - \bar{s} ||_\infty$ used in \eqt{eq:visc_ev_sct2} denotes the infinite norm over the entire computational domain of the quantity $s - \bar{s}$ where $\bar{s}$ is the average entropy over the computational domain as well.\\
+where $u(\vec{r},t)$ is a conservative variable that depends on both space and time. The entropy function $s$ and the conservative flux in the entropy residual $R$ are defined as $s(\vec{r},t) = \frac{u(\vec{r},t)}{2}$ and $\psi = \frac{u(\vec{r},t)^3}{3}$, respectively. The Burger's equation is known to admit an unique eigenvalue $\lambda = u(\vec{r},t)$. The vector $\hat{n}$ is defined as follows:
+%
+\begin{eqnarray}\label{eq:bg_hat_sect2}
+\hat{n} = \left( 1, 0, 0 \right) \text{ in $1$-D} \nonumber \\
+\hat{n} = \left( 1, 1, 0 \right) \text{ in $2$-D} \nonumber \\
+\hat{n} = \left( 1, 1, 1 \right) \text{ in $3$-D} \nonumber
+\end{eqnarray}
+%.
+The jump $J$ is assumed piecewise constant and details regarding its evaluation will be furze given. The normalization parameter $|| s - \bar{s} ||_\infty$ used in \eqt{eq:visc_ev_sct2} denotes the infinite norm over the entire computational domain of the quantity $s - \bar{s}$ where $\bar{s}$ is the average entropy over the computational domain as well.\\
 The first step in the implementation of the EVM is the integration of the dissipative terms over each element of the mesh. The continuous finite element approach consists of multiplying each term by a test function and then, integrating over the computational domain. Since the dissipative terms are second-order spatial derivatives, an integration per part is performed leading to:
 %
 \begin{equation}\label{eq:diss_term_sct2}
-\div \vec{g} \rightarrow \int_\Omega W^h \cdot \div \vec{g}^h\text{d}\Omega  = \int_\Omega \grad W^h \cdot \vec{g}^h\text{d}\Omega - \int_\Gamma \hat{n} \cdot \vec{g}^h W^h \text{d}\Gamma
+\div \vec{g} \rightarrow \int_\Omega \div \vec{g}^h \phi_k \text{d}\Omega  = \int_\Omega \vec{g}^h \cdot \grad \phi_k \text{d}\Omega - \int_\Gamma \vec{n} \cdot \vec{g}^h \phi_k \text{d}\Gamma
 \end{equation} 
 %
-In \eqt{eq:diss_term_sct2}, the integral over the domain $\Omega$ is transformed into a sum over the elements and evaluated by using the quadrature rule. The other term, consists of an integral over the boundary of the computational domain $\Gamma$. It requires to compute the dissipative flux $g$, and thus, the viscosity coefficient $\mu$ at the boundary. The evaluation of the integral over $\Gamma$ can be avoided by assuming that the viscosity coefficient is zero at the boundary which yields:
+In \eqt{eq:diss_term_sct2}, the integral over the domain $\Omega$ is transformed into a sum over the elements and evaluated by using the quadrature rule. The other term, consists of an integral over the boundary of the computational domain $\Gamma$ and is neglected by assuming that the viscosity coefficient $\mu$ is zero at the boundaries. We are now left with:
  %
 \begin{equation}\label{eq:diss_term2_sct2}
-\div \vec{g} \rightarrow \int_\Omega W^h \cdot \div \vec{g}^h\text{d}\Omega  = \int_\Omega \grad W^h \cdot \vec{g}^h\text{d}\Omega
+\div \vec{g} \rightarrow \int_\Omega \div \vec{g}^h \phi_k \text{d}\Omega  = \int_\Omega \grad \phi_k \cdot \vec{g}^h\text{d}\Omega.
 \end{equation} 
 %
-The dissipative term $\vec{g}^h$ is function of the viscosity coefficient and the derivative of the conservative variable $u$ that need to be evaluated at the quadrature points. Obtaining the derivative values at the quadrature points with a continuous finite element discretization type is straightforward. On the other hand, computing the viscosity coefficient at the same quadrature points require a little bit more of computational work and is explained in the following. \\
+The dissipative term $\vec{g}^h$ is function of the viscosity coefficient and the derivative of the conservative variable $u$ that need to be evaluated at the quadrature points. Obtaining the derivative values at the quadrature points with a continuous finite element discretization type is straightforward by using the test function: 
+%
+\begin{equation}
+\grad u(\mbold r,t) = \sum_j u_j(t) \grad \phi_j(\mbold r)
+\end{equation}
+%
+On the other hand, computing the viscosity coefficient at the same quadrature points require a little bit more of computational work and is explained in the following. \\
 
-The next step consists of determining the viscosity coefficient $\mu$ that is not obtained by solving a PDE, but computed on the fly from the definition recalled in \eqt{eq:visc_sct2}. The definition of the viscosity coefficient $\mu(\vec{r},t)$ involves two other viscosity coefficients: a first-order viscosity coefficient $\mu_{max}(\vec{r},t)$ that is an upper bound, and a high-order viscosity coefficient often also called entropy-viscosity coefficient that is denoted by $\mu_e(\vec{r},t)$. A common element to the definition of $\mu_{max}(\vec{r},t)$ and $\mu_e(\vec{r},t)$ is the mesh size $h$ that can vary through the computational domain and is defined as the shortest distance between two nodes of an element. Thus, when considering a $1$-D mesh with linear test function, the local mesh size is simply $\Delta x$. For a shape regular mesh, the mesh size is finite and usually available through a function call. For instance, when using libMesh (REF), a function can be called in order to get the mesh size or diameter of the cell under consideration. Once the mesh size $h$ is available, it remains to compute the local maximum eigenvalue, the residual $R_e$ and the jump $J$. \\
-Obtaining the local maximum eigenvalue is self explanatory using the test functions, $u^q_k = \sum_j u_{k,j} \phi^q_j$ , and has to be done for each quadrature point in a given element $k$: at this point, the first-order viscosity coefficient $\mu_{max}$ is available at each quadrature point and is referred to as $\mu_{max,k}^q = \frac{h_k}{2} | u^q_k |$. The high-order viscosity coefficient is trickier to compute since it involves the entropy residual $R_e$ at the quadrature points and the jumps $J$ at the interface between cells. The entropy residual $R_e$ is a PDE but is not discretized in a finite element sense. Instead, each term of the entropy residual is locally computed using the test functions but without integration over the computational domain as follows:
+The next step consists of determining the viscosity coefficient $\mu$ that is not obtained by solving a PDE, but computed on the fly from the definition recalled in \eqt{eq:visc_sct2}. The definition of the viscosity coefficient $\mu(\vec{r},t)$ involves two other viscosity coefficients: a first-order viscosity coefficient $\mu_{max}(\vec{r},t)$ that is an upper bound, and a high-order viscosity coefficient often also called entropy-viscosity coefficient that is denoted by $\mu_e(\vec{r},t)$. A common element to the definition of $\mu_{max}(\vec{r},t)$ and $\mu_e(\vec{r},t)$ is the mesh size $h$ that can vary through the computational domain and is defined as the shortest distance between two nodes of an element. Thus, when considering a $1$-D mesh with linear test function, the local mesh size is simply $\Delta x$. For a shape regular mesh, the mesh size is finite and usually available through a function call. For instance, when using libMesh, a function can be called in order to get the mesh size or diameter of the cell under consideration. Once the mesh size $h$ is available, it remains to compute the local maximum eigenvalue, the entropy residual $R$ and the jump $J$. \\
+The maximum eigenvalue is involved in the definition of the first-order viscosity coefficient. For a given quadrature point $q$ in a element $e$ of the mesh, the first-order viscosity coefficient $\mu_{max,}^{e,q}$ is given by  $\mu_{max}^{e,q} = \frac{h^e}{2} | u^{e,q} |$ where $u^{e,q}(\mbold r,t) = \sum_j u_{j}^e(t) \phi^q_j(\mbold r)$. The high-order viscosity coefficient is trickier to compute since it involves the entropy residual $R$ at the quadrature points and the jumps $J$ at the interface between cells. The entropy residual $R$ is a PDE but is not discretized in a finite element sense. Instead, each term of the entropy residual is locally computed using the test functions but without integration over the computational domain as follows:
 %
 \begin{equation}\label{eq:res_disc_sct2}
-R_{e,k}^{q,n} = w_0 s^{n,q}_k + w_1 s^{n-1,q}_k + w_2 s^{n-2,q}_k +  \vec{n} \cdot  \sum_j \Phi_{k,j}\grad \phi^q_j
+R_{e}^{q,n} = w_0 s^{n,e,q} + w_1 s^{n-1,e,q} + w_2 s^{n-2,e,q} +  \hat{n} \cdot  \sum_j \Phi_{j}^e\grad \phi^{e,q}_j
 \end{equation}
-when considering three successive solutions $s^{n,q}_k$, $s^{n-1,q}_k$ and $s^{n-2,q}_k$ in time. The weights $w_0$, $w_1$ and $w_2$ are defined in (SECTION). The values of the entropy function $s$ at the quadrature points is computed using the test function: $s^q_k = \sum_j s_{k,j} \phi^q_j = \sum_j \frac{u_{k,j}^2}{2} \phi^q_j$, which requires to access the values of $u^2$ at the nodes $j$. The same method is used for the conservative flux $\Phi$. It is noted that the entropy residual can be recast under a non-conservative form as shown in \eqt{eq:res_disc2_sct2} that can be easier to evaluate depending on what is available to the user.
+when considering three successive solutions $s^{n,e,q}$, $s^{n-1,e,q}$ and $s^{n-2,e,q}$ in time. The weights $w_0$, $w_1$ and $w_2$ are defined in \sect{sec:bdf2}. The values of the entropy function $s$ at the quadrature points is computed using the test function: $s^q_e = \sum_j s_{k,j} \phi^q_j = \sum_j \frac{(u_{j}^e)^2}{2} \phi^q_j$, which requires to access the values of $u^2$ at the nodes $j$. The same method is used for the entropy flux $\psi$. It is noted that the entropy residual can be recast under a non-conservative form as shown in \eqt{eq:res_disc2_sct2} that can be easier to evaluate depending on what is available to the user.
 %
 \begin{equation}\label{eq:res_disc2_sct2}
-R_e(\vec{r},t) = \partial_t \left( \frac{u(\vec{r},t)^2}{2} \right) +  u(\vec{r},t)^2 \grad \left( \vec{n} u(\vec{r},t) \right)
+R(\vec{r},t) = \partial_t \left( \frac{u(\mbold r,t)^2}{2} \right) +  u(\mbold r,t)^2 \div \left( \hat{n} u(\mbold r,t) \right)
 \end{equation}
 %
 It remains, now, to compute the jump $J$ that is set constant in each element. In Galerkin continuous finite elements, the variables are continuous at the faces, but their derivative are discontinuous. Thus, the jump of the gradient of a variable to choose, seems to be a good entropy production indicator since it will inform us on the presence of a sharp discontinuity. In the remaining of this section, a generic method is detailed to compute the jump of the gradient of a variable when using Galerkin finite element method. Then, the jump used in the definition of the viscosity coefficient for solving Burger's equation is given. 
 
-To be more specific, let us consider an element $k$ and its set of $n$ boundaries $\delta k = \left\{ \delta k_1, \cdots, \delta k_n \right\}$. We also assume that the outward normal $\hat{n}_i$ to each boundary $\delta k_i$ is available to us. The objective is to compute the jump $J_k$ of the gradient of the variable $v(\vec{r},t)$ for the element $k$. Since an element $k$ shares $n$ boundaries with $n$ other elements of the computational domain, a jump $J_{k.i}$ can be computed for each boundary $\delta k_i$, and is defined as follows:
+To be more specific, let us consider an element $e$ and its set of $n$ boundaries $\delta k = \left\{ \delta e_1, \cdots, \delta e_n \right\}$. We also assume that the outward normal $\vec{n}_i$ to each boundary $\delta e_i$ is available to us. The objective is to compute the jump $J_e$ of the gradient of the variable $v(\mbold r,t)$ for the element $e$. Since an element $e$ shares $n$ boundaries with $n$ other elements of the computational domain, a jump $J_{e.i}$ can be computed for each boundary $\delta e_i$, and is defined as follows:
 %
 \begin{equation}\label{eq:jump_def_sct2}
-J_{k,i} = | \left( \grad v(\vec{r},t)_{k,i} - \grad v(\vec{r},t)_{neighbor,i} \right) \cdot \hat{n}_i |
+J_{e,i} = | \left( \grad v(\mbold r,t)_{i}^e - \grad v(\mbold r,t)_{i}^{neighbor} \right) \cdot \vec{n}_i |
 \end{equation}
 % 
-where the quantity $\grad v(\vec{r},t)_{neighbor,i}$ denotes the gradient of $v(\vec{r},t)$ in the neighbor cell to the element $k$ sharing the interface $\delta k_i$. The difference of gradients between the two elements sharing the interface $\delta k_i$ is multiplied by the outward normal vector $\hat{n}_i$ to obtain the jump normal to the interface. Once all the jumps $J_{k,i}$ are computed for each face $i$ of the element $k$ (a loop over the faces $i$ of element $k$ applies), the jump $J_k$ is computed by choosing the maximum over the $J_{k,i}$:
+where the quantity $\grad v(\mbold r,t)_{neighbor,i}$ denotes the gradient of $v(\mbold r,t)$ in the neighbor cell to the element $e$ sharing the interface $\delta e_i$. The difference of gradients between the two elements sharing the interface $\delta e_i$ is multiplied by the outward normal vector $\vec{n}_i$ to obtain the jump normal to the interface. Once all the jumps $J_{i}^e$ are computed for each face $i$ of the element $e$ (a loop over the faces $i$ of element $e$ applies), the jump $J^e$ is computed by choosing the maximum over the $J_{i}^e$:
 %
 \begin{equation}\label{eq:jump_def2_sct2}
-J_k = \max_i \left( J_{k,i} \right)
+J^e = \max_i \left( J_{i}^e \right)
 \end{equation}
 %
-With the definition given in \eqt{eq:jump_def2_sct2}, the jump $J_k$ is constant in each element $k$ of the computational domain $\Omega$. From this point, the entropy residual $R_e$ and the jump $J$ are known in the element $k$, at a given time $n$ and at every quadrature points $q$. It remains to compute the normalization parameters $|| s - \bar{s} ||_\infty$ that is obtained from a post processing for every new non-linear iteration of the solver and thus is a function of time. The average value of the entropy function of the computational domain is computed from an integral as follows:
+With the definition given in \eqt{eq:jump_def2_sct2}, the jump $J^e$ is constant in each element $k$ of the computational domain $\Omega$. From this point, the entropy residual $R$ and the jump $J$ are known in the element $k$, at a given time $n$ and at every quadrature points $q$. It remains to compute the normalization parameters $|| s - \bar{s} ||_\infty$ that is obtained from a post processing for every new non-linear iteration of the solver and thus is a function of time. The average value of the entropy function of the computational domain is computed from an integral as follows:
 %
 \begin{equation}\label{eq:sbar_sct2}
-\bar{s} = \frac{1}{\Omega} \int_{\Omega} s(\vec{r},t) \text{d}\Omega
+\bar{s} = \frac{1}{\Omega} \int_{\Omega} s(\mbold r,t) \text{d}\Omega
 \end{equation}
 %   
-The high-order viscosity coefficient $\mu_{e,k}^{q,n}$ can now be computed at a given quadrature potions $q$ and given time $n$:
+The high-order viscosity coefficient $\mu_{e}^{n,e,q}$ can now be computed at a given quadrature potions $q$ and given time $n$:
 %
 \begin{equation}\label{eq:visc_ev2_sct2}
-\mu_{e,k}^{q,n} = h_k^2 \frac{\max \left( R_{e,k}^{q,n}, J_k^n \right)}{|| s - \bar{s} ||_\infty^n}
+\mu_{e}^{n,e,q} = (h^e)^2 \frac{\max \left( R^{n,e,q}, J^{n,e} \right)}{|| s - \bar{s} ||_\infty^n}
 \end{equation}
 %
 The definition of the viscosity coefficient $\mu$ from \eqt{eq:visc2_sct2} follows:
 %
 \begin{equation}\label{eq:visc2_sct2}
-\mu_{k}^{q,n} = \min \left( \mu_{e,k}^{q,n}, \mu_{max,k}^{q,n} \right)
+\mu_{e}^{n,e,q} = \min \left( \mu_{e}^{n,e,q}, \mu_{max}^{n,e,q} \right)
 \end{equation}
 %
-From this point, all variables are known to compute the integral of the dissipative term $\int_{k} \mu \grad u(\vec{r},t) \grad \phi = \sum_q \mu_{k}^{q,n} \grad u_k^{q,n} \grad \phi^q$.
-%The dissipative terms consist of second order spatial derivatives that are reduced to first order derivative by integrating per part after multiplying by the test function and integrating over the computational domain. An integral over the boundary of the computational domain also appears and raises the question of how to treat the dissipative terms on the boundary. It is often suitable to set the viscosity coefficients to zero on the boundary so that the boundary term coming from integrating per part the dissipative terms is also zero. Hyperbolic systems of equations alike the multi-D Euler equations, require particular treatment to compute the flux on the boundaries based on the study of the characteristic and the eigenvalues: the boundary terms of the dissipative terms could interfere with the hyperbolic flux and lead to the wrong value at the boundaries. The dissipative terms require to evaluate at each quadrature points of each cell the first-order spatial derivatives of one or multiple variables. With Galerkin finite element method, this task is easily done by using the derivative of the test functions. \\
-%Once the dissipative terms are implemented, the viscosity coefficient has to be computed: the viscosity coefficient is evaluated on the fly from the entropy residual and the jumps. The viscosity coefficient requires to compute the first-order viscosity and the high-order viscosity coefficients at the quadrature points.
+At this stage, all of the variables required to compute the integral of the dissipative term $\int_{e} \mu \grad u(\mbold r,t) \grad \phi = \sum_q \mu^{n.e.q} \grad u^{n,e,q} \grad \phi^q$, are known.
