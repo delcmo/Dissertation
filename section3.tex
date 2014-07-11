@@ -551,29 +551,6 @@ In order to detail the partial and temporal discretization used for this study, 
 \end{equation}
 where $U$ is the vector solution, $F$ is a conservative vector flux and $S$ is a vector source that can contain the non-conservative term $P\grad A$.
 The system of equation given in \eqt{eq:form_sct3} is discretized using a continuous Galerkin finite element method and high-order temporal integrators provided by the MOOSE framework.
-%%---------------------------------------------------------------------------------------------------
-%\subsubsection{CFEM} 
-%%---------------------------------------------------------------------------------------------------
-%In order to apply the continuous finite element method, \eqt{eq:form_sct3} is multiplied by a smooth test function $\phi$, integrated by part and each integral is split onto each finite element $e$ of the discrete mesh $\Omega$ bounded by $\partial \Omega$, to obtain a weak solution:
-%\begin{equation}\label{eq:cfem}
-%\sum_e \int_{e} \partial_t U \phi - \sum_e \int_{e} F(U) \cdot \grad \phi + \int_{\partial \Omega} F(U) \vec{n} \phi - \sum_e \int_{e} S \phi = 0
-%\end{equation}
-%The integrals over the elements $e$ are evaluated using quadrature-point rules. The Moose framework provides a wide range of test function and quadrature rules: trapezoidal and Gauss rules among others. Linear Lagrange polynomials will be used as test functions and should ensure second-order convergence for smooth functions. The order of convergence will be demonstrated.
-%%---------------------------------------------------------------------------------------------------
-%\subsubsection{Temporal integrator}\label{sec:temp_integ}
-%%---------------------------------------------------------------------------------------------------
-%The MOOSE framework offers both first- and second-order explicit and implicit temporal integrators. In all of the numerical examples presented in \sect{sec:1d-results}, the time-dependent term $\int_{e} \partial_t U \phi$ will be evaluated using the second-order temporal integrator BDF2. By considering three solutions, $U^{n-1}$, $U^n$ and $U^{n+1}$ at three different time $t^{n-1}$, $t^n$ and $t^{n+1}$, respectively, it yields:
-%\begin{eqnarray}
-%\label{eq:BDF2}
-%\int_{e} \partial_t U \phi &=& \int_{e} \left( \omega_0 U^{n+1}  + \omega_1 U^n + \omega_2 U^{n-1} \right) \phi\\
-%\text{with }\omega_0 &=&\frac{2\Delta t^{n+1}+\Delta t^n}{\Delta t^{n+1} \left( \Delta t^{n+1}+\Delta t^n \right)} \text{, } \nonumber \\
-%\omega_1 &=& -\frac{\Delta t^{n+1}+\Delta t^n}{\Delta t^{n+1} \Delta t^n}\nonumber \\
-%\text{ and } \omega_2 &=& \frac{\Delta t^{n+1}}{\Delta t^n \left( \Delta t^{n+1} + \Delta t^n \right)} \nonumber
-%\end{eqnarray}
-%where $\Delta t^{n} = t^n-t^{n-1}$ and $\Delta t^{n+1} = t^{n+1}-t^{n}$.
-%%---------------------------------------------------------------------------------------------------
-%\subsection{Boundary conditions} \label{sec:bc}
-%%---------------------------------------------------------------------------------------------------
 Because we cannot consider infinitely large domain, the computational domain needs to be truncated at some particular points. These particular points are referred to as boundaries and need to be treated with great care in order to preserve the mathematical and physical properties of the equations to solve. An error in the treatment of the boundary conditions can lead to inaccurate transient and steady-state numerical solutions. The conditions applied to the boundaries of the computational domain are called boundary conditions and correspond to a set of boundary values to supply and relations that will link the boundary values to the rest of the computational domain. When dealing with wave-dominated problem alike the multi-D Euler equations, the eigenvalues and the characteristic equations are of great help since they inform us on how the physical information travel through the computational domain. A great amount of work on the treatment of the inlet and outlet boundary conditions is available in the literature (REFS). The method proposed depend on the equation of state and the discretization method. For discontinuous schemes alike finite volume and discontinuous Galerkin method, providing some boundary values, a Riemann problem is often solved. A Riemann solver is derived from the study of the eigenvalues and characteristic equations, and therefore will preserve the balance of the system, but is strongly dependent on the equation of state used. In the case of continuous schemes, the same approach cannot be used since the variables are continuous at the interfaces. Instead a more direct approach is required and is the focus of this section. \\
 This short paragraph aims at illustrating the reasoning behind the treatment of the boundary conditions. For academic purpose, let us consider a $1$-D computational domain with a left inlet and right outlet boundaries. 
 The $1$-D characteristic equations and the eigenvalues for the multi-D Euler equations are recalled:
@@ -657,15 +634,6 @@ u^*_k \left( \rho^*_k E^*_k + P^*_k\right)
 \end{equation}
 where $E^*_k$ is computed using the equation of state and the values $\rho^*_k$, $u^*_k$ and $P^*_k$.\\
 The outlet supersonic boundary condition is often paired to the back pressure outlet boundary condition described in \sect{sec:static_pressure_bc}. When implementing an outlet boundary condition a switch statement on the Mach number is required in order to account for flow going from subsonic to supersonic or the other way around. The only major difference between the two types of boundary condition is the treatment of the pressure. 
-%---------------------------------------------------------------------------------------------------
-\subsection{Solver} \label{sec:solver}
-%---------------------------------------------------------------------------------------------------
-A Free-Jacobian-Newton-Krylov (FJNK) method is used to solve for the solution at each time step. The jacobian matrix of the discretized equations was derived by hand, hard coded and used as a preconditioner. This method requires the partial derivative of the pressure with respect to the conservative variables to be known. The contribution of the artificial dissipative terms to the jacobian matrix is simplified by assuming constant viscosity coefficients as shown in \eqt{eq:jac_diss_term} for the dissipative terms of the continuity equation:
-\begin{equation}
-\label{eq:jac_diss_term}
-\frac{\partial}{\partial U_i} \left( \kappa \grad \rho \grad \phi \right) = \kappa \frac{\partial}{\partial U_i} \left( \rho \right) \grad \phi
-\end{equation}  
-where $U_i$ denotes the set of conservative variables.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{$1$-D shock tubes:} \label{sec:1d-results}
