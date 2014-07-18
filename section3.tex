@@ -435,7 +435,7 @@ Finally, we summarize the definition of the viscosity coefficients $\mu$ and $\k
 \end{equation}
 %
 where the first-order viscosity is given by
-\begin{equation}
+\begin{equation}\label{eq:first-order-visc-sct3}
   \kappa_{\max}(\mbold r,t)  = \mu_{\max} (\mbold r,t) = \frac{h}{2} \Big ( ||\mbold u|| + c \Big ) 
 \end{equation}
 %
@@ -585,7 +585,7 @@ where $P_e=(\gamma-1) \rho$ and $T$ is the fluid temperature and are both comput
 &&St_\infty = \frac{h_t}{\rho_\infty u_\infty C_p}
 \end{eqnarray}
 %  
-From \eqt{eq:ent_res_source_nd}, the scaling of each term can now be investigated. The friction term scales as the Mach number square, and thus, its contribution to the entropy production is minimum specially in the low Mach limit since $\left(\resinew\right)^*$ is known to scale as the Mach number in smooth profile regions. The case of the heat source term is more complicated since it involves the ration of three dimensionless numbers $M^2_\infty \frac{St_\infty}{Ec_\infty}$. The scaling of this ratio depends on the choice of the heat transfer coefficient $h_t$ and the wall temperature $T_w$. Because $\left(\resinew\right)^*$ scales as the Mach number when the solution is smooth, the heat source term will only significantly contributes to the entropy production if the heat transfer coefficient and the wall temperature are chosen so that $\frac{St_\infty}{Ec_\infty}$ scales as power of the inverse of the Mach number. Effect of the source term onto the entropy residual and thus onto the viscosity coefficients will be illustrated with examples including flow in a pipe with friction and heat addition, and also more complex components such as a core channel from the Relap7 code (REF). 
+From \eqt{eq:ent_res_source_nd}, the scaling of each term can now be investigated. The friction term scales as the Mach number square, and thus, its contribution to the entropy production is minimum specially in the low Mach limit since $\left(\resinew\right)^*$ is known to scale as the Mach number in smooth profile regions. The case of the heat source term is more complicated since it involves the ration of three dimensionless numbers $M^2_\infty \frac{St_\infty}{Ec_\infty}$. The scaling of this ratio depends on the choice of the heat transfer coefficient $h_t$ and the wall temperature $T_w$. Because $\left(\resinew\right)^*$ scales as the Mach number when the solution is smooth, the heat source term will only significantly contributes to the entropy production if the heat transfer coefficient and the wall temperature are chosen so that $\frac{St_\infty}{Ec_\infty}$ scales as power of the inverse of the Mach number. Effect of the source term onto the entropy residual and thus onto the viscosity coefficients will be illustrated with examples including flow in a pipe with friction and heat addition, and also more complex components such as a core channel from the RELAP-7 code \cite{Relap7PWR}. 
 %
 \begin{remark}
 We can also think of the extreme case where heat is added to a flow experiencing a shock. In the shock region, the entropy residual $\resinew$ is peaked and expected to dominate all other entropy sources due to the source terms. 
@@ -1108,7 +1108,7 @@ The numerical results are in good agreement with the exact solution and do not d
 \subsection{$1$-D numerical results for flows with source terms:} \label{sec:1d-source-terms-results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This section aims at illustrating the theoretical approach developed in \sect{sec:ev_source_terms} for solving $1$-D flow with source terms using the EVM. All of the results presented in this section were obtained with the Relap7 code developed by Idaho National Laboratory (REF). Three source terms are considered: the wall-fraction force and the wall heat source that were detailed in \sect{sec:ev_source_terms}, and gravity terms, which yields the following $1$-D Euler equations:
+This section aims at illustrating the theoretical approach developed in \sect{sec:ev_source_terms} for solving $1$-D flow with source terms using the EVM. All of the results presented in this section were obtained with the RELAP-7 code developed by Idaho National Laboratory (REF). Three source terms are considered: the wall-fraction force and the wall heat source that were detailed in \sect{sec:ev_source_terms}, and gravity terms, which yields the following $1$-D Euler equations:
 %
 \begin{subequations}
 \label{eq:euler_source_terms3}
@@ -1143,7 +1143,7 @@ steam        (\sect{sec:steam_nozzle})  & 1.43     & 1040                       
 \end{center}
 \end{table}
 %
-The first test consists of a flow with only wall-friction force and gravity terms. Then, a wall-heat source is added to the system and different values of the heat transfer coefficient $h_t$ are investigated. All of the previous tests are done for both vapor and liquid water phases. Lastly, a $1$-D core channel component from Relap7 is used to model the core of a Pressurized Water Reactor (PWR) for liquid water.
+The first test consists of a flow with only wall-friction force and gravity terms. Then, a wall-heat source is added to the system and different values of the heat transfer coefficient $h_t$ are investigated. All of the previous tests are done for both vapor and liquid water phases. Lastly, a $1$-D core channel component from RELAP-7 is used to model the core of a Pressurized Water Reactor (PWR) for liquid water.
 %---------------------------------------------------------------------------------------------------
 \subsection{Vapor flow in a straight pipe with wall-friction force and gravity terms.} \label{sec:1d-wall-fricition-vapor}
 %---------------------------------------------------------------------------------------------------
@@ -1161,6 +1161,69 @@ The same geometry with the same temporal and spatial discretization as in \sect{
 %---------------------------------------------------------------------------------------------------
 \subsection{$1$-D Pressurized Water Reactor.} \label{sec:1d-pwr}
 %---------------------------------------------------------------------------------------------------
+Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854E-05$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the heat transfer coefficient $h_w$ is set to a constant $5.33e4$ $W/m$, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$. The wall temperature $T_w$ is given spatial dependence and computed using the model available in RELAP-7 for PWR \cite{Relap7PWR}. 
+For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3359.62$ $kg/(m^2 s))$ and a specific enthalpy ($h = 1.28e6$ $J/kg$) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The stiffened gas equation of state (SGEOS) is used \cite{SGEOS} with the following parameters: $P_{\infty} = 8.5 \cdot 10^8$ Pa, $q = -1151E+03$ $J/m^3$, $\gamma = 2.04$ and $C_v = 2069$ $J/(K \cdot kg)$. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} represent the results obtained using 20 mesh cells, using either the overly-dissipative first-order viscosity (FO), the higher-order entropy viscosity (EV), or the SUPG method to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and look similar to those obtained with the SUPG \cite{SUPG} method. Plots obtained using a finer spatial resolution ($100$ cells) are also shown in these figures.
+%
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/PWR_stt_pressure.png}
+\caption{PWR test case: axial pressure profile}
+\label{fig:Pressure}
+\end{figure}
+%
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/PWR_stt_temperature.png}
+\caption{PWR test case: axial temperature profile}
+\label{fig:Temperature}
+\end{figure}
+%
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/PWR_stt_velocity.png}
+\caption{PWR test case: axial velocity profile}
+\label{fig:Velocity}
+\end{figure}
+%
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/PWR_stt_viscosity.png}
+\caption{PWR test case: axial viscosity profile}
+\label{fig:Viscosity}
+\end{figure}
+%
+In \fig{fig:Pressure}, the steady-state pressure profile obtained with the SUPG method shows a small non-physical change of slope at the outlet that does not disappear when a finer mesh is used. This artifact is not seen when using the entropy viscosity method. \\
+
+It is noted from Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} that the first-order viscosity solution becomes ill-scaled. This is due to the low-Mach nature of the flow under consideration (flow speed around 5 m/s while the speed of sound is around 1,500 m/s). We carry out a low Mach limit study for the continuity equation written with its artificial dissipative term. The same reasoning can be applied as well to the momentum and energy equations. Using the reference variables defined in ]\eqt{eq:norm_param}, the continuity equation yields
+\begin{equation}
+\label{eq:cont_proof}
+\partial_{t^*} \rho^* + \div^* \left( \rho^* \mbold u^* \right) =  \frac{k_\infty}{L u_\infty}  \div^*  \left( \kappa^*  \grad^* \rho^* \right).
+\end{equation}
+The coefficient $k^*$ depends upon whether the first- or entropy-order viscosity coefficient is employed. When using the first-order viscosity, \eqt{eq:first-order-visc-sct3}, an expression for $\kappa^*$ is: $\kappa_\infty = \frac{L}{2}\left( u_\infty + c_\infty \right)$. By substituting this definition into \eqt{eq:cont_proof}, the expression obtained for the scaled continuity equation is
+\begin{equation}
+\label{eq:cont_proof2}
+\partial_{t^*} \rho^* + \div^* \left( \rho^* \mbold u^* \right) = \frac{1}{2}\left( 1 + \frac{1}{M_\infty} \right) \div^* \left(\kappa^*\grad^* \rho^* \right),
+\end{equation}
+where $M^*$ is a reference Mach number. Thus, for low Mach flow the dissipative term will become ill-scaled and will alter the solution greatly
+when using the first-order viscosity. However, when employing the entropy-viscosity coefficient \eqt{eq:final_def_visc_coeff} in the low Mach limit, the dissipative term is well-scaled:
+\begin{equation}
+\label{eq:cont_proof3}
+\partial_{t^*} \rho^* + \div^* \left( \rho^* \mbold u^* \right) =  \div^*  \left(\kappa^* \grad^*  \rho^* \right).
+\end{equation}
+Obviously, it is therefore critical to evaluate, and if needed, to adapt the definition of the viscosity coefficients employed with the dissipative terms to a wide range of flow speeds.
+
+A good way to assess the impact of the dissipative terms on the steady-state solution is to plot the mass flux (or momentum density) variable. It is expected to be constant in the low Mach limit, in the absence of a mass source and under the condition of having well-scaled dissipative terms, \eqt{eq:cont_proof2} and \eqt{eq:cont_proof3}.
+%
+\begin{figure}[H]
+\centering
+%\includegraphics[scale=0.4]{plots/Momentum.png}
+\includegraphics[width=\textwidth]{figures/PWR_stt_momentum.png}
+\caption{PWR test case: axial mass flux (or momentum) profile}
+\label{fig:Momentum}
+\end{figure}
+%
+This is shown in \fig{fig:Momentum}, where it is clear that the mass flux (or momentum density) remains constant ($0.2953$ $kg/m^2s$) through the domain at steady-state when using either the entropy viscosity method or SUPG. When run with the first-order viscosity, the steady-state mass flux displays a $10\%$ variation over the domain because of the $\frac{1}{M_\infty}$ coefficient in the dissipative term of \eqt{eq:cont_proof2}.
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{$2$-D numerical results for supersonic flows:} \label{sec:2d-supersonic-results}
