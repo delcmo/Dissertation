@@ -595,14 +595,104 @@ We can also think of the extreme case where heat is added to a flow experiencing
 \section{Boundary conditions} \label{sec:bc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In order to detail the partial and temporal discretization used for this study, the system of equations \eqt{eq:euler_variable_A_bis} is considered under the following form for simplicity:
-\begin{equation}
-\label{eq:form_sct3}
-\partial_t U + \div F\left( U \right) = S
+%In order to detail the partial and temporal discretization used for this study, the system of equations \eqt{eq:euler_variable_A_bis} is considered under the following form for simplicity:
+%\begin{equation}
+%\label{eq:form_sct3}
+%\partial_t U + \div F\left( U \right) = S
+%\end{equation}
+%where $U$ is the vector solution, $F$ is a conservative vector flux and $S$ is a vector source that can contain the non-conservative term $P\grad A$.
+Because we cannot consider infinitely large domain, the computational domain needs to be truncated at some particular points. These particular points are referred to as boundaries and are present in the weak form of the equation to solve as shown in \chap{chap:disc_chap2}, under the form of an integral as follows:
+%
+\begin{equation}\label{eq:hyp_weak_bc_sct3}
+\int_\Gamma \left( \mbold F \left( \mbold U(\mbold r, t) \right) \phi_k \right) \cdot \mbold n.
 \end{equation}
-where $U$ is the vector solution, $F$ is a conservative vector flux and $S$ is a vector source that can contain the non-conservative term $P\grad A$.
-The system of equation given in \eqt{eq:form_sct3} is discretized using a continuous Galerkin finite element method and high-order temporal integrators provided by the MOOSE framework.
-Because we cannot consider infinitely large domain, the computational domain needs to be truncated at some particular points. These particular points are referred to as boundaries and need to be treated with great care in order to preserve the mathematical and physical properties of the equations to solve. An error in the treatment of the boundary conditions can lead to inaccurate transient and steady-state numerical solutions. The conditions applied to the boundaries of the computational domain are called boundary conditions and correspond to a set of boundary values to supply and relations that will link the boundary values to the rest of the computational domain. When dealing with wave-dominated problem alike the multi-D Euler equations, the eigenvalues and the characteristic equations are of great help since they inform us on how the physical information travel through the computational domain. A great amount of work on the treatment of the inlet and outlet boundary conditions is available in the literature (REFS). The method proposed depend on the equation of state and the discretization method. For discontinuous schemes alike finite volume and discontinuous Galerkin method, providing some boundary values, a Riemann problem is often solved. A Riemann solver is derived from the study of the eigenvalues and characteristic equations, and therefore will preserve the balance of the system, but is strongly dependent on the equation of state used. In the case of continuous schemes, the same approach cannot be used since the variables are continuous at the interfaces. Instead a more direct approach is required and is the focus of this section. \\
+%
+Computing the integral given in \eqt{eq:hyp_weak_bc_sct3} requires to determine the flux at the boundary $\Gamma$, which is the focus of this section for the case of the multi-D Euler equation with variable area. Treatment of the boundary conditions require great care and must be based on the study of the mathematic properties of the system of equations under focus, in order to preserve the physical solution. An error in the treatment of the boundary conditions can lead to inaccurate transient and steady-state numerical solutions, and also numerical instabilities.
+
+The multi-D Euler equations given in \eqt{eq:euler_variable_A_bis} are discretized using a continuous Galerkin finite element method and high-order temporal integrators provided by the MOOSE framework and detailed in \chap{chap:disc_chap2}. The discretization scheme requires to compute two fluxes at the boundaries as it was shown in \eqt{en:va_system_weak2}: the first boundary term comes from the integration per part of the dissipative flux which vanishes by assuming that the viscosity coefficients are zero. The second boundary term is due to the integration per part of the hyperbolic terms and is recalled in \eqt{eq:hyp_flux_bc_sct3}, when considering a $2$-D computational domain $\Omega$ of boundaries $\Gamma$ for generality:
+%
+\begin{equation}\label{eq:hyp_flux_bc_sct3}
+\mbold F \left( \mbold U(\mbold r, t) \right) \cdot \mbold n = 
+\left[ 
+\begin{array}{l}
+\rho \mbold u \cdot \mbold n\\
+\rho u \mbold u \cdot \mbold n + P n_x \\
+\rho v \mbold u \cdot \mbold n + P n_y \\
+\rho \mbold u \cdot \mbold n \left( \rho E + P \right) 
+\end{array}
+\right]
+\end{equation}
+%
+where $\mbold u = \left( u , v \right)$ and $\mbold n = \left( n_x, n _y \right)$. As it was mentioned earlier, the mathematical properties of the multi-D Euler equations with variable area are studied in order to understand how the physical information travels inside the computational domain and at the boundaries. Alike for the multi-D Burger's equation in \chap{chap:theory_chp1} and \chap{chap:burger_chap3}, the eigenvalues can be derived \cite{Toro} and are recalled,
+%
+\begin{equation}\label{eq:eig_euler_2d_sct3}
+\left\{
+\begin{array}{l}
+\lambda_1 = \mbold u \cdot \mbold n - c \\
+\lambda_{2,3} = \mbold u \cdot \mbold n \\
+\lambda_4 = \mbold u \cdot \mbold n + c \\
+\end{array}
+\right. ,
+\end{equation}
+%
+with the corresponding characteristic equations,
+%
+\begin{equation}\label{eq:charac_euler_sct3}
+\partial_t \omega_i + \lambda_i \mbold n \cdot  \grad \omega_i = 0 \text{ where } 
+\left\{
+\begin{array}{l}
+\partial \omega_1 = -\partial \left( \mbold u \cdot \mbold n \right) + \frac{\partial P}{\rho c}\\
+\partial \omega_2 = \partial \rho - \frac{\partial P}{c^2} \\
+\partial \omega_3 = -\partial \left( \mbold u \cdot \mbold \tau \right)\\
+\partial \omega_4 = \partial \left( \mbold u \cdot \mbold n \right) + \frac{\partial P}{\rho c}\\
+\end{array}
+\right. 
+\end{equation}
+%
+where $\mbold \omega = \left( \omega_1, \omega_2, \omega_3, \omega_4 \right)$ are the characteristic variables and $\mbold \tau = \left( \tau_x, \tau_y \right) = \left( -\eta_y, \eta_x \right)$ is the tangential vector to the boundary. From a theoretical point of view, the eigenvalues are derived by assuming the existence of an unit vector that is taken equal to the outwards normal vector to the boundary since this is a direction of interest. Each of the characteristic equations given in \eqt{eq:charac_euler_sct3} corresponds to the propagation of a particular wave. The characteristic equations for $i=1,4$ are associated to the propagation of the acoustic waves or pressure variations through the domain. The entropy waves is described by the second characteristic equation for $i=2$. The last characteristic equation, $i=3$, corresponds to the change in the tangential velocity and represents the propagation of the vorticity waves. It is common to recast the characteristic equations under the form $\frac{D w_i}{Dt} = 0$ along $\frac{d\mbold r}{dt} \cdot \mbold n = \lambda_i$, which is analog to what was done for the hyperbolic scalar equations in \chap{chap:theory_chp1}. Based on the study of the sign of the eigenvalues at the boundary relative to the its outward normal, it can be determined which quantity enters or exits the computational domain. We consider the entropy wave in order to illustrate the methodology. We first assume that the eigenvalue, $\lambda_2$, associated to the entropy characteristic variable $\omega_2$, is negative. Thus, the entropy wave carrying $\omega_2$ travels from the boundary into inside the domain and its value must be specified. On the other hand, if $\lambda_2$ is positive, the wave travels in the opposite direction as the previous case, and the variable $\omega_2$ is solved numerically by using the associated characteristic equation. This simple example allows to draw the following rule: \emph{the characteristic equations with negative eigenvalues (when assuming an outward normal vector to the boundary) are computed from the boundary conditions that are provided to the code, whereas characteristic equation with positive eigenvalues are numerically solved in order to get a value for the corresponding characteristic variable}. The boundary conditions denote, here, the set of values that are specified for a given boundary and is determined by looking at the sign of the eigenvalues. Furthermore, for a given flow, the sign of the eigenvalues associated to the pressure waves can change depending on how the flow speed compare against the speed of sound, which is measured by the Mach number, but also depends on if the flow is either entering or exiting the domain. In other words, it seems that a distinction needs to be made between subsonic boundary, supersonic boundary, flow inlet and flow outlet. Thus, in the remaining of this section, we will look at three different boundary types: subsonic and supersonic flow inlet, subsonic and supersonic flow outlet and free-slip wall boundary, that illustrated in \fig{fig:inlet_sct3}, \fig{fig:outlet_sct3} and \fig{fig:wall_bc} respectively.  
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/sub_inlet_bc.png}
+                \caption{Subsonic flow inlet.}
+                \label{fig:sub_flow_inlet}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/sup_inlet_bc.png}
+                \caption{Supersonic flow inlet.}
+                \label{fig:sup_flow_inlet}
+        \end{subfigure}
+        \caption{\label{fig:inlet_sct3}}
+\end{figure}
+%
+%
+\begin{figure}[H]\label{fig:outlet_sct3}
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/sub_exit_bc.png}
+                \caption{Subsonic flow outlet.}
+                \label{fig:sub_flow_outlet}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/sup_exit_bc.png}
+                \caption{Supersonic flow outlet.}
+                \label{fig:sup_flow_outlet}
+        \end{subfigure}
+        \caption{\label{fig:outlet_sct3}}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[]{figures/sup_exit_bc.png}
+\caption{Free-slip wall boundary.\label{fig:wall_bc}}
+\end{figure}
+%
+For clarity purpose and before going into details, we will call \emph{boundary conditions} the conditions applied to the boundaries of the computational domain. Boundary conditions correspond to a set of boundary values to supply and relations that will link the boundary values to the rest of the computational domain. When dealing with wave-dominated problem alike the multi-D Euler equations, the eigenvalues and the characteristic equations are of great help since they inform us on how the physical information travel through the computational domain. A great amount of work on the treatment of the inlet and outlet boundary conditions is available in the literature (REFS). The method proposed depend on the equation of state and the discretization method. For discontinuous schemes alike finite volume and discontinuous Galerkin method, providing some boundary values, a Riemann problem is often solved. A Riemann solver is derived from the study of the eigenvalues and characteristic equations, and therefore will preserve the balance of the system, but is strongly dependent on the equation of state used. In the case of continuous schemes, the same approach cannot be used since the variables are continuous at the interfaces. Instead a more direct approach is required and is the focus of this section. \\
 This short paragraph aims at illustrating the reasoning behind the treatment of the boundary conditions. For academic purpose, let us consider a $1$-D computational domain with a left inlet and right outlet boundaries. 
 The $1$-D characteristic equations and the eigenvalues for the multi-D Euler equations are recalled:
 \begin{equation}\label{eq:chara_equ}
