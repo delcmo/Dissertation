@@ -1326,15 +1326,142 @@ The first test consists of a flow with only wall-friction force Then, a wall-hea
 \subsection{Vapor flow in a straight pipe with wall-friction force and gravity terms.} \label{sec:1d-wall-fricition-vapor}
 %---------------------------------------------------------------------------------------------------
 The geometry consists of a three $1$-D straight pipes of constant area $A= 10^{-4}$ $m^2$ and length $L=1$, $4$ and $1$ $m$. The source terms are only applied to the middle pipe of length $4$ m. The objective is to investigate the entropy variations due to the source terms by comparison with the first and third pipes that are source terms free. The friction coefficient is set to $f_c = 0.5$. A subsonic inlet flow boundary condition is used by imposing the velocity $u_{inlet} = $ and the temperature $T_{inlet}=$. At the outlet, the static pressure $P_{outlet}=6.6$ $MPa$ is specified. The initial conditions are taken equal to the boundary conditions and can be computed using the SGEOS and the parameters provided in \tbl{tbl:stff_gas_eos2}. The code is run until steady-state with $CFL=10$ and the geometry is discretized with an uniform mesh of $60$ cells. Steady-state profiles of the pressure, the velocity, the density and the viscosity coefficients are given in ....
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_friction_density_source_terms.png}
+                \caption{Density}
+                \label{fig:1d-vapor-friction-density-sct3}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_friction_velocity_source_terms.png}
+                \caption{Velocity}
+                \label{fig:1d-vapor-friction-velocity-sct3}
+        \end{subfigure}
+
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_friction_pressure_source_terms.png}
+                \caption{Pressure}
+                \label{fig:1d-vapor-friction-pressure-sct3}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_friction_viscosity_source_terms.png}
+                \caption{Viscosity coefficients}
+                \label{fig:1d-vapor-friction-visc-sct3}
+        \end{subfigure}
+        \caption{Steady-state profiles of a vapor flow with friction force in a straight pipe.}
+				\label{fig:1d-vapor-friction-sct3}
+\end{figure}
+%
 %---------------------------------------------------------------------------------------------------
 \subsection{Liquid water flow in a straight pipe with wall-friction force and gravity terms.} \label{sec:1d-wall-fricition-liquid}
 %---------------------------------------------------------------------------------------------------
 The same geometry with the same temporal and spatial discretization as in \sect{sec:1d-wall-fricition-vapor} is used to simulate a liquid water flow. The boundary conditions are the same except that the inlet velocity is set to $u_{inlet}=$. 
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_friction_density_source_terms.png}
+                \caption{Density}
+                \label{fig:1d-liquid-friction-density-sct3}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_friction_velocity_source_terms.png}
+                \caption{Velocity}
+                \label{fig:1d-liquid-friction-velocity-sct3}
+        \end{subfigure}
+
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_friction_pressure_source_terms.png}
+                \caption{Pressure}
+                \label{fig:1d-liquid-friction-pressure-sct3}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_friction_viscosity_source_terms.png}
+                \caption{Viscosity coefficients}
+                \label{fig:1d-liquid-friction-visc-sct3}
+        \end{subfigure}
+        \caption{Steady-state profiles of a liquid water flow with friction force in a straight pipe.}
+				\label{fig:1d-liquid-friction-sct3}
+\end{figure}
+%
 %---------------------------------------------------------------------------------------------------
 \subsection{Vapor and liquid water flows in a straight pipe with wall-friction force, gravity terms and wall-heat source.} \label{sec:1d-wall-heat-source}
 %---------------------------------------------------------------------------------------------------
 Once again, the same set up as in \sect{sec:1d-wall-fricition-vapor} and in \sect{sec:1d-wall-fricition-liquid} is used to simulate the behavior of liquid water and vapor phases with a wall-heat source. The wall temperature is assumed constant and set to $T_w=600$ $K$ for both phases. The wall heat transfer coefficients are also constant and are chosen so that a significant change in the temperature profile can be observed: $h_t^{liquid} = 1000$ $W/(K-m)$ and $h_t^{vapor} = 100$ $W/(K-m)$. The wall heated surface $a_w$ is the same for both phases since function of the geometry and set to $a_w = 0.0314156$ $m$. The steady-state profiles are shown in for liquid water and in .. for vapor. 
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_friction_heat_density_source_terms.png}
+                \caption{Density}
+                \label{fig:1d-vapor-friction-heat-density-sct3}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_friction_heat_velocity_source_terms.png}
+                \caption{Velocity}
+                \label{fig:1d-vapor-friction-heat-velocity-sct3}
+        \end{subfigure}
 
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_friction_heat_pressure_source_terms.png}
+                \caption{Pressure}
+                \label{fig:1d-vapor-friction-heat-pressure-sct3}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_friction_heat_viscosity_source_terms.png}
+                \caption{Viscosity coefficients}
+                \label{fig:1d-vapor-friction-heat-visc-sct3}
+        \end{subfigure}
+        \caption{Steady-state profiles of a vapor flow with friction force and wall-heat source in a straight pipe.}
+				\label{fig:1d-vapor-friction-heat-sct3}
+\end{figure}
+%
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_friction_heat_density_source_terms.png}
+                \caption{Density}
+                \label{fig:1d-liquid-friction-heat-density-sct3}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_friction_heat_velocity_source_terms.png}
+                \caption{Velocity}
+                \label{fig:1d-liquid-friction-heat-velocity-sct3}
+        \end{subfigure}
+
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_friction_heat_pressure_source_terms.png}
+                \caption{Pressure}
+                \label{fig:1d-liquid-friction-heat-pressure-sct3}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_friction_heat_viscosity_source_terms.png}
+                \caption{Viscosity coefficients}
+                \label{fig:1d-liquid-friction-heat-visc-sct3}
+        \end{subfigure}
+        \caption{Steady-state profiles of a liquid water flow with friction force and wall-heat source in a straight pipe.}
+				\label{fig:1d-liquid-friction-heat-sct3}
+\end{figure}
+%
 %---------------------------------------------------------------------------------------------------
 \subsection{$1$-D Pressurized Water Reactor.} \label{sec:1d-pwr}
 %---------------------------------------------------------------------------------------------------
@@ -1479,6 +1606,7 @@ The numerical solution was obtained with a $\mathbb Q_1$ continuous Galerkin fin
 \caption{Viscosity coefficient solution at $t=4$ $s$.}
 \label{fig:2d_ffs_visc_4}
 \end{figure}
+%
 The numerical solution of the density at $t=4$ $s$ compares well to the ones obtained in \cite{valentin}, as least in a visual norm. The triple-point feature and the contact wave emerging from it are well resolved. It is also noticed that a significant amount of entropy is produced near the corner region. This is due to the corner singularity and this phenomenon is well explained in \cite{FFS_corner}. This artifact can be treated either by using special boundary condition to the corner since its normal vector is not defined, or by aggressively refining the mesh in the singularity region, or lastly, by modifying the geometry and use a round corner. 
 %---------------------------------------------------------------------------------------------------
 \subsection{$2$-D circular explosion:} \label{sec:2d-circular-explosioin}
@@ -1496,22 +1624,37 @@ We now consider a $2$-D circular explosion \cite{Toro} that is known to develop 
 \end{center}
 \nonumber
 \end{table}
-Once again, t
-%---------------------------------------------------------------------------------------------------
-\subsection{Riemann problem number 12:} \label{sec:2d-riemann-pb-12}
-%---------------------------------------------------------------------------------------------------
-Riemann problem number $12$ \cite{RP12} is a popular $2$-D benchmark that is known to develop contact and shock waves, as well as fine structures. The computational domain $\Omega = (0,1)^2$ is initialized with four square regions. In each region a different set of initial values is set as follows:
-\begin{equation}
-\left\{
-\begin{array}{cccc}
-\rho = 4/5, & \mbold u = (0, 0) & P = 1 & \text{ for } x \in (0, 0.5) \text{ and } y \in (0, 0.5) \\
-\rho = 1, & \mbold u = (3/\sqrt(17), 0) & P = 1 & \text{ for } x \in (0, 0.5) \text{ and } y \in (0.5, 1) \\
-\rho = 17/32, & \mbold u = (0,3/\sqrt{17}) & P = 1 & \text{ for } x \in (0.5, 1) \text{ and } y \in (0, 0.5) \\
-\rho = 17/32, & \mbold u = (0, 0) & P = 2/5 & \text{ for } x \in (0.5, 1) \text{ and } y \in (0.5, 1) \\
-\end{array}
-\right. \nonumber
-\end{equation}
-The same equation of state as in \sect{sec:2d-forward-facing-step} is used. An uniform mesh of $400 \times 400 $ elements was used along with a $\mathbb Q_1$ continuous Galerkin finite element method and the second-order temporal integrator $BDF2$. The simulation is run until $t=0.25s$ with a $CFL$ of 1. The density and viscosity profiles are given in (FIGS). 
+The numerical solutions of the density and viscosity coefficient are given in \eqt{fig:2d_explosion_density_sct3} and \eqt{fig:2d_explosion_visc_sct3}, respectively.
+%
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.50]{figures/Explosion_density_profiles.png}
+\caption{Density solution at $t=0.2$ $s$.}
+\label{fig:2d_explosion_density_sct3}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.50]{figures/Explosion_viscosity_profiles.png}
+\caption{Viscosity coefficient solution at $t=0.2$ $s$.}
+\label{fig:2d_explosion_visc_sct3}
+\end{figure}
+%
+%%---------------------------------------------------------------------------------------------------
+%\subsection{Riemann problem number 12:} \label{sec:2d-riemann-pb-12}
+%%---------------------------------------------------------------------------------------------------
+%Riemann problem number $12$ \cite{RP12} is a popular $2$-D benchmark that is known to develop contact and shock waves, as well as fine structures. The computational domain $\Omega = (0,1)^2$ is initialized with four square regions. In each region a different set of initial values is set as follows:
+%\begin{equation}
+%\left\{
+%\begin{array}{cccc}
+%\rho = 4/5, & \mbold u = (0, 0) & P = 1 & \text{ for } x \in (0, 0.5) \text{ and } y \in (0, 0.5) \\
+%\rho = 1, & \mbold u = (3/\sqrt(17), 0) & P = 1 & \text{ for } x \in (0, 0.5) \text{ and } y \in (0.5, 1) \\
+%\rho = 17/32, & \mbold u = (0,3/\sqrt{17}) & P = 1 & \text{ for } x \in (0.5, 1) \text{ and } y \in (0, 0.5) \\
+%\rho = 17/32, & \mbold u = (0, 0) & P = 2/5 & \text{ for } x \in (0.5, 1) \text{ and } y \in (0.5, 1) \\
+%\end{array}
+%\right. \nonumber
+%\end{equation}
+%The same equation of state as in \sect{sec:2d-forward-facing-step} is used. An uniform mesh of $400 \times 400 $ elements was used along with a $\mathbb Q_1$ continuous Galerkin finite element method and the second-order temporal integrator $BDF2$. The simulation is run until $t=0.25s$ with a $CFL$ of 1. The density and viscosity profiles are given in (FIGS). 
 %---------------------------------------------------------------------------------------------------
 \subsection{Supersonic flow in a compression corner} \label{sec:corner}
 %---------------------------------------------------------------------------------------------------
