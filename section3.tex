@@ -688,89 +688,150 @@ where $\mbold \omega = \left( \omega_1, \omega_2, \omega_3, \omega_4 \right)$ ar
 \caption{Free-slip wall boundary.\label{fig:wall_bc}}
 \end{figure}
 %
-For clarity purpose and before going into details, we will call \emph{boundary conditions} the conditions applied to the boundaries of the computational domain. Boundary conditions correspond to a set of boundary values to supply and relations that will link the boundary values to the rest of the computational domain. When dealing with wave-dominated problem alike the multi-D Euler equations, the eigenvalues and the characteristic equations are of great help since they inform us on how the physical information travel through the computational domain. A great amount of work on the treatment of the inlet and outlet boundary conditions is available in the literature (REFS). The method proposed depend on the equation of state and the discretization method. For discontinuous schemes alike finite volume and discontinuous Galerkin method, providing some boundary values, a Riemann problem is often solved. A Riemann solver is derived from the study of the eigenvalues and characteristic equations, and therefore will preserve the balance of the system, but is strongly dependent on the equation of state used. In the case of continuous schemes, the same approach cannot be used since the variables are continuous at the interfaces. Instead a more direct approach is required and is the focus of this section. \\
-This short paragraph aims at illustrating the reasoning behind the treatment of the boundary conditions. For academic purpose, let us consider a $1$-D computational domain with a left inlet and right outlet boundaries. 
-The $1$-D characteristic equations and the eigenvalues for the multi-D Euler equations are recalled:
-\begin{equation}\label{eq:chara_equ}
-\left\{
-\begin{array}{lll}
-dP - \rho c du = 0 \text{ along } \frac{dx}{dt} = u-c = \lambda_1\\
-d\rho + \text{ along } \frac{dx}{dt} = u = \lambda_2\\
-dP + \rho c du = 0 \text{ along } \frac{dx}{dt} = u +c = \lambda_3
-\end{array}
-\right.
-\end{equation}
-The $1$-D characteristic equations can be derived by either performing matrix calculations or by combining the conservative form of the $1$-D Euler equations. These two approach are equivalent and lead to the same form of the characteristic equations given in \eqt{eq:chara_equ}. The three eigenvalues $\lambda_i$ in $1$-D are also recalled in \eqt{eq:chara_equ}. 
-%The sign of the eigenvalues will depend on the flow type: supersonic and subsonic. In a supersonic flow, the Mach number being larger than one, all of the eigenvalues are positive. In another hand, when dealing with a subsonic flow which implies a Mach number smaller than one, the eigenvalues $\lambda_2$ and $\lambda_3$ are positive, and the eigenvalue $\lambda_2$ is negative. Remembering that the eigenvalues inform us on the direction the physical information travels at, let us consider an 
-We are focusing on the inlet boundary. The sign of the eigenvalues at the inlet given in \eqt{eq:chara_equ} will depend on the flow type: either supersonic with a Mach number larger than one and all eigenvalues are positive, or subsonic with a Mach number smaller than one and $\lambda_2$ and $\lambda_3$ are positive but $\lambda_1$ is negative. More specifically, for a supersonic flow, none physical information exits the computational domain. In another hand, for a subsonic flow, waves are both exiting and entering the computational domain at the inlet. From a numerical point of view, it means that in the case of a supersonic flow, all of the quantities need to be supplied to the code. When dealing with a subsonic flow, only two variables will be supplied and the third one will be computed using relations derived from the characteristic equations. From this simple study of the sign of the eigenvalues, it is understood that a distinction between supersonic and subsonic needs to be made in order to properly evaluate the boundary values. A similar approach can be used for the treatment of the outlet boundary. \\
-In this section, four types of boundary conditions will be described: static pressure, stagnation pressure, mass inflow and wall boundary conditions. For each of them, details regarding the theory in $1$-D and the implementations for a temporal implicit solver described in \sect{sec:disc_sect2} will be given. The characteristic equations and eigenvalues are independent of the equation of states. However, derivation of the relations to implement for the subsonic and supersonic boundary conditions will depend on the equation of state: the Stiffened Gas equation of state is considered here. The method used here is partly derived from the work of Berry et al. \cite{SEM} that was applied to the two-phase flow seven equations model solved with a temporal explicit solver. It is also chosen to work with the primitive variables (density $\rho^*$, velocity $u^*$ and pressure $P^*$) that are computed at the boundaries using relations that will depend on the boundary type. The upper script $*$ denotes the values on the element located at the boundary (node, curve and face in $1$, $2$ and $3$-D, respectively). From a numerical point of view, the boundary terms are under the form of an integral over the surface $\int_{\partial \Omega} F(U^*) \vec{n} \phi$ as shown in EQUATION. For each type of boundary conditions, it is explained how to compute the primitive variables at the boundary: then the hyperbolic flux $F(U^*)$ is easily obtained.
+As mentioned earlier, discretization of the characteristic equations depends on the numerical scheme used and has to be consistent with the rest of the computational domain in order to maintain accuracy of the method. Plus, a distinction needs to be made between explicit and implicit temporal integrators. Since it is chosen to use an implicit solver to update the solution at each time step, a few words about the method to follow with an explicit temporal integrator are given for completeness. 
+
+When using an explicit temporal integrator, the new time values are computed from the old time ones. The flux at the boundary, \eqt{eq:hyp_flux_bc_sct3}, is computed from the characteristic variables $\mbold \omega$ that are obtained from the boundary conditions and the discretization of some of the characteristic equations. For example, when considering a $2$-D subsonic flow inlet boundary (\fig{fig:sub_flow_inlet}), three boundary values have to be specified since three waves enter the domain. To have a well-posed system, a fourth value is computed by using the characteristic equation corresponding to the wave exiting the domain ($\lambda_4$). The characteristic equation is discretized over the first cell in and the boundary of the computational domain which can require a ghost cell. From this point, the details of the method depends on the scheme used. The reader can refer to \cite{RichThesis} or \cite{SEM} for examples with finite element and finite volume, respectively. 
+
+Implementation of the boundary conditions with an implicit temporal integrator is now detailed.
+%For clarity purpose and before going into details, we will call \emph{boundary conditions} the conditions applied to the boundaries of the computational domain. Boundary conditions correspond to a set of boundary values to supply and relations that will link the boundary values to the rest of the computational domain. When dealing with wave-dominated problem alike the multi-D Euler equations, the eigenvalues and the characteristic equations are of great help since they inform us on how the physical information travel through the computational domain. A great amount of work on the treatment of the inlet and outlet boundary conditions is available in the literature (REFS). The method proposed depend on the equation of state and the discretization method. For discontinuous schemes alike finite volume and discontinuous Galerkin method, providing some boundary values, a Riemann problem is often solved. A Riemann solver is derived from the study of the eigenvalues and characteristic equations, and therefore will preserve the balance of the system, but is strongly dependent on the equation of state used. In the case of continuous schemes, the same approach cannot be used since the variables are continuous at the interfaces. Instead a more direct approach is required and is the focus of this section. \\
+%This short paragraph aims at illustrating the reasoning behind the treatment of the boundary conditions. For academic purpose, let us consider a $1$-D computational domain with a left inlet and right outlet boundaries. 
+%The $1$-D characteristic equations and the eigenvalues for the multi-D Euler equations are recalled:
+%\begin{equation}\label{eq:chara_equ}
+%\left\{
+%\begin{array}{lll}
+%dP - \rho c du = 0 \text{ along } \frac{dx}{dt} = u-c = \lambda_1\\
+%d\rho + \text{ along } \frac{dx}{dt} = u = \lambda_2\\
+%dP + \rho c du = 0 \text{ along } \frac{dx}{dt} = u +c = \lambda_3
+%\end{array}
+%\right.
+%\end{equation}
+%The $1$-D characteristic equations can be derived by either performing matrix calculations or by combining the conservative form of the $1$-D Euler equations. These two approach are equivalent and lead to the same form of the characteristic equations given in \eqt{eq:chara_equ}. The three eigenvalues $\lambda_i$ in $1$-D are also recalled in \eqt{eq:chara_equ}. 
+%%The sign of the eigenvalues will depend on the flow type: supersonic and subsonic. In a supersonic flow, the Mach number being larger than one, all of the eigenvalues are positive. In another hand, when dealing with a subsonic flow which implies a Mach number smaller than one, the eigenvalues $\lambda_2$ and $\lambda_3$ are positive, and the eigenvalue $\lambda_2$ is negative. Remembering that the eigenvalues inform us on the direction the physical information travels at, let us consider an 
+%We are focusing on the inlet boundary. The sign of the eigenvalues at the inlet given in \eqt{eq:chara_equ} will depend on the flow type: either supersonic with a Mach number larger than one and all eigenvalues are positive, or subsonic with a Mach number smaller than one and $\lambda_2$ and $\lambda_3$ are positive but $\lambda_1$ is negative. More specifically, for a supersonic flow, none physical information exits the computational domain. In another hand, for a subsonic flow, waves are both exiting and entering the computational domain at the inlet. From a numerical point of view, it means that in the case of a supersonic flow, all of the quantities need to be supplied to the code. When dealing with a subsonic flow, only two variables will be supplied and the third one will be computed using relations derived from the characteristic equations. From this simple study of the sign of the eigenvalues, it is understood that a distinction between supersonic and subsonic needs to be made in order to properly evaluate the boundary values. A similar approach can be used for the treatment of the outlet boundary. \\
+%In this section, four types of boundary conditions will be described: static pressure, stagnation pressure, mass inflow and wall boundary conditions. For each of them, details regarding the theory in $1$-D and the implementations for a temporal implicit solver described in \sect{sec:disc_sect2} will be given. The characteristic equations and eigenvalues are independent of the equation of states. However, derivation of the relations to implement for the subsonic and supersonic boundary conditions will depend on the equation of state: the Stiffened Gas equation of state is considered here. The method used here is partly derived from the work of Berry et al. \cite{SEM} that was applied to the two-phase flow seven equations model solved with a temporal explicit solver. It is also chosen to work with the primitive variables (density $\rho^*$, velocity $u^*$ and pressure $P^*$) that are computed at the boundaries using relations that will depend on the boundary type. The upper script $*$ denotes the values on the element located at the boundary (node, curve and face in $1$, $2$ and $3$-D, respectively). From a numerical point of view, the boundary terms are under the form of an integral over the surface $\int_{\partial \Omega} F(U^*) \vec{n} \phi$ as shown in EQUATION. For each type of boundary conditions, it is explained how to compute the primitive variables at the boundary: then the hyperbolic flux $F(U^*)$ is easily obtained.
 %---------------------------------------------------------------------------------------------------
-\subsection{Stagnation pressure boundary condition} \label{sec:stag_pressure_bc}
+\subsection{Flow inlet boundary conditions} \label{sec:flow-inlet-bc}
 %---------------------------------------------------------------------------------------------------
-The stagnation pressure boundary condition is used whenever a pipe is connected to a very large tank or reservoir. The tank is so large in comparison to the pipe that the flow coming from the tank is considered to be at quasi-steady-state. This boundary condition assumes a subsonic flow: two eigenvalues are positive and one is negative. Physically it means that information exits and enters the computational domain at the inlet boundary.  In order to be consistent with the physic, two boundary values have to be provided and the third one needs to be obtained from the computational domain. The stagnation pressure and temperature are usually supplied for this type of boundary. A general definition for a stagnation pressure is the following: \emph{the stagnation pressure is the static pressure a flow retain when brought to rest isentropically from a given fluid state}. For incompressible flow, the stagnation pressure is simply the sum of the static pressure and the kinetic energy. When brought to rest, all of the kinetic energy is converted into internal energy that is function of the static pressure. For compressible flow described by the Stiffened gas equation of state, the stagnation pressure and temperature are function of the Mach number $M$ as follows:
-\begin{eqnarray}\label{eq:stag_bc}
-P_0 &=& P_s \left( 1 + \frac{\gamma-1}{2}M^2 \right)\\
-T_0 &=& T_s \left( 1 + \frac{\gamma-1}{2}M^2 \right)^{\frac{\gamma-1}{\gamma}}
+Flow inlet boundary can be split into two categories: subsonic and supersonic.
+%========================================================
+\subsubsection{Subsonic flow inlet boundary condition} \label{sec:sub-flow-inlet-bc}
+%========================================================
+In the case of subsonic flow inlet, three waves enter the domain and only one exits it, as shown in \fig{fig:sub_flow_inlet}. In order to ensure a well-posed system at the boundary, three boundary values need to be supplied to the code, since three waves enter the domain. The fourth value is usually computed from the characteristic equation associated to the wave exiting the domain at the boundary, and the three boundary values. In the case of an implicit temporal integrator, the solver iterates over the solution until convergence is reached. Thus, it is proposed to take advantage of the solver in order to compute the boundary values as follows. We assume that a set three boundary values are known at the inlet $\left(U_1^{bc}, U_2^{bc}, U_3^{bc}\right)$. The fourth value, $U_4$ is chosen so that the set of four values can be used to retrieve any other variables which ensures the system to be well-posed. At a given time and for a given iteration $k$, the solver iterates over the entire solution vector and $U_4^k$ is updated whereas the three other values do not vary since constant. The set of fourth values is used to compute the flux at the boundary given in \eqt{eq:hyp_flux_bc_sct3} which will be also updated at every iteration. Because of the iterative process, information from inside the computational domain is transmitted to the boundary until the solution reaches convergence: the solver substitutes itself to the characteristic equation associate to the wave exiting the domain. Using this method, various boundary conditions are implemented and detailed in \tbl{tbl:sub-inlet-flow-bc}:
+%
+\begin{table}[!htbp]
+\begin{center}
+\caption{ Subsonic flow inlet boundary conditions.}
+\label{tbl:sub-inlet-flow-bc}
+\begin{tabular}{|c|c|c|c|c|}
+ \hline
+boundary type & $U_1^{bc}$  & $U_2^{bc}$ & $U_3^{bc}$ & $U_4^{k}$ \\  \hline
+static pressure & $P$     & $T$    & $\theta$  & $u$     \\  \hline
+mass flow rate  & $\rho|| \mbold u||$     & $h$  & $\theta$  & $u$     \\  \hline
+stagnation pressure & $P_0$  & $T_0$    & $\theta$  & $u$     \\  \hline
+\end{tabular}
+\end{center}
+\end{table}
+%    
+where the vector velocity is of the form $\mbold u = \left( u,v \right)$, $\theta$ is defined as the angle between the outward normal to the boundary and the velocity vector ($\mbold u \cdot \mbold n = || \mbold u || \cos \theta$) and $h = E + P / \rho$ is the fluid enthalpy. The stagnation pressure $P_0$ and temperature $T_0$ are function of the Mach number $M$ and the static pressure $P$ and temperature $T$. An analytical expression can be derived from the equation of state. For example, when considering the SGEOS, the stagnation variables are given in \eqt{eq:stag_bc_sct3} \cite{SEM}:
+\begin{eqnarray}\label{eq:stag_bc_sct3}
+P_0 &=& P \left( 1 + \frac{\gamma-1}{2}M^2 \right)\\
+T_0 &=& T \left( 1 + \frac{\gamma-1}{2}M^2 \right)^{\frac{\gamma-1}{\gamma}}
 \end{eqnarray}   
-where $P_s$ and $T_s$ denote the static pressure and temperature respectively. The stagnation relations given in \eqt{eq:stag_bc} are derived by assuming an isentropic flow. From the stagnation pressure and temperature, the stagnation density and enthalpy can be computed using the equation of state. The sub script $0$ is used to denote any stagnation variable. \\
-We now need to find out how to compute the primitive variables in order to get the flux $F(U^*)$ at the boundary. For a temporal explicit scheme and a finite volume discretization method, Berry et al. \cite{SEM} used the characteristic equations and the isentropic assumption along with the definition of the stagnation variables to derive relations that relate the boundary node values to the middle-point value of the first cell in. A non-linear equation, obtained from the integration of the characteristic equations over the first cell in, has to be solved to get the boundary velocity value. This typical finite volume approach is not easily adaptable to a continuous finite element method since the cell values are not constant. The method to compute and implement the boundary conditions detailed in this section, takes advantage of the non-linear solver that is used to solve each implicit time step. First, relations that link the pressure $P^*$ and the density $\rho^*$ to the velocity $u^*$ are derived by using enthalpy and entropy conservation through the boundary. In order to derive analytical expression for the entropy, an equation of state is required. As mentioned earlier in this section, the Stiffened Gas equation of state is used to describe the fluid. Derivation of the analytical expression for the entropy $S$ can be found in (REF) and lead to the following expression:
-\begin{equation}\label{eq:entropy_SGEOS}
-S(\rho, P) = C_v \log \frac{P+P_{\infty}}{\rho^{\gamma}} \nonumber
-\end{equation}
-where $C_v$ is a constant heat capacity. Since the flow is assumed to be isentropic at the boundary, the following relation can be used:
-\begin{equation}
-S_0 = S^* \rightarrow \frac{P_0 + P_{\infty}}{\rho_0^{\gamma}} = \frac{P^*+P_{\infty}}{\rho^{*\gamma}} = K \nonumber
-\end{equation} 
-which can be recast under the flooding form to obtain our first relation:
-\begin{equation}\label{eq:first_relation}
-P^* = K \rho^{*\gamma} - P_{\infty}
-\end{equation}
-where $K$ is computed from the stagnation pressure and temperature, and using the equation of state to obtain the stagnation density.
-The second relation is obtained by using an enthalpy balance between the boundary and a far field location in the tank. The enthalpy is denoted by $H$ and defined as $H = E + p/ \rho$. Thus,
-\begin{equation}
-H_0 = H^* \rightarrow \bar{H} = \frac{\gamma (P_0+P_{\infty})}{\rho_0 (\gamma-1)} =\frac{ \gamma (P^*+P_{\infty})}{\rho^* (\gamma-1)} + \frac{1}{2} u^{*2} \nonumber
-\end{equation}
-after splitting the total energy in the sum of the internal and kinetic energy and using the Stiffened Gas equation of state to express the internal energy as a function of the pressure and the density. The constant $\bar{H}$ is again computed from the stagnation variables. Using \eqt{eq:first_relation}, the second relation for the density $\rho^*$ only function of the velocity $u^*$ is obtained:
-\begin{equation}\label{eq:scd_relation}
-\rho^* = \left( \frac{\gamma-1}{K \gamma}(\bar{H}-\frac{u^{*2}}{2}) \right)^{\frac{1}{\gamma-1}}
-\end{equation}
-From \eqt{eq:first_relation} and \eqt{eq:scd_relation}, once a value for the velocity $u^*$ is known, the pressure and the density values at the boundary can be computed. In \cite{SEM}, the velocity at the boundary is computed from a non-linear equation that is obtained by integrating the characteristic equations over the first cell in. The objective is to link the inside of the computational domain to the boundary in order to transmit the proper physical information entering and exiting the boundary. Our approach differs from \cite{SEM} in a sense that it takes advantage of the non-linear solver used to solve for the numerical solution at each implicit time step. While iterating on the solution to converge the residual, a direct connection between the boundary values and the rest of the computational domain is ensured. Thus, it is believed that the non-linear function to compute the velocity used in \cite{SEM} is not required and the connection between the boundary and the rest of the domain will be simply ensured by taking the latest value of the velocity $u^*_k$ given by the non-linear solver, where $k$ denotes the $k^{th}$ iterate. Thus, given the last iterate of the velocity value at the boundary $u^*_k$, the corresponding pressure $p^*_k$ and density $\rho^*_k$ values can be computed from \eqt{eq:first_relation} and \eqt{eq:scd_relation}. During a non-linear solve, the velocity gets updated based on the inside values and so are the pressure and density. The boundary values are converged once the residual of the full computational domain is converged. From the star primitive values $U^* = \{\rho^*, u^*, P^* \}$, the flux $F(U^*)$ can be computed and then used to weakly impose the boundary in EQUATION. It is also possible to strongly impose the boundary conditions by computing the conservative variables from the star primitive values and using Dirichlet method (REF).
-\begin{remark}[]
-For the stagnation pressure boundary condition, it can be also chosen to specify the stagnation density instead of the stagnation temperature. Using the equation of state, the third value can be easily obtained. 
-\end{remark}
+%========================================================
+\subsubsection{Supersonic flow inlet boundary condition} \label{sec:sup-flow-inlet-bc}
+%========================================================
+For a supersonic flow inlet boundary, the implementation is very straightforward since all the waves enter the computational domain. Thus, in $2$-D, four boundary values $\left(U_1^{bc}, U_2^{bc}, U_3^{bc}, U_4^{bc}\right)$ need to be supplied for the system to be well-posed. Using these four values and the equation of state, the flux at the boundary, given in \eqt{eq:hyp_flux_bc_sct3}, can be computed and used to weakly impose the boundary conditions. An alternative idea consists of using Dirichlet method to strongly impose the boundary values: assuming that a set of four boundary values is supplied, the values of the conservative variables of the Euler equations at the boundary are computed and strongly imposed. Such a method could not be used for a subsonic flow inlet boundary as described in \sect{sec:sub-flow-inlet-bc}.
 %---------------------------------------------------------------------------------------------------
-\subsection{Back pressure outlet boundary condition for subsonic flow} \label{sec:static_pressure_bc}
+\subsection{Flow outlet boundary conditions} \label{sec:flow-outlet-bc}
 %---------------------------------------------------------------------------------------------------
-The back pressure boundary condition is applied when a flow exits a computational domain and has to match a specified back pressure at the exit. This type of boundary condition is only valid for subsonic flow (outlet boundary condition for supersonic flow is treated in \sect{sec:outlet_supersonic_bc}). This boundary condition is often referred in the literature as a static pressure outlet boundary condition. We rather use this terminology for the static pressure inlet boundary.\\
-Once again, the basis of the method relies on the sign of the eigenvalues. A subsonic flow at the outlet is considered: the eigenvalues $\lambda_2$ and $\lambda_3$ are positive and the eigenvalue $\lambda_1$ is negative. Therefore, only one variable needs to be specified in order to be consistent with the mathematical properties of the system of equations: this variable is the back pressure $P_b$. For an explicit temporal discretization, alike in \cite{SEM}, the characteristic equations associated to the eigenvalues $\lambda_2$ and $\lambda_3$ are used to compute the values of the density and the velocity at the outlet: the characteristic equations are integrated over the last cell and a relation linking the star values to the first node-in values is obtained. In the case of an implicit temporal discretization, the non-linear solver substitutes itself to the characteristic equations. The values of the density $\rho^*$ and the velocity $u^*$ are updated through the iterations and , thus are related to the rest of the computational domain. Every time the pressure is required, it is set equal to the back pressure $P_b$. When considering the $k^{th}$ iteration, the $1$-D  flux at the boundary looks like:
-\begin{equation}
-F(U^*_k) = \left\{
-\begin{array}{ccc}
-\rho^*_k u^*_k \\
-\rho^*_k (u^*_k)^2 + P_b \\
-u^*_k \left( \rho^*_k E^*_k + P_b\right)
-\end{array}
-\right.
-\end{equation}
-where $E^*_k$ is computed using the equation of state and the values $\rho^*_k$, $u^*_k$ and $P_b$.
+Once again, implementation of subsonic and supersonic boundary conditions is investigated.
+%========================================================
+\subsubsection{Subsonic flow outlet boundary condition} \label{sec:sub-flow-outlet-bc}
+%========================================================
+In the case of a subsonic outlet boundary, three waves exit the domain and one wave enters it, as shown in \fig{fig:sub_flow_outlet}. This is the opposite situation as the subsonic inlet boundary described in \sect{sec:sub-flow-inlet-bc}. Thus. following the same reasoning as before, only one boundary value needs to be supplied to the code that we denote by $U_4^{bc}$, whereas the other boundary values are given by the solver: $\left(U_1^{k}, U_2^{k}, U_3^{k}\right)$. The most common subsonic outlet boundary condition is the static pressure boundary. It consists of supplying the code with a background static pressure $P_b$. Details of the implementation relative to the implicit scheme are given in \tbl{tbl:sub-outlet-flow-bc}. 
+%
+\begin{table}[!htbp]
+\begin{center}
+\caption{ Subsonic flow outlet boundary conditions.}
+\label{tbl:sub-outlet-flow-bc}
+\begin{tabular}{|c|c|c|c|c|}
+ \hline
+boundary type & $U_1^{k}$  & $U_2^{k}$ & $U_3^{k}$ & $U_4^{bc}$ \\  \hline
+background pressure & $\rho$     & $u$    & $v$  & $P_b$     \\  \hline
+\end{tabular}
+\end{center}
+\end{table}
+%========================================================
+\subsubsection{Supersonic flow outlet boundary condition} \label{sec:sup-flow-outlet-bc}
+%========================================================
+At a supersonic flow outlet boundary (\fig{fig:sup_flow_outlet}), all of the waves exit the computational domain. Thus, the code does not needs to be provided with any boundary value. The flux is computed with the values given from the solver at the latest iteration for each time step and updated until convergence is reached. 
 %---------------------------------------------------------------------------------------------------
-\subsection{Mass flow inlet boundary condition} \label{sec:inlet_mass_flow}
+\subsection{Free-slip wall boundary conditions} \label{sec:wall-bc}
 %---------------------------------------------------------------------------------------------------
-%---------------------------------------------------------------------------------------------------
-\subsection{Outlet boundary condition for supersonic flow} \label{sec:outlet_supersonic_bc}
-%---------------------------------------------------------------------------------------------------
-A supersonic boundary condition is required when the flow becomes supersonic at the outlet. In that case, all of the eigenvalues are locally positive which means all of the physical information exits the computational domain. Then, the primitive values at the boundary are all taken equal to the last iterate ones and used to compute the flux at the boundary as follows:
-\begin{equation}
-F(U^*_k) = \left\{
-\begin{array}{ccc}
-\rho^*_k u^*_k \\
-\rho^*_k (u^*_k)^2 + P^*_k \\
-u^*_k \left( \rho^*_k E^*_k + P^*_k\right)
-\end{array}
-\right.
-\end{equation}
-where $E^*_k$ is computed using the equation of state and the values $\rho^*_k$, $u^*_k$ and $P^*_k$.\\
-The outlet supersonic boundary condition is often paired to the back pressure outlet boundary condition described in \sect{sec:static_pressure_bc}. When implementing an outlet boundary condition a switch statement on the Mach number is required in order to account for flow going from subsonic to supersonic or the other way around. The only major difference between the two types of boundary condition is the treatment of the pressure. 
+%The stagnation pressure boundary condition is used whenever a pipe is connected to a very large tank or reservoir. The tank is so large in comparison to the pipe that the flow coming from the tank is considered to be at quasi-steady-state. This boundary condition assumes a subsonic flow: two eigenvalues are positive and one is negative. Physically it means that information exits and enters the computational domain at the inlet boundary.  In order to be consistent with the physic, two boundary values have to be provided and the third one needs to be obtained from the computational domain. The stagnation pressure and temperature are usually supplied for this type of boundary. A general definition for a stagnation pressure is the following: \emph{the stagnation pressure is the static pressure a flow retain when brought to rest isentropically from a given fluid state}. For incompressible flow, the stagnation pressure is simply the sum of the static pressure and the kinetic energy. When brought to rest, all of the kinetic energy is converted into internal energy that is function of the static pressure. For compressible flow described by the Stiffened gas equation of state, the stagnation pressure and temperature are function of the Mach number $M$ as follows:
+%\begin{eqnarray}\label{eq:stag_bc}
+%P_0 &=& P_s \left( 1 + \frac{\gamma-1}{2}M^2 \right)\\
+%T_0 &=& T_s \left( 1 + \frac{\gamma-1}{2}M^2 \right)^{\frac{\gamma-1}{\gamma}}
+%\end{eqnarray}   
+%where $P_s$ and $T_s$ denote the static pressure and temperature respectively. The stagnation relations given in \eqt{eq:stag_bc} are derived by assuming an isentropic flow. From the stagnation pressure and temperature, the stagnation density and enthalpy can be computed using the equation of state. The sub script $0$ is used to denote any stagnation variable. \\
+%We now need to find out how to compute the primitive variables in order to get the flux $F(U^*)$ at the boundary. For a temporal explicit scheme and a finite volume discretization method, Berry et al. \cite{SEM} used the characteristic equations and the isentropic assumption along with the definition of the stagnation variables to derive relations that relate the boundary node values to the middle-point value of the first cell in. A non-linear equation, obtained from the integration of the characteristic equations over the first cell in, has to be solved to get the boundary velocity value. This typical finite volume approach is not easily adaptable to a continuous finite element method since the cell values are not constant. The method to compute and implement the boundary conditions detailed in this section, takes advantage of the non-linear solver that is used to solve each implicit time step. First, relations that link the pressure $P^*$ and the density $\rho^*$ to the velocity $u^*$ are derived by using enthalpy and entropy conservation through the boundary. In order to derive analytical expression for the entropy, an equation of state is required. As mentioned earlier in this section, the Stiffened Gas equation of state is used to describe the fluid. Derivation of the analytical expression for the entropy $S$ can be found in (REF) and lead to the following expression:
+%\begin{equation}\label{eq:entropy_SGEOS}
+%S(\rho, P) = C_v \log \frac{P+P_{\infty}}{\rho^{\gamma}} \nonumber
+%\end{equation}
+%where $C_v$ is a constant heat capacity. Since the flow is assumed to be isentropic at the boundary, the following relation can be used:
+%\begin{equation}
+%S_0 = S^* \rightarrow \frac{P_0 + P_{\infty}}{\rho_0^{\gamma}} = \frac{P^*+P_{\infty}}{\rho^{*\gamma}} = K \nonumber
+%\end{equation} 
+%which can be recast under the flooding form to obtain our first relation:
+%\begin{equation}\label{eq:first_relation}
+%P^* = K \rho^{*\gamma} - P_{\infty}
+%\end{equation}
+%where $K$ is computed from the stagnation pressure and temperature, and using the equation of state to obtain the stagnation density.
+%The second relation is obtained by using an enthalpy balance between the boundary and a far field location in the tank. The enthalpy is denoted by $H$ and defined as $H = E + p/ \rho$. Thus,
+%\begin{equation}
+%H_0 = H^* \rightarrow \bar{H} = \frac{\gamma (P_0+P_{\infty})}{\rho_0 (\gamma-1)} =\frac{ \gamma (P^*+P_{\infty})}{\rho^* (\gamma-1)} + \frac{1}{2} u^{*2} \nonumber
+%\end{equation}
+%after splitting the total energy in the sum of the internal and kinetic energy and using the Stiffened Gas equation of state to express the internal energy as a function of the pressure and the density. The constant $\bar{H}$ is again computed from the stagnation variables. Using \eqt{eq:first_relation}, the second relation for the density $\rho^*$ only function of the velocity $u^*$ is obtained:
+%\begin{equation}\label{eq:scd_relation}
+%\rho^* = \left( \frac{\gamma-1}{K \gamma}(\bar{H}-\frac{u^{*2}}{2}) \right)^{\frac{1}{\gamma-1}}
+%\end{equation}
+%From \eqt{eq:first_relation} and \eqt{eq:scd_relation}, once a value for the velocity $u^*$ is known, the pressure and the density values at the boundary can be computed. In \cite{SEM}, the velocity at the boundary is computed from a non-linear equation that is obtained by integrating the characteristic equations over the first cell in. The objective is to link the inside of the computational domain to the boundary in order to transmit the proper physical information entering and exiting the boundary. Our approach differs from \cite{SEM} in a sense that it takes advantage of the non-linear solver used to solve for the numerical solution at each implicit time step. While iterating on the solution to converge the residual, a direct connection between the boundary values and the rest of the computational domain is ensured. Thus, it is believed that the non-linear function to compute the velocity used in \cite{SEM} is not required and the connection between the boundary and the rest of the domain will be simply ensured by taking the latest value of the velocity $u^*_k$ given by the non-linear solver, where $k$ denotes the $k^{th}$ iterate. Thus, given the last iterate of the velocity value at the boundary $u^*_k$, the corresponding pressure $p^*_k$ and density $\rho^*_k$ values can be computed from \eqt{eq:first_relation} and \eqt{eq:scd_relation}. During a non-linear solve, the velocity gets updated based on the inside values and so are the pressure and density. The boundary values are converged once the residual of the full computational domain is converged. From the star primitive values $U^* = \{\rho^*, u^*, P^* \}$, the flux $F(U^*)$ can be computed and then used to weakly impose the boundary in EQUATION. It is also possible to strongly impose the boundary conditions by computing the conservative variables from the star primitive values and using Dirichlet method (REF).
+%\begin{remark}[]
+%For the stagnation pressure boundary condition, it can be also chosen to specify the stagnation density instead of the stagnation temperature. Using the equation of state, the third value can be easily obtained. 
+%\end{remark}
+%%---------------------------------------------------------------------------------------------------
+%\subsection{Back pressure outlet boundary condition for subsonic flow} \label{sec:static_pressure_bc}
+%%---------------------------------------------------------------------------------------------------
+%The back pressure boundary condition is applied when a flow exits a computational domain and has to match a specified back pressure at the exit. This type of boundary condition is only valid for subsonic flow (outlet boundary condition for supersonic flow is treated in \sect{sec:outlet_supersonic_bc}). This boundary condition is often referred in the literature as a static pressure outlet boundary condition. We rather use this terminology for the static pressure inlet boundary.\\
+%Once again, the basis of the method relies on the sign of the eigenvalues. A subsonic flow at the outlet is considered: the eigenvalues $\lambda_2$ and $\lambda_3$ are positive and the eigenvalue $\lambda_1$ is negative. Therefore, only one variable needs to be specified in order to be consistent with the mathematical properties of the system of equations: this variable is the back pressure $P_b$. For an explicit temporal discretization, alike in \cite{SEM}, the characteristic equations associated to the eigenvalues $\lambda_2$ and $\lambda_3$ are used to compute the values of the density and the velocity at the outlet: the characteristic equations are integrated over the last cell and a relation linking the star values to the first node-in values is obtained. In the case of an implicit temporal discretization, the non-linear solver substitutes itself to the characteristic equations. The values of the density $\rho^*$ and the velocity $u^*$ are updated through the iterations and , thus are related to the rest of the computational domain. Every time the pressure is required, it is set equal to the back pressure $P_b$. When considering the $k^{th}$ iteration, the $1$-D  flux at the boundary looks like:
+%\begin{equation}
+%F(U^*_k) = \left\{
+%\begin{array}{ccc}
+%\rho^*_k u^*_k \\
+%\rho^*_k (u^*_k)^2 + P_b \\
+%u^*_k \left( \rho^*_k E^*_k + P_b\right)
+%\end{array}
+%\right.
+%\end{equation}
+%where $E^*_k$ is computed using the equation of state and the values $\rho^*_k$, $u^*_k$ and $P_b$.
+%%---------------------------------------------------------------------------------------------------
+%\subsection{Mass flow inlet boundary condition} \label{sec:inlet_mass_flow}
+%%---------------------------------------------------------------------------------------------------
+%%---------------------------------------------------------------------------------------------------
+%\subsection{Outlet boundary condition for supersonic flow} \label{sec:outlet_supersonic_bc}
+%%---------------------------------------------------------------------------------------------------
+%A supersonic boundary condition is required when the flow becomes supersonic at the outlet. In that case, all of the eigenvalues are locally positive which means all of the physical information exits the computational domain. Then, the primitive values at the boundary are all taken equal to the last iterate ones and used to compute the flux at the boundary as follows:
+%\begin{equation}
+%F(U^*_k) = \left\{
+%\begin{array}{ccc}
+%\rho^*_k u^*_k \\
+%\rho^*_k (u^*_k)^2 + P^*_k \\
+%u^*_k \left( \rho^*_k E^*_k + P^*_k\right)
+%\end{array}
+%\right.
+%\end{equation}
+%where $E^*_k$ is computed using the equation of state and the values $\rho^*_k$, $u^*_k$ and $P^*_k$.\\
+%The outlet supersonic boundary condition is often paired to the back pressure outlet boundary condition described in \sect{sec:static_pressure_bc}. When implementing an outlet boundary condition a switch statement on the Mach number is required in order to account for flow going from subsonic to supersonic or the other way around. The only major difference between the two types of boundary condition is the treatment of the pressure. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Numerical Results} \label{sec:results}
@@ -822,7 +883,6 @@ P = (\gamma-1) \rho (e-q) - \gamma P_\infty
 where the parameters $\gamma$, $q$, and $P_\infty$ are fluid-dependent and are given in \tbl{tbl:stff_gas_eos}. The ideal gas equation of state is recovered by setting $q=P_\infty=0$ in \eqt{eq:eos}. 
 %
 \begin{table}[!htbp]
-
 \begin{center}
 \caption{ Stiffened Gas Equation of State parameters for steam and liquid water.}
 \label{tbl:stff_gas_eos}
