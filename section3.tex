@@ -716,7 +716,7 @@ Flow inlet boundary can be split into two categories: subsonic and supersonic.
 %========================================================
 \subsubsection{Subsonic flow inlet boundary condition} \label{sec:sub-flow-inlet-bc}
 %========================================================
-In the case of subsonic flow inlet, three waves enter the domain and only one exits it, as shown in \fig{fig:sub_flow_inlet}. In order to ensure a well-posed system at the boundary, three boundary values need to be supplied to the code, since three waves enter the domain. The fourth value is usually computed from the characteristic equation associated to the wave exiting the domain at the boundary, and the three boundary values. In the case of an implicit temporal integrator, the solver iterates over the solution until convergence is reached. Thus, it is proposed to take advantage of the solver in order to compute the boundary values as follows. We assume that a set three boundary values are known at the inlet $\left(U_1^{bc}, U_2^{bc}, U_3^{bc}\right)$. The fourth value, $U_4$ is chosen so that the set of four values can be used to retrieve any other variables which ensures the system to be well-posed. At a given time and for a given iteration $k$, the solver iterates over the entire solution vector and $U_4^k$ is updated whereas the three other values do not vary since constant. The set of fourth values is used to compute the flux at the boundary given in \eqt{eq:hyp_flux_bc_sct3} which will be also updated at every iteration. Because of the iterative process, information from inside the computational domain is transmitted to the boundary until the solution reaches convergence: the solver substitutes itself to the characteristic equation associate to the wave exiting the domain. Using this method, various boundary conditions are implemented and detailed in \tbl{tbl:sub-inlet-flow-bc}:
+In the case of subsonic flow inlet, three waves enter the domain and only one exits it, as shown in \fig{fig:sub_flow_inlet}. In order to ensure a well-posed system at the boundary, three boundary values need to be supplied to the code, since three waves enter the domain. The fourth value is usually computed from the characteristic equation associated to the wave exiting the domain at the boundary, and the three boundary values. In the case of an implicit temporal integrator, the solver iterates over the solution until convergence is reached. Thus, it is proposed to take advantage of the solver in order to compute the boundary values as follows. We assume that a set three boundary values are known at the inlet $\left(U_1^{bc}, U_2^{bc}, U_3^{bc}\right)$. The fourth value, $U_4$ is chosen so that the set of four values can be used to retrieve any other variables which ensures the system to be well-posed. At a given time and for a given iteration $\ell$, the solver iterates over the entire solution vector and $U_4^k$ is updated whereas the three other values do not vary since constant. The set of fourth values is used to compute the flux at the boundary given in \eqt{eq:hyp_flux_bc_sct3} which will be also updated at every iteration. Because of the iterative process, information from inside the computational domain is transmitted to the boundary until the solution reaches convergence: the solver substitutes itself to the characteristic equation associate to the wave exiting the domain. Using this method, various boundary conditions are implemented and detailed in \tbl{tbl:sub-inlet-flow-bc}:
 %
 \begin{table}[!htbp]
 \begin{center}
@@ -724,7 +724,7 @@ In the case of subsonic flow inlet, three waves enter the domain and only one ex
 \label{tbl:sub-inlet-flow-bc}
 \begin{tabular}{|c|c|c|c|c|}
  \hline
-boundary type & $U_1^{bc}$  & $U_2^{bc}$ & $U_3^{bc}$ & $U_4^{k}$ \\  \hline
+boundary type & $U_1^{bc}$  & $U_2^{bc}$ & $U_3^{bc}$ & $U_4^{\ell}$ \\  \hline
 static pressure & $P$     & $T$    & $\theta$  & $u$     \\  \hline
 mass flow rate  & $\rho|| \mbold u||$     & $h$  & $\theta$  & $u$     \\  \hline
 stagnation pressure & $P_0$  & $T_0$    & $\theta$  & $u$     \\  \hline
@@ -748,7 +748,7 @@ Once again, implementation of subsonic and supersonic boundary conditions is inv
 %========================================================
 \subsubsection{Subsonic flow outlet boundary condition} \label{sec:sub-flow-outlet-bc}
 %========================================================
-In the case of a subsonic outlet boundary, three waves exit the domain and one wave enters it, as shown in \fig{fig:sub_flow_outlet}. This is the opposite situation as the subsonic inlet boundary described in \sect{sec:sub-flow-inlet-bc}. Thus. following the same reasoning as before, only one boundary value needs to be supplied to the code that we denote by $U_4^{bc}$, whereas the other boundary values are given by the solver: $\left(U_1^{k}, U_2^{k}, U_3^{k}\right)$. The most common subsonic outlet boundary condition is the static pressure boundary. It consists of supplying the code with a background static pressure $P_b$. Details of the implementation relative to the implicit scheme are given in \tbl{tbl:sub-outlet-flow-bc}. 
+In the case of a subsonic outlet boundary, three waves exit the domain and one wave enters it, as shown in \fig{fig:sub_flow_outlet}. This is the opposite situation as the subsonic inlet boundary described in \sect{sec:sub-flow-inlet-bc}. Thus. following the same reasoning as before, only one boundary value needs to be supplied to the code that we denote by $U_4^{bc}$, whereas the other boundary values are given by the solver: $\left(U_1^{\ell}, U_2^{\ell}, U_3^{\ell}\right)$. The most common subsonic outlet boundary condition is the static pressure boundary. It consists of supplying the code with a background static pressure $P_b$. Details of the implementation relative to the implicit scheme are given in \tbl{tbl:sub-outlet-flow-bc}. 
 %
 \begin{table}[!htbp]
 \begin{center}
@@ -756,7 +756,7 @@ In the case of a subsonic outlet boundary, three waves exit the domain and one w
 \label{tbl:sub-outlet-flow-bc}
 \begin{tabular}{|c|c|c|c|c|}
  \hline
-boundary type & $U_1^{k}$  & $U_2^{k}$ & $U_3^{k}$ & $U_4^{bc}$ \\  \hline
+boundary type & $U_1^{\ell}$  & $U_2^{\ell}$ & $U_3^{\ell}$ & $U_4^{bc}$ \\  \hline
 background pressure & $\rho$     & $u$    & $v$  & $P_b$     \\  \hline
 \end{tabular}
 \end{center}
@@ -768,6 +768,34 @@ At a supersonic flow outlet boundary (\fig{fig:sup_flow_outlet}), all of the wav
 %---------------------------------------------------------------------------------------------------
 \subsection{Free-slip wall boundary conditions} \label{sec:wall-bc}
 %---------------------------------------------------------------------------------------------------
+The free-slip wall boundary condition consists of an impenetrable wall with with no boundary layer since the fluid is assumed inviscid. The boundary condition used in the case of free-slip wall is $\mbold u \cdot \mbold n = 0$. Thus, at the wall, the eigenvalues $\lambda_2$ and $\lambda_3$ are zero, whereas the eigenvalues associated to the acoustic waves are equal to $\pm c$ as shown in \fig{fig:wall_bc}. The flux at the boundary can be simplified using the physical boundary condition $\mbold u \cdot \mbold n = 0$ and expressed only as a function of the pressure as follows:
+%
+\begin{equation}\label{eq:flux-wall-bc}
+\mbold F \left( \mbold U(\mbold r, t) \right) \cdot \mbold n = 
+\left[ 
+\begin{array}{l}
+0\\
+P n_x \\
+P n_y \\
+0
+\end{array}
+\right]
+\end{equation}
+%
+Computing the pressure can be achieved by using the characteristic equations associated to the acoustic waves. However, we rather take advantage of the non-linear solver and update the pressure and then the flux at each iteration. Then, the flux at a free-slip boundary condition is simply:
+%
+\begin{equation}\label{eq:flux-wall-bc-k}
+\mbold F \left( \mbold U(\mbold r, t)^\ell \right) \cdot \mbold n = 
+\left[ 
+\begin{array}{l}
+0\\
+P^\ell n_x \\
+P^\ell n_y \\
+0
+\end{array}
+\right]
+\end{equation}
+%
 %The stagnation pressure boundary condition is used whenever a pipe is connected to a very large tank or reservoir. The tank is so large in comparison to the pipe that the flow coming from the tank is considered to be at quasi-steady-state. This boundary condition assumes a subsonic flow: two eigenvalues are positive and one is negative. Physically it means that information exits and enters the computational domain at the inlet boundary.  In order to be consistent with the physic, two boundary values have to be provided and the third one needs to be obtained from the computational domain. The stagnation pressure and temperature are usually supplied for this type of boundary. A general definition for a stagnation pressure is the following: \emph{the stagnation pressure is the static pressure a flow retain when brought to rest isentropically from a given fluid state}. For incompressible flow, the stagnation pressure is simply the sum of the static pressure and the kinetic energy. When brought to rest, all of the kinetic energy is converted into internal energy that is function of the static pressure. For compressible flow described by the Stiffened gas equation of state, the stagnation pressure and temperature are function of the Mach number $M$ as follows:
 %\begin{eqnarray}\label{eq:stag_bc}
 %P_0 &=& P_s \left( 1 + \frac{\gamma-1}{2}M^2 \right)\\
