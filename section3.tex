@@ -17,14 +17,11 @@
 \chapter{\uppercase {Application of the entropy viscosity method to the multi-D Euler equations with variable area:}}\label{chap:euler}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction} \label{sec:intro}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Over the past years an increasing interest has been raised for computational methods that can solve both compressible and incompressible flows. In engineering applications, there is often the need to solve for complex flows where a near incompressible regime or low Mach flow coexists with a supersonic flow domain. For example, such flows are encountered in aerodynamics in the study of airships. In the nuclear industry, flows are nearly in the incompressible regime but compressible effects cannot be neglected because of the heat source and thus needs to be accurately resolved. \\
 When solving the multi-D Euler equations for a wide range of Mach numbers, multiple problems must be addressed: stability, accuracy and acceleration of the convergence in the low Mach regime. Because of the hyperbolic nature of the equations, shocks can form during transonic and supersonic flows, and require the use of the numerical methods in order to stabilize the scheme and correctly resolve the discontinuities. The literature offers a wide range of stabilization methods: flux-limiter \cite{FluxLimiter, FluxLimiter2}, pressure-based viscosity method (\cite{PBV_book}), Lapidus method (\cite{Lapidus_paper, LMP, Lapidus_book}), and the entropy-viscosity method(\cite{jlg1, jlg2}) among others. These numerical methods are usually developed using simple equations of state and tested for transonic and supersonic flows where the disparity between the acoustic waves and the fluid speed is not large since the Mach number is of order one. This approach, however, leads to a well-known accuracy problem in the low Mach regime where the fluid velocity is smaller that the speed of sound by multiple order of magnitude. The numerical dissipative terms become ill-scaled in the low Mach regime and lead to the wrong numerical solution by changing the nature of the equations solved. This behavior is well documented in the literature \cite{LowMach1, LowMach2, LowMach3} and often treated by performing a low Mach asymptotic study of the multi-D Euler equation. This method was originally used \cite{LowMach1} to show convergence of the compressible multi-D Euler equations to the incompressible ones. Thus, by using the same method, the effect of the dissipative terms in the low Mach regime, can be understood and, when needed, a fix is developed in order to ensure the convergence of the equations to the correct physical solution. This approach was used as a "fixing" method for multiple well known stabilization methods alike Roe scheme (\cite{Roe}) and SUPG \cite{LowMach3} while preserving the original stabilization properties of shocks. Furthermore, it is also of common knowledge that low-Mach steady-state solutions can be difficult to obtain with a temporal explicit solver. For stability purpose, the time step must be chosen inversely proportional to the largest eigenvalue of the system which is approximately the speed of sound, c, for slow flows. However, other waves are convected at the fluid speed, which is much slower. Hence, these waves do not change very much over a time step. Thus, thousands of time steps are required to reach a steady state. Acceleration techniques were developed and proved efficient \cite{LowMach2}, but require to modify the temporal derivatives of the equation and thus, can only be used for steady-state flows. To avoid to modifying the temporal derivatives, the temporal implicit capabilities of the MOOSE multiphysics framework \cite{Moose} is used. Such a choice should allow us to quickly obtain low-Mach steady-state solutions, while preserving the accuracy of the transient solution, but also requires a preconditioner.\\
-We propose, through this paper, to investigate how the entropy viscosity method, when applied to the multi-D Euler equations with variable area, behaves in the low Mach regime. This method was initially introduced by Guermond et al. to solve for the hyperbolic systems and has shown good results when used for solving the multi-D Euler equations for supersonic flows with various discretization schemes. More importantly, it is simple to implement, can be used with unstructured grids,  and its dissipative terms are consistent with the entropy minimum principle and it has proven valid for any equation of state under certain conditions \cite{jlg}. \\
+We propose in this chapter to investigate how the entropy viscosity method, when applied to the multi-D Euler equations with variable area, behaves in the low Mach regime. This method was initially introduced by Guermond et al. to solve for the hyperbolic systems and has shown good results when used for solving the multi-D Euler equations for supersonic flows with various discretization schemes. More importantly, it is simple to implement, can be used with unstructured grids,  and its dissipative terms are consistent with the entropy minimum principle and it has proven valid for any equation of state under certain conditions \cite{jlg}. \\
 
-This paper is organized as follows: in \sect{sec:entro_visc} the current definition of the entropy viscosity method is recalled, and inconsistency with the low Mach regime are pointed out. Since our interest is in the variable area version of the multi-D Euler equation, the reader is guided trough the steps leading to the derivation of the dissipative terms on the model of \cite{jlg}. Then in \sect{sec:extension}, a new definition of the viscosity coefficient is introduced and derived from a low Mach asymptotic study. 1-D and 2-D numerical results are presented in \sect{sec:results} for a wide range of Mach numbers: low Mach flow over a cylinder and a circular bump, and supersonic flow in a compression corner \cite{CompressionCorner}. Convergence studies are performed in 1-D, in order to demonstrate the accuracy of the solution.
+In \sect{sec:entro_visc} the current definition of the entropy viscosity method is recalled, and inconsistency with the low Mach regime are pointed out. Since our interest is in the variable area version of the multi-D Euler equation, the reader is guided trough the steps leading to the derivation of the dissipative terms on the model of \cite{jlg}. Then in \sect{sec:extension}, a new definition of the viscosity coefficient is introduced and derived from a low Mach asymptotic study. 1-D and 2-D numerical results are presented in \sect{sec:results} for a wide range of Mach numbers: low Mach flow over a cylinder and a circular bump, and supersonic flows over various geometries. Convergence studies are performed in 1-D, in order to demonstrate the accuracy of the solution.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,8 +52,7 @@ The Euler equations are given by
 %
 where $\rho$, $\rho \mbold u$ and $\rho E$ are the density, the momentum and the total energy, respectively, and will be referred to as the conservative variables. $\mbold u$ is the fluid velocity and its specific internal energy is denoted by $e=E-\tfrac{u^2}{2}$. An equation of state, dependent upon $\rho$ and $e$, is used to compute the pressure $P$. The tensor product $\vec{a} \otimes \vec{b}$ is such that $(\vec{a} \otimes \vec{b})_{i,j} = a_i b_j$. The identity tensor is denoted by $\mathbb{I}$.
 
-Next, the entropy viscosity method \cite{jlg1, jlg2, jlg3, valentin} applied to \eqt{eq:euler_eq} is recalled. The method consists of adding dissipative terms with a viscosity coefficient modulated by the entropy production; this allows for a high-order accuracy when the solution is smooth (provided that the spatial and temporal discretizations also are high order). 
-The derivation of the viscous regularization (or dissipative terms) is carried out to be consistent with the entropy minimum principle; details and proofs of the derivation can be found in \cite{jlg}. The viscous regularization thus obtained is valid for any equation of state as long as the physical entropy function $s$ which is concave (or $-s$ is a convex function) with respect to the internal energy $e$ and the specific volume $1/\rho$.  The Euler equations with viscous regularization become %are given in \eqt{eq:euler_visc}:
+Next, the entropy viscosity method \cite{jlg1, jlg2, jlg3, valentin} applied to \eqt{eq:euler_eq} is recalled. The derivation of the viscous regularization (or dissipative terms) is carried out to be consistent with the entropy minimum principle; details and proofs of the derivation can be found in \cite{jlg}. The viscous regularization thus obtained is valid for any equation of state as long as the physical entropy function $s$ which is concave (or $-s$ is a convex function) with respect to the internal energy $e$ and the specific volume $1/\rho$.  The Euler equations with viscous regularization become %are given in \eqt{eq:euler_visc}:
 %
 \begin{subequations}
 \label{eq:euler_visc}
@@ -93,7 +89,7 @@ where $h$ denotes the local grid size (for higher than linear finite element rep
 %
 \begin{equation}
 \label{eq:fo_quad}
-\kappa^K_{\max}(\mbold r_q, t) = \frac{h_K}{2} \left( || \mbold u(\vec{t,r_q}) || + c(\vec{t,r_q}) \right),
+\kappa^e_{\max}(\mbold r_q, t) = \frac{h^e}{2} \left( || \mbold u(\vec{t,r_q}) || + c(\vec{t,r_q}) \right),
 \end{equation}
 %
 where $\mbold r_q$ denotes the position of a quadrature point.
@@ -103,21 +99,21 @@ allowing for the detection of discontinuities other than shocks (e.g., contact).
 \begin{subequations}
 \label{eq:ent_visc_coeff}
 \begin{equation}
-\mu^K_e(\mbold r_q,t) =  h_K^2 \frac{\max\left( | \resi^K(\mbold r_q,t) |, J^K[s](t) \right)}{|| s - \bar{s} ||_\infty}  
+\mu^e_e(\mbold r_q,t) =  (h^e)^2 \frac{\max\left( | \resi^e(\mbold r_q,t) |, J^e[s](t) \right)}{|| s - \bar{s} ||_\infty}  
 \end{equation}
 \begin{equation}
-\kappa^K_e(\mbold r_q,t) = Pr \, \mu^K_e(\mbold r_q,t)
+\kappa^e_e(\mbold r_q,t) = \frac{\gamma}{\gamma-1} Pr \, \mu^e_e(\mbold r_q,t)
 \end{equation}
 \end{subequations}
 %
-where $|| \cdot ||_\infty$ and $\bar{\cdot}$ denote the L$_\infty$-norm and the average operator over the entire computational domain, respectively. The definition of the entropy jump $J[s]$ is spatial discretization-dependent and examples of definitions can be found in \cite{valentin} for discontinuous Galerkin discretization. For continuous finite element methods (FEM), the jump of a given quantity is defined as the change of its normal derivative ($\partial_n = \grad \cdot \vec{n}$) across the common face separating the two elements, and will be further referred to as the inter-element jump. We take the largest value over all faces $f$ present on the boundary $\partial K$ of element $K$:
+where $|| \cdot ||_\infty$ and $\bar{\cdot}$ denote the L$_\infty$-norm and the average operator over the entire computational domain, respectively. The definition of the entropy jump $J[s]$ is spatial discretization-dependent and examples of definitions can be found in \cite{valentin} for discontinuous Galerkin discretization. For continuous finite element methods (FEM), the jump of a given quantity is defined as the change of its normal derivative ($\partial_n = \grad \cdot \vec{n}$) across the common face separating the two elements, and will be further referred to as the inter-element jump. We take the largest value over all faces $f$ present on the boundary $\partial e$ of element $e$:
 %
 \begin{equation}
 \label{eq:jump_CFEM}
-J^K[s](t) = \max_{f\in\partial K}  \max_{\mbold r_q \in f} \jmp{\grad s(\mbold r_q,t) \cdot \vec{n}(\mbold r_q) }_f \, ,
+J^e[s](t) = \max_{f\in\partial e}  \max_{\mbold r_q \in f} \jmp{\grad s(\mbold r_q,t) \cdot \vec{n}(\mbold r_q) }_f \, ,
 \end{equation}
 %
-where $\jmp{a(\mbold r_q)}_f$ denotes the inter-element jump in $a(\mbold r)$ at quadrature point $\mbold r_q$ on face $f$ (the quadrature points $\mbold r_q$ are taken on the faces $f$ of the element $K$). With the definition given in \eqt{eq:jump_CFEM}, the jump is constant over each element $K$ of the computational domain. 
+where $\jmp{a(\mbold r_q)}_f$ denotes the inter-element jump in $a(\mbold r)$ at quadrature point $\mbold r_q$ on face $f$ (the quadrature points $\mbold r_q$ are taken on the faces $f$ of the element $e$). With the definition given in \eqt{eq:jump_CFEM}, the jump is constant over each element $e$ of the computational domain. 
 The denominator $|| s - \bar{s} ||_\infty$ is used for dimensionality purposes.
 Currently, there is no theoretical justification for choosing the denominator beyond a dimensionality argument. 
 Finally, the viscosity coefficients $\mu$ and $\kappa$ are as follows:
@@ -171,11 +167,11 @@ Denoting the normalization of $\resinew$ by $\norm_P$, the entropy-based viscosi
 \begin{subequations}
 \label{eq:visc_definition}
 \begin{equation}
-\mu^K_e(\mbold r,t)    = h_K^2 \frac{\max\left( | \resinew^K(\mbold r_q,t) |\,, || \mbold u(\mbold r_q,t) || J^K[P](t) \,, || \mbold u(\mbold r_q,t) c^2(\mbold r_q,t) || J^K[\rho](t) \right)}{\norm_P^\mu}    \, ,
+\mu^e_e(\mbold r,t)    = (h^e)^2 \frac{\max\left( | \resinew^e(\mbold r_q,t) |\,, || \mbold u(\mbold r_q,t) || J^e[P](t) \,, || \mbold u(\mbold r_q,t) c^2(\mbold r_q,t) || J^e[\rho](t) \right)}{\norm_P^\mu}    \, ,
 \end{equation} 
 \text{and} 
 \begin{equation}
-\kappa^K_e(\mbold r,t) = h_K^2 \frac{\max\left( | \resinew^K(\mbold r_q,t) |\,, || \mbold u(\mbold r_q,t) || J^K[P](t) \,, || \mbold u(\mbold r_q,t) c^2(\mbold r_q,t) || J^K[\rho](t) \right)}{\norm_P^\kappa} \, .
+\kappa^e_e(\mbold r,t) = (h^e)^2 \frac{\max\left( | \resinew^e(\mbold r_q,t) |\,, || \mbold u(\mbold r_q,t) || J^e[P](t) \,, || \mbold u(\mbold r_q,t) c^2(\mbold r_q,t) || J^e[\rho](t) \right)}{\norm_P^\kappa} \, .
 \end{equation}
 \end{subequations}
 %
@@ -669,7 +665,7 @@ where $\mbold \omega = \left( \omega_1, \omega_2, \omega_3, \omega_4 \right)$ ar
 \end{figure}
 %
 %
-\begin{figure}[H]\label{fig:outlet_sct3}
+\begin{figure}[H]
         \centering
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
@@ -790,7 +786,9 @@ Next, a 1-D shock tube test (in a straight pipe), taken from the Leblanc test-ca
 %
 A slow moving shock is also investigated \cite{james}. This test helps in assessing the ability of the method to damp the post-shock low frequency noise (oscillations). 
 %
-Finally, a strong shock for a liquid phase is also investigated\cite{abgrall}.
+Then, a strong shock for a liquid phase is also investigated\cite{abgrall}.
+%
+Finally, numerical tests with source terms are performed in order to test our approach detailed in \sect{sec:ev_source_terms}.
 
 The initial conditions (density in $kg.m^{-3}$, velocity in $m.s^{-1}$, pressure in $Pa$) for the afore mentioned 1-D shock tubes are given in \tbl{tbl:ic_1d_tests}.
 \begin{table}[!htbp]
@@ -810,7 +808,9 @@ $1$ & $-0.81$ & $1$ & $3.86$ & $-3.44$ & $10.33$                                
 \end{table} 
 
 2-D simulations are presented next. 
-First, 2-D subsonic flows around a cylinder \cite{LowMach3} and over a Gaussian hump \cite{Hump} are presented for various far-field Mach numbers (as low of $10^{-7}$). Numerical results of a transonic flow over a compression corner are provided to illustrate the ability of the new viscosity definitions to handle supersonic flows. Convergence studies are performed when analytical solutions are available. 
+First, results for 2-D supersonic flows are presented including flow over a forward facing step \cite{FFS}, a circular explosion \cite{Toro}, Riemann problem number $12$ \cite{RP12}, flow in a compression corner \cite{CompressionCorner} and over a $5^\circ$ double wedge \cite{RichThesis}.
+
+Then, $2$-D subsonic flows around a cylinder \cite{LowMach3} and over a Gaussian hump \cite{Hump} are presented for various far-field Mach numbers (as low of $10^{-7}$). Convergence studies are performed when analytical solutions are available. 
 
 For each simulation, data relative to the boundary conditions, the Courant-Friedrichs-Lewy number ($CFL$), mesh and equation of state are provided. All of the numerical solutions presented are obtained using BDF2 as temporal integrator and linear (1-D mesh), $\mathbb{P}_1$ (2-D triangular mesh), $\mathbb{Q}_1$ (2-D quadrangular mesh) finite elements. The spatial integrals are numerically computed using a second-order Gauss quadrature rule. The steady-state solution is detected from the transient by monitoring the norm of the total residual (including all of the equations) and noting when the norm of the total residual falls below $10^{-6}$. The ideal gas \cite{IGEOS} or stiffened gas equations of state \cite{SGEOS} are used; a generic expression is given in \eqt{eq:eos}.
 %
@@ -1160,45 +1160,45 @@ The numerical results are in good agreement with the exact solution and do not d
         \end{subfigure} 
         \caption{Slow moving shock profiles at $t=1.1s$.}\label{fig:low_moving_shock}
 \end{figure} 
-%---------------------------------------------------------------------------------------------------
-\subsection{Typical $1$-D shock tubes from Toro's book \cite{Toro}.} \label{sec:1d_toro}
-%---------------------------------------------------------------------------------------------------
-\begin{figure}[H]
-        \centering
-        \begin{subfigure}[b]{0.495\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_density.png}
-                \caption{Density}
-                \label{fig:1d_riemann_1_density}
-        \end{subfigure}%
-        \begin{subfigure}[b]{0.495\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_velocity.png}
-                \caption{Velocity}
-                \label{fig:1d_riemann_1_vel}
-        \end{subfigure}
-
-        \begin{subfigure}[b]{0.495\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_pressure.png}
-                \caption{Pressure}
-                \label{fig:1d_riemann_1_press}
-        \end{subfigure}
-        \begin{subfigure}[b]{0.495\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_viscosity.png}
-                \caption{Viscosity coefficients}
-                \label{fig:1d_riemann_1_visc}
-        \end{subfigure}
-        \caption{Solution profile of test $1$ at $t=0.2$ s.}
-				\label{fig:1d_riemann_1}
-\end{figure}
+%%---------------------------------------------------------------------------------------------------
+%\subsection{Typical $1$-D shock tubes from Toro's book \cite{Toro}.} \label{sec:1d_toro}
+%%---------------------------------------------------------------------------------------------------
+%\begin{figure}[H]
+%        \centering
+%        \begin{subfigure}[b]{0.495\textwidth}
+%                \centering
+%                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_density.png}
+%                \caption{Density}
+%                \label{fig:1d_riemann_1_density}
+%        \end{subfigure}%
+%        \begin{subfigure}[b]{0.495\textwidth}
+%                \centering
+%                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_velocity.png}
+%                \caption{Velocity}
+%                \label{fig:1d_riemann_1_vel}
+%        \end{subfigure}
+%
+%        \begin{subfigure}[b]{0.495\textwidth}
+%                \centering
+%                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_pressure.png}
+%                \caption{Pressure}
+%                \label{fig:1d_riemann_1_press}
+%        \end{subfigure}
+%        \begin{subfigure}[b]{0.495\textwidth}
+%                \centering
+%                \includegraphics[width=\textwidth]{figures/ToroTest1EV_points0_viscosity.png}
+%                \caption{Viscosity coefficients}
+%                \label{fig:1d_riemann_1_visc}
+%        \end{subfigure}
+%        \caption{Solution profile of test $1$ at $t=0.2$ s.}
+%				\label{fig:1d_riemann_1}
+%\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{$1$-D numerical results for flows with source terms:} \label{sec:1d-source-terms-results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This section aims at illustrating the theoretical approach developed in \sect{sec:ev_source_terms} for solving $1$-D flow with source terms using the EVM. All of the results presented in this section were obtained with the RELAP-7 code developed by Idaho National Laboratory (REF). Three source terms are considered: the wall-fraction force and the wall heat source that were detailed in \sect{sec:ev_source_terms}, and gravity terms, which yields the following $1$-D Euler equations:
+This section aims at illustrating the theoretical approach developed in \sect{sec:ev_source_terms} for solving $1$-D flow with source terms using the EVM. All of the results presented in this section were obtained with the RELAP-7 code developed by Idaho National Laboratory \cite{Relap7PWR}. Three source terms are considered: the wall-friction force and the wall heat source that were detailed in \sect{sec:ev_source_terms}, and gravity terms, which yields the following $1$-D Euler equations:
 %
 \begin{subequations}
 \label{eq:euler_source_terms3}
@@ -1233,28 +1233,27 @@ steam        (\sect{sec:steam_nozzle})  & 1.43     & 1040                       
 \end{center}
 \end{table}
 %
-The first test consists of a flow with only wall-friction force and gravity terms. Then, a wall-heat source is added to the system and different values of the heat transfer coefficient $h_t$ are investigated. All of the previous tests are done for both vapor and liquid water phases. Lastly, a $1$-D core channel component from RELAP-7 is used to model the core of a Pressurized Water Reactor (PWR) for liquid water.
+The first test consists of a flow with only wall-friction force Then, a wall-heat source is added to the system and different values of the heat transfer coefficient $h_t$ are investigated. All of the tests are performed for both vapor and liquid water phases. Lastly, a $1$-D core channel component from RELAP-7 is used to model the core of a Pressurized Water Reactor (PWR) with liquid water.
 %---------------------------------------------------------------------------------------------------
 \subsection{Vapor flow in a straight pipe with wall-friction force and gravity terms.} \label{sec:1d-wall-fricition-vapor}
 %---------------------------------------------------------------------------------------------------
-The geometry consists of a $1$-D straight pipe of area $A=6.8 \times 10^{-5}$ $m^2$ and length $L=3.8$ $m$. The friction coefficient is set to $f_c = 0.1$. A subsonic inlet flow boundary condition is used by imposing the velocity $u_{inlet} = $ and the temperature $T_{inlet}=$. At the outlet, the static pressure $P_{outlet}=$ is specified. The initial conditions are taken equal to the boundary conditions. The code is run until steady-state with $CFL=$ and the geometry is discretized with an uniform mesh of $50$ cells. Steady-state profiles of the pressure, the velocity, the density and the viscosity coefficients are given in ....
+The geometry consists of a three $1$-D straight pipes of constant area $A= 10^{-4}$ $m^2$ and length $L=1$, $4$ and $1$ $m$. The source terms are only applied to the middle pipe of length $4$ m. The objective is to investigate the entropy variations due to the source terms by comparison with the first and third pipes that are source terms free. The friction coefficient is set to $f_c = 0.5$. A subsonic inlet flow boundary condition is used by imposing the velocity $u_{inlet} = $ and the temperature $T_{inlet}=$. At the outlet, the static pressure $P_{outlet}=6.6$ $MPa$ is specified. The initial conditions are taken equal to the boundary conditions and can be computed using the SGEOS and the parameters provided in \tbl{tbl:stff_gas_eos2}. The code is run until steady-state with $CFL=10$ and the geometry is discretized with an uniform mesh of $60$ cells. Steady-state profiles of the pressure, the velocity, the density and the viscosity coefficients are given in ....
 %---------------------------------------------------------------------------------------------------
 \subsection{Liquid water flow in a straight pipe with wall-friction force and gravity terms.} \label{sec:1d-wall-fricition-liquid}
 %---------------------------------------------------------------------------------------------------
-The same geometry with the same temporal and spatial discretization as in \sect{sec:1d-wall-fricition-vapor} is used. The boundary conditions are the same except that the inlet velocity is set to $u_{inlet}=$. 
+The same geometry with the same temporal and spatial discretization as in \sect{sec:1d-wall-fricition-vapor} is used to simulate a liquid water flow. The boundary conditions are the same except that the inlet velocity is set to $u_{inlet}=$. 
 %---------------------------------------------------------------------------------------------------
-\subsection{Vapor flow in a straight pipe with wall-friction force, gravity terms and wall-heat source.} \label{sec:1d-wall-source-vapor}
+\subsection{Vapor and liquid water flows in a straight pipe with wall-friction force, gravity terms and wall-heat source.} \label{sec:1d-wall-heat-source}
 %---------------------------------------------------------------------------------------------------
-%---------------------------------------------------------------------------------------------------
-\subsection{Liquid water flow in a straight pipe with wall-friction force, gravity terms and wall-heat source.} \label{sec:1d-wall-source-liquid}
-%---------------------------------------------------------------------------------------------------
+Once again, the same set up as in \sect{sec:1d-wall-fricition-vapor} and in \sect{sec:1d-wall-fricition-liquid} is used to simulate the behavior of liquid water and vapor phases with a wall-heat source. The wall temperature is assumed constant and set to $T_w=600$ $K$ for both phases. The wall heat transfer coefficients are also constant and are chosen so that a significant change in the temperature profile can be observed: $h_t^{liquid} = 1000$ $W/(K-m)$ and $h_t^{vapor} = 100$ $W/(K-m)$. The wall heated surface $a_w$ is the same for both phases since function of the geometry and set to $a_w = 0.0314156$ $m$. The steady-state profiles are shown in for liquid water and in .. for vapor. 
+
 %---------------------------------------------------------------------------------------------------
 \subsection{$1$-D Pressurized Water Reactor.} \label{sec:1d-pwr}
 %---------------------------------------------------------------------------------------------------
-Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854E-05$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the heat transfer coefficient $h_w$ is set to a constant $5.33e4$ $W/m$, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$. The wall temperature $T_w$ is given spatial dependence and computed using the model available in RELAP-7 for PWR \cite{Relap7PWR}. 
-For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3359.62$ $kg/(m^2 s))$ and a specific enthalpy ($h = 1.28e6$ $J/kg$) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The stiffened gas equation of state (SGEOS) is used \cite{SGEOS} with the following parameters: $P_{\infty} = 8.5 \cdot 10^8$ Pa, $q = -1151E+03$ $J/m^3$, $\gamma = 2.04$ and $C_v = 2069$ $J/(K \cdot kg)$. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} represent the results obtained using 20 mesh cells, using either the overly-dissipative first-order viscosity (FO), the higher-order entropy viscosity (EV), or the SUPG method to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and look similar to those obtained with the SUPG \cite{SUPG} method. Plots obtained using a finer spatial resolution ($100$ cells) are also shown in these figures.
+Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854E-05$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the heat transfer coefficient $h_w$ is set to a constant $5.33e4$ $W/(K-m)$, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$. The wall temperature $T_w$ is given spatial dependence and computed using the model available in RELAP-7 for PWR \cite{Relap7PWR}. 
+For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3359.62$ $kg/(m^2 s))$ and a specific enthalpy ($h = 1.28e6$ $J/kg$) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The stiffened gas equation of state (SGEOS) is used \cite{SGEOS} with the parameters given in \tbl{tbl:stff_gas_eos2} for liquid water. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} represent the results obtained using 20 mesh cells, using either the overly-dissipative first-order viscosity (FO), the higher-order entropy viscosity (EV), or the SUPG \cite{SUPG} method to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and look similar to those obtained with the SUPG method. Plots obtained using a finer spatial resolution ($100$ cells) are also shown in these figures.
 %
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/PWR_stt_pressure.png}
 \caption{PWR test case: axial pressure profile}
@@ -1284,7 +1283,7 @@ For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3359.
 %
 In \fig{fig:Pressure}, the steady-state pressure profile obtained with the SUPG method shows a small non-physical change of slope at the outlet that does not disappear when a finer mesh is used. This artifact is not seen when using the entropy viscosity method. \\
 
-It is noted from Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} that the first-order viscosity solution becomes ill-scaled. This is due to the low-Mach nature of the flow under consideration (flow speed around 5 m/s while the speed of sound is around 1,500 m/s). We carry out a low Mach limit study for the continuity equation written with its artificial dissipative term. The same reasoning can be applied as well to the momentum and energy equations. Using the reference variables defined in ]\eqt{eq:norm_param}, the continuity equation yields
+It is noted from Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} that the first-order viscosity solution becomes ill-scaled. This is due to the low-Mach nature of the flow under consideration (flow speed around 5 m/s while the speed of sound is around 1,500 m/s). We carry out a low Mach limit study for the continuity equation written with its artificial dissipative term. The same reasoning can be applied as well to the momentum and energy equations. Using the reference variables defined in \eqt{eq:norm_param}, the continuity equation yields
 \begin{equation}
 \label{eq:cont_proof}
 \partial_{t^*} \rho^* + \div^* \left( \rho^* \mbold u^* \right) =  \frac{k_\infty}{L u_\infty}  \div^*  \left( \kappa^*  \grad^* \rho^* \right).
@@ -1319,11 +1318,11 @@ This is shown in \fig{fig:Momentum}, where it is clear that the mass flux (or mo
 \section{$2$-D numerical results for supersonic flows:} \label{sec:2d-supersonic-results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This section focuses on demonstrating the ability of the entropy viscosity method, with the new definition of the viscosity coefficients derived in \sect{sec:lowMach}, to accurately resolve shocks occurring in transonic flows. Such tests were already performed in \cite{valentin} with the former definition of the entropy viscosity method recalled in \sect{sec:background}, and using a discontinuous Galerkin finite element discretization. Our objective here, is to show that the new definition of the viscosity coefficients is still capable of resolving shocks. The numerical tests presented in this section include: flow pass a forward facing step (REFS), a circular explosion (REFS), a steady-state flow over a double wedge and a steady-state flow in a compression corner. The last two tests will also allow us to evaluate the ability of the method to reach a steady-state. For each numerical results presented in this section, information relative to the equation of state and its parameters, the boundary conditions, the initial conditions, the mesh and the discretization order will be provided along with the numerical results. For clarity purpose we will refer to as $\Omega$. Since only $2$-D computational domain is considered, left, right, bottom and top boundaries are referred to as $\delta \Omega_1$, $\delta \Omega_2$, $\delta \Omega_3$ and $\delta \Omega_4$, respectively, with $\delta \Omega = ( \delta \Omega_1,  \delta \Omega_2, \delta \Omega_3, \delta \Omega_4)$. 
+This section focuses on demonstrating the ability of the entropy viscosity method, with the new definition of the viscosity coefficients derived in \sect{sec:lowMach}, to accurately resolve shocks occurring in transonic flows. Such tests were already performed in \cite{valentin} with the former definition of the entropy viscosity method recalled in \sect{sec:background}, and using a discontinuous Galerkin finite element discretization. Our objective here, is to show that the new definition of the viscosity coefficients is still capable of resolving shocks. The numerical tests presented in this section include: flow pass a forward facing step \cite{FFS}, a circular explosion \cite{Toro}, a steady-state flow over a double wedge \cite{RichThesis} and a steady-state flow in a compression corner \cite{CompressionCorner}. The last two tests will also allow us to evaluate the ability of the method to reach a steady-state. For each numerical results presented in this section, information relative to the equation of state and its parameters, the boundary conditions, the initial conditions, the mesh and the discretization order will be provided along with the numerical results. For clarity purpose we will refer to as $\Omega$. Since only $2$-D computational domain is considered, left, right, bottom and top boundaries are referred to as $\delta \Omega_1$, $\delta \Omega_2$, $\delta \Omega_3$ and $\delta \Omega_4$, respectively, with $\delta \Omega = ( \delta \Omega_1,  \delta \Omega_2, \delta \Omega_3, \delta \Omega_4)$. 
 %---------------------------------------------------------------------------------------------------
 \subsection{Supersonic $2$-D flow over a forward facing step:} \label{sec:2d-forward-facing-step}
 %---------------------------------------------------------------------------------------------------
-This benchmark was first introduced by (NAME + REF) and later popularized by Woodward et al. (REF). It consists of a Mach 3 flow past a forward-facing step in a $2$-D wind tunnel. The geometry is given in (FIGURE) and was discretized with an uniform mesh of $1.5 \times 10^(4)$ cells. A supersonic inlet boundary condition is used to set the flow conditions. A slip wall boundary condition is specified at the top and bottom wall following the method explained in (SECTION FOR BCS). The outflow, in $x=4$ is free since the flow remains supersonic at the outlet boundary. The uniform initial conditions are given in \tbl{tb:ic-forward-facing} for the primitive variables. The Ideal gas equation of state is used with a adiabatic gas constant $\gamma = 1.4$.
+This benchmark was introduced in \cite{FFS}. It consists of a Mach 3 flow past a forward-facing step in a $2$-D wind tunnel. The geometry is given in (FIGURE) and was discretized with an uniform mesh of $10^5$ cells. A supersonic inlet boundary condition is used to set the flow conditions. A slip wall boundary condition is specified at the top and bottom wall following the method explained in \sect{sec:bc}. The outflow, in $x=4$ is free since the flow remains supersonic at the outlet boundary. The uniform initial conditions are given in \tbl{tb:ic-forward-facing} for the primitive variables. The Ideal gas equation of state is used with a adiabatic gas constant $\gamma = 1.4$.
 \begin{table}[H] 
 \caption{\label{tb:ic-forward-facing} Initial conditions for a $2$-D supersonic flow past a forward-facing step.}
 \begin{center}
@@ -1335,24 +1334,8 @@ value & 1.4 & $(3.,0.)$ & 1.\\ \hline
 \end{center}
 \nonumber
 \end{table}
-The numerical solution was obtained with a $\mathbb Q_1$ continuous Galerkin finite element method and the second-order temporal integrator $BDF2$. The solution was run until $t=4.s$ with a $CFL$ of $2$. The density and viscosity coefficients profiles are plotted at different times during the transient, to witness how the entropy-viscosity method adapt to the solution itself.
-%---------------------------------------------------------------------------------------------------
-\subsection{$2$-D circular explosion:} \label{sec:2d-circular-explosioin}
-%---------------------------------------------------------------------------------------------------
-We now consider a $2$-D circular explosion (REFS) that is known to develop an unstable layer contact. The computational domain is a square of dimension $\Omega = (-1, 1)^2$ as shown in (FIGURE). The initial conditions are also given in (FIGURE) and consists of a pressure and density step located in the center of the computational domain. The values of the initial conditions are given in \tbl{tb:ic-explosion} in function of the radius $r^2 = x^2 + y^2$. The Ideal gas equation of state is sill used with the same parameters as in \sect{sec:2d-forward-facing-step}. Dirichlet boundary conditions are used to specify the values on the boundaries $\delta \Omega$ of the computational domain $\Omega$, assuming that the simulation is stopped before the waves reach the boundaries.
-\begin{table}[H] 
-\caption{\label{tb:ic-explosion} Initial conditions for a $2$-D explosion.}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
- primitive variables   & $\rho$ & $\mbold u$ & P \\ \hline
- $r \in [ 0, 0.4 ]$& 1 & $(0,0)$ & 1\\ \hline
-  $r \geq 0.4$& 0.125 & $(0,0)$ & 0.1\\ \hline
-\end{tabular}
-\end{center}
-\nonumber
-\end{table}
-Once again, the numerical solution was obtained with a $\mathbb Q_1$ continuous Galerkin finite element method and the second-order temporal integrator $BDF2$. The solution was run until $t=0.25s$ with a $CFL$ of $2$. An uniform mesh was used made of $2000$ elements. The density and the viscosity coefficients profiles are given in \fig{fig:2d_ffs_rho_0314}-\fig{fig:2d_ffs_visc_4}. It was chosen to show the numerical solution at times $t=0.314$, $t=0.664$, $t=1.551$ and $t=4$ $s$ to illustrate the ability of the entropy viscosity method to detect shocks and discontinuities during a transient, and add significant dissipation only in their close neighborhood. 
+%The numerical solution was obtained with a $\mathbb Q_1$ continuous Galerkin finite element method and the second-order temporal integrator $BDF2$. The solution was run until $t=4.s$ with a $CFL$ of $2$. The density and viscosity coefficients profiles are plotted at different times during the transient, to witness how the entropy-viscosity method adapt to the solution itself.
+The numerical solution was obtained with a $\mathbb Q_1$ continuous Galerkin finite element method and the second-order temporal integrator $BDF2$. The solution was run until $t=0.25s$ with a $CFL$ of $2$ The density and the viscosity coefficients profiles are given in \fig{fig:2d_ffs_rho_0314}-\fig{fig:2d_ffs_visc_4}. It was chosen to show the numerical solution at times $t=0.314$, $t=0.664$, $t=1.551$ and $t=4$ $s$ to illustrate the ability of the entropy viscosity method to detect shocks and discontinuities during a transient, and add significant dissipation only in their close neighborhood. 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=.50]{figures/FFSDensityEqualTo0p314.png}
@@ -1408,11 +1391,28 @@ Once again, the numerical solution was obtained with a $\mathbb Q_1$ continuous 
 \caption{Viscosity coefficient solution at $t=4$ $s$.}
 \label{fig:2d_ffs_visc_4}
 \end{figure}
-The numerical solution of the density at $t=4$ $s$ compares well to the ones obtained in (REFS), as least in a visual norm. The triple-point feature and the contact wave emerging from it are well resolved even if no Kelvin-Helmotz instability is observed (REF). It is also noticed that a significant amount of entropy is produced near the corner region. This is due to the corner singularity and this phenomenon is well documented (REFS). This artifact can be treated either by using special boundary condition to the corner since its normal vector is not defined, or by aggressively refining the mesh in the singularity region, or lastly, by modifying the geometry and use a round corner. 
+The numerical solution of the density at $t=4$ $s$ compares well to the ones obtained in \cite{valentin}, as least in a visual norm. The triple-point feature and the contact wave emerging from it are well resolved. It is also noticed that a significant amount of entropy is produced near the corner region. This is due to the corner singularity and this phenomenon is well explained in \cite{FFS_corner}. This artifact can be treated either by using special boundary condition to the corner since its normal vector is not defined, or by aggressively refining the mesh in the singularity region, or lastly, by modifying the geometry and use a round corner. 
+%---------------------------------------------------------------------------------------------------
+\subsection{$2$-D circular explosion:} \label{sec:2d-circular-explosioin}
+%---------------------------------------------------------------------------------------------------
+We now consider a $2$-D circular explosion \cite{Toro} that is known to develop an unstable layer contact. The computational domain is a square of dimension $\Omega = (-1, 1)^2$. The initial conditions consist of a pressure and density step located in the center of the computational domain. The values of the initial conditions are given in \tbl{tb:ic-explosion} in function of the radius $r^2 = x^2 + y^2$. The Ideal gas equation of state is sill used with the same parameters as in \sect{sec:2d-forward-facing-step}. Dirichlet boundary conditions are used to specify the values on the boundaries $\delta \Omega$ of the computational domain $\Omega$, assuming that the simulation is stopped before the waves reach the boundaries.
+\begin{table}[H] 
+\caption{\label{tb:ic-explosion} Initial conditions for a $2$-D explosion.}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+ primitive variables   & $\rho$ & $\mbold u$ & P \\ \hline
+ $r \in [ 0, 0.4 ]$& 1 & $(0,0)$ & 1\\ \hline
+  $r \geq 0.4$& 0.125 & $(0,0)$ & 0.1\\ \hline
+\end{tabular}
+\end{center}
+\nonumber
+\end{table}
+Once again, t
 %---------------------------------------------------------------------------------------------------
 \subsection{Riemann problem number 12:} \label{sec:2d-riemann-pb-12}
 %---------------------------------------------------------------------------------------------------
-Riemann problem number $12$ (REF) is a popular $2$-D benchmark that is known to develop contact and shock waves, as well as fine structures. The computational domain $\Omega = (0,1)^2$ is initialized with four square regions. In each region a different set of initial values is set as follows:
+Riemann problem number $12$ \cite{RP12} is a popular $2$-D benchmark that is known to develop contact and shock waves, as well as fine structures. The computational domain $\Omega = (0,1)^2$ is initialized with four square regions. In each region a different set of initial values is set as follows:
 \begin{equation}
 \left\{
 \begin{array}{cccc}
@@ -1513,7 +1513,7 @@ Overall, the numerical solution does not show any oscillations, match the analyt
 %---------------------------------------------------------------------------------------------------
 \subsection{Supersonic flow over a $5^\circ$ double-wedge obstruction:} \label{sec:double_wedge}
 %---------------------------------------------------------------------------------------------------
-The last of the $2$-D supersonic example that is proposed to study is a Mach$2,5$ flow over a double-wedge obstruction located on the lower wall. The interesting feature of this test is that a steady-state is reached. The geometry used is shown in (FIG) and was discretized with $4000$ $\mathbb Q_1$ elements. The double wedge extends on the bottom boundary from $x=1$ to $x=5$  $m$. The top wall is located at $y=5$ $m$. A supersonic inlet boundary condition was set at the inlet by specifying the pressure, $P=101,325$ $Pa$, the temperature, $T=300$ $K$ and the vector velocity $\mbold u = (868.032, 0)$ $m \cdot s^{-1}$. The wall-boundary and supersonic outlet boundary conditions were implemented following the method described in (SECTION BCS). The second-order temporal integrator $BDF2$ was used with a $CFL$ of 5 to reach the steady-state that was detected by monitoring the norm of the total residual. The Ideal gas equation of state was used with an adiabatic constant $\gamma = 1.4$ and a volumetric heat capacity $C_v = 716.7$ $J \cdot K^{-1}$ (air properties). The Mach number and viscosity coefficients profiles at steady-state are given in \fig{fig:2d_dbwd_stt} and \fig{fig:2d_dbw_visc_stt}, respectively. 
+The last of the $2$-D supersonic example that is proposed to study is a Mach$2,5$ flow over a double-wedge obstruction located on the lower wall. The interesting feature of this test is that a steady-state is reached. The geometry used is shown in (FIG) and was discretized with $4000$ $\mathbb Q_1$ elements. The double wedge extends on the bottom boundary from $x=1$ to $x=5$  $m$. The top wall is located at $y=5$ $m$. A supersonic inlet boundary condition was set at the inlet by specifying the pressure, $P=101,325$ $Pa$, the temperature, $T=300$ $K$ and the vector velocity $\mbold u = (868.032, 0)$ $m \cdot s^{-1}$. The wall-boundary and supersonic outlet boundary conditions were implemented following the method described in \sect{sec:bc}. The second-order temporal integrator $BDF2$ was used with a $CFL$ of 5 to reach the steady-state that was detected by monitoring the norm of the total residual. The Ideal gas equation of state was used with an adiabatic constant $\gamma = 1.4$ and a volumetric heat capacity $C_v = 716.7$ $J \cdot K^{-1}$ (air properties). The Mach number and viscosity coefficients profiles at steady-state are given in \fig{fig:2d_dbwd_stt} and \fig{fig:2d_dbw_visc_stt}, respectively. 
         \begin{figure}[H]%{0.52\textwidth}
                 \centering
                 \includegraphics[scale=.50]{figures/DWOMachNumberStt.png}
@@ -1678,6 +1678,6 @@ In \fig{fig:2d_hump_mach_0p7}, the steady-state numerical solution develops a sh
 The results presented from \fig{fig:2d_hump_mach_0p01} through \fig{fig:2d_hump_mach_0p0000001} were obtained with the new definitions of the viscosity coefficients and illustrate the ability of the entropy viscosity method to correctly simulate several types of flows (subsonic and transonic flows) without tuning parameters.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusions} \label{sec:ccl_sct3}
-A new version of the entropy viscosity method valid for a wide range of Mach number and applied to the multi-D Euler equations with variable area was derived and presented. The definition of the viscosity coefficient is now consistent with the low Mach asymptotic limit, does not require an analytical expression of the entropy function, and thus, could be used with any equation of state having a convex entropy. Tests were performed with the Ideal and Stiffened Gas equation of states. In $1$-D, convergence of the numerical solution (either smooth or with shocks) to the exact solution was demonstrated by computing the convergence rates of the L$1$ and L$2$ norms of the error for flows in convergence-divergent nozzle and a straight pipe. $2$-D simulations were also performed for both subsonic and supersonic flows, and various geometries: the entropy viscosity method behaves well for a wide range of Mach number. The numerical results obtained for a flow over a circular bump (subsonic and transonic flows) illustrates the capabilities of the method to adapt to the flow type. \\
-As future work, the entropy viscosity method will be extended to the $1$-D seven equations model \cite{SEM}. This two-phase flow system of equations is a good candidate for two reasons: it is unconditionally hyperbolic and degenerates to the multi-D Euler equations when one phase disappears.
+%\section{Conclusions} \label{sec:ccl_sct3}
+%A new version of the entropy viscosity method valid for a wide range of Mach number and applied to the multi-D Euler equations with variable area was derived and presented. The definition of the viscosity coefficient is now consistent with the low Mach asymptotic limit, does not require an analytical expression of the entropy function, and thus, could be used with any equation of state having a convex entropy. Tests were performed with the Ideal and Stiffened Gas equation of states. In $1$-D, convergence of the numerical solution (either smooth or with shocks) to the exact solution was demonstrated by computing the convergence rates of the L$1$ and L$2$ norms of the error for flows in convergence-divergent nozzle and a straight pipe. $2$-D simulations were also performed for both subsonic and supersonic flows, and various geometries: the entropy viscosity method behaves well for a wide range of Mach number. The numerical results obtained for a flow over a circular bump (subsonic and transonic flows) illustrates the capabilities of the method to adapt to the flow type. \\
+%As future work, the entropy viscosity method will be extended to the $1$-D seven equations model \cite{SEM}. This two-phase flow system of equations is a good candidate for two reasons: it is unconditionally hyperbolic and degenerates to the multi-D Euler equations when one phase disappears.

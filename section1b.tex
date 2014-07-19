@@ -54,7 +54,7 @@ where $u$ and $\mbold f(u)$ are the solution and the inviscid flux, respectively
 %
 \end{subequations}
 %
-\eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b} are respectively known as the linear advection and Burger's equations. They have been widely studied in the literature and are well understood (REFS). 
+\eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b} are respectively known as the linear advection and Burger's equations. They have been widely studied in the literature and are well understood \cite{Toro, Leveque}. 
 
 The eigenvalue, denoted by $\lambda$, of the hyperbolic equation is obtained by looking at the jacobian matrix of the inviscid flux, $\mbold f(u)$, with respect to the solution $u$, and corresponds to the wave propagation speed. When considering the fluxes $\mbold f_1$ and $\mbold f_2$, it is found that their eigenvalues are $\lambda_1 = a$ and $\lambda_2 = u$, respectively. For the linear advection equation, the wave speed is a constant through the computational domain (provided that $a$ is not a function of space). On the other hand, the wave speed for Burger's equation is a function of space and time since it is equal to the solution itself.
 
@@ -63,15 +63,15 @@ Once the eigenvalues are determined, the next step consists of deriving the char
 \begin{eqnarray}\label{eq:ivp3_sct1b}
 &&\partial_t u + \frac{df}{du}\partial_x u = 0 \nonumber\\
 &&\partial_t u + \lambda \partial_x u = 0 \nonumber \\
-&&\frac{Du}{Dt} = \partial_t u + \frac{dx}{dt} \partial_x u = 0 \text{ along } \frac{Dx}{Dt} = f'(u) = \lambda 
+&&\frac{Du}{Dt} = \partial_t u + \frac{dx}{dt} \partial_x u = 0 \text{ along } \frac{dx}{dt} = f'(u) = \lambda 
 \end{eqnarray}
 %
 \textcolor{red}{to be clearer, it would be better to add the equation with $du/dt=0$}
-\eqt{eq:ivp3_sct1b} represents the rate of change of the solution $u$ along the curve $\frac{Dx}{Dt} = f'(u) = \lambda$. It tells us that the solution $u$ is constant along the curve $\frac{Dx}{Dt} = \lambda$ since its rate of change is zero. The eigenvalue is the slope of the characteristic curve and is referred to as the characteristic speed. 
+\eqt{eq:ivp3_sct1b} represents the rate of change of the solution $u$ along the curve $\frac{dx}{dt} = f'(u) = \lambda$. It tells us that the solution $u$ is constant along the curve $\frac{dx}{dt} = \lambda$ since its rate of change is zero. The eigenvalue is the slope of the characteristic curve and is referred to as the characteristic speed. 
 For a given characteristic curve, the characteristic speed is a constant, since the solution $u$ is constant as well, and given by the initial condition, $f'(u(x,0))=f'(u_0)$ which allows us to integrate in order to obtain an analytical expression for $x(t)$:
 %
 \begin{eqnarray}\label{eq:ivp4_sct1b}
-\frac{Dx}{Dt} &=& f'(u_0) \nonumber \\
+\frac{dx}{dt} &=& f'(u_0) \nonumber \\
 \Leftrightarrow x(t) &=& x_0 + f'(u_0)t
 \end{eqnarray}
 %
