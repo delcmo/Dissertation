@@ -14,7 +14,7 @@
 %%%                           SECTION II
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{\uppercase {Application of the entropy viscosity method to the multi-D Euler equations with variable area:}}\label{chap:euler}
+\chapter{\uppercase {Application of the entropy viscosity method to the multi-D Euler equations with variable area}}\label{chap:euler}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Over the past years an increasing interest has been raised for computational methods that can solve both compressible and incompressible flows. In engineering applications, there is often the need to solve for complex flows where a near incompressible regime or low Mach flow coexists with a supersonic flow domain. For example, such flows are encountered in aerodynamics in the study of airships. In the nuclear industry, flows are nearly in the incompressible regime but compressible effects cannot be neglected because of the heat source and thus needs to be accurately resolved. \\
@@ -504,7 +504,7 @@ The dissipative terms are quite similar to the ones obtained for the standard Eu
  
 A low-Mach asymptotic limit of the multi-D Euler equations with variable area on the same model as in \sect{sec:lowMach} will lead to the divergence constraint $\div (\mbold u A) = 0$ that can be recast as $\div \mbold u = -\mbold u \cdot \grad{A} / A$. The gradient of the area acts as a source term and will force the fluid to accelerate or decelerate, depending on its sign. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%s%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Entropy-viscosity method and source terms:} \label{sec:ev_source_terms}
+\section{Entropy-viscosity method and source terms} \label{sec:ev_source_terms}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In this section, it is proposed to investigate the effect of the source terms on the EVM with the final objective of using the EVM to solve for complex flows involved in engineering applications such as the coolant in nuclear reactors. Since the EVM relies on the sign of the entropy residual, our approach consists of starting with the $1$-D Euler equation with source terms in both the momentum and energy equation but without the viscous regularization (the dissipative terms were derived using the entropy minimum principle and should not be affected by the addition of source terms), and then, derive the entropy residual in order to study how the source terms affect its sign. 
 
@@ -528,7 +528,7 @@ We start with the $1$-D Euler equations with variables area and multiple source 
 \end{equation}
 \end{subequations}
 %
-where $f_s$ is a surface force and does not necessarily have an associated work in the energy equation (an example will be given in SECTION). The body forces are denoted by $f_v$ such as gravity force. The last source term $q$ consists of either a heat source if it is positive, or a heat sink if it is negative. As mentioned earlier in this section, the dissipative terms are ignored to simplify the derivations, but also because their sign is already known. Derivation of the entropy residual follows the same steps as in \sect{sec:var_area_diss_terms}: the internal energy equation is obtained by combining the momentum and total energy equations. Then, using the continuity and internal energy equations, the $1$-D entropy equation is obtained and yields:
+where $f_s$ is a surface force and does not necessarily have an associated work in the energy equation (an example will be given in later in this section). The body forces are denoted by $f_v$ such as gravity force. The last source term $q$ consists of either a heat source if it is positive, or a heat sink if it is negative. As mentioned earlier in this section, the dissipative terms are ignored to simplify the derivations, but also because their sign is already known. Derivation of the entropy residual follows the same steps as in \sect{sec:var_area_diss_terms}: the internal energy equation is obtained by combining the momentum and total energy equations. Then, using the continuity and internal energy equations, the $1$-D entropy equation is obtained and yields:
 %
 \begin{align}\label{eq:ent_res_source_term}
 \rho A \frac{Ds}{Dt} =\rho A \left[  \partial_t s + u \partial_x s \right] = s_e \left( -f_s u + q \right),
@@ -548,40 +548,40 @@ The sign of $\resinew$ is given by the right hand-side of \eqt{eq:ent_res_source
 %
 The sign of $\resisource$ remains positive since it is given by the viscous terms that were omitted in \eqt{eq:euler_source_terms}. The initial definition of the viscosity coefficients given in \eqt{eq:final_def_visc_coeff} is modified by simply substituting $\resinew$ into $\resisource$ and also keeping the same normalization parameters.
 
-It will be also interesting to understand how much entropy is produced by the source terms, in other terms, how they scale. To do so, we consider the case where $f_s$ and $q$ are a wall-fraction force and a wall heat source, respectively, as follows: 
-%
-\begin{subequations}
-\label{eq:euler_source_terms2}
-\begin{equation}
-\label{eq:euler_source_terms_continuity2}
-\partial_t \left( \rho A \right) + \partial_x \left( \rho u A \right) = 0 \\
-\end{equation}
-%
-\begin{equation}
-\label{eq:euler_source_terms_mom2}
-\partial_t \left( \rho u A \right) + \partial_x \left[A\left( \rho u^2 + P \right) \right] = P \partial_x A - \frac{f_c}{D_h} \rho u^2
-\end{equation}
-% 
-\begin{equation}
-\label{eq:euler_source_terms_energy2}
-\partial_t \left( \rho E A \right) + \partial_x \left[ u A \left( \rho E + P \right) \right] = h_t a_w (T_w - T)
-\end{equation}
-\end{subequations}
-%
-where $f_c$ denotes a constant friction coefficient. The parameter $D_h$ is the hydraulic diameter and is computed from the area $A$ and the wet perimeter $P_h$ of the geometry: $D_h = A / (4 P_h)$. The heat source is function of a heat transfer coefficient $h_w$ that can be either constant or computed from a correlation, a spatial- and temporal-dependent wall temperature $T_w$, and a wall heating surface $a_w$. In order to understand how the source terms scale, the entropy residual given in \eqt{eq:ent_res_source_term3} is non-dimensionalized using the reference numbers defined in \eqt{eq:norm_param} and the IGEOS for simplicity. It is obtained:
-%
-\begin{equation}\label{eq:ent_res_source_nd}
-\left(\resisource\right)^* = \left(\resinew\right)^* - (\gamma-1) \left( - M^2_\infty \frac{f_c^*}{D_h^*} \rho^* u^{3,*} + M^2_\infty \frac{St_\infty}{Ec_\infty} \frac{h_t^* a_w^*}{\rho^* } \right)
-\end{equation}
-%
-where $P_e=(\gamma-1) \rho$ and $T$ is the fluid temperature and are both computed from the IGEOS. We also define the Eckert and Stanton dimensionless numbers denoted by the symbols $Ec_\infty$ and $St_\infty$, respectively:
-%
-\begin{eqnarray}\label{eq:dim_nb_src}
-&&Ec_\infty = \frac{u^2_\infty}{C_p \left(T_w-T\right)} \\
-&&St_\infty = \frac{h_t}{\rho_\infty u_\infty C_p}
-\end{eqnarray}
-%  
-From \eqt{eq:ent_res_source_nd}, the scaling of each term can now be investigated. The friction term scales as the Mach number square, and thus, its contribution to the entropy production is minimum specially in the low Mach limit since $\left(\resinew\right)^*$ is known to scale as the Mach number in smooth profile regions. The case of the heat source term is more complicated since it involves the ration of three dimensionless numbers $M^2_\infty \frac{St_\infty}{Ec_\infty}$. The scaling of this ratio depends on the choice of the heat transfer coefficient $h_t$ and the wall temperature $T_w$. Because $\left(\resinew\right)^*$ scales as the Mach number when the solution is smooth, the heat source term will only significantly contributes to the entropy production if the heat transfer coefficient and the wall temperature are chosen so that $\frac{St_\infty}{Ec_\infty}$ scales as power of the inverse of the Mach number. Effect of the source term onto the entropy residual and thus onto the viscosity coefficients will be illustrated with examples including flow in a pipe with friction and heat addition, and also more complex components such as a core channel from the RELAP-7 code \cite{Relap7PWR}. 
+%It will be also interesting to understand how much entropy is produced by the source terms, in other terms, how they scale. To do so, we consider the case where $f_s$ and $q$ are a wall-fraction force and a wall heat source, respectively, as follows: 
+%%
+%\begin{subequations}
+%\label{eq:euler_source_terms2}
+%\begin{equation}
+%\label{eq:euler_source_terms_continuity2}
+%\partial_t \left( \rho A \right) + \partial_x \left( \rho u A \right) = 0 \\
+%\end{equation}
+%%
+%\begin{equation}
+%\label{eq:euler_source_terms_mom2}
+%\partial_t \left( \rho u A \right) + \partial_x \left[A\left( \rho u^2 + P \right) \right] = P \partial_x A - \frac{f_c}{D_h} \rho u^2 A
+%\end{equation}
+%% 
+%\begin{equation}
+%\label{eq:euler_source_terms_energy2}
+%\partial_t \left( \rho E A \right) + \partial_x \left[ u A \left( \rho E + P \right) \right] = h_t a_w (T_w - T)
+%\end{equation}
+%\end{subequations}
+%%
+%where $f_c$ denotes a constant friction coefficient. The parameter $D_h$ is the hydraulic diameter and is computed from the area $A$ and the wet perimeter $P_h$ of the geometry: $D_h = A / (4 P_h)$. The heat source is function of a heat transfer coefficient $h_w$ that can be either constant or computed from a correlation, a spatial- and temporal-dependent wall temperature $T_w$, and a wall heating surface $a_w$. In order to understand how the source terms scale, the entropy residual given in \eqt{eq:ent_res_source_term3} is non-dimensionalized using the reference numbers defined in \eqt{eq:norm_param} and the IGEOS for simplicity. It is obtained:
+%%
+%\begin{equation}\label{eq:ent_res_source_nd}
+%\left(\resisource\right)^* = \left(\resinew\right)^* - (\gamma-1) \left( - M^2_\infty \frac{f_c^*}{D_h^*} \rho^* u^{3,*} + M^2_\infty \frac{St_\infty}{Ec_\infty} \frac{h_t^* a_w^*}{\rho^* } \right)
+%\end{equation}
+%%
+%where $P_e=(\gamma-1) \rho$ and $T$ is the fluid temperature and are both computed from the IGEOS. We also define the Eckert and Stanton dimensionless numbers denoted by the symbols $Ec_\infty$ and $St_\infty$, respectively:
+%%
+%\begin{eqnarray}\label{eq:dim_nb_src}
+%&&Ec_\infty = \frac{u^2_\infty}{C_p \left(T_w-T\right)} \\
+%&&St_\infty = \frac{h_t}{\rho_\infty u_\infty C_p}
+%\end{eqnarray}
+%%  
+%From \eqt{eq:ent_res_source_nd}, the scaling of each term can now be investigated. The friction term scales as the Mach number square, and thus, its contribution to the entropy production is minimum specially in the low Mach limit since $\left(\resinew\right)^*$ is known to scale as the Mach number in smooth profile regions. The case of the heat source term is more complicated since it involves the ration of three dimensionless numbers $M^2_\infty \frac{St_\infty}{Ec_\infty}$. The scaling of this ratio depends on the choice of the heat transfer coefficient $h_t$ and the wall temperature $T_w$. Because $\left(\resinew\right)^*$ scales as the Mach number when the solution is smooth, the heat source term will only significantly contributes to the entropy production if the heat transfer coefficient and the wall temperature are chosen so that $\frac{St_\infty}{Ec_\infty}$ scales as power of the inverse of the Mach number. Effect of the source term onto the entropy residual and thus onto the viscosity coefficients will be illustrated with examples including flow in a pipe with friction and heat addition, and also more complex components such as a core channel from the RELAP-7 code \cite{Relap7PWR}. 
 %
 \begin{remark}
 We can also think of the extreme case where heat is added to a flow experiencing a shock. In the shock region, the entropy residual $\resinew$ is peaked and expected to dominate all other entropy sources due to the source terms. 
@@ -645,7 +645,7 @@ with the corresponding characteristic equations,
 \right. 
 \end{equation}
 %
-where $\mbold \omega = \left( \omega_1, \omega_2, \omega_3, \omega_4 \right)$ are the characteristic variables and $\mbold \tau = \left( \tau_x, \tau_y \right) = \left( -\eta_y, \eta_x \right)$ is the tangential vector to the boundary. From a theoretical point of view, the eigenvalues are derived by assuming the existence of an unit vector that is taken equal to the outwards normal vector to the boundary since this is a direction of interest. Each of the characteristic equations given in \eqt{eq:charac_euler_sct3} corresponds to the propagation of a particular wave. The characteristic equations for $i=1,4$ are associated to the propagation of the acoustic waves or pressure variations through the domain. The entropy waves is described by the second characteristic equation for $i=2$. The last characteristic equation, $i=3$, corresponds to the change in the tangential velocity and represents the propagation of the vorticity waves. It is common to recast the characteristic equations under the form $\frac{D w_i}{Dt} = 0$ along $\frac{d\mbold r}{dt} \cdot \mbold n = \lambda_i$, which is analog to what was done for the hyperbolic scalar equations in \chap{chap:theory_chp1}. Based on the study of the sign of the eigenvalues at the boundary relative to the its outward normal, it can be determined which quantity enters or exits the computational domain. We consider the entropy wave in order to illustrate the methodology. We first assume that the eigenvalue, $\lambda_2$, associated to the entropy characteristic variable $\omega_2$, is negative. Thus, the entropy wave carrying $\omega_2$ travels from the boundary into inside the domain and its value must be specified. On the other hand, if $\lambda_2$ is positive, the wave travels in the opposite direction as the previous case, and the variable $\omega_2$ is solved numerically by using the associated characteristic equation. This simple example allows to draw the following rule: \emph{the characteristic equations with negative eigenvalues (when assuming an outward normal vector to the boundary) are computed from the boundary conditions that are provided to the code, whereas characteristic equation with positive eigenvalues are numerically solved in order to get a value for the corresponding characteristic variable}. The boundary conditions denote, here, the set of values that are specified for a given boundary and is determined by looking at the sign of the eigenvalues. Furthermore, for a given flow, the sign of the eigenvalues associated to the pressure waves can change depending on how the flow speed compare against the speed of sound, which is measured by the Mach number, but also depends on if the flow is either entering or exiting the domain. In other words, it seems that a distinction needs to be made between subsonic boundary, supersonic boundary, flow inlet and flow outlet. Thus, in the remaining of this section, we will look at three different boundary types: subsonic and supersonic flow inlet, subsonic and supersonic flow outlet and free-slip wall boundary, that illustrated in \fig{fig:inlet_sct3}, \fig{fig:outlet_sct3} and \fig{fig:wall_bc} respectively.  
+where $\mbold \omega = \left( \omega_1, \omega_2, \omega_3, \omega_4 \right)$ are the characteristic variables and $\mbold \tau = \left( \tau_x, \tau_y \right) = \left( -\eta_y, \eta_x \right)$ is the tangential vector to the boundary. From a theoretical point of view, the eigenvalues are derived by assuming the existence of an unit vector that is taken, here, equal to the outwards normal vector to the boundary since this is a direction of interest. Each of the characteristic equations given in \eqt{eq:charac_euler_sct3} corresponds to the propagation of a particular wave. The characteristic equations for $i=1,4$ are associated to the propagation of the acoustic waves or pressure variations through the domain. The entropy waves is described by the second characteristic equation for $i=2$. The last characteristic equation, $i=3$, corresponds to the change in the tangential velocity and represents the propagation of the vorticity waves. It is common to recast the characteristic equations under the form $\frac{D w_i}{Dt} = 0$ along $\frac{d\mbold r}{dt} \cdot \mbold n = \lambda_i$, which is analog to what was done for the hyperbolic scalar equations in \chap{chap:theory_chp1}. Based on the study of the sign of the eigenvalues at the boundary relative to its outward normal, it can be determined which quantity enters or exits the computational domain. We consider the entropy wave in order to illustrate the methodology. We first assume that the eigenvalue, $\lambda_2$, associated to the entropy characteristic variable $\omega_2$, is negative. Thus, the entropy wave carrying $\omega_2$ travels from the boundary into inside the domain and its value must be specified. On the other hand, if $\lambda_2$ is positive, the wave travels in the opposite direction as the previous case, and the variable $\omega_2$ is solved numerically by using the associated characteristic equation. This simple example allows to draw the following rule: \emph{the characteristic equations with negative eigenvalues (when assuming an outward normal vector to the boundary) are computed from the boundary conditions that are provided to the code, whereas characteristic equation with positive eigenvalues are numerically solved in order to get a value for the corresponding characteristic variable}. The boundary conditions denote, here, the set of values that are specified for a given boundary and the number of values required is determined by looking at the sign of the eigenvalues. Furthermore, for a given flow, the sign of the eigenvalues associated to the pressure waves can change depending on how the flow speed compare against the speed of sound, which is measured by the Mach number, but also depends on if the flow is either entering or exiting the domain. In other words, it seems that a distinction needs to be made between subsonic boundary, supersonic boundary, flow inlet and flow outlet. Thus, in the remaining of this section, we will look at three different boundary types: subsonic and supersonic flow inlet, subsonic and supersonic flow outlet and free-slip wall boundary, that are illustrated in \fig{fig:inlet_sct3}, \fig{fig:outlet_sct3} and \fig{fig:wall_bc} respectively.  
 %
 \begin{figure}[H]
         \centering
@@ -716,9 +716,9 @@ Flow inlet boundary can be split into two categories: subsonic and supersonic.
 %========================================================
 \subsubsection{Subsonic flow inlet boundary condition} \label{sec:sub-flow-inlet-bc}
 %========================================================
-In the case of subsonic flow inlet, three waves enter the domain and only one exits it, as shown in \fig{fig:sub_flow_inlet}. In order to ensure a well-posed system at the boundary, three boundary values need to be supplied to the code, since three waves enter the domain. The fourth value is usually computed from the characteristic equation associated to the wave exiting the domain at the boundary, and the three boundary values. In the case of an implicit temporal integrator, the solver iterates over the solution until convergence is reached. Thus, it is proposed to take advantage of the solver in order to compute the boundary values as follows. We assume that a set three boundary values are known at the inlet $\left(U_1^{bc}, U_2^{bc}, U_3^{bc}\right)$. The fourth value, $U_4$ is chosen so that the set of four values can be used to retrieve any other variables which ensures the system to be well-posed. At a given time and for a given iteration $\ell$, the solver iterates over the entire solution vector and $U_4^k$ is updated whereas the three other values do not vary since constant. The set of fourth values is used to compute the flux at the boundary given in \eqt{eq:hyp_flux_bc_sct3} which will be also updated at every iteration. Because of the iterative process, information from inside the computational domain is transmitted to the boundary until the solution reaches convergence: the solver substitutes itself to the characteristic equation associate to the wave exiting the domain. Using this method, various boundary conditions are implemented and detailed in \tbl{tbl:sub-inlet-flow-bc}:
+In the case of subsonic flow inlet, three waves enter the domain and only one exits it, as shown in \fig{fig:sub_flow_inlet}. In order to ensure a well-posed system at the boundary, three boundary values need to be supplied to the code, since three waves enter the domain. The fourth value is usually computed from the characteristic equation associated to the wave exiting the domain at the boundary, and the three boundary values. In the case of an implicit temporal integrator, the solver iterates over the solution until convergence is reached. Thus, it is proposed to take advantage of the solver in order to compute the boundary values as follows. We assume that a set three boundary values are known at the inlet $\left(U_1^{bc}, U_2^{bc}, U_3^{bc}\right)$. The fourth value, $U_4$ is chosen so that the set of four values can be used to retrieve any other variables which ensures the system to be well-posed. At a given time and for a given iteration $\ell$, the solver iterates over the entire solution vector and $U_4^k$ is updated whereas the three other values do not vary since constant. The set of fourth values is used to compute the flux at the boundary given in \eqt{eq:hyp_flux_bc_sct3} which will be also updated at every iteration. Because of the iterative process, information from inside the computational domain is transmitted to the boundary until the solution reaches convergence: the solver substitutes itself to the characteristic equation associated to the wave exiting the domain. Using this method, various boundary conditions are implemented and detailed in \tbl{tbl:sub-inlet-flow-bc}:
 %
-\begin{table}[!htbp]
+\begin{table}[H]
 \begin{center}
 \caption{ Subsonic flow inlet boundary conditions.}
 \label{tbl:sub-inlet-flow-bc}
@@ -1283,7 +1283,7 @@ The numerical results are in good agreement with the exact solution and do not d
 %\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{$1$-D numerical results for flows with source terms:} \label{sec:1d-source-terms-results}
+\subsection{$1$-D numerical results for flows with source terms} \label{sec:1d-source-terms-results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This section aims at illustrating the theoretical approach developed in \sect{sec:ev_source_terms} for solving $1$-D flow with source terms using the EVM. All of the results presented in this section were obtained with the RELAP-7 code developed by Idaho National Laboratory \cite{Relap7PWR}. Three source terms are considered: the wall-friction force and the wall heat source that were detailed in \sect{sec:ev_source_terms}, and gravity terms, which yields the following $1$-D Euler equations:
@@ -1323,9 +1323,9 @@ steam        (\sect{sec:steam_nozzle})  & 1.43     & 1040                       
 %
 The first test consists of a flow with only wall-friction force Then, a wall-heat source is added to the system and different values of the heat transfer coefficient $h_t$ are investigated. All of the tests are performed for both vapor and liquid water phases. Lastly, a $1$-D core channel component from RELAP-7 is used to model the core of a Pressurized Water Reactor (PWR) with liquid water.
 %---------------------------------------------------------------------------------------------------
-\subsection{Vapor flow in a straight pipe with wall-friction force and gravity terms.} \label{sec:1d-wall-fricition-vapor}
+\subsection{Vapor flow in a straight pipe with wall-friction force} \label{sec:1d-wall-fricition-vapor}
 %---------------------------------------------------------------------------------------------------
-The geometry consists of a three $1$-D straight pipes of constant area $A= 10^{-4}$ $m^2$ and length $L=1$, $4$ and $1$ $m$. The source terms are only applied to the middle pipe of length $4$ m. The objective is to investigate the entropy variations due to the source terms by comparison with the first and third pipes that are source terms free. The friction coefficient is set to $f_c = 0.5$. A subsonic inlet flow boundary condition is used by imposing the velocity $u_{inlet} = $ and the temperature $T_{inlet}=$. At the outlet, the static pressure $P_{outlet}=6.6$ $MPa$ is specified. The initial conditions are taken equal to the boundary conditions and can be computed using the SGEOS and the parameters provided in \tbl{tbl:stff_gas_eos2}. The code is run until steady-state with $CFL=10$ and the geometry is discretized with an uniform mesh of $60$ cells. Steady-state profiles of the pressure, the velocity, the density and the viscosity coefficients are given in ....
+The geometry consists of a three $1$-D straight pipes of constant area $A= 10^{-4}$ $m^2$ and length $L=1$, $4$ and $1$ $m$. The source terms are only applied to the middle pipe of length $4$ m. The objective is to investigate the entropy variations due to the source terms by comparison with the first and third pipes that are source terms free. The friction coefficient is set to $f_c = 10$. A subsonic inlet flow boundary condition is used by imposing the momentum $\rho u_{inlet} = 52.8$ $kg/(m^2 s)$ and the total enthalpy $H_{inlet}=2784615.9$ $J / kg$. At the outlet, the static pressure $P_{outlet}=6.6$ $MPa$ is specified. The initial conditions are taken equal to the boundary conditions and can be computed using the SGEOS and the parameters provided in \tbl{tbl:stff_gas_eos2}. The code is run until steady-state with $CFL=10$ and the geometry is discretized with an uniform mesh of $60$ cells. Steady-state profiles of the pressure, the velocity, the density and the viscosity coefficients are given in \fig{fig:1d-vapor-friction-sct3}.
 %
 \begin{figure}[H]
         \centering
@@ -1358,10 +1358,11 @@ The geometry consists of a three $1$-D straight pipes of constant area $A= 10^{-
 				\label{fig:1d-vapor-friction-sct3}
 \end{figure}
 %
+The pressure decreases in the middle pipe because of the wall-friction forces as seen in \fig{fig:1d-vapor-friction-pressure-sct3}. Because the total energy is conserved, the kinetic energy has to increase in order to compensate for the loss of internal energy: in \fig{fig:1d-vapor-friction-velocity-sct3} the velocity increases through the middle pipe. The density variation, \fig{fig:1d-vapor-friction-density-sct3}, is the same as the pressure one since they are related through the equation of state. The viscosity coefficients are shown in \fig{fig:1d-vapor-friction-visc-sct3}: because of the entropy production due to the wall-friction force, the viscosity coefficient displays a step profile. All of the variables shown in \fig{fig:1d-vapor-friction-sct3}, are constant in the first and third pipes since they are source term free.
 %---------------------------------------------------------------------------------------------------
-\subsection{Liquid water flow in a straight pipe with wall-friction force and gravity terms.} \label{sec:1d-wall-fricition-liquid}
+\subsection{Liquid water flow in a straight pipe with wall-friction force} \label{sec:1d-wall-fricition-liquid}
 %---------------------------------------------------------------------------------------------------
-The same geometry with the same temporal and spatial discretization as in \sect{sec:1d-wall-fricition-vapor} is used to simulate a liquid water flow. The boundary conditions are the same except that the inlet velocity is set to $u_{inlet}=$. 
+The same geometry with the same temporal and spatial discretization as in \sect{sec:1d-wall-fricition-vapor} is used to simulate a liquid water flow. The boundary conditions are also the same and the following boundary values are used: $\rho u_{inlet} = 1617.4$ $kg/(m^2 s)$ and $H_{inlet}=998407.2$ $J / kg$. Steady-state numerical results are presented in \fig{fig:1d-liquid-friction-sct3}.
 %
 \begin{figure}[H]
         \centering
@@ -1394,10 +1395,11 @@ The same geometry with the same temporal and spatial discretization as in \sect{
 				\label{fig:1d-liquid-friction-sct3}
 \end{figure}
 %
+The pressure, velocity, density and viscosity coefficients profiles show the same variation as for the vapor phase case described in \sect{sec:1d-wall-fricition-vapor}.
 %---------------------------------------------------------------------------------------------------
-\subsection{Vapor and liquid water flows in a straight pipe with wall-friction force, gravity terms and wall-heat source.} \label{sec:1d-wall-heat-source}
+\subsection{Vapor and liquid water flows in a straight pipe with wall-friction and wall-heat source} \label{sec:1d-wall-heat-source}
 %---------------------------------------------------------------------------------------------------
-Once again, the same set up as in \sect{sec:1d-wall-fricition-vapor} and in \sect{sec:1d-wall-fricition-liquid} is used to simulate the behavior of liquid water and vapor phases with a wall-heat source. The wall temperature is assumed constant and set to $T_w=600$ $K$ for both phases. The wall heat transfer coefficients are also constant and are chosen so that a significant change in the temperature profile can be observed: $h_t^{liquid} = 1000$ $W/(K-m)$ and $h_t^{vapor} = 100$ $W/(K-m)$. The wall heated surface $a_w$ is the same for both phases since function of the geometry and set to $a_w = 0.0314156$ $m$. The steady-state profiles are shown in for liquid water and in .. for vapor. 
+Once again, the same set up as in \sect{sec:1d-wall-fricition-vapor} and in \sect{sec:1d-wall-fricition-liquid} is used to simulate the behavior of liquid water and vapor phases with a wall-heat source. The wall temperature is assumed constant and set to $T_w=600$ $K$ for both phases. The wall heat transfer coefficients are also constant and are chosen so that a significant change in the temperature profile can be observed: $h_t^{liquid} = 1000$ $W/(K-m)$ and $h_t^{vapor} = 100$ $W/(K-m)$. The wall heated surface $a_w$ is the same for both phases since function of the geometry and set to $a_w = 0.0314156$ $m$. The steady-state profiles are shown in \fig{fig:1d-liquid-friction-heat-sct3} for liquid water and in \fig{fig:1d-vapor-friction-heat-sct3} for vapor. 
 %
 \begin{figure}[H]
         \centering
@@ -1462,8 +1464,9 @@ Once again, the same set up as in \sect{sec:1d-wall-fricition-vapor} and in \sec
 				\label{fig:1d-liquid-friction-heat-sct3}
 \end{figure}
 %
+Both phases show the same variations: because of the wall heat source, the velocity increases and is curved as shown in \fig{fig:1d-liquid-friction-heat-velocity-sct3} and \fig{fig:1d-vapor-friction-heat-velocity-sct3}. In \fig{fig:1d-liquid-friction-heat-density-sct3} and \fig{fig:1d-vapor-friction-heat-density-sct3}, the density decreases through the middle pipe since heat is added to the system. The pressure profile remains the same since the pressure variations are decoupled from the rest of the system in the low Mach limit as shown in \fig{fig:1d-liquid-friction-heat-pressure-sct3} and \fig{fig:1d-vapor-friction-heat-pressure-sct3}. The viscosity coefficients profile is affected by the heat source (\fig{fig:1d-liquid-friction-heat-vicsosity-sct3} and \fig{fig:1d-vapor-friction-heat-vicsosity-sct3}) and is larger in the middle pipe than in the two other pipes. It is also noted that the high-order viscosity coefficient is several order of magnitude smaller that the first-order viscosity coefficient. Influence of the first-order viscosity coefficient onto the numerical solution is demonstrated in the next section.
 %---------------------------------------------------------------------------------------------------
-\subsection{$1$-D Pressurized Water Reactor.} \label{sec:1d-pwr}
+\subsection{$1$-D Pressurized Water Reactor} \label{sec:1d-pwr}
 %---------------------------------------------------------------------------------------------------
 Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854E-05$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the heat transfer coefficient $h_w$ is set to a constant $5.33e4$ $W/(K-m)$, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$. The wall temperature $T_w$ is given spatial dependence and computed using the model available in RELAP-7 for PWR \cite{Relap7PWR}. 
 For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3359.62$ $kg/(m^2 s))$ and a specific enthalpy ($h = 1.28e6$ $J/kg$) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The stiffened gas equation of state (SGEOS) is used \cite{SGEOS} with the parameters given in \tbl{tbl:stff_gas_eos2} for liquid water. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} represent the results obtained using 20 mesh cells, using either the overly-dissipative first-order viscosity (FO), the higher-order entropy viscosity (EV), or the SUPG \cite{SUPG} method to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and look similar to those obtained with the SUPG method. Plots obtained using a finer spatial resolution ($100$ cells) are also shown in these figures.
@@ -1530,12 +1533,12 @@ This is shown in \fig{fig:Momentum}, where it is clear that the mass flux (or mo
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{$2$-D numerical results for supersonic flows:} \label{sec:2d-supersonic-results}
+\section{$2$-D numerical results for supersonic flows} \label{sec:2d-supersonic-results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This section focuses on demonstrating the ability of the entropy viscosity method, with the new definition of the viscosity coefficients derived in \sect{sec:lowMach}, to accurately resolve shocks occurring in transonic flows. Such tests were already performed in \cite{valentin} with the former definition of the entropy viscosity method recalled in \sect{sec:background}, and using a discontinuous Galerkin finite element discretization. Our objective here, is to show that the new definition of the viscosity coefficients is still capable of resolving shocks. The numerical tests presented in this section include: flow pass a forward facing step \cite{FFS}, a circular explosion \cite{Toro}, a steady-state flow over a double wedge \cite{RichThesis} and a steady-state flow in a compression corner \cite{CompressionCorner}. The last two tests will also allow us to evaluate the ability of the method to reach a steady-state. For each numerical results presented in this section, information relative to the equation of state and its parameters, the boundary conditions, the initial conditions, the mesh and the discretization order will be provided along with the numerical results. For clarity purpose we will refer to as $\Omega$. Since only $2$-D computational domain is considered, left, right, bottom and top boundaries are referred to as $\delta \Omega_1$, $\delta \Omega_2$, $\delta \Omega_3$ and $\delta \Omega_4$, respectively, with $\delta \Omega = ( \delta \Omega_1,  \delta \Omega_2, \delta \Omega_3, \delta \Omega_4)$. 
 %---------------------------------------------------------------------------------------------------
-\subsection{Supersonic $2$-D flow over a forward facing step:} \label{sec:2d-forward-facing-step}
+\subsection{Supersonic $2$-D flow over a forward facing step} \label{sec:2d-forward-facing-step}
 %---------------------------------------------------------------------------------------------------
 This benchmark was introduced in \cite{FFS}. It consists of a Mach 3 flow past a forward-facing step in a $2$-D wind tunnel. The geometry is given in (FIGURE) and was discretized with an uniform mesh of $10^5$ cells. A supersonic inlet boundary condition is used to set the flow conditions. A slip wall boundary condition is specified at the top and bottom wall following the method explained in \sect{sec:bc}. The outflow, in $x=4$ is free since the flow remains supersonic at the outlet boundary. The uniform initial conditions are given in \tbl{tb:ic-forward-facing} for the primitive variables. The Ideal gas equation of state is used with a adiabatic gas constant $\gamma = 1.4$.
 \begin{table}[H] 
@@ -1609,7 +1612,7 @@ The numerical solution was obtained with a $\mathbb Q_1$ continuous Galerkin fin
 %
 The numerical solution of the density at $t=4$ $s$ compares well to the ones obtained in \cite{valentin}, as least in a visual norm. The triple-point feature and the contact wave emerging from it are well resolved. It is also noticed that a significant amount of entropy is produced near the corner region. This is due to the corner singularity and this phenomenon is well explained in \cite{FFS_corner}. This artifact can be treated either by using special boundary condition to the corner since its normal vector is not defined, or by aggressively refining the mesh in the singularity region, or lastly, by modifying the geometry and use a round corner. 
 %---------------------------------------------------------------------------------------------------
-\subsection{$2$-D circular explosion:} \label{sec:2d-circular-explosioin}
+\subsection{$2$-D circular explosion} \label{sec:2d-circular-explosioin}
 %---------------------------------------------------------------------------------------------------
 We now consider a $2$-D circular explosion \cite{Toro} that is known to develop an unstable layer contact. The computational domain is a square of dimension $\Omega = (-1, 1)^2$. The initial conditions consist of a pressure and density step located in the center of the computational domain. The values of the initial conditions are given in \tbl{tb:ic-explosion} in function of the radius $r^2 = x^2 + y^2$. The Ideal gas equation of state is sill used with the same parameters as in \sect{sec:2d-forward-facing-step}. Dirichlet boundary conditions are used to specify the values on the boundaries $\delta \Omega$ of the computational domain $\Omega$, assuming that the simulation is stopped before the waves reach the boundaries.
 \begin{table}[H] 
@@ -1640,8 +1643,9 @@ The numerical solutions of the density and viscosity coefficient are given in \e
 \label{fig:2d_explosion_visc_sct3}
 \end{figure}
 %
+The density profile shown in \fig{fig:2d_explosion_density_sct3} does not display any oscillations. The shock and the contact waves are well resolved. The viscosity coefficient reaches its maximum value in the shock region (\fig{fig:2d_explosion_visc_sct3}), as expected. A smaller peak is also observed in the contact region. 
 %%---------------------------------------------------------------------------------------------------
-%\subsection{Riemann problem number 12:} \label{sec:2d-riemann-pb-12}
+%\subsection{Riemann problem number 12} \label{sec:2d-riemann-pb-12}
 %%---------------------------------------------------------------------------------------------------
 %Riemann problem number $12$ \cite{RP12} is a popular $2$-D benchmark that is known to develop contact and shock waves, as well as fine structures. The computational domain $\Omega = (0,1)^2$ is initialized with four square regions. In each region a different set of initial values is set as follows:
 %\begin{equation}
@@ -1742,7 +1746,7 @@ From the above figures, it is observed that the solution is formed of two region
 The $1$-D plots of the pressure and the mach number at $y=0$, are also given in \fig{fig:2d_corner_isomach}: the shock does not show any spurious oscillations and is well resolved. Finally, the difference between the inlet and outlet mass flow rates is plotted in \fig{fig:2d_convergence} and show that a steady-state is reached. \\
 Overall, the numerical solution does not show any oscillations, match the analytical solution, and the shock is well resolved.
 %---------------------------------------------------------------------------------------------------
-\subsection{Supersonic flow over a $5^\circ$ double-wedge obstruction:} \label{sec:double_wedge}
+\subsection{Supersonic flow over a $5^\circ$ double-wedge obstruction} \label{sec:double_wedge}
 %---------------------------------------------------------------------------------------------------
 The last of the $2$-D supersonic example that is proposed to study is a Mach$2,5$ flow over a double-wedge obstruction located on the lower wall. The interesting feature of this test is that a steady-state is reached. The geometry used is shown in (FIG) and was discretized with $4000$ $\mathbb Q_1$ elements. The double wedge extends on the bottom boundary from $x=1$ to $x=5$  $m$. The top wall is located at $y=5$ $m$. A supersonic inlet boundary condition was set at the inlet by specifying the pressure, $P=101,325$ $Pa$, the temperature, $T=300$ $K$ and the vector velocity $\mbold u = (868.032, 0)$ $m \cdot s^{-1}$. The wall-boundary and supersonic outlet boundary conditions were implemented following the method described in \sect{sec:bc}. The second-order temporal integrator $BDF2$ was used with a $CFL$ of 5 to reach the steady-state that was detected by monitoring the norm of the total residual. The Ideal gas equation of state was used with an adiabatic constant $\gamma = 1.4$ and a volumetric heat capacity $C_v = 716.7$ $J \cdot K^{-1}$ (air properties). The Mach number and viscosity coefficients profiles at steady-state are given in \fig{fig:2d_dbwd_stt} and \fig{fig:2d_dbw_visc_stt}, respectively. 
         \begin{figure}[H]%{0.52\textwidth}
@@ -1761,7 +1765,7 @@ The last of the $2$-D supersonic example that is proposed to study is a Mach$2,5
 The stay-state solution consists of a two shocks that form because of the interaction of the flow with the double wedge. The first wedge generates a shock that reflects on the top wall and then exits the computational domain: the interaction of the shock with the wall close to the outlet boundary requires a robust implentation of the boundary conditions and the stabilization method. The second shock is generated by the trailing wedge. In between the two shock regions, an expansion fan is formed. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{$2$-D numerical results for subsonic flows:} \label{sec:2d-susubsonic-results}
+\section{$2$-D numerical results for subsonic flows} \label{sec:2d-susubsonic-results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %---------------------------------------------------------------------------------------------------

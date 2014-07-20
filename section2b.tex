@@ -102,7 +102,7 @@ We consider a 1-D computational domain of length $L=1$ $m$ discretized by an uni
 %
 In \fig{fig:1d_burger_free}, no stabilization  is used and numerical instabilities are observed in the shock region. When run with the over-dissipative first-order viscosity coefficient, the solution does not display any instabilities but the shock amplitude is smoothed as shown in \fig{fig:1d_burger_fo}. Lastly, the numerical solution obtained with the EVM in \fig{fig:1d_burger_ev} is very close to the exact solution: the shock amplitude is preserved and the solution is stable. The viscosity coefficients are shown in \fig{fig:1d_burger_visc} on a log-scale: the high-order viscosity coefficient $\mu_e$ is peaked in the shock region and is small anywhere else. This behavior is expected and corresponds to the theoretical approach detailed in \sect{sec:evm_hyp_sc_sct1b}. It was demonstrated in \cite{valentin} that high-order accuracy is preserved with the EVM when the solution is smooth (i.e. away from the shock region). It is also noticed the difference of order of magnitude between the high- and first-order viscosity coefficients away from the shock region.
 %------------------------------------------------------------------------------------------------------
-\subsection{2-D numerical result: Riemann problem}\label{sec:2dnum_sct2b}
+\subsection{2-D Riemann problem}\label{sec:2dnum_sct2b}
 %------------------------------------------------------------------------------------------------------
 We now consider a typical 2-D benchmark problem known as Riemann problem. The computational domain consists of a $1 \times 1$ square and the following initial conditions are used:
 %
