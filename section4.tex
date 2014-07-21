@@ -29,210 +29,131 @@ This methodology was applied to the seven equation model (SEM) that was first in
 %\item differences between system of equation -> closure relations for relaxation coefficients.
 %\end{itemize}
 %===================================================================================
-\section{The multi-D seven equation model}\label{sec:multi-seven-equ-model}
+\section{Descriptions of the multi-D seven equation model}\label{sec:multi-seven-equ-model}
 %===================================================================================
 The multi-D seven equation model is obtained by assuming each phase obeys the pure Euler equations and integrating over a control volume after multiplying by a characteristic function. The detailed method can be found in \cite{SEM}. In this section, the governing equations are recalled for each phase and the source terms are described. 
-
+%-----------------------------------------------------------------------------------------
+\subsection{The system of equation for the liquid and vapor phases}
+%-----------------------------------------------------------------------------------------
 The liquid phase obeys the following mass, momentum and energy balance equations and a non-conservative volume fraction equation:
-\begin{itemize}
-\item give system of equation with relaxation terms and mass transfer term from DEM paper
-\item explain the relaxation terms
-\item explain the source terms: exchanges between phases.
-\item entropie equation.
-\end{itemize}
-%===================================================================================
-\section{Description of the $1$-D seven equation model:}
-%===================================================================================
-Because it is not economical to solve the entire two-phase flow field
-with highly resolved three-dimensional computational fluid dynamics for an
-entire light water reactor coolant system,
-it is necessary to construct a one-dimensional model for flow in
-pipes, nozzles, and other components.  The one-dimensional model is
-constructed to allow the representation of continuously variable
-cross-sectional area.
-
-Consider flow through a duct with local cross-sectional area
-$A=A(x,t)$.  Actually, most of the time we consider local
-cross-sectional area to depend upon position coordinate $x$ only,
-for which a time rate of change of cross-sectional area is not
-necessary because for this case $\frac{\partial A}{\partial
-t} = 0$.  However, $A(x,t)$ is left inside the time derivative terms
-for generality and possible future use.  The seven-equation two-phase
-system model can be stated as balances of mass, momentum, and total energy,
-along with volume fraction evolution as
+%
+\begin{subequations}\label{eq:liq-7-eqn-sect5}
 \begin{align}
   % liquid mass conservation
-  \label{E-R:74}
+  \label{multi-d-7-equ-liq}
   \frac{\partial \left( \alpha \rho \right)_{liq} A}{\partial t}
-  + \frac{\partial \left( \alpha \rho u \right)_{liq} A}{\partial x}
+  + \div \left( \alpha \rho \mbold u \right)_{liq} A
   &= - \Gamma A_{int} A
-  \\
+\end{align}
+  \begin{align}
   % liquid momentum
-  \nonumber
-  \frac{\partial \left( \alpha \rho u \right)_{liq} A}{\partial t}
-  + \frac{\partial \alpha_{liq} A \left( \rho u^2 + p \right)_{liq} }{\partial x}
-  &= p_{int} A \frac{\partial \alpha_{liq}}{\partial x} + p_{liq} \alpha_{liq} \frac{\partial A}{\partial x}
+  \frac{\partial \left( \alpha \rho \mbold u \right)_{liq} A}{\partial t}
+  + \div \left[ \alpha_{liq} A \left( \rho \mbold u \otimes \mbold u + p  \right)_{liq} \right]
+  &= p_{int} A \grad \alpha_{liq} + p_{liq} \alpha_{liq} \grad A
+    \nonumber
   \\
-  \nonumber
-  &+ A \lambda (u_{vap} - u_{liq})
-  \\
-  \nonumber
-  &- \Gamma A_{int} u_{int} A
-  \\
-  \nonumber
-  &- F_{\text{wall friction}, liq} - F_{\text{friction}, vap}
-  \\
-  &+ \left( \alpha \rho \right)_{liq} A \vec{g} \cdot \vec{n}_{axis}
+  &+ A \lambda_u (\mbold u_{vap} - \mbold u_{liq})
+  - \Gamma A_{int} \mbold u_{int} A
 \end{align}
 \begin{align}
   % liquid total energy
-  \nonumber
   \frac{\partial \left( \alpha \rho E \right)_{liq} A}{\partial t}
-  + \frac{\partial \alpha_{liq} u_{liq} A \left( \rho E + p \right)_{liq}}{\partial x}
-  &= p_{int} u_{int} A \frac{\partial \alpha_{liq}}{\partial x} - \bar{p}_{int} A \mu (p_{liq} - p_{vap})
+  + \div \left[ \alpha_{liq} \mbold u_{liq} A \left( \rho E + p \right)_{liq} \right]
+  &= p_{int} \mbold u_{int} A \grad \alpha_{liq} - \bar{p}_{int} A \mu_P (p_{liq} - p_{vap})
+        \nonumber
   \\
-  \nonumber
-  &+ \bar{u}_{int} A \lambda (u_{vap} - u_{liq})
-  \\
-  \nonumber
-  &+ \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{liq, int} \right) A
-  \\
-  &+ Q_{int, liq} + Q_{\text{wall}, liq}
-  \\
-  % liquid volume fraction
-  \label{eqn:7eqn_va_alpha_liq}
-  \frac{\partial \alpha_{liq} A}{\partial t} + u_{int} A \frac{\partial \alpha_{liq}}{\partial x}
-  &= A \mu (p_{liq} - p_{vap}) - \frac{\Gamma A_{int} A}{\rho_{int}}
+  + \bar{\mbold u}_{int} A \lambda_u (\mbold u_{vap} - \mbold u_{liq})
+&  + \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{liq, int} \right) A
 \end{align}
-for the liquid phase, and
 \begin{align}
+  % liquid volume fraction
+  \label{eqn:multi-d-7-eqn-liq-vol}
+  \frac{\partial \alpha_{liq} A}{\partial t} + A\mbold u_{int} \cdot \grad \alpha_{liq}
+  &= A \mu_P (p_{liq} - p_{vap}) - \frac{\Gamma A_{int} A}{\rho_{int}}
+\end{align}
+\end{subequations}
+%
+The equations for the vapor phase are:
+%
+\begin{subequations}\label{eq:vap-7-eqn-sect5}
+\begin{align}
+  \label{multi-d-7-equ-vap}
   % vapor mass conservation
   \frac{\partial \left( \alpha \rho \right)_{vap} A}{\partial t}
-  + \frac{\partial \left( \alpha \rho u \right)_{vap} A}{\partial x}
-  &=  \Gamma A_{int} A
-  \\
-  % vapor momentum
-  \nonumber
-  \frac{\partial \left( \alpha \rho u \right)_{vap} A}{\partial t}
-  + \frac{\partial \alpha_{vap} A \left( \rho u^2 + p \right)_{vap} }{\partial x}
-  &= p_{int} A \frac{\partial \alpha_{vap}}{\partial x} + p_{vap} \alpha_{vap} \frac{\partial A}{\partial x}
-  \\
-  \nonumber
-  &+ A \lambda (u_{liq} - u_{vap})
-  \\
-  \nonumber
-  &+ \Gamma A_{int} u_{int} A
-  \\
-  \nonumber
-  &- F_{\text{wall friction}, vap} - F_{\text{friction}, liq}
-  \\
-  &+ \left( \alpha \rho \right)_{vap} A \vec{g} \cdot \vec{n}_{axis}
+  + \div \left( \alpha \rho \mbold u \right)_{vap} A
+  =  \Gamma A_{int} A
 \end{align}
 \begin{align}
+  % vapor momentum
+  \frac{\partial \left( \alpha \rho u \right)_{vap} A}{\partial t}
+  + \div \left[ \alpha_{vap} A \left( \rho \mbold u \otimes \mbold u + p \right)_{vap} \right]
+  &= p_{int} A \grad \alpha_{vap} + p_{vap} \alpha_{vap} \grad A
+  \\
   \nonumber
+  &+ A \lambda_u (\mbold u_{liq} - \mbold u_{vap})
+  + \Gamma A_{int} u_{int} A
+\end{align}
+\begin{align}
   % vapor total energy
   \frac{\partial \left( \alpha \rho E \right)_{vap} A}{\partial t}
-  + \frac{\partial \alpha_{vap} u_{vap} A \left( \rho E + p \right)_{vap}}{\partial x}
-  &= p_{int} u_{int} A \frac{\partial \alpha_{vap}}{\partial x} - \bar{p}_{int} A \mu (p_{vap} - p_{liq})
+  &+ \div \left[ \alpha_{vap} \mbold u_{vap} A \left( \rho E + p \right)_{vap} \right]
+  = p_{int} \mbold u_{int} A \grad \alpha_{vap} - \bar{p}_{int} A \mu_P (p_{vap} - p_{liq})
   \\
   \nonumber
-  &+ \bar{u}_{int} A \lambda (u_{liq} - u_{vap})
-  \\
-  \nonumber
-  &- \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{vap, int} \right) A
-  \\
-  &+ Q_{int, vap} + Q_{\text{wall}, vap}
-  \\
-  % vapor phase volume fraction
-  \label{E-R:81}
-  \frac{\partial \alpha_{vap} A}{\partial t} + u_{int} A \frac{\partial \alpha_{vap}}{\partial x}
-  &= A \mu (p_{vap} - p_{liq}) + \frac{\Gamma A_{int} A}{\rho_{int}}
+  &+ \bar{\mbold u}_{int} A \lambda_u (\mbold u_{liq} - \mbold u_{vap})
+- \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{vap, int} \right) A
 \end{align}
-for the vapor phase.  It is noted that for two-phase flow,
-either of the differential relations~\eqref{eqn:7eqn_va_alpha_liq}
-or~\eqref{E-R:81} may be replaced with the algebraic relation
+\begin{align}
+  % vapor phase volume fraction
+  \label{eqn:multi-d-7-eqn-vap-vol}
+  \frac{\partial \alpha_{vap} A}{\partial t} + A \mbold u_{int} \cdot \grad \alpha_{vap}
+  &= A \mu_P (p_{vap} - p_{liq}) + \frac{\Gamma A_{int} A}{\rho_{int}}
+\end{align}
+\end{subequations}
+%
+where $\rho_i$, $\mbold u_i$ and $P_i$ denote the density, the velocity vector and the pressure, respectively, of each phase for $i=\left\{ liq, vap \right\}$ and of the interface for $i=int$. $\Gamma$ is the net mass transfer per unit interfacial area from the liquid to the vapor phase and $A_{int}$ is the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$ and $H_{vap, int}$ are the liquid and gas total enthalpies at the interface, respectively. All of the interfacial variables are detailed in \sect{sec:source-terms-7-eqt-sect5}. In the case of two-phase flow, the equation for the vapor volume fraction, \eqt{eqn:multi-d-7-eqn-vap-vol}, is simply replaced by the algebraic relation
+%
 \begin{align}
  \alpha_{vap}= 1 - \alpha_{liq}
 \end{align}
-throughout, reducing the total number of equations to be solved to seven.
-
-In equations~\eqref{E-R:74}--\eqref{E-R:81}, $\Gamma$ is the net mass transfer per unit
-interfacial area from the liquid to the vapor phase and $A_{int}$ is
-the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$
-and $H_{vap, int}$ are the liquid and gas total enthalpies at the
-interface, respectively.  The nomenclature has also been modified so
-that now $u_{int}$ and $\bar{u}_{int}$ are, respectively, the
-interfacial velocity and average interfacial velocity; and $p_{int}$
-and $\bar{p}_{int}$ are, respectively, the interfacial pressure and
-average interfacial pressure.  In the momentum balance equations
-$\vec{n}_{axis}$ is the unit vector directly along the axis of the
-duct, which is also the $\pm$ flow direction.  Of course
-$F_{\text{wall friction}, k}$ is the frictional force due to the wall acting on phase
-$k$ and $F_{\text{friction}, k'}$ is the frictional force acting on
-phase $k$ due to the presence of the other phase $k'$.
-Similarly, $Q_{int, k}$ is the direct heat transfer from the interface
-to phase $k$ and $Q_{\text{wall}, k}$ is the direct heat transfer from
-the wall to phase $k$.
-
-Equation system~\eqref{E-R:74}--\eqref{E-R:81} is the basic system
-solved with RELAP-7.  The system was implemented within the MOOSE
-computational framework following a series of logically-complete
-steps~\cite{Berry_2013} designed to confidently allow physically- and
-mathematically-meaningful benchmark testing at each step of increased
-complexity.  This 7-equation two-phase model allows both phases to be
-compressible.
-
-\subsection{Seven-Equation Two-Phase Flow Constitutive Models}
-Without additional closure equations the balance relations derived
-above are generic, i.e.\ they apply to all materials (fluids).  They
-must made to apply to the unique material (fluid) being considered --
-material specific.  Also, though averaging the microlevel
-balance equations led to the ``simplified'' or perhaps more tractable
-model above, this simplification (averaging) led to a loss of information,
-and some additional relations must also be specified to supply (or
-restore) at least some information that was lost in this
-process\footnote{The process of averaging the balance equations produced a
-system with more unknowns than equations; thus postulates or empirical
-correlations are required to resolve this deficiency.}.  Collectively,
-any additional relations, or sub-models, that must be specified to
-render mathematical closure (allowing a solution to be obtainable) to
-the generic balance equations are known as ``constitutive
-relations''.
-
-Because the 7-equation two-phase model's most unique features are
-reflected in the presence of a volume fraction evolution equation,
-interfacial pressure and velocity, and mechanical relaxation terms
-involving pressure and velocity relaxation, it is natural to begin
-with their constitutive relations.  Constitutive ideas associated with
-the volume fraction evolution equation were discussed previously for
-pedagogical reasons.  Thermodynamical relaxation will be discussed
-subsequently, followed by other closures.
-
+%
+The set of eight equations given in \eqt{eq:liq-7-eqn-sect5} and in \eqt{eq:vap-7-eqn-sect5} is now reduced to seven which yields the multi-D seven equation model.
+%\begin{itemize}
+%\item give system of equation with relaxation terms and mass transfer term from DEM paper
+%\item explain the relaxation terms
+%\item explain the source terms: exchanges between phases.
+%\item entropie equation.
+%\end{itemize}
+%-----------------------------------------------------------------------------------------
+\subsection{The source terms}\label{sec:source-terms-7-eqt-sect5}
+%-----------------------------------------------------------------------------------------
+%---------------------------------------------------------------------------------------------------------------
 \subsubsection{Interface Pressure and Velocity, Mechanical Relaxation Coefficients}
+%---------------------------------------------------------------------------------------------------------------
 In the continuous limit of small mesh
 spacing and time steps along with employment of the Godunov weak wave
 limit, the finite closure relations converge~\cite{Berry_2008b,
 Chinnayya_2004} to
 \begin{align}
   \label{E-R:83}
-  p_{int} &= \bar{p}_{int} + \frac{Z_{liq}Z_{vap}}{Z_{liq}+Z_{vap}} \text{sgn} \left( \frac{\partial \alpha_{liq}}{\partial x} \right) (u_{vap}-u_{liq})
+  p_{int} &= \bar{p}_{int} + \frac{Z_{liq}Z_{vap}}{Z_{liq}+Z_{vap}} \frac{\grad \alpha_{liq}}{|| \grad \alpha_{liq} ||} \cdot (\mbold u_{vap}-\mbold u_{liq})
   \\
   \bar{p}_{int} &= \frac{Z_{vap}p_{liq}+Z_{liq}p_{vap}}{Z_{liq}+Z_{vap}}
 \end{align}
 \begin{align}
   \label{E-R:84}
-  u_{int} &= \bar{u}_{int} + \text{sgn} \left( \frac{\partial \alpha_{liq}}{\partial x} \right) \frac{p_{vap}-p_{liq}}{Z_{liq}+Z_{vap}}
+  \mbold u_{int} &= \bar{\mbold u}_{int} +  \frac{\grad \alpha_{liq}}{|| \grad \alpha_{liq} ||} \frac{p_{vap}-p_{liq}}{Z_{liq}+Z_{vap}}
   \\
-  \bar{u}_{int} &= \frac{Z_{liq}u_{liq}+Z_{vap}u_{vap}}{Z_{liq}+Z_{vap}}
+  \bar{\mbold u}_{int} &= \frac{Z_{liq} \mbold u_{liq}+Z_{vap}\mbold u_{vap}}{Z_{liq}+Z_{vap}}
 \end{align}
 \begin{align}
   \label{E-R:85}
-  \lambda &= \frac{1}{2} \mu Z_{liq} Z_{vap}
+  \lambda_u &= \frac{1}{2} \mu_P Z_{liq} Z_{vap}
   \\
   \label{E-R:86}
-  \mu &= \frac{A_{int}}{Z_{liq}+Z_{vap}}
+  \mu_P &= \frac{A_{int}}{Z_{liq}+Z_{vap}}
 \end{align}
-where $\lambda$ is the velocity relaxation coefficient function, $\mu$
+where $\lambda_u$ is the velocity relaxation coefficient function, $\mu_P$
 is the pressure relaxation coefficient function, $Z_k = \rho_k c_k$,
 $(k=liq, vap)$, is the phasic acoustic impedance and $A_{int}$ is the
 specific interfacial area (i.e. the interfacial surface area per unit
@@ -242,7 +163,9 @@ water and its vapor in a one dimensional duct of spatially varying
 cross-section was derived and demonstrated with these closures by
 Berry et al.~\cite{SEM}.
 
-Remark (1): From this specification of $\lambda$ and $\mu$ it is clear
+\begin{remark} 
+\begin{enumerate}
+\item From this specification of $\lambda_u$ and $\mu_P$ it is clear
 that special coupling is rendered.  To relax the 7-equation model to
 the ill-posed classical 6-equation model, the pressures should be
 relaxed toward a single pressure for both phases.  This is
@@ -259,72 +182,24 @@ captures evolving, and even spontaneously generating,
 interfaces~\cite{Saurel_2009}. Thus the 7-equation model of RELAP-7
 can be relaxed locally to couple seamlessly with such a
 multi-dimensional, interface resolving code.
-
-Remark (2): Numerically, the mechanical relaxation coefficients $\mu$
-(pressure) and $\lambda$ (velocity) can be relaxed independently to
+\item Numerically, the mechanical relaxation coefficients $\mu_P$
+(pressure) and $\lambda_u$ (velocity) can be relaxed independently to
 yield solutions to useful, reduced models (as explained previously).  It
-is noted, however, that relaxation of pressure only by making $\mu$
+is noted, however, that relaxation of pressure only by making $\mu_P$
 large without relaxing velocity will indeed give ill-posed and
 unstable numerical solutions, just as the classical 6-equation
 two-phase model does, with sufficiently fine spatial resolution, as
 confirmed in~\cite{SEM,Herrard_2005}.
-
-Remark (3): Even though the implementation of the 7-equation two-phase
+\item Even though the implementation of the 7-equation two-phase
 model within RELAP-7 (or any other code for that matter) does not use
 the generalized approach of DEM, the interfacial pressure and velocity
 closures as well as the pressure and velocity relaxation coefficients
 of Equations~\eqref{E-R:83} to~\eqref{E-R:86} are utilized.
-
-
-\subsubsection{Wall and Interphase Friction}
-A simple wall friction model results from making the same assumptions
-as for single-phase duct flow with the exception that the duct wall
-area over which the shear stress acts is reduced by the fraction of
-the wall area which the phase occupies.  Thus
-\begin{equation}
-  F_{\text{wall friction}, k} = \frac{f_k}{2 d_h} \rho_k u_k \left|u_k \right| \alpha_k A
-\end{equation}
-for phases $k=(liq, vap)$, where $f_{k}$ is the wall friction factor
-associated with phase $k$.  The hydraulic diameter
-$d_h$ depends on the shape of the cross section, and the position $x$
-in the pipe.
-
-The friction force acting between the two phases due to their relative
-motion is also given in analogy to that of single-phase duct flow:
-\begin{equation}
-  F_{\text{friction}, k'} = f_{k, \, k'} \frac{1}{2} \rho_k (u_k - u_{int}) \left| u_k -u_{int} \right|  A_{int}  A
-\end{equation}
-for $k=(liq, vap)$, $k'=(vap, liq)$, with $f_{k, k'}$ denoting the friction factor acting upon phase $k$
-due to the (relative) motion of the other phase $k'$. 
-
-The frictional pressure drop in each phase will be different in 
-general due the different velocities of the two phases.  However, 
-because of the tendency toward pressure equilibrium between the phases 
-an effective pressure drop will be realized.
-
-
-\subsubsection{Wall and Interface Direct Heat Transfer}
-Without wall boiling, a simple model for the direct, convective heat transfer
-from the wall to fluid phase $k$ will be the same as that of a single-phase
-except the duct wall area over which this heat transfer can occur is weighted
-by the wetted fraction of the phase.  That is,
-\begin{equation}
-  Q_{ \text{wall}, k } = H_{w,k} a_w \left(T_k  - T_{ \text{wall} } \right) \alpha_k A
-\end{equation}
-for phase $k=(liq, vap)$, where $H_{w,k}$ is the wall convective wall heat transfer
-coefficient associated with phase $k$.  Similarly, the direct heat
-transfer from/to the interface to/from the phase $k$, which will also
-be used to determine the mass transfer between the phases, is
-\begin{equation}
-  Q_{int,  k} = h_{T,  k}  \left( T_{int} - T_k \right)  A_{int}  A
-\end{equation}
-with $h_{T,  k}$ denoting the convective heat transfer coefficient
-between the interface and phase $k$. The phasic bulk
-temperature $T_k$ is determined from the respective phase's equation of
-state.
-
-
+\end{enumerate}
+\end{remark}
+%-----------------------------------------------------------------------------------------
 \subsubsection{Interphase Mass Transfer}
+%-----------------------------------------------------------------------------------------
 For a vapor to be formed from the liquid phase (vaporization) energy
 must be added to the liquid to produce vapor at nucleation sites;
 whether the liquid is heated directly or decompressed below its
@@ -412,9 +287,30 @@ evaluated at the interface condition.  Phasic specific enthalpy
 depends upon the equation of state used and will be discussed with the
 equations of state.  The interfacial density corresponds to the liquid
 saturated density $\rho_{int} = \rho_{liq, sat}(p_{int})$.
-
-
+%-----------------------------------------------------------------------------------------
+\subsubsection{Interface Direct Heat Transfer}
+%-----------------------------------------------------------------------------------------
+Without wall boiling, a simple model for the direct, convective heat transfer
+from the wall to fluid phase $k$ will be the same as that of a single-phase
+except the duct wall area over which this heat transfer can occur is weighted
+by the wetted fraction of the phase.  That is,
+\begin{equation}
+  Q_{ \text{wall}, k } = H_{w,k} a_w \left(T_k  - T_{ \text{wall} } \right) \alpha_k A
+\end{equation}
+for phase $k=(liq, vap)$, where $H_{w,k}$ is the wall convective wall heat transfer
+coefficient associated with phase $k$.  Similarly, the direct heat
+transfer from/to the interface to/from the phase $k$, which will also
+be used to determine the mass transfer between the phases, is
+\begin{equation}
+  Q_{int,  k} = h_{T,  k}  \left( T_{int} - T_k \right)  A_{int}  A
+\end{equation}
+with $h_{T,  k}$ denoting the convective heat transfer coefficient
+between the interface and phase $k$. The phasic bulk
+temperature $T_k$ is determined from the respective phase's equation of
+state.
+%-----------------------------------------------------------------------------------------
 \subsubsection{Stiffened Gas Equation of State for Two-phase Flows} \label{sec:SGEOS}
+%-----------------------------------------------------------------------------------------
 With the 7-equation two-phase model each phase is compressible and
 behaves with its own convex equation of state (EOS).  For initial
 development purposes it was decided to use a simple form capable of
@@ -524,13 +420,205 @@ vaporization is calculated as
   \\
   &= \left( \gamma_{vap}  c_{v, vap}  T + q_{vap} \right) - \left( \gamma_{liq}  c_{v, liq}  T + q_{liq} \right) \,.
 \end{align}
+%
+%
+%\subsection{Seven-Equation Two-Phase Flow Constitutive Models}
+%Without additional closure equations the balance relations derived
+%above are generic, i.e.\ they apply to all materials (fluids).  They
+%must made to apply to the unique material (fluid) being considered --
+%material specific.  Also, though averaging the microlevel
+%balance equations led to the ``simplified'' or perhaps more tractable
+%model above, this simplification (averaging) led to a loss of information,
+%and some additional relations must also be specified to supply (or
+%restore) at least some information that was lost in this
+%process\footnote{The process of averaging the balance equations produced a
+%system with more unknowns than equations; thus postulates or empirical
+%correlations are required to resolve this deficiency.}.  Collectively,
+%any additional relations, or sub-models, that must be specified to
+%render mathematical closure (allowing a solution to be obtainable) to
+%the generic balance equations are known as ``constitutive
+%relations''.
+%
+%Because the 7-equation two-phase model's most unique features are
+%reflected in the presence of a volume fraction evolution equation,
+%interfacial pressure and velocity, and mechanical relaxation terms
+%involving pressure and velocity relaxation, it is natural to begin
+%with their constitutive relations.  Constitutive ideas associated with
+%the volume fraction evolution equation were discussed previously for
+%pedagogical reasons.  Thermodynamical relaxation will be discussed
+%subsequently, followed by other closures.
+
+%\subsubsection{Wall and Interphase Friction}
+%A simple wall friction model results from making the same assumptions
+%as for single-phase duct flow with the exception that the duct wall
+%area over which the shear stress acts is reduced by the fraction of
+%the wall area which the phase occupies.  Thus
+%\begin{equation}
+%  F_{\text{wall friction}, k} = \frac{f_k}{2 d_h} \rho_k u_k \left|u_k \right| \alpha_k A
+%\end{equation}
+%for phases $k=(liq, vap)$, where $f_{k}$ is the wall friction factor
+%associated with phase $k$.  The hydraulic diameter
+%$d_h$ depends on the shape of the cross section, and the position $x$
+%in the pipe.
+%
+%The friction force acting between the two phases due to their relative
+%motion is also given in analogy to that of single-phase duct flow:
+%\begin{equation}
+%  F_{\text{friction}, k'} = f_{k, \, k'} \frac{1}{2} \rho_k (u_k - u_{int}) \left| u_k -u_{int} \right|  A_{int}  A
+%\end{equation}
+%for $k=(liq, vap)$, $k'=(vap, liq)$, with $f_{k, k'}$ denoting the friction factor acting upon phase $k$
+%due to the (relative) motion of the other phase $k'$. 
+%
+%The frictional pressure drop in each phase will be different in 
+%general due the different velocities of the two phases.  However, 
+%because of the tendency toward pressure equilibrium between the phases 
+%an effective pressure drop will be realized.
+%
 %===================================================================================
 \section{A viscous regularization for the multi-D seven equation model}\label{sec:sev-equ-visc-reg-sect4}
 %===================================================================================
+In this section, the dissipative terms for the multi-D seven equation model \emph{with pressure and velocity relaxation source terms} are derived. The methodology proposed in  \chap{chap:theory_chp1} is followed. For clarity purpose, the seven equation model with pressure and velocity relaxation terms is recalled when considering two phases denoted by the indexes $j$ and $k$.  
+%First, dissipative terms are added to each equation of the system under interest. Then, the entropy equation is re-derived with the dissipative terms that are determined by using the entropy inequality as a condition. 
 %===================================================================================
-\section{Low-Mac asymptotic limit and viscosity coefficients}\label{sec:sev-equ-visc-coeff-sect4}
+\section{Low-Mach asymptotic limit and viscosity coefficients}\label{sec:sev-equ-visc-coeff-sect4}
 %===================================================================================
 %===================================================================================
 \section{Numerical results:}\label{sec:1d-num-res-sect4}
 %===================================================================================
+Because it is not economical to solve the entire two-phase flow field
+with highly resolved three-dimensional computational fluid dynamics for an
+entire light water reactor coolant system,
+it is necessary to construct a one-dimensional model for flow in
+pipes, nozzles, and other components.  The one-dimensional model is
+constructed to allow the representation of continuously variable
+cross-sectional area.
+
+Consider flow through a duct with local cross-sectional area
+$A=A(x,t)$.  Actually, most of the time we consider local
+cross-sectional area to depend upon position coordinate $x$ only,
+for which a time rate of change of cross-sectional area is not
+necessary because for this case $\frac{\partial A}{\partial
+t} = 0$.  However, $A(x,t)$ is left inside the time derivative terms
+for generality and possible future use.  The seven-equation two-phase
+system model can be stated as balances of mass, momentum, and total energy,
+along with volume fraction evolution as
+\begin{align}
+  % liquid mass conservation
+  \label{E-R:74}
+  \frac{\partial \left( \alpha \rho \right)_{liq} A}{\partial t}
+  + \frac{\partial \left( \alpha \rho u \right)_{liq} A}{\partial x}
+  &= - \Gamma A_{int} A
+  \\
+  % liquid momentum
+  \nonumber
+  \frac{\partial \left( \alpha \rho u \right)_{liq} A}{\partial t}
+  + \frac{\partial \alpha_{liq} A \left( \rho u^2 + p \right)_{liq} }{\partial x}
+  &= p_{int} A \frac{\partial \alpha_{liq}}{\partial x} + p_{liq} \alpha_{liq} \frac{\partial A}{\partial x}
+  \\
+  \nonumber
+  &+ A \lambda_u (u_{vap} - u_{liq})
+  \\
+  \nonumber
+  &- \Gamma A_{int} u_{int} A
+  \\
+  \nonumber
+  &- F_{\text{wall friction}, liq} - F_{\text{friction}, vap}
+  \\
+  &+ \left( \alpha \rho \right)_{liq} A \vec{g} \cdot \vec{n}_{axis}
+\end{align}
+\begin{align}
+  % liquid total energy
+  \nonumber
+  \frac{\partial \left( \alpha \rho E \right)_{liq} A}{\partial t}
+  + \frac{\partial \alpha_{liq} u_{liq} A \left( \rho E + p \right)_{liq}}{\partial x}
+  &= p_{int} u_{int} A \frac{\partial \alpha_{liq}}{\partial x} - \bar{p}_{int} A \mu_P (p_{liq} - p_{vap})
+  \\
+  \nonumber
+  &+ \bar{u}_{int} A \lambda_u (u_{vap} - u_{liq})
+  \\
+  \nonumber
+  &+ \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{liq, int} \right) A
+  \\
+  &+ Q_{int, liq} + Q_{\text{wall}, liq}
+  \\
+  % liquid volume fraction
+  \label{eqn:7eqn_va_alpha_liq}
+  \frac{\partial \alpha_{liq} A}{\partial t} + u_{int} A \frac{\partial \alpha_{liq}}{\partial x}
+  &= A \mu_P (p_{liq} - p_{vap}) - \frac{\Gamma A_{int} A}{\rho_{int}}
+\end{align}
+for the liquid phase, and
+\begin{align}
+  % vapor mass conservation
+  \frac{\partial \left( \alpha \rho \right)_{vap} A}{\partial t}
+  + \frac{\partial \left( \alpha \rho u \right)_{vap} A}{\partial x}
+  &=  \Gamma A_{int} A
+  \\
+  % vapor momentum
+  \nonumber
+  \frac{\partial \left( \alpha \rho u \right)_{vap} A}{\partial t}
+  + \frac{\partial \alpha_{vap} A \left( \rho u^2 + p \right)_{vap} }{\partial x}
+  &= p_{int} A \frac{\partial \alpha_{vap}}{\partial x} + p_{vap} \alpha_{vap} \frac{\partial A}{\partial x}
+  \\
+  \nonumber
+  &+ A \lambda_u (u_{liq} - u_{vap})
+  \\
+  \nonumber
+  &+ \Gamma A_{int} u_{int} A
+  \\
+  \nonumber
+  &- F_{\text{wall friction}, vap} - F_{\text{friction}, liq}
+  \\
+  &+ \left( \alpha \rho \right)_{vap} A \vec{g} \cdot \vec{n}_{axis}
+\end{align}
+\begin{align}
+  \nonumber
+  % vapor total energy
+  \frac{\partial \left( \alpha \rho E \right)_{vap} A}{\partial t}
+  + \frac{\partial \alpha_{vap} u_{vap} A \left( \rho E + p \right)_{vap}}{\partial x}
+  &= p_{int} u_{int} A \frac{\partial \alpha_{vap}}{\partial x} - \bar{p}_{int} A \mu_P (p_{vap} - p_{liq})
+  \\
+  \nonumber
+  &+ \bar{u}_{int} A \lambda_u (u_{liq} - u_{vap})
+  \\
+  \nonumber
+  &- \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{vap, int} \right) A
+  \\
+  &+ Q_{int, vap} + Q_{\text{wall}, vap}
+  \\
+  % vapor phase volume fraction
+  \label{E-R:81}
+  \frac{\partial \alpha_{vap} A}{\partial t} + u_{int} A \frac{\partial \alpha_{vap}}{\partial x}
+  &= A \mu_P (p_{vap} - p_{liq}) + \frac{\Gamma A_{int} A}{\rho_{int}}
+\end{align}
+for the vapor phase.  It is noted that for two-phase flow,
+either of the differential relations~\eqref{eqn:7eqn_va_alpha_liq}
+or~\eqref{E-R:81} may be replaced with the algebraic relation
+
+throughout, reducing the total number of equations to be solved to seven.
+
+In equations~\eqref{E-R:74}--\eqref{E-R:81}, $\Gamma$ is the net mass transfer per unit
+interfacial area from the liquid to the vapor phase and $A_{int}$ is
+the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$
+and $H_{vap, int}$ are the liquid and gas total enthalpies at the
+interface, respectively.  The nomenclature has also been modified so
+that now $u_{int}$ and $\bar{u}_{int}$ are, respectively, the
+interfacial velocity and average interfacial velocity; and $p_{int}$
+and $\bar{p}_{int}$ are, respectively, the interfacial pressure and
+average interfacial pressure.  In the momentum balance equations
+$\vec{n}_{axis}$ is the unit vector directly along the axis of the
+duct, which is also the $\pm$ flow direction.  Of course
+$F_{\text{wall friction}, k}$ is the frictional force due to the wall acting on phase
+$k$ and $F_{\text{friction}, k'}$ is the frictional force acting on
+phase $k$ due to the presence of the other phase $k'$.
+Similarly, $Q_{int, k}$ is the direct heat transfer from the interface
+to phase $k$ and $Q_{\text{wall}, k}$ is the direct heat transfer from
+the wall to phase $k$.
+
+Equation system~\eqref{E-R:74}--\eqref{E-R:81} is the basic system
+solved with RELAP-7.  The system was implemented within the MOOSE
+computational framework following a series of logically-complete
+steps~\cite{Berry_2013} designed to confidently allow physically- and
+mathematically-meaningful benchmark testing at each step of increased
+complexity.  This 7-equation two-phase model allows both phases to be
+compressible.
 %\section{This is a Very Long Section Title This is a Very Long Section Title This is a Very Long Section Title }
