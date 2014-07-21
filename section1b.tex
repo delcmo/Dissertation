@@ -30,7 +30,6 @@ The study of a hyperbolic scalar equation is given here in order to provide the 
 %=============================
 For academic purpose, we consider a simple hyperbolic scalar equation with initial conditions to form what is called an \emph{Initial Boundary Value Problem} (IBVP) as shown in \eqt{eq:ivp_sct1b}. We denote the computational domain by $\Omega$ of dimension $d$, bounded by the boundary $\Gamma$ of dimension $d-1$. Each variable is assumed to be a function of space, $\mbold{r} \in R^d$, and time $t \in \mathbb{R}_+$.
 %
-\textcolor{red}{if you put a vector arrow on $\div$, then your flux $\mbold f$ needs to have a vector arrow too. Or you need to remove the arrow in $\div$. Be consistent throughout the documents}\tcb{done}
 \begin{equation}\label{eq:ivp_sct1b}
 \left\{
 \begin{array}{l}
@@ -44,10 +43,12 @@ where $u$ and $\mbold f(u)$ are the solution and the inviscid flux, respectively
 %
 \begin{subequations}\label{eq:ivp2_sct1b}
 %
+\tcr{$a$ is a vector, otherwise $\mbold{f}_1$ is not a flux, so it should be $\mbold{a}$. I have done the first few changes but carry them throughout the document}
 \begin{equation}\label{eq:trans_sct1b}
-\partial_t u + \div \mbold f_1(u) = \partial_t u(\mbold{r},t) + \div \left( au \right) = 0
+\partial_t u + \div \mbold f_1(u) = \partial_t u(\mbold{r},t) + \div \left( \mbold{a}u \right) = 0
 \end{equation}
 %
+\tcr{this would be a more appropriate location to introduce the $\mbold{n}$ vector to make the flux $\mbold{f}_2$ be a flux and be consistent with your notation in later chapters}
 \begin{equation}\label{eq:burger_sct1b}
 \partial_t u + \div \mbold f_2(u) = \partial_t u(\mbold{r},t) + \div \left( \frac{u^2}{2} \right) = 0
 \end{equation}
@@ -56,7 +57,7 @@ where $u$ and $\mbold f(u)$ are the solution and the inviscid flux, respectively
 %
 \eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b} are respectively known as the linear advection and Burger's equations. They have been widely studied in the literature and are well understood \cite{Toro, Leveque}. 
 
-The eigenvalue, denoted by $\lambda$, of the hyperbolic equation is obtained by looking at the jacobian matrix of the inviscid flux, $\mbold f(u)$, with respect to the solution $u$, and corresponds to the wave propagation speed. When considering the fluxes $\mbold f_1$ and $\mbold f_2$, it is found that their eigenvalues are $\lambda_1 = a$ and $\lambda_2 = u$, respectively. For the linear advection equation, the wave speed is a constant through the computational domain (provided that $a$ is not a function of space). On the other hand, the wave speed for Burger's equation is a function of space and time since it is equal to the solution itself.
+The eigenvalue, denoted by $\lambda$, of the hyperbolic equation is obtained by looking at the jacobian matrix of the inviscid flux, $\mbold f(u)$, with respect to the solution $u$, and corresponds to the wave propagation speed. When considering the fluxes $\mbold f_1$ and $\mbold f_2$, it is found that their eigenvalues are $\lambda_1 = \|\mbold{a}\|$ and $\lambda_2 = u$, respectively. For the linear advection equation, the wave speed is a constant through the computational domain (provided that $a$ is not a function of space). On the other hand, the wave speed for Burger's equation is a function of space and time since it is equal to the solution itself.
 
 Once the eigenvalues are determined, the next step consists of deriving the characteristic equation and the characteristic curves. For simplicity purpose, we limit ourselves to the $x-t$ plane. Under this assumption, characteristic curves are defined as curves $x = x(t)$ in the plane $x-t$ and the PDE is turned into an ODE \cite{Toro}. To determine the characteristic curves, \eqt{eq:ivp_sct1b} is recast as a function of the eigenvalue, $\lambda$, by using the chain rule as shown in \eqt{eq:ivp3_sct1b}.
 %
@@ -128,14 +129,13 @@ Taking the limit $dx \to 0$ and using the definition of the derivative, \eqt{eq:
 \begin{equation}\label{eq:cc2_sct1b}
 T_{shock} = \frac{-1}{f''(u_0) u_0'(x_0)} = \frac{-1}{f'(u_0(x_0))},
 \end{equation} 
-\textcolor{red}{it would be clearer to have $u_0(x_0)$ as opposed to only $u_0$}\tcb{done}\\
-The trivial case $f''(u_0) = 0$ implies two options. The first option verifying $f''(u_0) = 0$ corresponds to a linear-flux which is ruled out since it was assumed a non-linear flux. If one considers the linear advection equation, then $f'(u_0)=0$ and by taking the limit of \eqt{eq:cc2_sct1b} yields $T_{shock} \to \infty$ which means that a shock wave never forms. This result is consistent with the conclusion made earlier in this section when studying the linear advection equation. The second option corresponds to a non-linear flux whom its second-order derivative is locally zero. However, a shock first occurs where the derivative of the flux is negative to ensure positivity of $T_{shock}$, and its absolute value is maximum (so that $\frac{1}{f'(u_0)}$ is minimal). These conditions do not correspond to the case $f''(u_0) = 0$ which implies $f'(u_0) = 0$ locally and allow us to rule out the second option. Thus, the time the shock forms at is:
+The trivial case $f''(u_0) = 0$ implies two options. The first case verifying $f''(u_0) = 0$ corresponds to a linear-flux which is ruled out since we assumed a non-linear flux. However, if one considers the linear advection equation, then $f'(u_0)=0$ \tcr{are you missing a prime here? for a linear flux, f' is not zero} and by taking the limit of \eqt{eq:cc2_sct1b} yields $T_{shock} \to \infty$ which means that a shock wave never forms. This result is consistent with the conclusion made earlier in this section when studying the linear advection equation. The second case corresponds to a non-linear flux whose second-order derivative is locally zero. However, a shock occurs first where the derivative of the flux is negative to ensure positivity of $T_{shock}$, and its absolute value is maximum (so that $\frac{1}{f'(u_0)}$ is minimal). These conditions do not correspond to the case $f''(u_0) = 0$ which implies $f'(u_0) = 0$ locally \tcr{this is not clear, how does f''=0 implies f'=0?} and allow us to rule out the second case. Thus, the time the shock forms at is:
 %
 \begin{equation}
 T_{shock} = \frac{-1}{\min\left( f'(u_0) \right)} 
 \end{equation}
 % 
-\textcolor{red}{that is not enough, $f''(u)0$ could be 0 at a given $x_0$. How can we modify this sentence?\\also, isn't the time of shock the minimum over all values of $x_0$?} \tcb{Is it better?}
+\textcolor{red}{that is not enough, $f''(u)0$ could be 0 at a given $x_0$. How can we modify this sentence?\\also, isn't the time of shock the minimum over all values of $x_0$?} \tcb{Is it better?} \tcr{not yet}
 Once the shock is formed, at a time $t \geq T_{shock}$, more than two characteristic curves may intersect leading to a triple-valued situation as shown in \fig{fig:triple_pt_bg_sct1b}. 
 %
 \begin{figure}[H]
@@ -212,7 +212,6 @@ The above expression for the speed of shock (\eqt{eq:rh5_sct1b}) is known as the
 %===============================
 As mentioned in \sect{sec:shock_form_sct1b}, another way to define a generalized solution is to use a mathematical technique that consists of multiplying the hyperbolic scalar equation by a smooth test function that is continuously differentiable within a compact support. Then, integration per parts is performed in order to transfer the derivative from the solution $u$ and onto the test function. The resulting equation involves fewer derivatives on $u$ and, hence, requires less smoothness. It is assumed that the test functions are only non-zero and continuously differentiable within a bounded set such as: $\phi(\mbold{r},t) \in C_0^1 \left( \mathbb{R}^d \times \mathbb{R^+} \right)$. 
 Then, the 1-D conservation law $\partial_t u + \partial_x f(u) = 0$ is multiplied by the a test function $\phi(x,t)$ and integrated over space and time to yield:
-\textcolor{red}{it is not 100\% clear that x spans -infty +infty and that t $\ge 0$. First, move the increment dx and dt right after their respective integral signs for clarity.} \tcb{done}
 %
 \begin{equation}\label{eq:weak_sol_sct1b}
 \int_0^{+\infty}\text{dt}\int_{-\infty}^{+\infty}\text{dx} \left[ \partial_t u(x,t) + \partial_x f(u) \right] \phi(x,t) = 0 \,.
@@ -225,8 +224,7 @@ Then, \eqt{eq:weak_sol_sct1b} is integrating by parts to obtain:
 -\int_{-\infty}^{+\infty}\text{dx} \phi(x,t) u(x,t) \left. \right|_0^{+\infty} - \int_0^{+\infty}\text{dt} \phi(x,t) f(u(x,t)) \left. \right|_{-\infty}^{+\infty}
 \end{eqnarray}
 %
-\textcolor{red}{the last boundary term above should have f(u), not u} \tcb{done}.
-where the two integrals on the right-hand-side of \eqt{eq:weak_sol2_sct1b} correspond to the boundary terms. Recalling that the test function is identically zero outside a bounded set which means $\phi(x,t) \to 0$ as $x \to \pm  \infty$ and $t \to +\infty$, \textcolor{red}{why does the test function depends on time and tends to 0 as time tends to infty?} \tcb{ I think it is for generality purpose. But the same derivation could be done with $\phi(x)$. In Leveque it is done with $\phi(x,t)$ p. 27 but they do not really justify this choice} all of the boundary terms vanish but for $t=0$. The resulting equation contains only one boundary term that is function of the initial condition as shown in \eqt{eq:weak_sol3_sct1b}.
+where the two integrals on the right-hand-side of \eqt{eq:weak_sol2_sct1b} correspond to the boundary terms. Recalling that the test function is identically zero outside a bounded set which means $\phi(x,t) \to 0$ as $x \to \pm  \infty$ and $t \to +\infty$, \textcolor{red}{why does the test function depends on time and tends to 0 as time tends to infty?} \tcb{ I think it is for generality purpose. But the same derivation could be done with $\phi(x)$. In Leveque it is done with $\phi(x,t)$ p. 27 but they do not really justify this choice}\tcr{ok, please put the appropriate ref to Leveque's book, including the page number} all of the boundary terms vanish but for $t=0$. The resulting equation contains only one boundary term that is function of the initial condition as shown in \eqt{eq:weak_sol3_sct1b}.
 %
 \begin{eqnarray}\label{eq:weak_sol3_sct1b}
 \int_0^{+\infty}\text{dt}\int_{-\infty}^{+\infty}\text{dx} \left[ u(x,t) \partial_t \phi(x,t)   + f(u) \partial_x \phi(x,t)  \right] = \nonumber \\
@@ -300,6 +298,7 @@ which can be simplified to
 %
 The relation given in \eqt{eq:weak_sol6c_sct1b} is a conservation law for $\eta$ which means that the mathematic entropy is conserved in a smooth flow. The entropy conservation law can also be recast as a function of the entropy flux $\mbold \psi$ by setting $\mbold \psi '(u) = \eta_u \mbold f'(u)$, which yields\footnote{here, $\eta$ depends only on $u$, so we could have written $\mbold \psi '(u) = \eta'(u) \mbold f'(u)$}:
 %
+\tcr{$\psi$ and $\mbold \psi$ look different, so when you want to denote a vector quantity, use the latter. For example, the equation need the bold. Check elsewhere as well}
 \begin{equation}
 \partial_t \eta( u) +  \div \psi(u) = 0 \,.
 \end{equation}
@@ -309,7 +308,6 @@ The set $\left( \eta, \mbold \psi \right)$ is called an entropy pair. The corres
 \bigskip
 
 We now consider a solution that presents one or more regions with a discontinuity or shock. The manipulations performed above are no longer valid since the solution is not smooth. Instead, it is proposed to look at the vanishing viscosity equation introduced in \eqt{eq:adv_diff_sct1b} and investigate the behavior of the weak solution as the viscosity coefficient tends to zero. Applying the vanishing viscosity method to \eqt{eq:weak_sol6_sct1b} yields
-\textcolor{red}{drdt seems to be missing below}\tcb{done}
 %
 \begin{equation}\label{eq:weak_sol7_sct1b}
 \partial_t u( \mbold{r}, t) + \div \mbold f(u) = \div \left( \mu( \grad u( \mbold{r}, t) \right) \,,
@@ -328,7 +326,6 @@ By integrating per parts the right-hand-side of \eqt{eq:weak_sol8_sct1b}, one ob
 \end{equation}
 %
 Since we are interested in the weak solution, \eqt{eq:weak_sol9_sct1b} is integrated over the space-time domain $\Theta = \left[ \mbold r_1,\mbold r_2 \right] \times \left[ t_1,t_2 \right]$ on the same model as in \eqt{eq:weak_sol4_sct1b}. It is also assumed that the shock remains within $\Theta$ for all time $t \in \left[ t_1, t_2 \right]$ and away from the boundaries. Thus, \eqt{eq:weak_sol9_sct1b} becomes:
-\textcolor{red}{now, you use $\text{d}t$ and before you had $dt$. Pick one and stick with it} \tcb{done}
 %
 \begin{eqnarray}\label{eq:weak_sol10_sct1b}
 \int_{\mbold r_1}^{\mbold r_2}\text{d} \mbold r \int_{t_1}^{t_2} \text{dt} \left[ \partial_t \eta (u) + \div \mbold \psi (u) \right] &=&
@@ -450,7 +447,7 @@ The jump of the entropy flux $\mbold \psi$, denoted by $J$, is included in the d
 %
 \begin{remark}
 The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} requires an isentropic mesh in order to be able to define the grid size $h$. An alternative definition without $h$ is under investigation for the case of hyperbolic scalar equations.
-\textcolor{red}{not true; if you if you define $\mu$ per cell $K$, then you can use $h_K$, the diameter of cell $K$ in multi-D, and then you do not need to require mesh uniformity. This may be a detail but your remark is not necessarily 100\% true} \tcb{Is it better or am I still missing something?}
+\textcolor{red}{not true; if you if you define $\mu$ per cell $K$, then you can use $h_K$, the diameter of cell $K$ in multi-D, and then you do not need to require mesh uniformity. This may be a detail but your remark is not necessarily 100\% true} \tcb{Is it better or am I still missing something?} \tcr{I do not understand why you say isentropic mesh. I changed that to uniform mesh but you changed it back to isentropic. What is an isentropic mesh?}
 \end{remark}
 
 
@@ -459,7 +456,7 @@ The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} req
 %%%%%%%%%%%%%%%%%%%%%
 In this section, the entropy viscosity method is applied to non-linear hyperbolic systems of equations. The reader can refer to \cite{Toro} and \cite{Leveque} for an extension of the theoretical notions (eigenvalues, characteristic curves, $\ldots$) in the case of non-linear hyperbolic conservation laws. The objective of this section is to provide the reader with a methodology on how to apply the EVM to any hyperbolic system of equations. For academic purpose, we will rely on the latest published version of the EVM \cite{valentin} for the multi-D Euler equations in order to understand the main steps of the method. Other more recent publications will be also used. \cite{jlg, jlg2} are good prerequites to \cite{valentin} to observe the evolution of the EVM in the recent years. For hyperbolic system of equation, it is customary to work with the physical entropy $s$ that is of opposite sign of the mathematical entropy $\eta$.\\
 
-To the best of our knowledge \textcolor{red}{certainly not true, by now, Murtazo must have several publications. Find out} \tcb{I already did. I checked his webpage and google searched but a lot of papers are in preparation}, the EVM was successfully applied to one hyperbolic system of equation: the multi-D Euler equations with the ideal gas equation of state \cite{jlg, valentin}. Good agreements with the exact solutions were obtained in 1- and 2-D results when using discontinuous schemes (finite volume and discontinuous Galerkin finite element methods), spectral and Fourier methods \textcolor{red}{again not true, in jcp-2011, JLG has FEM, spectral, Fourier... so you should not restrict the discussion to only a subset of their publications}\tcb{done}. We now recall the details of the latest version of the method \cite{valentin} and remind the reader that this version will be used as a starting point and modified during this dissertation. The viscous regularization derived from the entropy condition for the multi-D Euler equations with the ideal gas equation of state is as follows:
+To the best of our knowledge \textcolor{red}{certainly not true, by now, Murtazo must have several publications. Find out} \tcb{I already did. I checked his webpage and google searched but a lot of papers are in preparation}, the EVM was successfully applied to one hyperbolic system of equation: the multi-D Euler equations with the ideal gas equation of state \cite{jlg, valentin}. Good agreements with the exact solutions were obtained in 1- and 2-D results when using discontinuous schemes (finite volume and discontinuous Galerkin finite element methods), spectral and Fourier methods. We now recall the details of the latest version of the method \cite{valentin} and remind the reader that this version will be used as a starting point and modified during this dissertation. The viscous regularization derived from the entropy condition for the multi-D Euler equations with the ideal gas equation of state is as follows:
 %
 \begin{subequations}\label{eq:euler_visc_sct1b}
 %
