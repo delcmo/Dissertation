@@ -16,7 +16,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{\uppercase {Discretization method and implementation details of the entropy viscosity method}}\label{chap:disc_chap2}
-\tcr{again, do not put punctuation in section titles} \tcb{done}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This chapter is organized in two mains sections. In \sect{sec:disc_sect2}, the spatial and temporal discretization methods are detailed for a generic hyperbolic system of equations. Then, the implementation of the EVM is explained in \sect{sect:ev_impl_sect2} using an hyperbolic scalar equation as an example. 
@@ -33,7 +32,7 @@ This chapter is organized in two mains sections. In \sect{sec:disc_sect2}, the s
 The continuous Galerkin finite element method is employed
 via the INL MOOSE framework.  This section focuses on
 the weak statement associated with the strong form of a generic hyperbolic system of equations with source terms of the form:
-\textcolor{red}{why no vector arrow on the bold F? you put vectors on its components which is correct. It will boil down to how you want to handle div and grad operators: with or without vectors but be consistent throughout the document}\tcb{done}
+%
 \begin{align}\label{eqn:va_system_notation}
 \partial_t \mbold U(\mbold r, t) + \div \mbold F(\mbold U(\mbold r, t)) = \mbold S(\mbold U(\mbold r, t))
 \end{align}
@@ -66,7 +65,7 @@ where the solution and flux are defined by
   \end{bmatrix}
 \end{align}
 and $  \mbold S(\mbold U(\mbold r, t))$ consists of the source
-terms. \textcolor{red}{why not bold U in the definition of each Fi?}\tcb{ done}
+terms. 
 %
 The weak form of \eqt{eqn:va_system_notation} is obtained by multiplying
 by an ``admissible'' vector of test functions 
@@ -262,7 +261,7 @@ BDF method that is still A-stable. We consider again the example from \sect{sec:
 \begin{align}
   \int_{\Omega} \left(\frac{\partial U_1(\mbold r,t)}{\partial t} + \mbold G_1(\mbold U(\mbold r,t)) \right) \phi_k \; \text{d}{\Omega} = 0.
 \end{align}
-Considering three consecutive solutions $U_1(\mbold r,t^{n+1}) = U_1^{n+1}(\mbold r)$, $U_1(\mbold r,t^{n}) = U_1^n(\mbold r)$ and $U_1(\mbold r,t^{n-1})=U_1^{n-1}(\mbold r)$, the update step is:\textcolor{red}{since you use superscript for time values here, remove $t$ in the dependencies in the U's}\tcb{done}
+Considering three consecutive solutions $U_1(\mbold r,t^{n+1}) = U_1^{n+1}(\mbold r)$, $U_1(\mbold r,t^{n}) = U_1^n(\mbold r)$ and $U_1(\mbold r,t^{n-1})=U_1^{n-1}(\mbold r)$, the update step is:
 %
 \begin{align}
 \label{eqn:bdf2}
@@ -310,7 +309,6 @@ iteration \textcolor{red}{I recommend changing $k$ to $\ell$ as iteration index 
 \begin{align}
   \mbold r^\ell \equiv \mathcal{R} (\mbold U^\ell)\,.
 \end{align}
-\textcolor{red}{again, this can cause confusion due to the use of vector arrows. here, the left-hand-side has a vector but not the right-hand-side. you need to fix this and be consistent} \tcb{done}
 Clearly if $\mbold U^\ell$ satisfies \eqt{eqn:F} \emph{exactly}, the
 $k^{th}$ residual will be zero.  To update the solution vector, the
 following equation is solved for the update vector, $\delta
@@ -325,7 +323,6 @@ matrix of the residual $\mathcal{R}$ evaluated at $\mbold U^\ell$.  In index not
   \label{eqn:jacobian_matrix}
   J_{ij} \equiv \frac {\partial \mathcal{R}_i} {\partial U_j} \,\,.
 \end{equation}
-\textcolor{red}{not sure that you want to use $U_j$. I think $U_j$ is more correct}\tcb{done}
 After $\delta \mbold U^{k+1}$ is obtained, the $(k+1)^{st}$ solution iterate
 is computed by
 \begin{equation}
@@ -366,7 +363,6 @@ library as the matrix $P$ for preconditioning purposes. For multi-D simulations,
 After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient in \chap{chap:theory_chp1}, this section focuses on the implementation of the method in a Galerkin continuous finite element setting. Details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Special attention is required for the jump since their definition is spatial discretization-dependent. A non-uniform 2-D mesh family $\Omega$ is considered. Each member of this family is called element, $e$, and the set of its faces is denoted by $\delta e = \left\{ \delta e_f \right\}$, where $f$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta e$, a quadrature rule, $\mathcal{Q} = \left\{ q \right\}$ is used.
 
 For academic purpose, the multi-D Burger's equation is considered and recalled here along with the definition of the viscosity coefficients based on \sect{sec:evm_hyp_sc_sct1b}: 
-\textcolor{red}{here you switched from $\mbold r$ to $\vec r$ and further introduce another new vector notation using hat. restore consistency} \tcb{done}
 \begin{subequations}
 \label{eq:system_sct2}
 \begin{equation}\label{eq:bg_sct2}
@@ -400,7 +396,7 @@ The vector $\boldsymbol{\hat{n}}$ is defined as follows:
 \end{eqnarray}
 %.
 The jump $J$ is assumed piecewise constant and details regarding its evaluation will be given next. The normalization parameter $|| \eta - \bar{\eta} ||_\infty$ used in \eqt{eq:visc_ev_sct2} denotes the infinite norm over the entire computational domain of the quantity $\eta - \bar{\eta}$ where $\bar{\eta}$ is the average entropy over the computational domain as well.\\
-The first step in the implementation of the EVM is the integration of the dissipative terms over each element of the mesh. The continuous finite element approach consists of multiplying each term by a test function and then integrating over the computational domain. Since the dissipative terms are second-order spatial derivatives, an integration per part is performed leading to \textcolor{red}{not ``per part'' but ``by parts''. I have corrected a lot of them already but do a thorough search in all files} \tcb{There was only one left. I modified it}:
+The first step in the implementation of the EVM is the integration of the dissipative terms over each element of the mesh. The continuous finite element approach consists of multiplying each term by a test function and then integrating over the computational domain. Since the dissipative terms are second-order spatial derivatives, an integration per part is performed leading to:
 %
 \begin{equation}\label{eq:diss_term_sct2}
 \div \mbold g \rightarrow \int_\Omega \div \mbold g^h \phi_k \text{d}\Omega  = -\int_\Omega \mbold g^h \cdot \grad \phi_k \text{d}\Omega + \int_\Gamma \mbold n \cdot \mbold g^h \phi_k \text{d}\Gamma
@@ -426,7 +422,7 @@ The maximum eigenvalue is involved in the definition of the first-order viscosit
 \begin{equation}\label{eq:res_disc_sct2}
 R_{e}^{q,n} = w_0 s^{n,e,q} + w_1 s^{n-1,e,q} + w_2 s^{n-2,e,q} +  \boldsymbol{\hat{n}} \cdot  \sum_j \phi_{j}^e\grad \phi^{e,q}_j
 \end{equation}
-\textcolor{red}{what is $\Phi_{j}^e$?}\tcb{ It is $\phi$. I modified it}
+\textcolor{red}{what is $\Phi_{j}^e$?}\tcb{ It is $\phi$. I modified it}\tcr{shouldn't it be $s_j^e$?}
 when considering three successive entropy values $s^{n,e,q}$, $s^{n-1,e,q}$ and $s^{n-2,e,q}$ in time. The BDF2 weights $w_0$, $w_1$ and $w_2$ were defined in \sect{sec:bdf2}. The values of the entropy function $s$ at the quadrature points is computed using test functions: $s^q_e = \sum_j s_{e,j} \phi^q_j = \sum_j \frac{(u_{j}^e)^2}{2} \phi^q_j$, which requires to access the values of solution $u$ at the nodes $j$ and the test functions at quadrature points. The same method is used for the entropy flux $\psi$. It is noted that the entropy residual can be recast under a non-conservative form as shown in \eqt{eq:res_disc2_sct2} that can be easier to evaluate depending on what is available to the user.
 %
 \begin{equation}\label{eq:res_disc2_sct2}
