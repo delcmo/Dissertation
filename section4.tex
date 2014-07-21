@@ -15,10 +15,26 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{\uppercase {Application of the entropy viscosity method to the seven equations model.}}\label{chap:seven}
+\chapter{\uppercase {Application of the entropy viscosity method to the seven equations model}}\label{chap:seven}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+Compressible two-phase flow exist
+\begin{itemize}
+\item background on 7 emu model: first introduced. 
+\item method to solve this system: discontinuous scheme. Approximate Riemann solvers. Quote several papers
+\item differences between system of equation -> closure relations for relaxation coefficients.
+\end{itemize}
 %===================================================================================
-\section{Description of the seven equation model:}
+\section{The multi-D seven equation model}
+%===================================================================================
+\begin{itemize}
+\item give system of equation with relaxation terms and mass transfer term from DEM paper
+\item explain the relaxation terms
+\item explain the source terms: exchanges between phases.
+\item entropie equation.
+\item{itemize}
+%===================================================================================
+\section{Description of the $1$-D seven equation model:}
 %===================================================================================
 Because it is not economical to solve the entire two-phase flow field
 with highly resolved three-dimensional computational fluid dynamics for an
@@ -502,10 +518,10 @@ vaporization is calculated as
   &= \left( \gamma_{vap}  c_{v, vap}  T + q_{vap} \right) - \left( \gamma_{liq}  c_{v, liq}  T + q_{liq} \right) \,.
 \end{align}
 %===================================================================================
-\section{Derivation of the dissipative terms:}
+\section{A viscous regularization for the multi-D seven equation model}
 %===================================================================================
 %===================================================================================
-\section{The viscosity coefficients:}
+\section{}
 %===================================================================================
 %===================================================================================
 \section{Numerical results:}
