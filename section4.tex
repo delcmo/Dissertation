@@ -111,13 +111,28 @@ The equations for the vapor phase are:
 \end{align}
 \end{subequations}
 %
-where $\rho_i$, $\mbold u_i$ and $P_i$ denote the density, the velocity vector and the pressure, respectively, of each phase for $i=\left\{ liq, vap \right\}$ and of the interface for $i=int$. $\Gamma$ is the net mass transfer per unit interfacial area from the liquid to the vapor phase and $A_{int}$ is the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$ and $H_{vap, int}$ are the liquid and gas total enthalpies at the interface, respectively. All of the interfacial variables are detailed in \sect{sec:source-terms-7-eqt-sect5}. In the case of two-phase flow, the equation for the vapor volume fraction, \eqt{eqn:multi-d-7-eqn-vap-vol}, is simply replaced by the algebraic relation
+where $\alpha_i$, $\rho_i$, $\mbold u_i$ and $E_i$ denote the volume fraction, the density, the velocity vector and the total energy of phase $i=\left\{ liq, vap \right\}$, respectively. The phase pressure $P_i$ is computed from an equation of state. The interfacial variables are denoted by the subscript $int$ and their definition will be given in \sect{sec:source-terms-7-eqt-sect5}. The interfacial pressure and velocity, and their corresponding average values are denoted by $P_{int}$, $\mbold u_{int}$, $\bar{P}_{int}$ and $\bar{\mbold u}_{int}$, respectively. $\Gamma$ is the net mass transfer per unit interfacial area from the liquid to the vapor phase and $A_{int}$ is the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$ and $H_{vap, int}$ are the liquid and gas total enthalpies at the interface, respectively. $\mu_P$ is the pressure relaxation coefficient and $\lambda_u$ denotes the velocity relaxation coefficient. In the case of two-phase flow, the equation for the vapor volume fraction, \eqt{eqn:multi-d-7-eqn-vap-vol}, is simply replaced by the algebraic relation
 %
 \begin{align}
  \alpha_{vap}= 1 - \alpha_{liq}
 \end{align}
 %
-The set of eight equations given in \eqt{eq:liq-7-eqn-sect5} and in \eqt{eq:vap-7-eqn-sect5} is now reduced to seven which yields the multi-D seven equation model.
+The set of eight equations given in \eqt{eq:liq-7-eqn-sect5} and in \eqt{eq:vap-7-eqn-sect5} is now reduced to seven which yields the multi-D seven equation model. Lastly, the cross-section $A$ is only spatial dependent. 
+
+For each phase $i$, an entropy equation can be derived using the same steps as for the single phase Euler equations. The derivation is detailed in \app{app:sev-equ-model-entropy} and only the final result is recalled here:
+%
+\begin{align}\label{eq:ent-eqn-7-eqn-model}
+(s_{e})_i^{-1} \alpha_i \rho_i A \frac{Ds_i}{Dt} &= \mu_P \frac{Z_i}{Z_i+Z_j} (P_j - P_i)^2 + \lambda_u \frac{Z_j}{Z_i+Z_j} (\mbold u_j -\mbold  u_i)^2 \nonumber
+\\
+& \frac{Z_i}{\left( Z_i+Z_j \right)^2} \left[ Z_j (\mbold u_j-\mbold u_i)+\frac{\grad \alpha_i}{|| \grad \alpha_i ||}(P_i-P_j)\right]^2,
+\end{align}
+where $Z_{i,j}$ is defined as the product of the density and the speed of sound and is called impedance: $Z_i = \rho_i c_i$.
+The right hand-side of \eqt{eq:ent-eqn-7-eqn-model} is unconditionally positive. Furthermore, \eqt{eq:ent-eqn-7-eqn-model} is valid for each phase $i=\left\{liq, vap \right\}$ and ensures positivity of the total entropy equation that is defined by summing over the phases:
+%
+\begin{equation}
+\sum_i (s_{e})_i^{-1} \alpha_i \rho_i A \frac{Ds_i}{Dt} \geq 0
+\end{equation}
+%
 %\begin{itemize}
 %\item give system of equation with relaxation terms and mass transfer term from DEM paper
 %\item explain the relaxation terms
@@ -477,7 +492,117 @@ vaporization is calculated as
 %===================================================================================
 \section{A viscous regularization for the multi-D seven equation model}\label{sec:sev-equ-visc-reg-sect4}
 %===================================================================================
-In this section, the dissipative terms for the multi-D seven equation model \emph{with pressure and velocity relaxation source terms} are derived. The methodology proposed in  \chap{chap:theory_chp1} is followed. For clarity purpose, the seven equation model with pressure and velocity relaxation terms is recalled when considering two phases denoted by the indexes $j$ and $k$.  
+In this section, the dissipative terms for the multi-D seven equation model \emph{with pressure and velocity relaxation source terms} are derived. The methodology proposed in  \chap{chap:theory_chp1} is followed. For clarity purpose, the seven equation model with pressure and velocity relaxation terms is recalled when considering two phases denoted by the indexes $j$ and $k$.  \\
+
+This document aims at detailing the steps that lead to the derivation of the dissipative terms for the application of the entropy viscosity method to the seven equations model \cite{SEM}. In the seven equations model, each phase obeys to the following set of equations $(\eqt{eq:sev_equ})$:
+\begin{equation}
+\label{eq:sev_equ}
+\left\{
+\begin{array}{llll}
+\partial_t \left( \alpha_k  A\right) + u_I A \partial_x \alpha_k = A \mu \left( P_k - P_j \right) = r_{\alpha} \\
+\partial_t \left( \alpha_k \rho_k A \right) + \partial_x \left( \alpha_k \rho_k u_k A \right) = 0 \\
+\partial_t \left( \alpha_k \rho_k u_k A \right) + \partial_x \left[ \alpha_k A \left( \rho_k u_k^2 + P_k \right) \right] = \alpha_k P_k \partial_x A + P_I A \partial_x \alpha_k + A \lambda \left( u_j - u_k \right) = r_{\rho u} \\
+\partial_t \left( \alpha_k \rho_k E_k A \right) + \partial_x \left[ \alpha_k A u_k \left( \rho_k E_k + P_k \right) \right] = P_I u_I A \partial_x \alpha_k - \mu \bar{P_I} \left( P_k-P_j \right) + \bar{u_I}A \lambda \left( u_j - u_k \right) = r_{\rho E}
+\end{array}
+\right.
+\end{equation}
+where $\rho_k$, $u_k$, $E_k$ and $P_k$ are the density, the velocity, the specific total energy and the pressure of $k^{th}$ phase, respectively. The pressure and velocity relaxation parameters are denoted by $\mu$ and $\lambda$, respectively. The variables with index $_I$ correspond to the interfacial variables and a definition for those can be found in \cite{SEM}. The cross-section $A$ is only function of space: $\partial_t A = 0$.
+In \cite{SEM}, the entropy equation is derived for each phase, by assuming that there exists a phase wise entropy function $s_k$, function of the density $\rho_k$ and the specific internal energy $e_k$.
+\begin{eqnarray}
+\label{eq:sev_equ2}
+\rho_k A \left( \partial_t s_k + u_k \partial_x s_k \right) = \frac{Z_j}{Z_j+Z_k} \lambda \left( u_k - u_j \right)^2 + \frac{Z_k}{Z_j+Z_k} \mu \left( P_k-P_j \right)^2 + \nonumber \\ 
+\frac{Z_k}{Z_j+Z_k} \left| \partial_x \alpha \right| \left[ Z_j \left( u_k-u_j \right) +sgn\left( \partial_x \alpha \right) \left( P_k-P_j \right) \right]^2
+\end{eqnarray}
+where $Z_j = \rho_j c_j$ and $c_j$ represents the acoustic impedance and the speed of sound of phase $j$, respectively. The symbol $sgn(x)$ denotes a function that returns the sign of the quantity $x$.\\
+From \eqt{eq:sev_equ2}, it is clear that the entropy minimum principle is verified since the right-hand side is only made of positive terms. In the rest of this document all of the source terms $r_x$ are dropped in order to simplify the derivation. It will not affect the final result, since all of the source terms combine in a sum of positive terms when deriving the entropy function. The phase index $k$ is also dropped.\\
+In order to apply the entropy viscosity method, some dissipative terms are added to each of the equations as follows:
+\begin{equation}
+\label{eq:sev_equ3}
+\left\{
+\begin{array}{llll}
+\partial_t \left( \alpha  A\right) + u_I A \partial_x \alpha =  r_{\alpha} + \partial_x (\alpha Al)\\
+\partial_t \left( \alpha \rho A \right) + \partial_x \left( \alpha \rho u A \right) = \partial_x \left( \alpha A f \right)\\
+\partial_t \left( \alpha \rho u A \right) + \partial_x \left[ \alpha A \left( \rho u^2 + P \right) \right] =  \alpha P \partial_x A + \partial_x \left( \alpha A g \right)\\
+\partial_t \left( \alpha \rho E A \right) + \partial_x \left[ \alpha A u \left( \rho E + P \right) \right] = \partial_x \left[ \alpha A \left( h +  u g\right) \right]
+\end{array}
+\right.
+\end{equation}
+where $f$, $g$, $h$ and $l$ are the dissipative terms. \\
+By adding dissipative terms to each equation, the entropy equation gets modified: extra terms will appear in the right-hand side, function of the dissipative terms. The sign of these new terms need to be studied in order to conserve positivity of the right-hand side. This can be achieved by following these steps:
+\begin{itemize}
+\item recast the system of equation given in \eqt{eq:sev_equ3} in terms of the primitive variables $(\alpha, \rho, u, e)$ (we only account for the dissipative terms here). 
+\item derive the entropy equation by using the chain rule:
+\begin{equation}
+\label{eq:chain_rule}
+\frac{ds}{dt} = s_{\rho} \frac{d \rho}{dt} + s_{e} \frac{d e}{dt} 
+\end{equation}
+where $\frac{d \cdot}{dt}$ is the material derivative. The terms $s_e$ and $s_{\rho}$ denote the partial derivative of the entropy $s$ with respect to $e$ and $\rho$, respectively.
+\item isolate the terms of interest and choose an appropriate expression for each of the dissipative terms in order to ensure positivity of the right-hand side.
+\end{itemize}
+The first step consists of recasting the system of equation in terms of the primitive variables:
+\begin{equation}
+\label{eq:sev_equ3-bis}
+\left\{
+\begin{array}{llll}
+A \partial_t  \alpha + u_I A \partial_x \alpha =  \partial_x \left( \alpha A l \right)\\
+\alpha A \left( \partial_t \rho + u \partial_x  \rho \right) + \rho \alpha \partial_x \left( u A \right) + \Gamma = \partial_x\left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \\
+\alpha \rho A \left( \partial_t u + u \partial_x u \right)  + \partial_x \left(\alpha P A \right) =  \alpha P \partial_x A + \partial_x\left( \alpha A g \right) - u \partial_x \left( \alpha A f \right) \\
+\alpha \rho A  \left( \partial_t e +u  \partial_x e \right) + \alpha P A \partial_x u + \alpha u P \partial_x A = \partial_x \left( \alpha A h \right) + \alpha A g \partial_x u + \left( \frac{u^2}{2}-e \right) \partial_x \left( \alpha A f \right)
+\end{array}
+\right.
+\end{equation}
+where $\Gamma=\rho A \left( u - u_I  \right)\partial_x \alpha$. The function $\beta$ can be ignored since it is used to get the right-hand side of \eqt{eq:sev_equ2} . As a result, the continuity, velocity and internal energy equations get simpler:
+\begin{equation}
+\label{eq:sev_equ4}
+\left\{
+\begin{array}{llll}
+A \partial_t  \alpha + u_I A \partial_x \alpha =  \partial_x \left( \alpha A l \right)\\
+\alpha A \left( \partial_t \rho + u \partial_x  \rho \right) = \partial_x \left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \\
+\alpha \rho A \left( \partial_t u + u \partial_x u \right)  + \partial_x \left(\alpha P A \right) =  \partial_x \left( \alpha A g \right) - u \partial_x \left( \alpha A f \right) \\
+\alpha \rho A  \left( \partial_t e +u  \partial_x e \right) + \alpha P A \partial_x u = \partial_x \left( \alpha A h \right) + \alpha A g \partial_x u + \left( \frac{u^2}{2}-e \right) \partial_x \left( \alpha A f \right)
+\end{array}
+\right.
+\end{equation}
+The continuity and internal energy equations can be combined using the chain rule given in \eqt{eq:chain_rule} to get the entropy equation:
+\begin{eqnarray}
+\label{eq:ent_equ2}
+\alpha \rho A \frac{ds}{dt} + \alpha \left( \rho s_{\rho} + Ps_e \right) \left( A \partial_x u + u \partial_x A \right) =  \nonumber \\ 
+s_e \left[ \partial_x \left( \alpha A h \right) + \alpha A g \partial_x u + \left( \frac{u^2}{2}-e \right) \partial_x \left( \alpha A f \right) \right] 
++ \rho s_{\rho} \left( \partial_x \left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \right) 
+\end{eqnarray}
+The above equation, \eqt{eq:ent_equ2}, can be split into four different terms. For clarity, let us consider each of this term separately in a first approach.\\ The first term of the left-hand side is the lagrange (or material) derivative of the entropy function $s$. It does not need to be modified since its sign has to be determined by looking at the other terms. \\The second term in the left-hand side is usually set to zero by assuming that $\rho s_{\rho} +P s_e =0$. Any other alternative would require the term $\rho^2 s_{\rho} +P s_e$ to be function of the velocity $u$ or its derivatives, and the cross-section $A$, in order to be able to determine its sign. In addition, any entropy function obeying to the relation $\rho s_{\rho} +P s_e =0$, also obeys to the second thermodynamic law:
+\begin{equation}
+\label{eq:second_th}
+\left\{
+\begin{array}{l}
+Tds = de - \frac{P}{\rho^2} d\rho \Rightarrow s_e = \frac{1}{T} \geq 0 \text{, } s_{\rho} = -s_e \frac{P}{\rho^2}
+\end{array}
+\right.
+\end{equation}
+where $T$ is the fluid temperature. \\
+The right-hand side of \eqt{eq:ent_equ2} is more difficult to handle. It requires further assumptions in the definition of the dissipative terms $h$ and $g$.  
+The first term of the right-hand side can be simplified by using the following expression for the dissipative terms $h$ and $g$:
+\begin{eqnarray}
+\boxed{
+\left\{
+\begin{array}{ll}
+g = \mu \partial_x u + u f \\
+h = \tilde{h} - \frac{u^2}{2} f,
+\end{array}
+\right.}
+\end{eqnarray}
+which results in:
+\begin{eqnarray}
+\label{eq:ent_equ3}
+s_e \left[  \partial_x \left( \alpha A h \right) + \alpha A g \partial_x u + \left( \frac{u^2}{2}-e \right) \partial_x \left( \alpha A f \right)  \right] = \\
+s_e \left[ \partial_x \left( \alpha A \tilde{h} \right) - e \partial_x \left( \alpha A f \right) \right] + s_e \mu \left( \partial_x u \right)^2
+\end{eqnarray}
+where $\mu$ is a positive viscosity coefficient, and $\tilde{h}$ is a new dissipative term. In \eqt{eq:ent_equ3}, it is noted that the term $s_e \mu (\partial_x u)^2$ is always positive and does not need any further modification. Thus, it remains to determine the sign of the other term $s_e\left( \partial_x \left( \alpha A \tilde{h} \right) - e \partial_x \left( \alpha A f \right) \right)$, along with $\rho s_{\rho} \left( \partial_x \left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \right)$, that are now independent of the velocity $u$. Then, we define the variable $rhs$ as the following:
+\begin{equation}
+\label{eq:rhs1}
+rhs = s_e \left( \partial_x \left( \alpha A \tilde{h} \right)-e \partial_x \left( \alpha A f \right) \right) + \rho s_{\rho} \left( \partial_x \left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \right)
+\end{equation}
+Before going further in the derivation, let us remind that all of the above steps are valid for any phase of the system under consideration, and that the objective is to prove the entropy minimum principle. The remain of the derivation can be treated in at least two different ways. Either we enforce positivity of the entropy residual for each phase (phase wise treatment), or, we consider the system as a whole and enforce positivity of the total entropy residual which requires to sum over the phases. The latest version is probably  better from a physical point of view. The entropy of each phase can actually either decrease or increase through a transient because of the heat and mass exchanges since each phase is not a close and isolated system. Therefore, even though positivity of the entropy residual for each phase can be achieved, it would not make physically sense. In addition, the relaxation and source terms were derived by considering the total entropy of the system (ref). Then, it would be wise to follow the same reasoning for consistency. Both options are studied in this report in order to compare solutions and verify our initial assumptions. It is noted that derivation of the dissipative terms is not unique.
 %First, dissipative terms are added to each equation of the system under interest. Then, the entropy equation is re-derived with the dissipative terms that are determined by using the entropy inequality as a condition. 
 %===================================================================================
 \section{Low-Mach asymptotic limit and viscosity coefficients}\label{sec:sev-equ-visc-coeff-sect4}
