@@ -600,227 +600,251 @@ Note the area function $A$ in the definition of $\mbold g$. It yields:
 \begin{align}\label{eq:ent-res-7-eqn-diss-terms2}
 &\alpha_k \rho_k A \frac{Ds_k}{Dt} = \nonumber \\
 &\underbrace{\left(s_e\right)_k \alpha_k \rho_k A \mu_k \mathbb{F}(\mbold u_k) : \grad \mbold u_k}_{\mathcal{R}_1} +
-\underbrace{\left[ \div \tilde{\mbold h}_k  - e_k \div \mbold f_k  \right] + (\rho s_\rho)_k \div \mbold f_k}_{\mathcal{R}_2} + \nonumber \\
+\underbrace{\left[ \div \tilde{\mbold h}_k  - e_k \div \tilde{\mbold f}_k  \right] + (\rho s_\rho)_k \div \tilde{\mbold f}_k}_{\mathcal{R}_2} + \nonumber \\
 &\underbrace{(s_e)_k \div \left( \rho_k e_k \mbold l_k \right) -  (s_e)_k e_k \div \left( \rho_k \mbold l_k \right) + \rho_k (s_\rho)_k \div \left( \rho_k \mbold l_k \right) 
   - \rho_k^2 (s_\rho)_k \div \mbold l_k}_{\mathcal{R}_3},
 \end{align}
 %
-where $\mu_k$ is a positive viscosity coefficient for phase $k$. The right-hand side of \eqt{eq:ent-res-7-eqn-diss-terms2} is split into three terms for simplicity. \\
+where $\mu_k$ is a positive viscosity coefficient for phase $k$. For simplicity, the right-hand side of \eqt{eq:ent-res-7-eqn-diss-terms2} is split into three terms denoted by $\mathcal{R}_1$, $\mathcal{R}_2$ and $\mathcal{R}_3$. Since $(s_e)_k$ is define as the inverse of the temperature and thus positive, the sign of the first term, $\mathcal{R}_1$, is conditioned to the choice of the function $\mathbb{F}(\mbold u_k)$ so that the product with the tensor $\grad \mbold u_k$ is positive. Alike in \cite{jlg}, $\mathbb{F}(\mbold u_k)$ is chosen equal to the symmetric gradient of the velocity vector $\grad^s \mbold u$, whom entries are given by $(\grad^s \mbold u)_{i,j} = \frac{1}{2} \left( \partial_{x_i} u_i + \partial_{x_j} u_j \right)$. Such a choice ensures the associated dissipative terms to be rotational invariant and also positivity of $\mathcal{R}_1$. An other option, would be to simply set $\mathbb{F}(\mbold u_k)$ equal to $\grad \mbold u$. 
 
-In \cite{SEM}, the entropy equation is derived for each phase, by assuming that there exists a phase wise entropy function $s_k$, function of the density $\rho_k$ and the specific internal energy $e_k$.
+After a few lines of algebraic, the third term ${\mathcal{R}_3}$ can be recast as a function of the gradient of the entropy, as follows:
+\begin{align}
+ \label{eq:ent-R3-sct4}
+  \mathcal{R}_2  =  \rho_k A \mbold l_k \cdot \grad s_k.
+\end{align} 
+One of the assumptions made in the entropy minimum principle is to that the entropy 
+is at a minimum which implies that its gradient is null. Because of this, it follows that
+the term $\mathcal{R}_3$ is zero and thus, the entropy minimum principle is verified
+independently of the definition of the dissipative term $\mbold l_k$ used in the volume fraction
+equation. It will be explained later in this section how to derive a definition for $\mbold l_k$.
+
+We now focus on the term denoted by $\mathcal{R}_2$, that is found identical to the right-hand side of the single phase entropy equation obtained from the multi-D Euler equations (see \eqt{eq:rhs-euler-equ-app1} in \app{app:diss_terms}). Thus, following \cite{jlg} and also \app{app:diss_terms}, the term $\mathcal{R}_2$ is known to be positive when assuming concavity of the entropy function $s_k$ with respect to the internal energy $e_k$ and the specific volume $1 / \rho_k$ (or convexity of $-s_k$), and also choosing the following definitions for the dissipative terms $\tilde{h}_k$ and $\tilde{f}_k$:
+%
+\begin{align}
+&\tilde{f}_k = \alpha_k A \kappa_k \grad \rho_k \\
+&\tilde{h}_k = \alpha_k A \kappa_k \grad \left( \rho e \right)_k,
+\end{align}
+%  
+where $\kappa_k$ is another positive viscosity coefficient. The entropy equation can now be written in its final form:
+%
+\begin{align}
+&\alpha_k \rho_k A \frac{Ds_k}{Dt} + \left(\alpha_k \tilde{\mbold f}_k - \rho_k \mbold l_k \right) \cdot \grad s_k - \div \left( \alpha_k \rho_k A \grad s_k \right) = \nonumber\\
+&- \alpha_k A \kappa_k \mathbf{Q}_k + (s_e)_k \alpha_k A \rho_k \mu_k \grad^s \mbold u_k : \grad \mbold u_k,
+\end{align}
+%
+where $\mathbf{Q}_k$ is negative definite and defined as:
+%
 \begin{eqnarray}
-\label{eq:sev_equ2}
-\rho_k A \left( \partial_t s_k + u_k \partial_x s_k \right) = \frac{Z_j}{Z_j+Z_k} \lambda \left( u_k - u_j \right)^2 + \frac{Z_k}{Z_j+Z_k} \mu \left( P_k-P_j \right)^2 + \nonumber \\ 
-\frac{Z_k}{Z_j+Z_k} \left| \partial_x \alpha \right| \left[ Z_j \left( u_k-u_j \right) +sgn\left( \partial_x \alpha \right) \left( P_k-P_j \right) \right]^2
+\mathbf{Q}_k &=& X^t_k \Sigma_k X_k \nonumber \\
+\text{with } X_k &=& \begin{bmatrix}
+\grad \rho_k \\
+\grad e_k 
+\end{bmatrix}
+\text{and } \Sigma_k = \begin{bmatrix}
+       \partial_{\rho_k} (\rho^2_k \partial_{\rho_k} s_k) & \partial_{\rho_k,e_k} s_k  \\[0.3em]
+       \partial_{\rho_k,e_k} s_k & \partial_{e_k,e_k} s_k           \\[0.3em]
+     \end{bmatrix}. \nonumber 
 \end{eqnarray}
-where $Z_j = \rho_j c_j$ and $c_j$ represents the acoustic impedance and the speed of sound of phase $j$, respectively. The symbol $sgn(x)$ denotes a function that returns the sign of the quantity $x$.\\
-From \eqt{eq:sev_equ2}, it is clear that the entropy minimum principle is verified since the right-hand side is only made of positive terms. In the rest of this document all of the source terms $r_x$ are dropped in order to simplify the derivation. It will not affect the final result, since all of the source terms combine in a sum of positive terms when deriving the entropy function. The phase index $k$ is also dropped.\\
-By adding dissipative terms to each equation, the entropy equation gets modified: extra terms will appear in the right-hand side, function of the dissipative terms. The sign of these new terms need to be studied in order to conserve positivity of the right-hand side. This can be achieved by following these steps:
-The first step consists of recasting the system of equation in terms of the primitive variables:
-\begin{equation}
-\label{eq:sev_equ3-bis}
-\left\{
-\begin{array}{llll}
-A \partial_t  \alpha + u_I A \partial_x \alpha =  \partial_x \left( \alpha A l \right)\\
-\alpha A \left( \partial_t \rho + u \partial_x  \rho \right) + \rho \alpha \partial_x \left( u A \right) + \Gamma = \partial_x\left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \\
-\alpha \rho A \left( \partial_t u + u \partial_x u \right)  + \partial_x \left(\alpha P A \right) =  \alpha P \partial_x A + \partial_x\left( \alpha A g \right) - u \partial_x \left( \alpha A f \right) \\
-\alpha \rho A  \left( \partial_t e +u  \partial_x e \right) + \alpha P A \partial_x u + \alpha u P \partial_x A = \partial_x \left( \alpha A h \right) + \alpha A g \partial_x u + \left( \frac{u^2}{2}-e \right) \partial_x \left( \alpha A f \right)
-\end{array}
-\right.
-\end{equation}
-where $\Gamma=\rho A \left( u - u_I  \right)\partial_x \alpha$. The function $\beta$ can be ignored since it is used to get the right-hand side of \eqt{eq:sev_equ2} . As a result, the continuity, velocity and internal energy equations get simpler:
-\begin{equation}
-\label{eq:sev_equ4}
-\left\{
-\begin{array}{llll}
-A \partial_t  \alpha + u_I A \partial_x \alpha =  \partial_x \left( \alpha A l \right)\\
-\alpha A \left( \partial_t \rho + u \partial_x  \rho \right) = \partial_x \left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \\
-\alpha \rho A \left( \partial_t u + u \partial_x u \right)  + \partial_x \left(\alpha P A \right) =  \partial_x \left( \alpha A g \right) - u \partial_x \left( \alpha A f \right) \\
-\alpha \rho A  \left( \partial_t e +u  \partial_x e \right) + \alpha P A \partial_x u = \partial_x \left( \alpha A h \right) + \alpha A g \partial_x u + \left( \frac{u^2}{2}-e \right) \partial_x \left( \alpha A f \right)
-\end{array}
-\right.
-\end{equation}
-The continuity and internal energy equations can be combined using the chain rule given in \eqt{eq:chain_rule} to get the entropy equation:
-\begin{eqnarray}
-\label{eq:ent_equ2}
-\alpha \rho A \frac{ds}{dt} + \alpha \left( \rho s_{\rho} + Ps_e \right) \left( A \partial_x u + u \partial_x A \right) =  \nonumber \\ 
-s_e \left[ \partial_x \left( \alpha A h \right) + \alpha A g \partial_x u + \left( \frac{u^2}{2}-e \right) \partial_x \left( \alpha A f \right) \right] 
-+ \rho s_{\rho} \left( \partial_x \left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \right) 
-\end{eqnarray}
-The above equation, \eqt{eq:ent_equ2}, can be split into four different terms. For clarity, let us consider each of this term separately in a first approach.\\ The first term of the left-hand side is the lagrange (or material) derivative of the entropy function $s$. It does not need to be modified since its sign has to be determined by looking at the other terms. \\The second term in the left-hand side is usually set to zero by assuming that $\rho s_{\rho} +P s_e =0$. Any other alternative would require the term $\rho^2 s_{\rho} +P s_e$ to be function of the velocity $u$ or its derivatives, and the cross-section $A$, in order to be able to determine its sign. In addition, any entropy function obeying to the relation $\rho s_{\rho} +P s_e =0$, also obeys to the second thermodynamic law:
-\begin{equation}
-\label{eq:second_th}
-\left\{
-\begin{array}{l}
-Tds = de - \frac{P}{\rho^2} d\rho \Rightarrow s_e = \frac{1}{T} \geq 0 \text{, } s_{\rho} = -s_e \frac{P}{\rho^2}
-\end{array}
-\right.
-\end{equation}
-where $T$ is the fluid temperature. \\
-The right-hand side of \eqt{eq:ent_equ2} is more difficult to handle. It requires further assumptions in the definition of the dissipative terms $h$ and $g$.  
-The first term of the right-hand side can be simplified by using the following expression for the dissipative terms $h$ and $g$:
-\begin{eqnarray}
-\boxed{
-\left\{
-\begin{array}{ll}
-g = \mu \partial_x u + u f \\
-h = \tilde{h} - \frac{u^2}{2} f,
-\end{array}
-\right.}
-\end{eqnarray}
-which results in:
-\begin{eqnarray}
-\label{eq:ent_equ3}
-s_e \left[  \partial_x \left( \alpha A h \right) + \alpha A g \partial_x u + \left( \frac{u^2}{2}-e \right) \partial_x \left( \alpha A f \right)  \right] = \\
-s_e \left[ \partial_x \left( \alpha A \tilde{h} \right) - e \partial_x \left( \alpha A f \right) \right] + s_e \mu \left( \partial_x u \right)^2
-\end{eqnarray}
-where $\mu$ is a positive viscosity coefficient, and $\tilde{h}$ is a new dissipative term. In \eqt{eq:ent_equ3}, it is noted that the term $s_e \mu (\partial_x u)^2$ is always positive and does not need any further modification. Thus, it remains to determine the sign of the other term $s_e\left( \partial_x \left( \alpha A \tilde{h} \right) - e \partial_x \left( \alpha A f \right) \right)$, along with $\rho s_{\rho} \left( \partial_x \left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \right)$, that are now independent of the velocity $u$. Then, we define the variable $rhs$ as the following:
-\begin{equation}
-\label{eq:rhs1}
-rhs = s_e \left( \partial_x \left( \alpha A \tilde{h} \right)-e \partial_x \left( \alpha A f \right) \right) + \rho s_{\rho} \left( \partial_x \left( \alpha A f \right) - \rho \partial_x \left( \alpha A l \right) \right)
-\end{equation}
-Before going further in the derivation, let us remind that all of the above steps are valid for any phase of the system under consideration, and that the objective is to prove the entropy minimum principle. The remain of the derivation can be treated in at least two different ways. Either we enforce positivity of the entropy residual for each phase (phase wise treatment), or, we consider the system as a whole and enforce positivity of the total entropy residual which requires to sum over the phases. The latest version is probably  better from a physical point of view. The entropy of each phase can actually either decrease or increase through a transient because of the heat and mass exchanges since each phase is not a close and isolated system. Therefore, even though positivity of the entropy residual for each phase can be achieved, it would not make physically sense. In addition, the relaxation and source terms were derived by considering the total entropy of the system (ref). Then, it would be wise to follow the same reasoning for consistency. Both options are studied in this report in order to compare solutions and verify our initial assumptions. It is noted that derivation of the dissipative terms is not unique.
-%First, dissipative terms are added to each equation of the system under interest. Then, the entropy equation is re-derived with the dissipative terms that are determined by using the entropy inequality as a condition. 
+%
+It remains to obtain a definition for the
+dissipative term $\mbold l_k$ used in the volume fraction equation. A way to achieve this, is to
+consider the volume fraction equation, \eqt{eq:sev_equ-with-diss-terms-vf}, by itself and notice that it is a hyperbolic equation
+with the eigenvalue $\mbold u_{int}$. An entropy equation can be derived and used to prove the
+entropy minimum principle by properly choosing the dissipative term. The objective is to
+ensure positivity of the volume fraction and also uniqueness of the weak solution. Following
+the work of Guermond et al. in \cite{jlg1, jlg2} and by analogy
+to Burger's equation described in \chap{chap:euler}, it can be shown that a dissipative term ensuring positivity and
+uniqueness of the weak solution is of the form $\mbold l_k = \beta_k \grad \alpha_k $ where $\beta_k$
+is a positive viscosity coefficient.
+
+All of the dissipative terms are now defined and recalled here:
+%
+\begin{align}
+  \mbold l_k &= \beta_k A \grad \alpha_k 
+  \\
+  \mbold f_k &= \alpha_k A \kappa_k \grad \rho_k + \rho_k A \mbold l_k 
+  \\
+  \mbold g_k &= \alpha_k A \mu_k \rho \grad^s \mbold u_k 
+  \\
+  \mbold h_k &=  \alpha_k A \kappa_k \grad \left( \rho e \right)_k + \mbold u_k : \mbold g_k - \frac{|| \mbold u_k||^2}{2} \mbold f_k + (\rho e)_k \mbold l_k 
+\end{align}
+%
+At this point, some remarks are in order:
+\begin{enumerate}
+\item {The dissipative term $\mbold l_k$ requires the definition of a new viscosity
+    coefficient $\beta_k$. It was shown that this viscosity coefficient is independent of
+    the other viscosity coefficients $\mu_k$ and $\kappa_k$. Its definition should
+    account for the eigenvalue associated with the void fraction equation $u_I$.
+    In addition, an entropy residual can be determined by analogy to Burger's
+    equation. It is noted, however, that the eigenvalue $\mbold u_{int}$ can be discontinuous
+    since its definition involves the sign of the void fraction gradient, which
+    makes the theory more challenging. For simplicity, we ignore this aspect of the
+    theory in this report.}
+
+\item {The dissipative term $\mbold f_k$ is a function of $\mbold l_k$. Thus, all of the other
+    dissipative terms are also functions of $\mbold l_k$.}
+
+\item {The partial derivatives $(s_e)_k$ and $(s_{\rho_k})_k$ can be computed using the
+    definition provided in~\eqref{eq:second_th}, and are functions of the thermodynamic
+    variables: pressure, temperature and density.}
+
+\item {All of the dissipative terms, but the one in the volume fraction equation, are chosen to be proportional to the the void
+    fraction $\alpha_k$ and the cross-sectional area $A$. For instance, $\alpha_k A \grad \rho_k$ is the
+    flux of the dissipative term in the continuity equation through the area seen
+    by the phase $\alpha_k A$. When one of the phases disappears, the dissipative terms
+    must to go to zero for consistency. On the other hand, when $\alpha_k$ goes to one or zero,
+    the single-phase equation must be recovered. }
+\end{enumerate}
 %===================================================================================
 \section{Low-Mach asymptotic limit and viscosity coefficients}\label{sec:sev-equ-visc-coeff-sect4}
 %===================================================================================
 %===================================================================================
 \section{Numerical results:}\label{sec:1d-num-res-sect4}
 %===================================================================================
-Because it is not economical to solve the entire two-phase flow field
-with highly resolved three-dimensional computational fluid dynamics for an
-entire light water reactor coolant system,
-it is necessary to construct a one-dimensional model for flow in
-pipes, nozzles, and other components.  The one-dimensional model is
-constructed to allow the representation of continuously variable
-cross-sectional area.
+%-------------------------------------------------------------------------------------------------------------------------------------------------
+\subsection{$1$-D straight pipe with wall-friction force, wall heat source and mass and energy exchange terms}\label{sec:1d-pipe-7-eq-sct4}
+%-------------------------------------------------------------------------------------------------------------------------------------------------
+We present one sample result for a 1-D straight pipe of area $A = 10^{-4}$ $m^2$ with a wall heat source (the wall temperature is constant: $T_w = 550$ $K$). The stiffened gas equation of state is used to model the liquid and vapor phases with the parameters taken from \cite{SGEOS} for each phase. A static pressure of $P=7.1$ $MPa$ is set at the outlet. The volume fraction, the enthalpy and the mass flow rate are specified at the inlet for each phase. The wall friction coefficient is constant and the same for the two phases, $f_w = 4 \times 10^{-2}$. The interfacial area $A_{int}$ is set to a large value to equalize the pressure and velocity of the two phases. The initial conditions are uniform. The geometry is discretized with a uniform mesh of 100 elements and the simulation is run with $CFL=100$  until a steady state is obtained. 
 
-Consider flow through a duct with local cross-sectional area
-$A=A(x,t)$.  Actually, most of the time we consider local
-cross-sectional area to depend upon position coordinate $x$ only,
-for which a time rate of change of cross-sectional area is not
-necessary because for this case $\frac{\partial A}{\partial
-t} = 0$.  However, $A(x,t)$ is left inside the time derivative terms
-for generality and possible future use.  The seven-equation two-phase
-system model can be stated as balances of mass, momentum, and total energy,
-along with volume fraction evolution as
-\begin{align}
-  % liquid mass conservation
-  \label{E-R:74}
-  \frac{\partial \left( \alpha \rho \right)_{liq} A}{\partial t}
-  + \frac{\partial \left( \alpha \rho u \right)_{liq} A}{\partial x}
-  &= - \Gamma A_{int} A
-  \\
-  % liquid momentum
-  \nonumber
-  \frac{\partial \left( \alpha \rho u \right)_{liq} A}{\partial t}
-  + \frac{\partial \alpha_{liq} A \left( \rho u^2 + p \right)_{liq} }{\partial x}
-  &= p_{int} A \frac{\partial \alpha_{liq}}{\partial x} + p_{liq} \alpha_{liq} \frac{\partial A}{\partial x}
-  \\
-  \nonumber
-  &+ A \lambda_u (u_{vap} - u_{liq})
-  \\
-  \nonumber
-  &- \Gamma A_{int} u_{int} A
-  \\
-  \nonumber
-  &- F_{\text{wall friction}, liq} - F_{\text{friction}, vap}
-  \\
-  &+ \left( \alpha \rho \right)_{liq} A \vec{g} \cdot \vec{n}_{axis}
-\end{align}
-\begin{align}
-  % liquid total energy
-  \nonumber
-  \frac{\partial \left( \alpha \rho E \right)_{liq} A}{\partial t}
-  + \frac{\partial \alpha_{liq} u_{liq} A \left( \rho E + p \right)_{liq}}{\partial x}
-  &= p_{int} u_{int} A \frac{\partial \alpha_{liq}}{\partial x} - \bar{p}_{int} A \mu_P (p_{liq} - p_{vap})
-  \\
-  \nonumber
-  &+ \bar{u}_{int} A \lambda_u (u_{vap} - u_{liq})
-  \\
-  \nonumber
-  &+ \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{liq, int} \right) A
-  \\
-  &+ Q_{int, liq} + Q_{\text{wall}, liq}
-  \\
-  % liquid volume fraction
-  \label{eqn:7eqn_va_alpha_liq}
-  \frac{\partial \alpha_{liq} A}{\partial t} + u_{int} A \frac{\partial \alpha_{liq}}{\partial x}
-  &= A \mu_P (p_{liq} - p_{vap}) - \frac{\Gamma A_{int} A}{\rho_{int}}
-\end{align}
-for the liquid phase, and
-\begin{align}
-  % vapor mass conservation
-  \frac{\partial \left( \alpha \rho \right)_{vap} A}{\partial t}
-  + \frac{\partial \left( \alpha \rho u \right)_{vap} A}{\partial x}
-  &=  \Gamma A_{int} A
-  \\
-  % vapor momentum
-  \nonumber
-  \frac{\partial \left( \alpha \rho u \right)_{vap} A}{\partial t}
-  + \frac{\partial \alpha_{vap} A \left( \rho u^2 + p \right)_{vap} }{\partial x}
-  &= p_{int} A \frac{\partial \alpha_{vap}}{\partial x} + p_{vap} \alpha_{vap} \frac{\partial A}{\partial x}
-  \\
-  \nonumber
-  &+ A \lambda_u (u_{liq} - u_{vap})
-  \\
-  \nonumber
-  &+ \Gamma A_{int} u_{int} A
-  \\
-  \nonumber
-  &- F_{\text{wall friction}, vap} - F_{\text{friction}, liq}
-  \\
-  &+ \left( \alpha \rho \right)_{vap} A \vec{g} \cdot \vec{n}_{axis}
-\end{align}
-\begin{align}
-  \nonumber
-  % vapor total energy
-  \frac{\partial \left( \alpha \rho E \right)_{vap} A}{\partial t}
-  + \frac{\partial \alpha_{vap} u_{vap} A \left( \rho E + p \right)_{vap}}{\partial x}
-  &= p_{int} u_{int} A \frac{\partial \alpha_{vap}}{\partial x} - \bar{p}_{int} A \mu_P (p_{vap} - p_{liq})
-  \\
-  \nonumber
-  &+ \bar{u}_{int} A \lambda_u (u_{liq} - u_{vap})
-  \\
-  \nonumber
-  &- \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{vap, int} \right) A
-  \\
-  &+ Q_{int, vap} + Q_{\text{wall}, vap}
-  \\
-  % vapor phase volume fraction
-  \label{E-R:81}
-  \frac{\partial \alpha_{vap} A}{\partial t} + u_{int} A \frac{\partial \alpha_{vap}}{\partial x}
-  &= A \mu_P (p_{vap} - p_{liq}) + \frac{\Gamma A_{int} A}{\rho_{int}}
-\end{align}
-%for the vapor phase.  It is noted that for two-phase flow,
-%either of the differential relations~\eqref{eqn:7eqn_va_alpha_liq}
-%or~\eqref{E-R:81} may be replaced with the algebraic relation
+The pressure, temperature, velocity, volume fraction and viscosity coefficients profiles are plotted from \fig{fig:pressure} through \fig{fig:viscosity_coeff}. As expected, the liquid and vapor pressure profiles are identical (\fig{fig:pressure}) and decrease through the domain because of the wall friction force. The liquid and velocity profiles are also identical as shown in \fig{fig:velocity} and increase due to the wall friction force and the heat addition. In \fig{fig:temperature}, the liquid and vapor temperature profiles are distinct and have  the same variation: the temperature rises since energy is added to the flow by the wall heat source. The variations of the vapor and liquid volume fractions are opposite: vapor is produced since the liquid temperature is larger than the saturation temperature. All of the profiles are smooth and do not display any spurious oscillations: the high-order viscosity coefficients shown in \fig{fig:viscosity_coeff}, $\kappa_{e,k}$ and $\beta_{e,k}$, are well-scaled and large enough to stabilize the numerical solution without altering it (only $\beta_{e,liquid}$ is plotted since $\beta_{e,liquid}=\beta_{e,vapor}$). It is also noted the difference of several order of magnitude between the high-order and first-order viscosity coefficients denoted by the subscript $max$. The first-order viscosity coefficients are over-dissipative and ill-scaled in the low Mach regime.
 %
-%throughout, reducing the total number of equations to be solved to seven.
+        \begin{figure}[H]
+                \centering
+                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_pressure.png}
+                \caption{Pressure}
+                \label{fig:pressure}
+        \end{figure}%
 %
-%In equations~\eqref{E-R:74}--\eqref{E-R:81}, $\Gamma$ is the net mass transfer per unit
-%interfacial area from the liquid to the vapor phase and $A_{int}$ is
-%the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$
-%and $H_{vap, int}$ are the liquid and gas total enthalpies at the
-%interface, respectively.  The nomenclature has also been modified so
-%that now $u_{int}$ and $\bar{u}_{int}$ are, respectively, the
-%interfacial velocity and average interfacial velocity; and $p_{int}$
-%and $\bar{p}_{int}$ are, respectively, the interfacial pressure and
-%average interfacial pressure.  In the momentum balance equations
-%$\vec{n}_{axis}$ is the unit vector directly along the axis of the
-%duct, which is also the $\pm$ flow direction.  Of course
-%$F_{\text{wall friction}, k}$ is the frictional force due to the wall acting on phase
-%$k$ and $F_{\text{friction}, k'}$ is the frictional force acting on
-%phase $k$ due to the presence of the other phase $k'$.
-%Similarly, $Q_{int, k}$ is the direct heat transfer from the interface
-%to phase $k$ and $Q_{\text{wall}, k}$ is the direct heat transfer from
-%the wall to phase $k$.
+        \begin{figure}[H]
+                \centering
+                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_temperature.png}
+                \caption{Temperature}
+                \label{fig:temperature}
+        \end{figure}%
+%            
+        \begin{figure}[H]
+                \centering
+                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_velocity.png}
+                \caption{Velocity}
+                \label{fig:velocity}
+        \end{figure}
 %
-%Equation system~\eqref{E-R:74}--\eqref{E-R:81} is the basic system
-%solved with RELAP-7.  The system was implemented within the MOOSE
-%computational framework following a series of logically-complete
-%steps~\cite{Berry_2013} designed to confidently allow physically- and
-%mathematically-meaningful benchmark testing at each step of increased
-%complexity.  This seven equation two-phase model allows both phases to be
-%compressible.
-%\section{This is a Very Long Section Title This is a Very Long Section Title This is a Very Long Section Title }
+        \begin{figure}[H]
+                \centering
+                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_volume_fraction.png}
+                \caption{Volume fraction}
+                \label{fig:volume_fraction}
+        \end{figure}        
+%
+        \begin{figure}[H]
+                \centering
+                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_viscosity.png}
+                \caption{Viscosity coefficients}
+                \label{fig:viscosity_coeff}
+        \end{figure}        
+%
+%Because it is not economical to solve the entire two-phase flow field
+%with highly resolved three-dimensional computational fluid dynamics for an
+%entire light water reactor coolant system,
+%it is necessary to construct a one-dimensional model for flow in
+%pipes, nozzles, and other components.  The one-dimensional model is
+%constructed to allow the representation of continuously variable
+%cross-sectional area.
+%
+%Consider flow through a duct with local cross-sectional area
+%$A=A(x,t)$.  Actually, most of the time we consider local
+%cross-sectional area to depend upon position coordinate $x$ only,
+%for which a time rate of change of cross-sectional area is not
+%necessary because for this case $\frac{\partial A}{\partial
+%t} = 0$.  However, $A(x,t)$ is left inside the time derivative terms
+%for generality and possible future use.  The seven-equation two-phase
+%system model can be stated as balances of mass, momentum, and total energy,
+%along with volume fraction evolution as
+%\begin{align}
+%  % liquid mass conservation
+%  \label{E-R:74}
+%  \frac{\partial \left( \alpha \rho \right)_{liq} A}{\partial t}
+%  + \frac{\partial \left( \alpha \rho u \right)_{liq} A}{\partial x}
+%  &= - \Gamma A_{int} A
+%  \\
+%  % liquid momentum
+%  \nonumber
+%  \frac{\partial \left( \alpha \rho u \right)_{liq} A}{\partial t}
+%  + \frac{\partial \alpha_{liq} A \left( \rho u^2 + p \right)_{liq} }{\partial x}
+%  &= p_{int} A \frac{\partial \alpha_{liq}}{\partial x} + p_{liq} \alpha_{liq} \frac{\partial A}{\partial x}
+%  \\
+%  \nonumber
+%  &+ A \lambda_u (u_{vap} - u_{liq})
+%  \\
+%  \nonumber
+%  &- \Gamma A_{int} u_{int} A
+%  \\
+%  \nonumber
+%  &- F_{\text{wall friction}, liq} - F_{\text{friction}, vap}
+%  \\
+%  &+ \left( \alpha \rho \right)_{liq} A \vec{g} \cdot \vec{n}_{axis}
+%\end{align}
+%\begin{align}
+%  % liquid total energy
+%  \nonumber
+%  \frac{\partial \left( \alpha \rho E \right)_{liq} A}{\partial t}
+%  + \frac{\partial \alpha_{liq} u_{liq} A \left( \rho E + p \right)_{liq}}{\partial x}
+%  &= p_{int} u_{int} A \frac{\partial \alpha_{liq}}{\partial x} - \bar{p}_{int} A \mu_P (p_{liq} - p_{vap})
+%  \\
+%  \nonumber
+%  &+ \bar{u}_{int} A \lambda_u (u_{vap} - u_{liq})
+%  \\
+%  \nonumber
+%  &+ \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{liq, int} \right) A
+%  \\
+%  &+ Q_{int, liq} + Q_{\text{wall}, liq}
+%  \\
+%  % liquid volume fraction
+%  \label{eqn:7eqn_va_alpha_liq}
+%  \frac{\partial \alpha_{liq} A}{\partial t} + u_{int} A \frac{\partial \alpha_{liq}}{\partial x}
+%  &= A \mu_P (p_{liq} - p_{vap}) - \frac{\Gamma A_{int} A}{\rho_{int}}
+%\end{align}
+%for the liquid phase, and
+%\begin{align}
+%  % vapor mass conservation
+%  \frac{\partial \left( \alpha \rho \right)_{vap} A}{\partial t}
+%  + \frac{\partial \left( \alpha \rho u \right)_{vap} A}{\partial x}
+%  &=  \Gamma A_{int} A
+%  \\
+%  % vapor momentum
+%  \nonumber
+%  \frac{\partial \left( \alpha \rho u \right)_{vap} A}{\partial t}
+%  + \frac{\partial \alpha_{vap} A \left( \rho u^2 + p \right)_{vap} }{\partial x}
+%  &= p_{int} A \frac{\partial \alpha_{vap}}{\partial x} + p_{vap} \alpha_{vap} \frac{\partial A}{\partial x}
+%  \\
+%  \nonumber
+%  &+ A \lambda_u (u_{liq} - u_{vap})
+%  \\
+%  \nonumber
+%  &+ \Gamma A_{int} u_{int} A
+%  \\
+%  \nonumber
+%  &- F_{\text{wall friction}, vap} - F_{\text{friction}, liq}
+%  \\
+%  &+ \left( \alpha \rho \right)_{vap} A \vec{g} \cdot \vec{n}_{axis}
+%\end{align}
+%\begin{align}
+%  \nonumber
+%  % vapor total energy
+%  \frac{\partial \left( \alpha \rho E \right)_{vap} A}{\partial t}
+%  + \frac{\partial \alpha_{vap} u_{vap} A \left( \rho E + p \right)_{vap}}{\partial x}
+%  &= p_{int} u_{int} A \frac{\partial \alpha_{vap}}{\partial x} - \bar{p}_{int} A \mu_P (p_{vap} - p_{liq})
+%  \\
+%  \nonumber
+%  &+ \bar{u}_{int} A \lambda_u (u_{liq} - u_{vap})
+%  \\
+%  \nonumber
+%  &- \Gamma A_{int} \left( \frac{p_{int}}{\rho_{int}} - H_{vap, int} \right) A
+%  \\
+%  &+ Q_{int, vap} + Q_{\text{wall}, vap}
+%  \\
+%  % vapor phase volume fraction
+%  \label{E-R:81}
+%  \frac{\partial \alpha_{vap} A}{\partial t} + u_{int} A \frac{\partial \alpha_{vap}}{\partial x}
+%  &= A \mu_P (p_{vap} - p_{liq}) + \frac{\Gamma A_{int} A}{\rho_{int}}
+%\end{align}
