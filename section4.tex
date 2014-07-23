@@ -739,15 +739,187 @@ In this section, definition of the viscosity coefficients involved in the viscou
 %===================================================================================
 \section{Numerical results:}\label{sec:1d-num-res-sect4}
 %===================================================================================
+$1$-D numerical tests are presented in this section. The objective is to test the viscous regularization derived in \sect{sec:sev-equ-visc-reg-sect4} and the definition of the viscosity coefficients proposed in \sect{sec:sev-equ-visc-coeff-sect4} for the $1$-D seven equation model. The first test, presented in \sect{sec:1d-advection-7-eq-sct4},  consists of a pure advection of a volume fraction discontinuity. In \sect{sec:1d-2-ind-phases-7-eq-sct4}, a conventional shock tube filled with two independent fluids is presented. The same shock tube is considered in \sect{sec:1d-2-phases-rel-7-eq-sct4} but with pressure and velocity relaxation terms. Then in \sect{sec:1d-nozzle-rel-7-eq-sct4}, numerical solutions for a $1$-D converging-diverging nozzle are presented for the $1$-D seven equation model with relaxation and exchange terms. Lastly, simulation of a two-phase flow in a $1$-D straight pipe with friction and wall-heat source is considered in \sect{sec:1d-straight-pipe-7-eq-sct4}. For each test, informational relative to the mesh, the CFL number and the boundary conditions will be detailed.
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{$1$-D advection test}\label{sec:1d-advection-7-eq-sct4}
+\subsection{$1$-D advection test: uniform velocity and pressure flow with a volume fraction discontinuity}\label{sec:1d-advection-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
+We consider a $1$-D straight pipe of length $L=1$ $m$ filled with two gas phases in equilibrium (same pressure and velocity) described by the Ideal Gas equation of state with $\gamma_1 = 3$ and $\gamma_2 = 1.4$. This basic test has a trivial solution which corresponds to the pure advection of the volume fraction discontinuity. The viscous regularization for the SEM is quite complex and it is important to check that it fulfills a simple advection test. The objective is to make sure that the numerical stabilization method is not responsible for the apparition of an artificial mixture zone. The geometry is discretized with an uniform mesh of $100$ cells. The initial conditions consist of a uniform pressure $P_1 = P_2 =0.1$ $MPa$ and a uniform velocity $u_1 = u_2 = 100$ $m/s$. The density of the phase $1$ and $2$ are set to $10$ and $1$ $kg/m^3$, respectively. On the left part of the tube, the liquid volume fraction is $\alpha_{1} = 0.9$, while on the right part of the tube it is $\alpha_{1} = 0.1$. The numerical solution is run with a $CFL$ of $1$ until the final time $t_{final} = $ $s$. Numerical solutions are given from ... to .... .
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_volume_fraction.png}
+                \caption{Volume fraction of phase $1$.}
+                \label{fig:vf-liq-7-eqn-sect4}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_beta.png}
+                \caption{Viscosity coefficients for volume fraction equation of phase $1$.}
+                \label{fig:beta-liq-7-eqn-sect4}
+        \end{subfigure}
+        \caption{\label{fig:inlet_sct3}}
+\end{figure}
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_pressure.png}
+                \caption{Pressure of phase $1$.}
+                \label{fig:press-vap-7-eqn-sect4}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_pressure.png}
+                \caption{Pressure of phase $2$.}
+                \label{fig:press-vap-7-eqn-sect4}
+        \end{subfigure}
+        \caption{\label{fig:inlet_sct3}}
+\end{figure}
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_velocity.png}
+                \caption{Velocity of phase $1$.}
+                \label{vel-vap-7-eqn-sect4}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_velocity.png}
+                \caption{Velocity of phase $2$.}
+                \label{vel-vap-7-eqn-sect4}
+        \end{subfigure}
+        \caption{\label{fig:inlet_sct3}}
+\end{figure}
+%
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/liquid_viscosity.png}
+                \caption{Viscosity coefficients of phase $1$.}
+                \label{vel-vap-7-eqn-sect4}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.495\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figures/vapor_viscosity.png}
+                \caption{Viscosity coefficients of phase $2$.}
+                \label{vel-vap-7-eqn-sect4}
+        \end{subfigure}
+        \caption{\label{fig:inlet_sct3}}
+\end{figure}
+%
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{$1$-D shock tube for two independent fluids}\label{sec:1d-2-ind-phases-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
+We still consider a $1$-D straight pipe of length $L=1$ $m$ filled with the same fluids as in \sect{sec:1d-advection-7-eq-sct4}. The velocity and pressure relaxation terms are set to zero so that the two fluid are independent. The left chamber of the pipe
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/two_phases_pressure.png}
+\caption{Pressure profiles at $t=305$ $\mu s$.}
+\label{fig:two-indep-fluids-press-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/two_phases_velocity.png}
+\caption{Velocity profiles at $t=305$ $\mu s$.}
+\label{fig:two-indep-fluids-vel-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/two_phases_density.png}
+\caption{Density profiles at $t=305$ $\mu s$.}
+\label{fig:two-indep-fluids-dens-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/two_phases_volume_fraction.png}
+\caption{Volume fraction profiles at $t=305$ $\mu s$.}
+\label{fig:two-indep-fluids-vf-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/two_phases_liquid_viscosity_kappa_mu.png}
+\caption{Viscosity coefficient profiles for phase $1$ at $t=305$ $\mu s$.}
+\label{fig:two-indep-fluids-visc-2-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/two_phases_vapor_viscosity_kappa_mu.png}
+\caption{Viscosity coefficient profiles for phase $2$ at $t=305$ $\mu s$.}
+\label{fig:two-indep-fluids-visc-1-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/two_phases_liquid_beta.png}
+\caption{Viscosity coefficient profiles for volume fraction equation of phase $1$ at $t=305$ $\mu s$.}
+\label{fig:two-indep-fluids-vf-visc-1-7-eqn-sect4}
+\end{figure}
+%
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{$1$-D shock tube for two fluids with pressure and velocity relaxation terms}\label{sec:1d-2-phases-rel-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/relaxation_two_phases_pressure.png}
+\caption{Pressure profiles at $t=305$ $\mu s$.}
+\label{fig:two-fluids-rel-press-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/relaxation_two_phases_velocity.png}
+\caption{Velocity profiles at $t=305$ $\mu s$.}
+\label{fig:two-fluids-rel-vel-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/relaxation_two_phases_density.png}
+\caption{Density profiles at $t=305$ $\mu s$.}
+\label{fig:two-fluids-rel-rho-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/relaxation_two_phases_volume_fraction.png}
+\caption{Volume fraction profiles at $t=305$ $\mu s$.}
+\label{fig:two-fluids-rel-vf-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/relaxation_two_phases_liquid_viscosity_kappa_mu.png}
+\caption{Viscosity coefficient profiles for phase $1$ at $t=305$ $\mu s$.}
+\label{fig:two-fluids-rel-visc-2-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/relaxation_two_phases_vapor_viscosity_kappa_mu.png}
+\caption{Viscosity coefficient profiles for phase $2$ at $t=305$ $\mu s$.}
+\label{fig:two-fluids-rel-visc-1-7-eqn-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/relaxation_two_phases_liquid_beta.png}
+\caption{Viscosity coefficient profiles for volume fraction equation of phase $1$ at $t=305$ $\mu s$.}
+\label{fig:two-fluids-rel-vf-visc-1-7-eqn-sect4}
+\end{figure}
+%
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{$1$-D nozzle test}\label{sec:1d-nozzle-rel-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
