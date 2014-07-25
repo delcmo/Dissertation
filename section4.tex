@@ -751,7 +751,7 @@ where $\norm_{k}^\beta$ denotes a normalization parameters whom definition will 
 \partial_t \left(A \alpha_k \right) + A \mbold u_{int} \cdot \grad \alpha_k = \div \left( \beta_k A \grad \alpha_k \right)
 \end{equation}
 % 
-After multiplying by $\frac{\text{d} \eta (\alpha_k)}{\text{d} \alpha_k}$ and using the chain rule, an equation for the entropy residual $R_{\alpha,k}$ is obtained:
+After multiplying by $\frac{\text{d} \eta (\alpha_k)}{\text{d} \alpha_k}$ and using the chain rule, an expression for the entropy residual $R_{\alpha,k}$ is obtained:
 %
 \begin{equation}\label{eq:vf-sem2-sct4}
 R_{\alpha,k} = \partial_t \left(A \eta(\alpha_k) \right) + A \mbold u_{int} \cdot \grad \eta(\alpha_k) = \frac{\text{d} \eta (\alpha_k)}{\text{d} \alpha_k} \div \left( \beta_k A \grad \alpha_k \right)
@@ -1068,7 +1068,22 @@ As expected, the two fluids have the same pressure and velocity profiles as show
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{$1$-D converging-diverging nozzle test}\label{sec:1d-nozzle-rel-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-In this section, it is proposed to investigate the behavior of two fluids in a one meter long $1$-D converging-diverging nozzle: $A(x) = 1 + 0.5 \cos \left( 2\pi x \right)$. This test was first introduced by Saurel et al. in \cite{SEM} for the $1$-D seven equation model and consists of a mixture of liquid water and vapor described by the SGEOS with the parameters given in ... Stagnation boundary conditions are specified on the left of the nozzle (inlet) for both phases with a stagnation temperature $T_0 = 453 $ $K$ and a stagnation pressure $P_0 = 1$ $MPa$. At the outlet, a static pressure boundary condition is specified with $P_b = 0.5$ $MPa$ for both phases. The volume fraction is set to $\alpha_k = 0.5$ at the inlet. The initial conditions are computed from the boundary conditions by assuming the two fluids at rest and linearly interpolating the pressure and temperature between the boundary values. The geometry is discretized with an uniform mesh of $100$ cells and run until steady-state. The pressure and velocity relaxation coefficients are computed from \eqt{E-R:85} and \eqt{E-R:86}, and the use of \eqt{eq:Aint-sect4} for different values of $A_{int,max}$ that will be specified in time. The reader can refer to \sect {sec:liquid_nozzle} and \sect{sec:steam_nozzle} for numerical solution in a $1$-D nozzle when considering two independent fluids (i.e without relaxation source terms). This section is organized as follows: first numerical results are presented when considering only the pressure and velocity relaxation terms for different values of $A_{int,max}$. Then, the same simulation is run when adding the mass and energy exchange source terms. \\
+In this section, it is proposed to investigate the behavior of two fluids in a one meter long $1$-D converging-diverging nozzle: $A(x) = 1 + 0.5 \cos \left( 2\pi x \right)$. This test was first introduced by Saurel et al. in \cite{SEM} for the $1$-D seven equation model and consists of a mixture of liquid water and vapor described by the SGEOS with the parameters given in \tbl{tbl:stff_gas_eos-sect4}.
+%
+\begin{table}[!htbp]
+\begin{center}
+\caption{ Stiffened Gas Equation of State parameters for steam and liquid water.}
+\label{tbl:stff_gas_eos-sect4}
+\begin{tabular}{|c|c|c|c|c|}
+ \hline
+\text{fluid}                           & $\gamma$ & $C_v$ $(J.kg^{-1}.K^{-1})$ & $P_\infty$ $(Pa)$ & $q$ $(J.kg^{-1})$ \\  \hline \hline
+liquid water & 2.35     & 1816                       & $10^9$            & $-1167\ 10^3$     \\  \hline
+steam          & 1.43     & 1040                       & 0                 & $ 2030\ 10^3$     \\  \hline
+\end{tabular}
+\end{center}
+\end{table}
+%
+Stagnation boundary conditions are specified on the left of the nozzle (inlet) for both phases with a stagnation temperature $T_0 = 453 $ $K$ and a stagnation pressure $P_0 = 1$ $MPa$. At the outlet, a static pressure boundary condition is specified with $P_b = 0.5$ $MPa$ for both phases. The volume fraction is set to $\alpha_k = 0.5$ at the inlet. The initial conditions are computed from the boundary conditions by assuming the two fluids at rest and linearly interpolating the pressure and temperature between the boundary values. The geometry is discretized with an uniform mesh of $100$ cells and run until steady-state. The pressure and velocity relaxation coefficients are computed from \eqt{E-R:85} and \eqt{E-R:86}, and the use of \eqt{eq:Aint-sect4} for different values of $A_{int,max}$ that will be specified in time. The reader can refer to \sect {sec:liquid_nozzle} and \sect{sec:steam_nozzle} for numerical solution in a $1$-D nozzle when considering two independent fluids (i.e without relaxation source terms). This section is organized as follows: first numerical results are presented when considering only the pressure and velocity relaxation terms for different values of $A_{int,max}$. Then, the same simulation is run when adding the mass and energy exchange source terms. \\
 
 We first consider the $1$-D seven equation model with on the relaxation source terms for different values of $A_{int,max} = 10^2 \text{, } 10^3$ and $10^4$ $m^{-1}$. The pressure profiles are given for all of the value of $A_{int,max}$ for comparison. The density, velocity, volume fraction and viscosity coefficients are only given for $A_{it.max} = 10^4$ $m^{-1}$. The numerical results are presented from \fig{fig:two-fluids-rel-nozzle-press-Aint4-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-sem-sect4}.
 %
