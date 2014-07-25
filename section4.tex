@@ -190,7 +190,7 @@ The specific interfacial area (i.e. the interfacial surface area per unit
 volume of two-phase mixture), $A_{int}$, must be specified from some type of
 flow regime map or function. In \cite{SEM}, it is chosen function of the liquid volume fraction as follows:
 %
-\begin{equation}
+\begin{equation}\label{eq:Aint-sect4}
 A_{int} = A_{int}^{max} \left[ 6.75 \left(1-\alpha_{liq} \right)^2 \alpha_{liq} \right],
 \end{equation}
 % 
@@ -248,7 +248,7 @@ a liquid/gas interface with the gas being hotter than the liquid.
 \begin{figure}
   \centering
   %\fbox{
-   \includegraphics[clip=true,viewport=200 50 550 500,width=.8\textwidth]{figures/saturation}
+   \includegraphics[clip=true,viewport=200 50 550 500,width=.8\textwidth]{figures/SEM/saturation}
    % }
    \caption{Interface control volume (top); $T$-$p$ state space around
      saturation line, $T_{liq} < T_{vap}$, (bottom).\label{Berry-Fig:2}}
@@ -290,7 +290,7 @@ separated by an interface.
 \begin{figure}
   \centering
   %\fbox{
-   \includegraphics[clip=true,viewport=175 50 625 525,width=.8\textwidth]{figures/vaporization_condensation}
+   \includegraphics[clip=true,viewport=175 50 625 525,width=.8\textwidth]{figures/SEM/vaporization_condensation}
  %}
    \caption{Vaporization and condensation at a liquid-vapor interface
      (after Moody~\cite{Moody_1990}).\label{Berry-Fig:3}}
@@ -880,23 +880,23 @@ With the definition of the viscosity coefficients $\mu_k$ and $\kappa_k$ propose
 %===================================================================================
 \section{Numerical results:}\label{sec:1d-num-res-sect4}
 %===================================================================================
-$1$-D numerical tests are presented in this section. The objective is to test the viscous regularization derived in \sect{sec:sev-equ-visc-reg-sect4} and the definition of the viscosity coefficients proposed in \sect{sec:sev-equ-visc-coeff-sect4} for the $1$-D seven equation model. The first test, presented in \sect{sec:1d-advection-7-eq-sct4},  consists of a pure advection of a volume fraction discontinuity. In \sect{sec:1d-2-ind-phases-7-eq-sct4}, a conventional shock tube filled with two independent fluids is presented. The same shock tube is considered in \sect{sec:1d-2-phases-rel-7-eq-sct4} but with pressure and velocity relaxation terms. Then in \sect{sec:1d-nozzle-rel-7-eq-sct4}, numerical solutions for a $1$-D converging-diverging nozzle are presented for the $1$-D seven equation model with relaxation and exchange terms. Lastly, simulation of a two-phase flow in a $1$-D straight pipe with friction and wall-heat source is considered in \sect{sec:1d-straight-pipe-7-eq-sct4}. For each test, informational relative to the mesh, the CFL number and the boundary conditions will be detailed.
+$1$-D numerical tests are presented in this section. The objective is to test the viscous regularization derived in \sect{sec:sev-equ-visc-reg-sect4} and the definition of the viscosity coefficients proposed in \sect{sec:sev-equ-visc-coeff-sect4} for the $1$-D seven equation model. The first test, presented in \sect{sec:1d-advection-7-eq-sct4},  consists of a pure advection of a volume fraction discontinuity. In \sect{sec:1d-2-ind-phases-7-eq-sct4}, a conventional shock tube filled with two independent fluids is presented. The same shock tube is considered in \sect{sec:1d-2-phases-rel-7-eq-sct4} but with pressure and velocity relaxation terms. Then in \sect{sec:1d-nozzle-rel-7-eq-sct4}, numerical solutions for a $1$-D converging-diverging nozzle are presented for the $1$-D seven equation model with relaxation and exchange terms. Lastly, simulation of a two-phase flow in a $1$-D straight pipe with friction and wall-heat source is considered in \sect{sec:1d-straight-pipe-7-eq-sct4}. For each test, informational relative to the mesh, the CFL number and the boundary conditions will be detailed when relevant.
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{$1$-D advection test: uniform velocity and pressure flow with a volume fraction discontinuity}\label{sec:1d-advection-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-We consider a $1$-D straight pipe of length $L=1$ $m$ filled with two gas phases in equilibrium (same pressure and velocity) described by the Ideal Gas equation of state with $\gamma_1 = 3$ and $\gamma_2 = 1.4$. This basic test has a trivial solution which corresponds to the pure advection of the volume fraction discontinuity. The viscous regularization for the SEM is quite complex and it is important to check that it fulfills a simple advection test. The objective is to make sure that the numerical stabilization method is not responsible for the apparition of an artificial mixture zone. The geometry is discretized with an uniform mesh of $100$ cells. The initial conditions consist of a uniform pressure $P_1 = P_2 =0.1$ $MPa$ and a uniform velocity $u_1 = u_2 = 100$ $m/s$. The density of the phase $1$ and $2$ are set to $10$ and $1$ $kg/m^3$, respectively. On the left part of the tube, the liquid volume fraction is $\alpha_{1} = 0.9$, while on the right part of the tube it is $\alpha_{1} = 0.1$. The numerical solution is run with a $CFL$ of $1$ until the final time $t_{final} = $ $s$. Numerical solutions are given from ... to .... .
+We consider a $1$-D straight pipe of length $L=1$ $m$ filled with two gas phases in equilibrium (same pressure and velocity) described by the Ideal Gas equation of state with $\gamma_1 = 3$ and $\gamma_2 = 1.4$. This basic test has a trivial solution which corresponds to the pure advection of the volume fraction discontinuity. The viscous regularization for the SEM is quite complex and it is important to check that it fulfills a simple advection test. The objective is to make sure that the numerical stabilization method is not responsible for the apparition of an artificial mixture zone. The geometry is discretized with an uniform mesh of $100$ cells. The initial conditions consist of a uniform pressure $P_1 = P_2 =0.1$ $MPa$ and a uniform velocity $u_1 = u_2 = 100$ $m/s$. The density of the phase $1$ and $2$ are set to $10$ and $1$ $kg/m^3$, respectively. On the left part of the tube, the liquid volume fraction is $\alpha_{1} = 0.9$, while on the right part of the tube it is $\alpha_{1} = 0.1$. The numerical solution is run with a $CFL$ of $1$ until the final time $t_{final} = 1703 $ $\mu s$. The numerical solutions are given from \fig{fig:beta-visc-7-sect4} to \ref{fig:visc-7-sect4}.
 %
 \begin{figure}[H]
         \centering
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/liquid_volume_fraction.png}
+                \includegraphics[width=\textwidth]{figures/SEM/liquid_volume_fraction.png}
                 \caption{Volume fraction of phase $1$.}
                 \label{fig:vf-liq-7-eqn-sect4}
         \end{subfigure}%
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/liquid_beta.png}
+                \includegraphics[width=\textwidth]{figures/SEM/liquid_beta.png}
                 \caption{Viscosity coefficients for volume fraction equation of phase $1$.}
                 \label{fig:beta-liq-7-eqn-sect4}
         \end{subfigure}
@@ -907,13 +907,13 @@ We consider a $1$-D straight pipe of length $L=1$ $m$ filled with two gas phases
         \centering
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/liquid_pressure.png}
+                \includegraphics[width=\textwidth]{figures/SEM/liquid_pressure.png}
                 \caption{Pressure of phase $1$.}
                 \label{fig:press-1-7-eqn-sect4}
         \end{subfigure}%
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/vapor_pressure.png}
+                \includegraphics[width=\textwidth]{figures/SEM/vapor_pressure.png}
                 \caption{Pressure of phase $2$.}
                 \label{fig:press-2-7-eqn-sect4}
         \end{subfigure}
@@ -924,13 +924,13 @@ We consider a $1$-D straight pipe of length $L=1$ $m$ filled with two gas phases
         \centering
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/liquid_velocity.png}
+                \includegraphics[width=\textwidth]{figures/SEM/liquid_velocity.png}
                 \caption{Velocity of phase $1$.}
                 \label{ig:vel-1-7-eqn-sect4}
         \end{subfigure}%
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/vapor_velocity.png}
+                \includegraphics[width=\textwidth]{figures/SEM/vapor_velocity.png}
                 \caption{Velocity of phase $2$.}
                 \label{ig:vel-2-7-eqn-sect4}
         \end{subfigure}
@@ -941,129 +941,257 @@ We consider a $1$-D straight pipe of length $L=1$ $m$ filled with two gas phases
         \centering
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/liquid_viscosity.png}
+                \includegraphics[width=\textwidth]{figures/SEM/liquid_viscosity.png}
                 \caption{Viscosity coefficients of phase $1$.}
                 \label{ig:visc-1-7-eqn-sect4}
         \end{subfigure}%
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/vapor_viscosity.png}
+                \includegraphics[width=\textwidth]{figures/SEM/vapor_viscosity.png}
                 \caption{Viscosity coefficients of phase $2$.}
                 \label{fig:visc-2-7-eqn-sect4}
         \end{subfigure}
         \caption{\label{fig:visc-7-sect4}}
 \end{figure}
 %
+The stabilization numerical method preserves the uniform pressure (\fig{fig:press-7-sect4}) and velocity (\fig{fig:vel-7-sect4}) flow conditions while correctly resolving the discontinuity in the volume fraction profile as shown in \fig{fig:vf-liq-7-eqn-sect4}. The viscosity coefficients $\mu_k$ and $\kappa_k$ are equal to zero for both phases as shown in \fig{fig:visc-7-sect4}, since the flow conditions are uniform. However, the viscosity coefficient $\beta_k$ is peaked in the discontinuity region as expected. This test clearly shows that the stabilization method does not induce any artificial waves due to the smearing of the discontinuity in the volume fraction profile.
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{$1$-D shock tube for two independent fluids}\label{sec:1d-2-ind-phases-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-We still consider a $1$-D straight pipe of length $L=1$ $m$ filled with the same fluids as in \sect{sec:1d-advection-7-eq-sct4}. The velocity and pressure relaxation terms are set to zero so that the two fluid are independent. The left chamber of the pipe
+We still consider a $1$-D straight pipe of length $L=1$ $m$ filled with the same fluids as in \sect{sec:1d-advection-7-eq-sct4}. The diaphragm separates the pipe in two chambers with a high pressure ($P_{left} = 1$ $MPa$) on the left side and a low pressure ($P_{left} = 0.1$ $MPa$) in the right side. Both fluids are initially at rest. The volume fraction is set to $0.5$ which means each side of the chamber contains a mixture of two fluids with different equation of state parameters. Since the velocity and pressure relaxation coefficients $\mu_P$ and $\lambda_u$ are set to zero, the two fluids will behave independently to each other, and the volume fraction is expected to remain uniform during the simulation. An exact solution is available for each fluid which simply corresponds to the single-phase exact solution. The geometry is discretized with an uniform mesh of $500$ cells and run with a $CFL$ of one until $t_{final} = 305$ $\mu s$. The numerical and exact solutions are given from \fig{fig:two-indep-fluids-press-7-eqn-sect4} to \ref{fig:two-indep-fluids-vf-visc-1-7-eqn-sect4}.
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/two_phases_pressure.png}
+\includegraphics[width=\textwidth]{figures/SEM/two_phases_pressure.png}
 \caption{Pressure profiles at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-press-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/two_phases_velocity.png}
+\includegraphics[width=\textwidth]{figures/SEM/two_phases_velocity.png}
 \caption{Velocity profiles at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-vel-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/two_phases_density.png}
+\includegraphics[width=\textwidth]{figures/SEM/two_phases_density.png}
 \caption{Density profiles at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-dens-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/two_phases_volume_fraction.png}
+\includegraphics[width=\textwidth]{figures/SEM/two_phases_volume_fraction.png}
 \caption{Volume fraction profiles at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-vf-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/two_phases_liquid_viscosity_kappa_mu.png}
-\caption{Viscosity coefficient profiles for phase $1$ at $t=305$ $\mu s$.}
+\includegraphics[width=\textwidth]{figures/SEM/two_phases_liquid_viscosity_kappa_mu.png}
+\caption{Viscosity coefficient profiles for phase $2$ at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-visc-2-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/two_phases_vapor_viscosity_kappa_mu.png}
-\caption{Viscosity coefficient profiles for phase $2$ at $t=305$ $\mu s$.}
+\includegraphics[width=\textwidth]{figures/SEM/two_phases_vapor_viscosity_kappa_mu.png}
+\caption{Viscosity coefficient profiles for phase $1$ at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-visc-1-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/two_phases_liquid_beta.png}
+\includegraphics[width=\textwidth]{figures/SEM/two_phases_liquid_beta.png}
 \caption{Viscosity coefficient profiles for volume fraction equation of phase $1$ at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-vf-visc-1-7-eqn-sect4}
 \end{figure}
 %
+The pressure, velocity and density profiles given in \fig{fig:two-indep-fluids-press-7-eqn-sect4}, \fig{fig:two-indep-fluids-vel-7-eqn-sect4} and \fig{fig:two-indep-fluids-dens-7-eqn-sect4}, respectively, show good agreement with the exact solutions for both phases. The fluid $2$ is lighter and thus experiences stronger variations: its velocity is larger and the shock moves faster. The viscosity coefficients shown in \fig{fig:two-indep-fluids-visc-2-7-eqn-sect4} and \fig{fig:two-indep-fluids-visc-1-7-eqn-sect4} for both phases have similar profiles: they are peaked in the shock regions and also display a bump in the contact wave. In \fig{fig:two-indep-fluids-vf-7-eqn-sect4}, it is noted that the volume fraction profiles remain uniform and is not altered by the variations in the other variables. The viscosity coefficient $\beta_k$ used in the volume fraction equation is zero (\fig{fig:two-indep-fluids-vf-visc-1-7-eqn-sect4}) as expected since the volume fraction profile is uniform.
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{$1$-D shock tube for two fluids with pressure and velocity relaxation terms}\label{sec:1d-2-phases-rel-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
+Once again, we consider a $1$-D shock tube with the same initial conditions and the same fluids as in \sect{sec:1d-2-ind-phases-7-eq-sct4}. The pressure and velocity relaxation coefficients are no longer set to zero but computed from \eqt{E-R:85} and \eqt{E-R:86} with $A_{int} =  10^4$ $m^{-1}$. Thus, because of the relaxation source terms, the two fluids will exhibit the same pressure and velocity. The volume fraction will not remain uniform but is expected to vary due to the pressure relaxation source term (\eqt{eqn:multi-d-7-eqn-liq-vol}). For this test, an exact solution is not available but the reader can refer to \cite{Saurel_2007} for comparison. An uniform mesh of $500$ cells is used. The code is run until $t_{final} = 305$ $\mu s$ with a $CFL$ of one. The numerical solutions are presented from \fig{fig:two-fluids-rel-press-7-eqn-sect4} to \ref{fig:two-fluids-rel-vf-visc-1-7-eqn-sect4}.
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/relaxation_two_phases_pressure.png}
+\includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_pressure.png}
 \caption{Pressure profiles at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-press-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/relaxation_two_phases_velocity.png}
+\includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_velocity.png}
 \caption{Velocity profiles at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-vel-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/relaxation_two_phases_density.png}
+\includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_density.png}
 \caption{Density profiles at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-rho-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/relaxation_two_phases_volume_fraction.png}
+\includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_volume_fraction.png}
 \caption{Volume fraction profiles at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-vf-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/relaxation_two_phases_liquid_viscosity_kappa_mu.png}
+\includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_liquid_viscosity_kappa_mu.png}
 \caption{Viscosity coefficient profiles for phase $1$ at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-visc-2-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/relaxation_two_phases_vapor_viscosity_kappa_mu.png}
+\includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_vapor_viscosity_kappa_mu.png}
 \caption{Viscosity coefficient profiles for phase $2$ at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-visc-1-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{figures/relaxation_two_phases_liquid_beta.png}
+\includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_liquid_beta.png}
 \caption{Viscosity coefficient profiles for volume fraction equation of phase $1$ at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-vf-visc-1-7-eqn-sect4}
 \end{figure}
 %
+As expected, the two fluids have the same pressure and velocity profiles as shown in \fig{fig:two-fluids-rel-press-7-eqn-sect4} and \fig{fig:two-fluids-rel-vel-7-eqn-sect4}, respectively. The shock is well resolved and do not display any instability. The main difference with the numerical results obtained in \sect{sec:1d-2-ind-phases-7-eq-sct4} lies in the volume fraction profiles that are no longer uniform but display a shock wave around $x=0.7$ $m$ as shown in \fig{fig:two-fluids-rel-vf-7-eqn-sect4}. Consequently, the viscosity coefficient $\beta_k$ is peaked in the shock region.  
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{$1$-D nozzle test}\label{sec:1d-nozzle-rel-7-eq-sct4}
+\subsection{$1$-D converging-diverging nozzle test}\label{sec:1d-nozzle-rel-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
+In this section, it is proposed to investigate the behavior of two fluids in a one meter long $1$-D converging-diverging nozzle: $A(x) = 1 + 0.5 \cos \left( 2\pi x \right)$. This test was first introduced by Saurel et al. in \cite{SEM} for the $1$-D seven equation model and consists of a mixture of liquid water and vapor described by the SGEOS with the parameters given in ... Stagnation boundary conditions are specified on the left of the nozzle (inlet) for both phases with a stagnation temperature $T_0 = 453 $ $K$ and a stagnation pressure $P_0 = 1$ $MPa$. At the outlet, a static pressure boundary condition is specified with $P_b = 0.5$ $MPa$ for both phases. The volume fraction is set to $\alpha_k = 0.5$ at the inlet. The initial conditions are computed from the boundary conditions by assuming the two fluids at rest and linearly interpolating the pressure and temperature between the boundary values. The geometry is discretized with an uniform mesh of $100$ cells and run until steady-state. The pressure and velocity relaxation coefficients are computed from \eqt{E-R:85} and \eqt{E-R:86}, and the use of \eqt{eq:Aint-sect4} for different values of $A_{int,max}$ that will be specified in time. The reader can refer to \sect {sec:liquid_nozzle} and \sect{sec:steam_nozzle} for numerical solution in a $1$-D nozzle when considering two independent fluids (i.e without relaxation source terms). This section is organized as follows: first numerical results are presented when considering only the pressure and velocity relaxation terms for different values of $A_{int,max}$. Then, the same simulation is run when adding the mass and energy exchange source terms. \\
+
+We first consider the $1$-D seven equation model with on the relaxation source terms for different values of $A_{int,max} = 10^2 \text{, } 10^3$ and $10^4$ $m^{-1}$. The pressure profiles are given for all of the value of $A_{int,max}$ for comparison. The density, velocity, volume fraction and viscosity coefficients are only given for $A_{it.max} = 10^4$ $m^{-1}$. The numerical results are presented from \fig{fig:two-fluids-rel-nozzle-press-Aint4-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-sem-sect4}.
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e2_two_phases_pressure.png}
+\caption{Pressure profiles at steady state with $A_{int,max} = 10^2$.}
+\label{fig:two-fluids-rel-nozzle-press-Aint2-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e3_two_phases_pressure.png}
+\caption{Pressure profiles at steady state with $A_{int,max} = 10^3$.}
+\label{fig:two-fluids-rel-nozzle-press-Aint3-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e4_two_phases_pressure.png}
+\caption{Pressure profiles at steady state with $A_{int,max} = 10^4$.}
+\label{fig:two-fluids-rel-nozzle-press-Aint4-sem-sect4}
+\end{figure}
+%
+The pressure profiles for $A_{int,max} = 10^2 \text{, } 10^3$ and $10^4$ $m^{-1}$ are given in \fig{fig:two-fluids-rel-nozzle-press-Aint2-sem-sect4}, \fig{fig:two-fluids-rel-nozzle-press-Aint3-sem-sect4} and \fig{fig:two-fluids-rel-nozzle-press-Aint4-sem-sect4} ,respectively. As the value of $A_{int,max}$ increases, the liquid pressure becomes positive and matches the vapor pressure variations. The static pressure outlet boundary holds for both phases. At the inlet, the liquid and vapor pressures are not equal since only the stagnation pressure is specified.
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e4_two_phases_velocity.png}
+\caption{Velocity profiles at steady state.}
+\label{fig:two-fluids-rel-nozzle-vel-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e4_two_phases_density.png}
+\caption{Density profiles at steady state.}
+\label{fig:two-fluids-rel-nozzle-rho-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e4_two_phases_volume_fraction.png}
+\caption{Volume fraction profiles at steady state.}
+\label{fig:two-fluids-rel-nozzle-vf-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e4_liquid_viscosity_kappa_mu.png}
+\caption{Viscosity coefficients profiles for liquid phase at steady state.}
+\label{fig:two-fluids-rel-nozzle-visc-liq-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e4_vapor_viscosity_kappa_mu.png}
+\caption{Viscosity coefficients profiles for vapor phase at steady state.}
+\label{fig:two-fluids-rel-nozzle-visc-vap-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e4_liquid_beta.png}
+\caption{Viscosity coefficients profiles for liquid volume fraction phase at steady state.}
+\label{fig:two-fluids-rel-nozzle-visc-vf-sem-sect4}
+\end{figure}
+%
+The velocity, density, volume fraction and viscosity coefficients profiles are plotted from \fig{fig:two-fluids-rel-nozzle-vel-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-sem-sect4} in the case $A_{int,max} = 10^4$ $m^{-1}$. Because of the velocity relaxation source terms, velocity equilibrium holds between the liquid and vapor phases. The liquid and vapor density profiles are different by two order of magnitude. The volume fraction of both phases varies throughout the nozzle as a consequence of the pressure equilibrium. The viscosity coefficients $\mu_k$ and $\kappa_k$ are equal to each other since there is no shock wave, and are large enough to stabilizes the strong variations in the pressure and velocity profiles. Lastly, the viscosity coefficient $\beta_k$ follows the variations of the volume fraction for both phases. It is interested to not that the fast vapor flow yields strong variations in the divergent part of the nozzle. Overall, the viscosity coefficients are large enough to prevent the formation of instability in the numerical solution without altering the physical solution.\\
+%
+
+Next, the same converging-diverging nozzle is run with mass and energy exchange source terms. The code is run until steady-state with $A_{int,max}=10^3$ $m^{-1}$. The corresponding numerical results are shown from \fig{fig:two-fluids-rel-nozzle-press-mass-on-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-mass-on-sem-sect4}.
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_two_phases_pressure.png}
+\caption{Pressure profiles at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\label{fig:two-fluids-rel-nozzle-press-mass-on-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_two_phases_velocity.png}
+\caption{Velocity profiles at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\label{fig:two-fluids-rel-nozzle-vel-mass-on-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_two_phases_density.png}
+\caption{Density profiles at steady state with thermodynamic relaxations and mass and heat exchange terms}
+\label{fig:two-fluids-rel-nozzle-rho-mass-on-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_two_phases_volume_fraction.png}
+\caption{Volume fraction profiles at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\label{fig:two-fluids-rel-nozzle-vf-mass-on-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_liquid_viscosity_kappa_mu.png}
+\caption{Viscosity coefficients profiles for liquid phase at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\label{fig:two-fluids-rel-nozzle-visc-liq-mass-on-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_vapor_viscosity_kappa_mu.png}
+\caption{Viscosity coefficients profiles for vapor phase at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\label{fig:two-fluids-rel-nozzle-visc-vap-mass-on-sem-sect4}
+\end{figure}
+%
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_liquid_beta.png}
+\caption{Viscosity coefficients profiles for liquid volume fraction at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\label{fig:two-fluids-rel-nozzle-visc-vf-mass-on-sem-sect4}
+\end{figure}
+%
+Because of the mass and heat transfers between phases, the flow variations are smoother than in the previous case. Consequently, the viscosity coefficients are also smoother while stabilizing the scheme.  
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{$1$-D straight pipe with wall-friction force, wall heat source and exchange terms (mass and energy)}\label{sec:1d-straight-pipe-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1073,35 +1201,35 @@ The pressure, temperature, velocity, volume fraction and viscosity coefficients 
 %
         \begin{figure}[H]
                 \centering
-                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_pressure.png}
+                \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_pressure.png}
                 \caption{Pressure}
                 \label{fig:pressure}
         \end{figure}%
 %
         \begin{figure}[H]
                 \centering
-                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_temperature.png}
+                \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_temperature.png}
                 \caption{Temperature}
                 \label{fig:temperature}
         \end{figure}%
 %            
         \begin{figure}[H]
                 \centering
-                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_velocity.png}
+                \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_velocity.png}
                 \caption{Velocity}
                 \label{fig:velocity}
         \end{figure}
 %
         \begin{figure}[H]
                 \centering
-                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_volume_fraction.png}
+                \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_volume_fraction.png}
                 \caption{Volume fraction}
                 \label{fig:volume_fraction}
         \end{figure}        
 %
         \begin{figure}[H]
                 \centering
-                \includegraphics[width=\textwidth]{figures/ANS_WINTER_2014_7Eqn_viscosity.png}
+                \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_viscosity.png}
                 \caption{Viscosity coefficients}
                 \label{fig:viscosity_coeff}
         \end{figure}        
