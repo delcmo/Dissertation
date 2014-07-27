@@ -19,7 +19,6 @@
 In this chapter, some key properties of hyperbolic conservation laws are recalled. The objective is to introduce the reader to the notion of shocks, weak solution, and entropy condition by first studying a simple hyperbolic scalar equation. The mathematical properties of the hyperbolic scalar equation are studied; these include the derivation of the Jacobian eigenvalues and the characteristic equations. Then, we explain how shock are formed which leads to a discussion of solution non-uniqueness and weak solutions. Finally, it will be explained how the entropy condition is used to ensure uniqueness of the weak solution and, more importantly, we discuss convergence of the numerical solution to the physical one. In the last section of this chapter, the notions introduced for the hyperbolic scalar equation are generalized to hyperbolic systems of equations.
 
 %%%%%%%%%%%%%%%%%%%%
-\textcolor{red}{do not use \textcolor{red}{:} in your section/subsection headers ... please remove throughout the documents}
 \section{Hyperbolic scalar equations}\label{sec:hyp_scalar_sct1b}
 %%%%%%%%%%%%%%%%%%%%
 
@@ -67,7 +66,7 @@ Once the eigenvalues are determined, the next step consists of deriving the char
 &&\frac{Du}{Dt} = \partial_t u + \frac{dx}{dt} \partial_x u = 0 \text{ along } \frac{dx}{dt} = f'(u) = \lambda 
 \end{eqnarray}
 %
-\textcolor{red}{to be clearer, it would be better to add the equation with $du/dt=0$}
+\tcr{to be clearer, it would be better to add the equation with $du/dt=0$}
 \eqt{eq:ivp3_sct1b} represents the rate of change of the solution $u$ along the curve $\frac{dx}{dt} = f'(u) = \lambda$. It tells us that the solution $u$ is constant along the curve $\frac{dx}{dt} = \lambda$ since its rate of change is zero. The eigenvalue is the slope of the characteristic curve and is referred to as the characteristic speed. 
 For a given characteristic curve, the characteristic speed is a constant, since the solution $u$ is constant as well, and given by the initial condition, $f'(u(x,0))=f'(u_0)$ which allows us to integrate in order to obtain an analytical expression for $x(t)$:
 %
@@ -99,7 +98,7 @@ When considering the 1-D linear advection equation (with the flux $f_1(u) = au$)
 \end{figure}
 %
 In the case of the 1-D Burger's equation, the eigenvalue is no longer constant and equal to the solution itself $\lambda_2 = u(x,t)$. The slope of the characteristic curve is now a function of space and more precisely of the initial solution $u_0$ which requires us to analyze two distinct cases: a constant and a non-constant initial solution. In the former case, the slope of the characteristic is constant which is the same situation as with the linear advection equation previously discussed. In the latter case, the characteristic curves will not have the same slope and thus, may intersect. When two characteristic curves intersect, it means that, at a given time and position, two values of the solution are allowed (each characteristic curve carries different initial values of the solution): the solution displays an infinite gradient also called shock wave as shown in \fig{fig:char_curve_bg_sct1b}. 
-\textcolor{red}{how do we see the infinite gradient in the equation?}\tcb{You see it with the characteristic equation: two values of u at a given point x -> infinite gradient}
+\tcr{how do we see the infinite gradient in the equation?}\tcb{You see it with the characteristic equation: two values of u at a given point x -> infinite gradient}
 %
 \begin{figure}[H]
 \centering
@@ -135,7 +134,7 @@ The trivial case $f''(u_0) = 0$ implies two options. The first case verifying $f
 T_{shock} = \frac{-1}{\min\left( f'(u_0) \right)} 
 \end{equation}
 % 
-\textcolor{red}{that is not enough, $f''(u)0$ could be 0 at a given $x_0$. How can we modify this sentence?\\also, isn't the time of shock the minimum over all values of $x_0$?} \tcb{Is it better?} \tcr{not yet}
+\tcr{that is not enough, $f''(u)0$ could be 0 at a given $x_0$. How can we modify this sentence?\\also, isn't the time of shock the minimum over all values of $x_0$?} \tcb{Is it better?} \tcr{not yet}
 Once the shock is formed, at a time $t \geq T_{shock}$, more than two characteristic curves may intersect leading to a triple-valued situation as shown in \fig{fig:triple_pt_bg_sct1b}. 
 %
 \begin{figure}[H]
@@ -224,7 +223,7 @@ Then, \eqt{eq:weak_sol_sct1b} is integrating by parts to obtain:
 -\int_{-\infty}^{+\infty}\text{dx} \phi(x,t) u(x,t) \left. \right|_0^{+\infty} - \int_0^{+\infty}\text{dt} \phi(x,t) f(u(x,t)) \left. \right|_{-\infty}^{+\infty}
 \end{eqnarray}
 %
-where the two integrals on the right-hand-side of \eqt{eq:weak_sol2_sct1b} correspond to the boundary terms. Recalling that the test function is identically zero outside a bounded set which means $\phi(x,t) \to 0$ as $x \to \pm  \infty$ and $t \to +\infty$, \textcolor{red}{why does the test function depends on time and tends to 0 as time tends to infty?} \tcb{ I think it is for generality purpose. But the same derivation could be done with $\phi(x)$. In Leveque it is done with $\phi(x,t)$ p. 27 but they do not really justify this choice}\tcr{ok, please put the appropriate ref to Leveque's book, including the page number} all of the boundary terms vanish but for $t=0$. The resulting equation contains only one boundary term that is function of the initial condition as shown in \eqt{eq:weak_sol3_sct1b}.
+where the two integrals on the right-hand-side of \eqt{eq:weak_sol2_sct1b} correspond to the boundary terms. Recalling that the test function is identically zero outside a bounded set which means $\phi(x,t) \to 0$ as $x \to \pm  \infty$ and $t \to +\infty$, \tcr{why does the test function depends on time and tends to 0 as time tends to infty?} \tcb{ I think it is for generality purpose. But the same derivation could be done with $\phi(x)$. In Leveque it is done with $\phi(x,t)$ p. 27 but they do not really justify this choice}\tcr{ok, please put the appropriate ref to Leveque's book, including the page number} all of the boundary terms vanish but for $t=0$. The resulting equation contains only one boundary term that is function of the initial condition as shown in \eqt{eq:weak_sol3_sct1b}.
 %
 \begin{eqnarray}\label{eq:weak_sol3_sct1b}
 \int_0^{+\infty}\text{dt}\int_{-\infty}^{+\infty}\text{dx} \left[ u(x,t) \partial_t \phi(x,t)   + f(u) \partial_x \phi(x,t)  \right] = \nonumber \\
@@ -447,7 +446,7 @@ The jump of the entropy flux $\mbold \psi$, denoted by $J$, is included in the d
 %
 \begin{remark}
 The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} requires an isentropic mesh in order to be able to define the grid size $h$. An alternative definition without $h$ is under investigation for the case of hyperbolic scalar equations.
-\textcolor{red}{not true; if you if you define $\mu$ per cell $K$, then you can use $h_K$, the diameter of cell $K$ in multi-D, and then you do not need to require mesh uniformity. This may be a detail but your remark is not necessarily 100\% true} \tcb{Is it better or am I still missing something?} \tcr{I do not understand why you say isentropic mesh. I changed that to uniform mesh but you changed it back to isentropic. What is an isentropic mesh?}
+\tcr{not true; if you if you define $\mu$ per cell $K$, then you can use $h_K$, the diameter of cell $K$ in multi-D, and then you do not need to require mesh uniformity. This may be a detail but your remark is not necessarily 100\% true} \tcb{Is it better or am I still missing something?} \tcr{I do not understand why you say isentropic mesh. I changed that to uniform mesh but you changed it back to isentropic. What is an isentropic mesh?}
 \end{remark}
 
 
@@ -456,7 +455,7 @@ The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} req
 %%%%%%%%%%%%%%%%%%%%%
 In this section, the entropy viscosity method is applied to non-linear hyperbolic systems of equations. The reader can refer to \cite{Toro} and \cite{Leveque} for an extension of the theoretical notions (eigenvalues, characteristic curves, $\ldots$) in the case of non-linear hyperbolic conservation laws. The objective of this section is to provide the reader with a methodology on how to apply the EVM to any hyperbolic system of equations. For academic purpose, we will rely on the latest published version of the EVM \cite{valentin} for the multi-D Euler equations in order to understand the main steps of the method. Other more recent publications will be also used. \cite{jlg, jlg2} are good prerequites to \cite{valentin} to observe the evolution of the EVM in the recent years. For hyperbolic system of equation, it is customary to work with the physical entropy $s$ that is of opposite sign of the mathematical entropy $\eta$.\\
 
-To the best of our knowledge \textcolor{red}{certainly not true, by now, Murtazo must have several publications. Find out} \tcb{I already did. I checked his webpage and google searched but a lot of papers are in preparation}, the EVM was successfully applied to one hyperbolic system of equation: the multi-D Euler equations with the ideal gas equation of state \cite{jlg, valentin}. Good agreements with the exact solutions were obtained in 1- and 2-D results when using discontinuous schemes (finite volume and discontinuous Galerkin finite element methods), spectral and Fourier methods. We now recall the details of the latest version of the method \cite{valentin} and remind the reader that this version will be used as a starting point and modified during this dissertation. The viscous regularization derived from the entropy condition for the multi-D Euler equations with the ideal gas equation of state is as follows:
+To the best of our knowledge \tcr{certainly not true, by now, Murtazo must have several publications. Find out} \tcb{I already did. I checked his webpage and google searched but a lot of papers are in preparation}, the EVM was successfully applied to one hyperbolic system of equation: the multi-D Euler equations with the ideal gas equation of state \cite{jlg, valentin}. Good agreements with the exact solutions were obtained in 1- and 2-D results when using discontinuous schemes (finite volume and discontinuous Galerkin finite element methods), spectral and Fourier methods. We now recall the details of the latest version of the method \cite{valentin} and remind the reader that this version will be used as a starting point and modified during this dissertation. The viscous regularization derived from the entropy condition for the multi-D Euler equations with the ideal gas equation of state is as follows:
 %
 \begin{subequations}\label{eq:euler_visc_sct1b}
 %
@@ -479,7 +478,7 @@ P = \left( \gamma-1 \right) \rho e = \left( \gamma-1 \right) C_v \rho T
 \end{subequations}
 %
 where $\rho$, $\rho \vec{u}$ and $\rho E $ are the fluid density, momentum and total energy, respectively, and will be referred to as the conservative variables. The pressure $P$ and the temperature $T$ are computed from the Ideal 
-Gas equation of state (IGEOS) recalled in \eqt{eq:eos_sct1b} which is a function of the density $\rho$ and the specific internal energy $e$. The heat capacity $C_v$ is constant by definition \textcolor{red}{is this true?}\tcb{It is always true for IGEOS}. The viscosity coefficients $\mu$ and $\kappa$ are space- and time-dependent and are taken proportional to an entropy residual $R$ as follows:
+Gas equation of state (IGEOS) recalled in \eqt{eq:eos_sct1b} which is a function of the density $\rho$ and the specific internal energy $e$. The heat capacity $C_v$ is constant by definition \tcr{is this true?}\tcb{It is always true for IGEOS}. The viscosity coefficients $\mu$ and $\kappa$ are space- and time-dependent and are taken proportional to an entropy residual $R$ as follows:
 % 
 \begin{subequations}
 %
