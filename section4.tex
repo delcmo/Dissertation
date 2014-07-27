@@ -15,27 +15,30 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{\uppercase {Application of the entropy viscosity method to the seven equations model}}\label{chap:seven}
+\chapter{\uppercase {Application of the entropy viscosity method to the seven-equation model}}\label{chap:seven}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tcr{seven-equation is an adjective to the noun model, so (1) it needs a hyphen and (2) it is ``singular'' since adjectives are invariable in English. Please check throughout the document.\\}
 %
-Compressible two-phase flows have numerous industrial applications and thus, have been a field of focus over the last years. A variety of models with different level of complexity has been developed such as: five equation model, six equation model and the more recently the seven equation model. These models are all obtains by integrating the single-phase flow balance equations weighed by a characteristic function for each phase. The resulting system of equation contains non-conservative terms that describe the interaction between phases but also an equation for the volume fraction variable. Once a system of equations describing the physics is derived, the other challenging step is to develop a consistent numerical solver in order to obtain a numerical solution. Assuming that the system of equations is hyperbolic under some conditions, a Riemann solver could be used but often rule out because of the complexity due to the number of equations involved. Furthermore, careless approximation for the treatment of the non-conservative terms can lead to failure in computing the numerical solution. An alternative is to use an approximate Riemann solver, that are well-known for single-phase flows, while deriving a consistent discretization scheme for the non-conservative terms. 
+Compressible two-phase flows are found in numerous industrial applications and thus have been an area of intense research in modeling and simulation over many years. A variety of models with different level of complexity has been developed such as: five-equation model\tcr{some each model you mention, provide some references}\tcr{regarding the 5-eq model, are there not several of them and not just one sch model? If so, say that and give more than one reference}, six-equation model, and more recently the seven-equation model. These models are all obtained by integrating the single-phase flow balance equations weighed by a characteristic function for each phase. The resulting system of equations contains non-conservative terms that describe the interaction between phases but also an equation for the volume fraction. Once a system of equations describing the physics is derived, the other challenging step is to develop a consistent numerical solver in order to obtain a numerical solution. Assuming that the system of equations is hyperbolic under some conditions, a Riemann solver could be used but is often ruled out because of the complexity due to the number of equations involved. Furthermore, careless approximation for the treatment of the non-conservative terms can lead to failure in computing the numerical solution\tcr{a reference to back this up would be useful here}. An alternative is to use an approximate Riemann solver, a well-established approach for single-phase flows, while deriving a consistent discretization scheme for the non-conservative terms. 
 
-This methodology was applied to the seven equation model (SEM) that was first introduced by Berry et al. in \cite{SEM}. This model is known to be unconditionally hyperbolic which is highly valuable when working with approximate Riemann solver and can treat a wide range of applications. Its particularity comes from the pressure and velocity relaxation terms in the volume fraction, momentum and energy equations that can bring the two phases in equilibrium when using infinite relaxation parameters. In other words, the seven equation model can degenerate into the six and five equation models. Solving for the seven equation model require a numerical solver and a tremendeous amount of work was dedicated to this task for discontinuous schemes. Because each phase is assumed to obey the Euler equations, most of the numerical solvers are adapted from the single-phase approximate Riemann solvers. For example, Saurel et al. \cite{Saurel_2001a, Saurel_2001b} employed a HLL-type scheme to solve for the SEM but noted that excessive dissipation was added to the contact discontinuity. A more advanced HLLC type scheme was developed in \cite{Li_2004} but only for the subsonic case and then extended to supersonic flows in \cite{Zein_2010}. More recently, Ambroso et al. \cite{Ambroso_2012} proposed an approximate Riemann solver accounting for source terms such as gravity and drag forces.\\
+This methodology was applied to the seven equation model (SEM) that was first introduced by Berry et al. in \cite{SEM}. This model is known to be unconditionally hyperbolic which is highly desirable when working with approximate Riemann solvers and can treat a wide range of applications. Its particularity comes from the pressure and velocity relaxation terms in the volume fraction, momentum and energy equations that can bring the two phases in equilibrium when using large values of the relaxation parameters. In other words, the seven equation model can degenerate into the six and five equation models. Solving for the seven equation model requires a numerical solver and a tremendous amount of work was dedicated to this task for spatially discontinuous schemes. Because each phase is assumed to obey the Euler equations, most of the numerical solvers are adapted from the single-phase approximate Riemann solvers. For example, Saurel et al. \cite{Saurel_2001a, Saurel_2001b} employed a HLL-type scheme to solve for the SEM but noted that excessive dissipation was added to the contact discontinuity. A more advanced HLLC-type scheme was developed in \cite{Li_2004} but only for the subsonic case and then extended to supersonic flows in \cite{Zein_2010}. More recently, Ambroso et al. \cite{Ambroso_2012} proposed an approximate Riemann solver accounting for source terms such as gravity and drag forces.\\
 
- We proposed to investigate how the EVM applies to the seven equation model when discretized with a CFEM. First, the multi-D seven equation model is recalled and detailed in \sect{sec:multi-seven-equ-model}, and a particular attention is brought to the entropy equation. Then, the dissipative terms are derived using the entropy inequality, in \sect{sec:sev-equ-visc-reg-sect4}, on the same model of what is done in \chap{chap:euler} for the multi-D Euler equations. In \sect{sec:sev-equ-visc-coeff-sect4}, a low-Mach asymptotic limit is performed in order to derived a definition for the viscosity coefficients consistent with the incompressible limit. Lastly, $1$-D numerical results are presented in \sect{sec:1d-num-res-sect4}.
+We propose to investigate how the EVM applies to the seven equation model when discretized with a CFEM. First, the multi-D seven equation model is recalled and detailed in \sect{sec:multi-seven-equ-model} and particular attention is given to the entropy equation. Then, the dissipative terms are derived using the entropy inequality, in \sect{sec:sev-equ-visc-reg-sect4}, on the same principle of what was done in \chap{chap:euler} for the multi-D Euler equations. In \sect{sec:sev-equ-visc-coeff-sect4}, a low-Mach asymptotic limit is performed in order to derive a definition for the viscosity coefficients consistent with the incompressible limit results. Lastly, 1-D numerical results are presented in \sect{sec:1d-num-res-sect4}.
 %\begin{itemize}
 %\item background on 7 emu model: first introduced. 
 %\item method to solve this system: discontinuous scheme. Approximate Riemann solvers. Quote several papers
 %\item differences between system of equation -> closure relations for relaxation coefficients.
 %\end{itemize}
+
 %===================================================================================
 \section{Descriptions of the multi-D seven equation model}\label{sec:multi-seven-equ-model}
 %===================================================================================
-The multi-D seven equation model is obtained by assuming that each phase obeys the pure Euler equations and by integrating over a control volume after multiplying by a characteristic function. The detailed derivation can be found in \cite{SEM}. In this section, the governing equations are recalled for each phase and the source terms are described. 
+
+The multi-D seven equation model is obtained by assuming that each phase obeys the single-phase Euler equations (with phase-exchange terms) and by integrating over a control volume after multiplying by a characteristic function. The detailed derivation can be found in \cite{SEM}. In this section, the governing equations are recalled for each phase and the source terms are described. 
 %-----------------------------------------------------------------------------------------
-\subsection{The system of equation for the liquid and vapor phases}\label{sec:multi-d-7eqn-model-sect4}
+\subsection{The system of equations for the liquid and vapor phases}\label{sec:multi-d-7eqn-model-sect4}
 %-----------------------------------------------------------------------------------------
-The liquid phase obeys a mass, momentum and energy balance equations and a non-conservative volume fraction equation:
+The liquid phase obeys the following mass, momentum and energy balance equations, supplemented by a non-conservative volume-fraction equation:
 %
 \begin{subequations}\label{eq:liq-7-eqn-sect5}
 \begin{align}
@@ -45,7 +48,8 @@ The liquid phase obeys a mass, momentum and energy balance equations and a non-c
   + \div \left( \alpha \rho \mbold u \right)_{liq} A
   &= - \Gamma A_{int} A
 \end{align}
-  \begin{align}
+\tcr{identity tensor missing in pressure term because you are using div and not grad}
+\begin{align}
   % liquid momentum
   \frac{\partial \left( \alpha \rho \mbold u \right)_{liq} A}{\partial t}
   + \div \left[ \alpha_{liq} A \left( \rho \mbold u \otimes \mbold u + P  \right)_{liq} \right]
@@ -111,13 +115,13 @@ On the same model, the equations for the vapor phase are:
 \end{align}
 \end{subequations}
 %
-where $\alpha_k$, $\rho_k$, $\mbold u_k$ and $E_k$ denote the volume fraction, the density, the velocity vector and the total energy of phase $k=\left\{ liq, vap \right\}$, respectively. The phase pressure $P_k$ is computed from an equation of state. The interfacial variables are denoted by the subscript $int$ and their definition will be given in \sect{sec:source-terms-7-eqt-sect5}. The interfacial pressure and velocity, and their corresponding average values are denoted by $P_{int}$, $\mbold u_{int}$, $\bar{P}_{int}$ and $\bar{\mbold u}_{int}$, respectively. $\Gamma$ is the net mass transfer per unit interfacial area from the liquid to the vapor phase and $A_{int}$ is the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$ and $H_{vap, int}$ are the liquid and gas total enthalpies at the interface, respectively. $\mu_P$ is the pressure relaxation coefficient and $\lambda_u$ denotes the velocity relaxation coefficient. Lastly, the cross-section $A$ is only spatial dependent. In the case of two-phase flow, the equation for the vapor volume fraction, \eqt{eqn:multi-d-7-eqn-vap-vol}, is simply replaced by the algebraic relation
+where $\alpha_k$, $\rho_k$, $\mbold u_k$ and $E_k$ denote the volume fraction, the density, the velocity vector and the total \tcr{specific} energy of phase $k=\left\{ liq, vap \right\}$, respectively. The phase pressure $P_k$ is computed from an equation of state. The interfacial variables are denoted by the subscript $int$ and their definition will be given in \sect{sec:source-terms-7-eqt-sect5}. The interfacial pressure and velocity and their corresponding average values are denoted by $P_{int}$, $\mbold u_{int}$, $\bar{P}_{int}$ and $\bar{\mbold u}_{int}$, respectively. $\Gamma$ is the net mass transfer per unit interfacial area from the liquid to the vapor phase and $A_{int}$ is the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$ and $H_{vap, int}$ are the liquid and gas total \tcr{specific} enthalpies at the interface, respectively. $\mu_P$ is the pressure relaxation coefficient and $\lambda_u$ denotes the velocity relaxation coefficient. Lastly, the cross section $A$ is only spatially dependent. In the case of two-phase flows, the equation for the vapor volume fraction, \eqt{eqn:multi-d-7-eqn-vap-vol}, is simply replaced by the algebraic relation
 %
 \begin{align}
  \alpha_{vap}= 1 - \alpha_{liq}
 \end{align}
 %
-The set of eight equations given in \eqt{eq:liq-7-eqn-sect5} and in \eqt{eq:vap-7-eqn-sect5} is now reduced to seven which yields the multi-D seven equation model. A set of seven waves is present in: two acoustic waves and a contact wave for each fluid supplanted by a volume fraction wave propagating at the interface velocity $\mbold u_{int}$. Considering a domain of dimension $\mathbb{D}$, the corresponding eigenvalues are the following for each phase $k$:
+The set of eight equations given in \eqt{eq:liq-7-eqn-sect5} and in \eqt{eq:vap-7-eqn-sect5} is now reduced to seven which yields the multi-D seven equation model. A set of seven waves is present in such a model: two acoustic waves and a contact wave for each phase supplanted by a volume fraction wave propagating at the interface velocity $\mbold u_{int}$. Considering a domain of dimension $\mathbb{D}$, the corresponding eigenvalues are the following for each phase $k$:
 % 
 \begin{align}
 &\lambda_1 = \mbold u_{int} \nonumber\\
@@ -126,7 +130,7 @@ The set of eight equations given in \eqt{eq:liq-7-eqn-sect5} and in \eqt{eq:vap-
 &\lambda_{d+3,k} = \mbold u_k \cdot \mbold n \text{ for } d = 1 \dots \mathbb{D},\nonumber
 \end{align}
 %
-where $\mbold n$ is a unit vector pointing to a random direction. \\
+where $\mbold n$ is a unit vector pointing to a random direction.\tcr{not sure random is correct here!} \\
 For each phase $k$, an entropy equation can be derived when accounting only for the pressure and velocity relaxation terms (all of the terms proportional to the net mass transfer term $\Gamma$ are removed). The entropy function for a phase $k$ is denoted by $s_k$ and function of the density $\rho_k$ and the internal energy $e_k$. The derivation is detailed in \app{app:sev-equ-model-entropy} and only the final result is recalled here:
 %
 \begin{align}\label{eq:ent-eqn-7-eqn-model}
@@ -134,13 +138,13 @@ For each phase $k$, an entropy equation can be derived when accounting only for 
 \\
 & \frac{Z_k}{\left( Z_k+Z_j \right)^2} \left[ Z_j (\mbold u_j-\mbold u_k)+\frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)\right]^2,
 \end{align}
-where $Z_{k}$ denotes the phasic acoustic impedance and is defined as the product of the density and the speed of sound: $Z_k = \rho_k c_k$. The partial derivative of the entropy function $s_k$ with respect to the internal energy $e$, $(s_e)_k$, is defined proportional to the inverse of the phasic temperature alike in \chap{chap:euler} for the singe phase Euler equations. The right hand-side of \eqt{eq:ent-eqn-7-eqn-model} is unconditionally positive since all terms are squared. Furthermore, \eqt{eq:ent-eqn-7-eqn-model} is valid for each phase $k=\left\{liq, vap \right\}$ and ensures positivity of the total entropy equation that is obtained by summing over the phases:
+where $Z_{k}$ denotes the phasic acoustic impedance and is defined as the product of the density and the speed of sound: $Z_k = \rho_k c_k$. The partial derivative of the entropy function $s_k$ with respect to the internal energy $e$, $(s_e)_k$, is defined proportional to the inverse of the phasic temperature as done in \chap{chap:euler} for the singe-phase Euler equations. The right-hand-side of \eqt{eq:ent-eqn-7-eqn-model} is unconditionally positive since all terms are squared. Furthermore, \eqt{eq:ent-eqn-7-eqn-model} is valid for each phase $k=\left\{liq, vap \right\}$ and ensures positivity of the total entropy equation that is obtained by summing over the phases:
 %
 \begin{equation}\label{eq:tot-ent-res-sct4}
 \sum_k (s_{e})_k^{-1} \alpha_k \rho_k A \frac{Ds_k}{Dt} = \sum_k (s_{e})_k^{-1} \alpha_k \rho_k A \left( \partial_t s_k + \mbold u_k \cdot \grad s_k \right) \geq 0.
 \end{equation}
 %
-It is noted that when one phase disappears, \eqt{eq:tot-ent-res-sct4} degenerates into the single phase entropy equation given in \eqt{eq:ent_res}.
+Note that when one phase disappears, \eqt{eq:tot-ent-res-sct4} degenerates into the single phase entropy equation given in \eqt{eq:ent_res}.
 %\begin{itemize}
 %\item give system of equation with relaxation terms and mass transfer term from DEM paper
 %\item explain the relaxation terms
@@ -154,7 +158,7 @@ In this section, insights about the relaxation terms, the net mass transfer term
 %---------------------------------------------------------------------------------------------------------------
 \subsubsection{Interface Pressure and Velocity, Mechanical Relaxation Coefficients}
 %---------------------------------------------------------------------------------------------------------------
-The relaxation terms are used to bring the two phases in equilibrium by making pressure and velocity equal. The mechanical relaxation coefficients $\mu_P$ and $\lambda_u$ can be seen as relaxation times: the larger the relaxation coefficients, the faster the two phases will be brought to equilibrium. Derivation of the relaxation terms is achieved by using rational thermodynamic to ensure consistency with the second thermodynamic law \cite{Truesdell}. The methodology is very similar to what is done for the derivation of the dissipative terms using the entropy inequality.
+The relaxation terms are used to bring the two phases in equilibrium by making pressure and velocity equal. The mechanical relaxation coefficients $\mu_P$ and $\lambda_u$ can be seen as relaxation times \tcr{it feels more like inverse times}: the larger the relaxation coefficients, the faster the two phases will be brought to equilibrium. Derivation of the relaxation terms is achieved by using rational thermodynamic to ensure consistency with the second thermodynamic law \cite{Truesdell}. The methodology is very similar to what is done for the derivation of the dissipative terms using the entropy inequality.
 
 In the continuous limit of small mesh spacing and time steps along with employment of the Godunov weak wave limit, it can be shown that the pressure and velocity relaxation terms obeys the following relations \cite{Berry_2008b, Chinnayya_2004}:
 %
@@ -186,15 +190,16 @@ The pressure, $\mu_P$, and velocity, $\lambda_u$, relaxation coefficients are pr
 %where $\lambda_u$ is the velocity relaxation coefficient function, $\mu_P$
 %is the pressure relaxation coefficient function, $Z_k = \rho_k c_k$,
 %$(k=liq, vap)$, is the phasic acoustic impedance and 
-The specific interfacial area (i.e. the interfacial surface area per unit
+The specific interfacial area (i.e., the interfacial surface area per unit
 volume of two-phase mixture), $A_{int}$, must be specified from some type of
-flow regime map or function. In \cite{SEM}, it is chosen function of the liquid volume fraction as follows:
+flow regime map or function. In \cite{SEM}, it is chosen to be a function of the liquid volume fraction:
 %
 \begin{equation}\label{eq:Aint-sect4}
 A_{int} = A_{int}^{max} \left[ 6.75 \left(1-\alpha_{liq} \right)^2 \alpha_{liq} \right],
 \end{equation}
 % 
-where $A_{int}^{max} = 5100$ $m^2 / m^3$. With such definition, the interfacial area is zero in the limits $\alpha_{liq} = 0,1$. 
+\tcr{is a square missing above?}
+where $A_{int}^{max} = 5100$ $m^2 / m^3$. With such definition, the interfacial area is zero in the limits $\alpha_{liq} = 0$ and $\alpha_{liq} = 1$. 
 %The DEM model for two-phase flow of
 %water and its vapor in a one dimensional duct of spatially varying
 %cross-section was derived and demonstrated with these closures by
