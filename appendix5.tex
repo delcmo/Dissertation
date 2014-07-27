@@ -23,7 +23,7 @@ This appendix aims at detailing the steps that lead to the derivation of the pha
 \partial_t \left( \alpha_k  A\right) + \mbold u_{int} A \grad \alpha_k = A \mu \left( P_k - P_j \right)\\
 \partial_t \left( \alpha_k \rho_k A \right) + \div \left( \alpha_k \rho_k \mbold u_k A \right) = 0 \\
 \partial_t \left( \alpha_k \rho_k \mbold u_k A \right) + \div \left[ \alpha_k A \left( \rho_k \mbold u_k \otimes \mbold u_k + P_k \mathbb{I} \right) \right] = \alpha_k P_k \grad A + P_{int} A \grad \alpha_k + A \lambda \left( \mbold u_j - \mbold u_k \right) \\
-\partial_t \left( \alpha_k \rho_k E_k A \right) + \div \left[ \alpha_k A \mbold u_k \left( \rho_k E_k + P_k \right) \right] = P_{int} \mbold u_{int} A \grad \alpha_k - \mu \bar{P}_{int} \left( P_k-P_j \right) + \bar{\mbold u_{int}}A \lambda \left( \mbold u_j - \mbold u_k \right)
+\partial_t \left( \alpha_k \rho_k E_k A \right) + \div \left[ \alpha_k A \mbold u_k \left( \rho_k E_k + P_k \right) \right] = P_{int} \mbold u_{int} A \grad \alpha_k - \mu \bar{P}_{int} \left( P_k-P_j \right) + \bar{\mbold u}_{int} A \lambda \left( \mbold u_j - \mbold u_k \right)
 \end{array}
 \right.
 \end{equation}
@@ -102,11 +102,11 @@ P_{int}-P_k &=& \frac{Z_k}{Z_k+Z_j} (P_j-P_k) - \frac{\grad \alpha_k}{|| \grad \
 \label{eq:ent5}
 \left[ (\mbold u_{int}-\mbold u_k)P_{int} + (\mbold u_k-\mbold u_{int})P_k \right] \grad \alpha_k = (\mbold u_{int}-\mbold u_k)(P_{int}-P_k) \grad \alpha_k=  \nonumber\\ \frac{Z_k}{\left( Z_k+Z_j \right)^2} \grad \alpha_k \cdot \left[ Z_j (\mbold u_j-\mbold u_k)(P_j-P_k)+\frac{\grad \alpha_k}{|| \grad \alpha_k ||} Z_j^2 (\mbold u_j-\mbold u_k)^2 \right. + \\ \left. \frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)^2 +  \frac{\grad \alpha_k \cdot \grad \alpha_k}{|| \grad \alpha_k ||^2}(P_k-P_j)Z_j (\mbold u_k-\mbold u_j) \right] \nonumber
 \end{eqnarray}
-The above equation is factorized by $\frac{\grad \alpha_k}{|| \grad \alpha_k ||}$ and then recast under a quadratic form when noticing that $\frac{\grad \alpha_k \cdot \grad \alpha_k}{|| \grad \alpha_k ||^2} = 1$, which yields:
+The above equation is factorized by $|| \grad \alpha_k ||$ and then recast under a quadratic form when noticing that $\frac{\grad \alpha_k \cdot \grad \alpha_k}{|| \grad \alpha_k ||^2} = 1$, which yields:
 \begin{eqnarray}
 \label{eq:ent6}
 \left[ (\mbold u_{int}-\mbold u_k)P_{int} + (\mbold u_k-\mbold u_{int})P_k \right] \grad \alpha_k =  \nonumber\\
-\frac{Z_k}{\left( Z_k+Z_j \right)^2} \left[ Z_j (\mbold u_j-\mbold u_k)+\frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)\right]^2
+|| \grad \alpha_k || \frac{Z_k }{\left( Z_k+Z_j \right)^2} \left[ Z_j (\mbold u_j-\mbold u_k)+\frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)\right]^2
 \end{eqnarray}
 Thus, using results from \eqt{eq:ent3}, \eqt{eq:ent4}, \eqt{eq:ent5} and \eqt{eq:ent6}, the entropy equation obtained in \cite{SEM} holds.
 \pagebreak{}
