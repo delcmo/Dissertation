@@ -1779,7 +1779,6 @@ Fluid flow over a 2-D cylinder is often used as a benchmark case to test numeric
 \item The pressure fluctuations are proportional to the square of inlet Mach number, i.e., 
 \begin{equation}
 \delta P = \frac{\max(P(\mbold r)) - \min(P(\mbold r))}{\max(P(\mbold r))}  \propto M_\infty^2
-%||\tilde{\mbold u}|| = \frac{\max(||\mbold u||) - \min(||\mbold u||)}{\max(||\mbold u||)}  \propto M_\infty\nonumber 
 \end{equation}
 where $\delta P$ and $M_\infty$ denote the pressure fluctuations and the inlet Mach number, respectively.
 \end{itemize}
@@ -1796,7 +1795,7 @@ T_0 = T\left( 1 + \frac{\gamma-1}{2} M^2 \right)
 \right.
 \end{equation}
 %
-An static pressure boundary condition is used for the outlet boundary and the following static pressure $P_s = 101,325$ $Pa$ is set. The implementation of the pressure boundary conditions is based of \cite{SEM}. A solid wall boundary condition is set for the top and bottom walls of the computational domain. The simulations are run until a steady state is reached with a $CFL$ of $40$. The steady state is considered reached when the residual norm  (for all equations) is less than $10^{-12}$.
+A static pressure boundary condition is used for the outlet boundary and the following static pressure $P_s = 101,325$ $Pa$ is set. The implementation of the pressure boundary conditions is based of \cite{SEM}. A solid wall boundary condition is set for the top and bottom walls of the computational domain. The simulations are run until a steady state is reached with a $CFL$ of $40$. The steady state is considered reached when the residual norm  (for all equations) is less than $10^{-12}$.
 
 Several simulations are performed, with inlet Mach numbers $M_{\text{inlet}}$ ranging from $10^{-3}$ to $10^{-7}$, and are shown from \fig{fig:cyl_1em3} through \fig{fig:cyl_1em7}. The iso-Mach contour lines are drawn using 30 equally-spaced intervals $2 \ 10^{-10}$ to $M_{\text{inlet}}$ and allow us to assess the symmetry of the numerical solution.
 %
