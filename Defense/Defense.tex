@@ -892,9 +892,9 @@ $10^{-7}$ & $2.283$ $10^{-7}$ & $1.144$ $10^{-7}$ & $1.99$ \\ \hline
 \begin{frame}{$2$-D Mach $2.5$ flow over a forward facing step}
   \begin{columns}
     \column{.5\textwidth}
-       \includemedia[addresource=forward_facing_step_density_movie.mp4, activate=pageopen, deactivate=pageclose, width=6.5cm, height=5cm, flashvars={source=forward_facing_step_density_movie.mp4 & autoPlay=true & loop=true }]{}{VPlayer.swf}
+       \includemedia[addresource=FFS_density_movie.mp4, activate=pageopen, deactivate=pageclose, width=6.5cm, height=5cm, flashvars={source=FFS_density_movie.mp4 & autoPlay=true & loop=true }]{}{VPlayer.swf}
     \column{.5\textwidth}
-      \includemedia[addresource=forward_facing_step_viscosity_movie.mp4, activate=pageopen, deactivate=pageclose, width=6.5cm, height=5cm, flashvars={source=forward_facing_step_viscosity_movie.mp4 & autoPlay=true & loop=true }]{}{VPlayer.swf}
+      \includemedia[addresource=FFS_viscosity_movie.mp4, activate=pageopen, deactivate=pageclose, width=6.5cm, height=5cm, flashvars={source=FFS_viscosity_movie.mp4 & autoPlay=true & loop=true }]{}{VPlayer.swf}
   \end{columns}
 \end{frame}
 %************************************************
@@ -1268,6 +1268,157 @@ The $1$-D Radiation-Hydrodynamic EquAtion \\
 \begin{center}
 \LARGE{\textbf{QUESTIONS/COMMENTS ?}}
 \end{center}
+\end{frame}
+%************************************************
+\begin{frame}{}
+\begin{center}
+$1$-D Euler equations numerical results
+\end{center}
+\end{frame}
+%************************************************
+\begin{frame}{Leblanc shock tube}
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Leblanc_exact_and_numerical_stt_density_6000.png}
+                \caption{Density}
+                \label{fig:1d_leblanc_vel}
+        \end{subfigure}%
+        %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Leblanc_exact_and_numerical_stt_momentum_6000.png}
+                \caption{Momentum}
+                \label{fig:1d_leblanc_density}
+        \end{subfigure}
+
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Leblanc_exact_and_numerical_stt_total_energy_6000.png}
+                \caption{Total energy}
+                \label{fig:1d_leblanc_press}
+        \end{subfigure}
+          %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Leblanc_viscosity_numerical_6000.png}
+                \caption{Viscosity coefficients}
+                \label{fig:1d_leblanc_visc}
+        \end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{Shock tube for liquid phase}
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/LiquidSrongShock_density_velocity_pressure_profiles.png}
+                \caption{Density, velocity and pressure profiles.}
+                \label{fig:1d_strong_shock_var}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/LiquidSrongShock_viscosity.png}
+                \caption{Viscosity coefficients profile.}
+                \label{fig:1d_strong_shock_visc}
+        \end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{Slow moving shock}
+\begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SlowMovingShock_density_velocity_pressure_profiles.png}
+                \caption{Velocity, density and pressure}
+                \label{fig:profiles_sms}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.5\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SlowMovingShock_viscosity.png}
+                \caption{Viscosity coefficients}
+                \label{fig:viscosity_sms}
+        \end{subfigure} 
+\end{figure} 
+\end{frame}
+%************************************************
+\begin{frame}{PWR}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/PWR_stt_pressure.png}
+\caption{Axial pressure profile}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/PWR_stt_temperature.png}
+\caption{Axial temperature profile}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/PWR_stt_velocity.png}
+\caption{Axial velocity profile}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/PWR_stt_viscosity.png}
+\caption{Axial viscosity profile}
+\end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{}
+\begin{center}
+$2$-D Euler equations numerical results
+\end{center}
+\end{frame}
+%************************************************
+\begin{frame}{$2$-D explosion: solution at $t=0.2$ $s$}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/Explosion_density_profiles.png}
+\caption{Density}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/Explosion_viscosity_profiles.png}
+\caption{Viscosity coefficient}
+\end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$2$-D compression corner}
+  \begin{columns}
+    \column{.5\textwidth}
+       \includemedia[addresource=compression_corner.mp4, activate=pageopen, deactivate=pageclose, width=6.5cm, height=5cm, flashvars={source=compression_corner.mp4 & autoPlay=true & loop=true }]{}{VPlayer.swf}
+    \column{.5\textwidth}
+      \includemedia[addresource=compression_corner_viscosity.mp4, activate=pageopen, deactivate=pageclose, width=6.5cm, height=5cm, flashvars={source=compression_corner_viscosity.mp4 & autoPlay=true & loop=true }]{}{VPlayer.swf}
+  \end{columns}
+\end{frame}
+%************************************************
+\begin{frame}{Supersonic flow over a $5^\circ$ double-wedge obstruction}
+\begin{figure}
+\begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/DWOMachNumberStt.png}
+                \caption{Pressure }
+        \end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/DWOViscosityStt.png}
+                \caption{Viscosity coefficient}
+        \end{subfigure}
+\end{figure}
 \end{frame}
 %************************************************
 \end{document}
