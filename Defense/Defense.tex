@@ -62,7 +62,8 @@ Marc-Olivier Delchini
 \today \\
 
 Co-chairs: J. Ragusa\footnote{Nuclear Engineering Department, Texas A\&M University.} and J.L. Guermond\footnote{Department of Mathematics, Texas A\&M University.}. \\
-Committee members: J. Morel\footnotemark[1], Y. Hassan\footnotemark[1] and R. Berry\footnote{Idaho National Laboratory.}.
+Committee members: J. Morel\footnotemark[1], Y. Hassan\footnotemark[1] and R. Berry\footnote{Idaho National Laboratory.}. \\
+Substitute: R. McClaren
 \end{center}
 \end{frame}
 %
@@ -72,26 +73,37 @@ Committee members: J. Morel\footnotemark[1], Y. Hassan\footnotemark[1] and R. Be
 \end{frame}
 %************************************************
 \section{Introduction}
-\begin{frame}
-introduction $\to$ hyperbolic system of equations and real life
+\begin{frame}{Introduction}
+\emph{Why do we need to solve for conservation laws?}
+\begin{block}{}
+\begin{itemize}
+\setlength{\itemsep}{10pt}
+\item Hyperbolic conservation laws $\longrightarrow$ nuclear engineering, aeronautic, aerospace, oil engineering, $\dots$
+\item System of equations that accurately describe the physical phenomena
+\item Need for accurate and robust modeling for engineering applications
+\item Require good understanding of the mathematical properties (eigenvalues, characteristic equations and variables , shock formation, $\dots$ )
+\item Numerical stabilizations: approximate Riemann solvers (HLL, HLLC), flux limiters, artificial dissipative methods, $\dots$
+\end{itemize}
+\end{block}
 \end{frame}
 %************************************************
-\begin{frame}{Mathematical propoerties}
+\begin{frame}{Some mathematical properties}
 Let us consider a hyperbolic conservation law of the form:
-\begin{equation} \partial_t \mbold U + \div \mbold F \left( \mbold U \right) = \mbold 0  \nonumber \text{ (strong form)}\end{equation} 
+\begin{equation} \partial_t \vec{U} + \div \vec{F} ( \vec{U} ) = \vec{0}  \nonumber \text{ (strong form)}\end{equation} 
 \begin{itemize}
-\item wave-dominated problem $\to$ eigenvalues.
-\item known to form shocks even with smooth initial conditions: characteristic equation and variable (REFS)
-\item require a numerical stabilization method to resolve shocks: approximate Riemann solver, artificial dissipative method, flux-limiting method, $\dots$
-\item uniqueness of the weak solution is ensured by an entropy condition: the associated entropy equation satisfies an inequality and is peaked in the shock region.
+\item wave-dominated problem $\to$ eigenvalues
+\item known to form shocks even with smooth initial conditions: characteristic equations and variables, Riemann invariants
+\item uniqueness of the weak solution is ensured by an \textbf{\emph{entropy condition}}: the associated entropy equation satisfies an inequality and is \emph{peaked in the shock region}.
 \begin{equation}
-\partial_t S\left( \mbold U\right) + \grad \Phi \left( \mbold U \right) \geq 0  \nonumber
+\partial_t S ( \vec{U} ) + \grad \Psi ( \vec{U} ) \geq 0  \nonumber
 \end{equation}
+$S$: physical entropy \\
+$\left( S, \Psi \right)$ is an entropy pair
 \end{itemize}
 \end{frame}
 %************************************************
 \begin{frame}{The general idea behind the entropy viscosity method}
-\emph{It is an artificial dissipation method with smart viscosity coefficient capable of tracking the shock so that dissipation is only added into the shock region.}
+\emph{It is an artificial dissipation method with smart viscosity coefficient(s)  capable of tracking the shock so that dissipation is only added into the shock region.}
 \begin{block}{}
 \begin{itemize}
 \setlength{\itemsep}{10pt}
@@ -124,7 +136,7 @@ All numerical solutions were run with BDF2 and linear test functions $\to$ secon
 %************************************************
 \begin{frame}
 \begin{center}
-BurRer's Equation \\
+BurGer's Equation \\
 (BadGEr)
 \end{center}
 \begin{figure}[H]
@@ -366,7 +378,7 @@ $\to$ choose $\Re_\infty$ and $\Pe_\infty$ so that we recover the incompressible
 \textcolor{blue}{\frac{1}{\Pe_\infty} \div \left(\vec{u}\otimes \kappa \grad  \rho \right)} \nonumber
 \end{align}
 \begin{block}{}
-Leading and first-order momentum equation:
+Leading and first-order momentum equations:
 \begin{align}
 &\grad P_0 = \grad P_1 = 0 \longrightarrow P(\vec{r}, t) = \tilde{P}_0(t) + P_2(\vec{r}, t) M_\infty^2\nonumber 
 \end{align}
@@ -567,18 +579,18 @@ J = || \vec{u} || \max \Big ( [[ \grad P \cdot \vec{n} ]], c^2 [[\grad \rho \cdo
 \end{frame}
 %************************************************
 \begin{frame}{Numerical results:}
-\begin{table}[H]
-\begin{center}
-\caption{ Subsonic flow inlet boundary conditions.}
-\begin{tabular}{|c|c|c|c|c|}
- \hline
-boundary type & $U_1^{bc}$  & $U_2^{bc}$ & $U_3^{bc}$ & $U_4^{\ell}$ \\  \hline
-static pressure & $P$     & $T$    & $\theta$  & $u$     \\  \hline
-mass flow rate  & $\rho|| \mbold u||$     & $h$  & $\theta$  & $u$     \\  \hline
-stagnation pressure & $P_0$  & $T_0$    & $\theta$  & $u$     \\  \hline
-\end{tabular}
-\end{center}
-\end{table}
+\begin{block}{$1$-D converging-diverging nozzle}
+$\longrightarrow$ steady-state solution and exact solution\\
+$\longrightarrow$ subsonic (liquid water) and supersonic (vapor) flows\\
+$\longrightarrow$ convergence study
+\end{block}
+\begin{block}{$2$-D subsonic and transonic flows}
+$\longrightarrow$ low-Mach flow over a cylinder: $M_{inlet}=10^{-3}, 10^{-4}, 10^{-6} \text{ and } 10^{-7}$ \\
+$\longrightarrow$ flow over a bump: $M_{inlet}=0.7, 10^{-2}, 10^{-4} \text{ and } 10^{-7}$
+\end{block}
+\begin{block}{$2$-D supersonic flow}
+Mach $2.5$ flow over a forward facing step
+\end{block}
 \end{frame}
 %************************************************
 \begin{frame}{$1$-D converging-diverging nozzle}
@@ -776,6 +788,13 @@ where $\delta P$ and $M_\infty$ denote the pressure fluctuations and the inlet M
 \end{frame}
 %************************************************
 \begin{frame}{$2$-D low-Mach flow over a cylinder}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{../figures/Cylinder_geometry.png}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$2$-D low-Mach flow over a cylinder}
 \begin{figure}
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
@@ -870,7 +889,7 @@ $10^{-7}$ & $2.283$ $10^{-7}$ & $1.144$ $10^{-7}$ & $1.99$ \\ \hline
 \end{figure}
 \end{frame}
 %************************************************
-\begin{frame}{$2$-D Mach $3$ flow over a forward facing step}
+\begin{frame}{$2$-D Mach $2.5$ flow over a forward facing step}
   \begin{columns}
     \column{.5\textwidth}
        \includemedia[addresource=forward_facing_step_density_movie.mp4, activate=pageopen, deactivate=pageclose, width=6.5cm, height=5cm, flashvars={source=forward_facing_step_density_movie.mp4 & autoPlay=true & loop=true }]{}{VPlayer.swf}
@@ -892,38 +911,59 @@ The SEVEN-EquAtion Model with variable area\\
 \end{frame}
 %************************************************
 \begin{frame}{The seven-equation model (SEM)}
-\begin{block}{}
+\begin{block}{The model}
 \begin{itemize}
 \setlength{\itemsep}{10pt}
-\item Each phase obeys the single-phase Euler equations: two continuity equations, two momentum equations and two energy equations.
-\item Seventh equation: void fraction equation $\rightarrow$ an internal boundary condition between the two phases at the interface.
-\item Exchange terms between phases: relaxation terms. These terms were derived using \emph{rational thermodynamic} $\rightarrow$ consistent with the entropy minimum principle.
-\item {\color{red}The system of equations is well-posed, and has seven waves.}
-\item The seven-equation model degenerates to single-phase Euler equations when one phase disappears.
+\item Each phase obeys the single-phase Euler equations: two continuity equations, two momentum equations and two energy equations
+\item Seventh equation: void fraction equation $\rightarrow$ an internal boundary condition between the two phases at the interface
+\item Exchange terms between phases: relaxation terms. These terms were derived using \emph{rational thermodynamic} $\rightarrow$ consistent with the entropy minimum principle
+\item {\color{red}The system of equations is well-posed, and has seven waves}
+\item The SEM degenerates to single-phase Euler equations when one phase disappears
+\item The SEM degenerates into the 5-equation model
 \end{itemize}
 \end{block}
 \end{frame}
 %************************************************
-\begin{frame}{The multi-D seven-equation model (with variable area)}
+\begin{frame}{The seven-equation model (SEM)}
+\begin{block}{Numerical stabilization methods}
+\begin{itemize}
+\setlength{\itemsep}{10pt}
+\item discontinuous schemes (finite volume, DG)
+\item approximate Riemann solvers: HLL, HLLC with low-Mach fix
+\item apply upwind-type scheme for non-conservative flux
+\end{itemize}
+\end{block}
+\begin{block}{Our approach}
+\begin{itemize}
+\setlength{\itemsep}{10pt}
+\item continuous scheme
+\item artificial dissipative method $\longrightarrow$ EVM
+\end{itemize}
+\end{block}
+\end{frame}
+%************************************************
+\begin{frame}{The seven-equation model (SEM)}
 We consider two phases ${j,k}$. Phase $k$ obeys the following system of equations:
-\begin{equation}
-\left\{
-\begin{array}{lcll}
-\partial_t \left( \alpha_k  A\right) &+& \vec{u}_{int} A \grad \alpha_k = {\color{blue}A \mu_{rel} \left( P_k - P_j \right)}& \nonumber \\
-\partial_t \left( \alpha_k \rho_k A \right) &+& \div \left( \alpha_k \rho_k \vec{u}_k A \right) = 0& \nonumber \\
-\partial_t \left( \alpha_k \rho_k \vec{u}_k A \right) &+& \div \left[ \alpha_k A \left( \rho_k \vec{u}_k\otimes \vec{u}_k \right) \right]  + \grad(\alpha_k A P_k) =  \nonumber \\
-&&\alpha_k P_k \grad A +  P_{int} A \grad \alpha_k +  {\color{blue}A \lambda_{rel} \left( \vec{u}_j - \vec{u}_k \right)} &\nonumber \\
-\partial_t \left( \alpha_k \rho_k E_k A \right) &+& \div \left[ \alpha_k A \vec{u}_j \left( \rho_k E_k + P_k \right) \right] =& \\
-&&P_{int} \vec{u}_{int} A \grad \alpha_k - {\color{blue}\mu_{rel} \bar{P}_{int} \left( P_k-P_j \right)} +{\color{blue}\bar{\vec{u}}_kA \lambda_{rel} \left( \vec{u}_j - \vec{u}_k \right)}& \nonumber
-\end{array}
-\right.
-\end{equation}
+\begin{align}
+&\partial_t \left( \alpha_k  A\right) + \vec{u}_{int} A \grad \alpha_k = {\color{red}A \mu_P \left( P_k - P_j \right)} \nonumber
+\end{align}
+\begin{align}
+&\partial_t \left( \alpha_k \rho_k A \right) + \div \left( \alpha_k \rho_k \vec{u}_k A \right) = 0 \nonumber
+\end{align}
+\begin{align}
+\partial_t \left( \alpha_k \rho_k \vec{u}_k A \right) + \div \left[ \alpha_k A \left( \rho_k \vec{u}_k\otimes \vec{u}_k \right) \right]  + \grad(\alpha_k A P_k) &=  \nonumber \\
+\alpha_k P_k \grad A &+  P_{int} A \grad \alpha_k +  {\color{red}A \lambda_u \left( \vec{u}_j - \vec{u}_k \right)} \nonumber
+\end{align}
+\begin{align}
+\partial_t \left( \alpha_k \rho_k E_k A \right) + \div \left[ \alpha_k A \vec{u}_j \left( \rho_k E_k + P_k \right) \right] &= \nonumber\\
+P_{int} \vec{u}_{int} A \grad \alpha_k - {\color{red}\mu_P \bar{P}_{int} \left( P_k-P_j \right)} &+{\color{red}\bar{\vec{u}}_{int} A \lambda_u \left( \vec{u}_j - \vec{u}_k \right)} \nonumber
+\end{align}
 \begin{equation}
 \left\{
 \begin{array}{l}
-P_{int} = \bar{P}_{int} - \frac{\grad \alpha_k}{|\grad \alpha_k|} \frac{Z_k Z_j}{Z_k + Z_j} \cdot \left( \vec{u}_k-\vec{u}_j \right) \\
+P_{int} = \bar{P}_{int} - \frac{\grad \alpha_k}{||\grad \alpha_k||} \frac{Z_k Z_j}{Z_k + Z_j} \cdot \left( \vec{u}_k-\vec{u}_j \right) \\
 \bar{P}_{int} = \frac{Z_k P_j + Z_j P_k}{Z_k + Z_j} \\
-\vec{u}_{int} = \bar{\vec{u}}_{int} - \frac{\grad \alpha_k}{|\grad \alpha_k|} \frac{P_k - P_j}{Z_k + Z_j} \\
+\vec{u}_{int} = \bar{\vec{u}}_{int} - \frac{\grad \alpha_k}{||\grad \alpha_k||} \frac{P_k - P_j}{Z_k + Z_j} \\
 \bar{\vec{u}}_{int} = \frac{Z_k \vec{u} _k + Z_j \vec{u}_j}{Z_k + Z_j} \\
 \end{array}
 \right.
@@ -931,39 +971,62 @@ P_{int} = \bar{P}_{int} - \frac{\grad \alpha_k}{|\grad \alpha_k|} \frac{Z_k Z_j}
 \text{ and }
 \left\{
 \begin{array}{l}
-\mu_{rel} = \frac{A_{int}}{Z_k+Z_j} \\
-\lambda_{rel} = \frac{\mu_{rel}}{2} Z_k Z_j \\
-A_{int} = 6.25 \cdot A_{int,max} \cdot \alpha_k \left( 1-\alpha_k \right)^2
+\mu_P = \frac{A_{int}}{Z_k+Z_j} \\
+\lambda_u = \frac{\mu_P}{2} Z_k Z_j \\
+A_{int} = 6.25 \cdot A_{int,max} \alpha_k \left( 1-\alpha_k \right)^2
 \end{array}
 \right.
 \end{equation}
 \end{frame}
 %************************************************
+\begin{frame}{The seven-equation model (SEM)}
+\begin{block}{Methodology}
+\begin{enumerate}
+\item derive the entropy equation WITHOUT the dissipative terms
+\begin{align}
+(s_e)_k^{-1} \alpha_k \rho_k A \frac{D s_k}{Dt} =& \textcolor{red}{\mu_P \frac{Z_k}{Z_k+Z_j} (P_j - P_k)^2} +
+\textcolor{red}{ \lambda_u \frac{Z_j}{Z_k+Z_j} (\mbold u_j - \mbold u_k)^2} \nonumber \\ 
++& \textcolor{red}{|| \grad \alpha_k || \frac{Z_k }{\left( Z_k+Z_j \right)^2} \left[ Z_j (\vec{u}_j-\vec{u}_k)\right.+\left. \frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)\right]^2 }\nonumber
+\end{align}
+\item same steps as for the multi-D Euler equations: recast the entropy residual, viscous regularization, non-dimensionalized equations, viscosity coefficients.
+\end{enumerate}
+\end{block}
+\begin{block}{A particularity}
+Two phases $\to$ two entropy residuals $\to$ two options to derive the dissipative terms: \\
+(a) either we consider the total entropy residual by summing over the phases \\
+(b) or, we consider each phase independently of each other which will automatically ensure positivity of the total entropy \\
+\end{block}
+\end{frame}
+%************************************************
 \begin{frame}{Viscous regularization for the multi-D SEM:}
 \begin{block}{}
 \begin{align}
-\partial_t \left( \alpha_k  A\right) + \vec{u}_{int} A \grad \alpha_k &= {\color{red}A \mu_{rel} \left( P_k - P_j \right)} + {\color{blue}\div \vec{l}} & \nonumber \\
-\partial_t \left( \alpha_k \rho_k A \right) + \div \left( \alpha_k \rho_k \vec{u}_k A \right) &= {\color{blue}\div \vec{f}} \nonumber \\
+&\partial_t \left( \alpha_k  A\right) + \vec{u}_{int} A \grad \alpha_k = {\color{red}A \mu_P \left( P_k - P_j \right)} + {\color{blue}\div \vec{l}_k} \nonumber \\
+\vspace{6pt}
+&\partial_t \left( \alpha_k \rho_k A \right) + \div \left( \alpha_k \rho_k \vec{u}_k A \right) = {\color{blue}\div \vec{f}_k} \nonumber
+\end{align}
+\begin{align}
 \partial_t \left( \alpha_k \rho_k \vec{u}_k A \right) + \div \left[ \alpha_k A \left( \rho_k \vec{u}_k\otimes \vec{u}_k + P_k\mathbb{I}\right) \right] &=  \nonumber \\
-\alpha_k P_k \grad A +  P_{int} A \grad \alpha_k &+  {\color{red}A \lambda_{rel} \left( \vec{u}_j - \vec{u}_k \right)} +{\color{blue}\div \bar{g}}\nonumber \\
+\alpha_k P_k \grad A +  P_{int} A \grad \alpha_k &+  {\color{red}A \lambda_u \left( \vec{u}_j - \vec{u}_k \right)} +{\color{blue}\div \bar{g}_k}\nonumber
+\end{align}
+\begin{align}
 \partial_t \left( \alpha_k \rho_k E_k A \right) + \div \left[ \alpha_k A \vec{u}_j \left( \rho_k E_k + P_k \right) \right] &= \nonumber \\
-P_{int} \vec{u}_{int} A \grad \alpha_k - {\color{red}\mu_{rel} \bar{P}_{int} \left( P_k-P_j \right)} &+{\color{red}\bar{\vec{u}}_kA \lambda_{rel} \left( \vec{u}_j - \vec{u}_k \right)} + {\color{blue}\div \vec{h}} \nonumber
+P_{int} \vec{u}_{int} A \grad \alpha_k - {\color{red}\mu_P \bar{P}_{int} \left( P_k-P_j \right)} &+{\color{red}\bar{\vec{u}}_{int} A \lambda_u \left( \vec{u}_j - \vec{u}_k \right)} + {\color{blue}\div \vec{h}_k} \nonumber
 \end{align}
 \end{block}
 \begin{block}{}
 \begin{equation}
 \left\{
 \begin{array}{lcl}
-{\color{blue}\vec{l}} = A {\color{magenta}\beta_k} \grad \alpha_k & & \\
-{\color{blue}\vec{f}} = \alpha_k A {\color{magenta}\kappa_k}  \grad \rho_k + \rho_k \vec{l}& & \\
-{\color{blue}\bar{g}} = \alpha_k A \rho_k {\color{magenta}\mu_k} \grad \vec{u} + \vec{u} \otimes \vec{f} & & \\
-{\color{blue}\vec{h}} = \alpha_k A {\color{magenta}\kappa_k} \grad(\rho_k e_k) - \frac{||\vec{u}||^2}{2} \vec{f} + \vec{u} \cdot \bar{g} + \rho_k e_k \vec{l} & &
+{\color{blue}\vec{l}_k} = ? \\ %A {\color{magenta}\beta_k} \grad \alpha_k & & \\
+{\color{blue}\vec{f}_k} = \alpha_k A {\color{magenta}\kappa_k}  \grad \rho_k + \rho_k \vec{l}_k& & \\
+{\color{blue}\bar{g}_k} = \alpha_k A \rho_k {\color{magenta}\mu_k} \grad^s \vec{u}_k + \vec{u}_k \otimes \vec{f}_k & & \\
+{\color{blue}\vec{h}_k} = \alpha_k A {\color{magenta}\kappa_k} \grad(\rho_k e_k) - \frac{||\vec{u}_k||^2}{2} \vec{f}_k + \vec{u} \cdot \bar{g}_k + \rho_k e_k \vec{l}_k & &
 \end{array}
 \right.
 \nonumber
 \end{equation}
 \end{block}
-if $\alpha_k \to 1$, the multi-D Euler equations are retrieved
 %Entropy equation:
 %\begin{eqnarray}
 %\alpha_k A \rho_k \frac{ds_k}{dt} + \left( {\color{green}\alpha_k A \kappa_k  \grad \rho_k} + {\color{red}\rho_k l_k} \right) \grad s_k - {\color{green}\div \left( \alpha_k A \rho_k \grad s_k \right)} = \nonumber \\ {\color{green}\partial_e s_k \alpha_k A \rho_k \mu_k \grad^s \vec{u} :  \grad \vec{u}}- {\color{green}X_k \Sigma_k X_k^t} + {\color{blue}Q}
@@ -971,14 +1034,91 @@ if $\alpha_k \to 1$, the multi-D Euler equations are retrieved
 %\end{eqnarray}
 \end{frame}
 %************************************************
+\begin{frame}{How to derive the dissipative term $\vec{l}$ ?}
+\begin{equation}
+\partial_t \left( \alpha_k  A\right) + \vec{u}_{int} A \grad \alpha_k = {\color{blue}\div \vec{l}_k} \nonumber
+\end{equation}
+\begin{block}{}
+\begin{itemize}
+\item scalar hyperbolic equation with eigenvalue $\vec{u}_{int}$
+\item by analogy to the Burger's equation $\to$ $\vec{l}_k = A \beta_k \grad \alpha_k$
+\item this regularization ensures positivity of $\alpha_k$
+\item $\beta_k$ is a positive viscosity coefficient:
+\begin{align}
+&\beta_k = \max ( \beta_{k,e}, \beta_{max}) \text{ where }\nonumber \\
+&\beta_{max} = \frac{h}{2} || \vec{u}_{int} || \text{ and } \beta_{k,e} = h^2 \frac{\max( R_\alpha, J_\alpha )}{|| \eta - \bar{\eta} ||_\infty} \nonumber \\
+&R_\alpha = \partial_t \eta + \vec{u}_{int}\cdot \grad \eta \text{ with } \eta = \frac{\alpha_k^2}{2}  \nonumber
+\end{align}
+\end{itemize}
+\end{block}
+$\rightarrow$ when assuming $\mu_k = \kappa_k = \beta_k$, the parabolic regularization is retrieved
+\end{frame}
+%************************************************
+\begin{frame}{What about the viscosity coefficients $\mu_k$ and $\kappa_k$?}
+\begin{subequations}
+%
+\begin{equation}
+\mu_k(\vec{r},t)    = \min \Big (\mu_{\max ,k}(\vec{r},t), \mu_{e,k} (\vec{r},t)    \Big) \text{  and  }
+\kappa_k(\vec{r},t) = \min \Big (\mu_{\max ,k}(\vec{r},t), \kappa_{e,k} (\vec{r},t) \Big ) \nonumber
+\end{equation}
+%
+where the first-order viscosity is given by
+\begin{equation}
+  \kappa_{\max ,k}(\vec{r},t)  = \mu_{\max ,k} (\vec{r},t) = \frac{h}{2} \Big ( ||\vec{u}_k|| + c_k \Big ) \nonumber
+\end{equation}
+%
+and the entropy viscosity coefficients by 
+%
+\begin{equation}
+\kappa_{e,k}(\vec{r},t) = \frac{h^2 \max(\resinew_k, J_k)}{ \rho_k c_k^2 }  \text{  and  }
+\mu_{e,k}(\vec{r},t)    = \frac{h^2 \max(\resinew_k, J_k)}{ \norm_{P,k}^\mu} \nonumber
+\end{equation}
+%
+where
+%
+\begin{equation}
+\label{eq:norm_ent2}
+\norm_{P,k}^\mu =  \left\{
+\begin{array}{ll}
+ \rho_k ||\vec{u}_k ||^2       & \text{ if } \left| \resinew_k^* \right| \geq M_k \text{ (i.e., non-isentropic flow)} \\
+ \rho_k c_k^2 = \norm_{P,k}^\kappa & \text{ otherwise} 
+\end{array}
+\right. \nonumber
+\end{equation}
+% 
+with the jumps given by
+%
+\begin{equation}
+J_k = || \vec{u}_k || \max \Big ( [[ \grad P_k \cdot \vec{n} ]], c_k^2 [[\grad \rho_k \cdot \vec{n}]] \Big) \nonumber
+\end{equation}
+\end{subequations}
+\end{frame}
+%************************************************
 \begin{frame}{Numerical results}
-
+\begin{block}{$1$-D shock tube}
+\begin{itemize}
+\setlength{\itemsep}{10pt}
+\item two independent fluids
+\item two fluids with pressure and velocity relaxation terms
+\end{itemize}
+\end{block}
 \end{frame}
 %************************************************
 \begin{frame}{$1$-D shock tube with two independent fluids}
-\begin{block}
-
+\begin{block}{}
+\begin{itemize}
+\setlength{\itemsep}{5pt}
+\item two fluids (1 and 2) described with Ideal gas equation of state: $P = (\gamma-1) \rho e$
+\item heavy fluid with $\gamma_1=3$ and light fluid with $\gamma_2 =1.4$
+\item no interaction between the two fluids ($\mu_P=\lambda_u=0$) $\longrightarrow$ same as running a single-phase flow code twice
+\item exact solution is available and obtained from a Riemann solver
+\item $500$ cells, CFL$=1$ and $t_{flinal} = 305 \mu s$ 
+\item initial step pressure: $P_{left} = 1 MPa$ and $P_{right} = 0.1 MPa$
+\item fluids are initially at rest and uniform volume fraction $\alpha_i = 0.5$
+\item uniform initial density $\rho_1 = 10 kg \cdot m^{-3}$ and $\rho_2 = 1 kg \cdot m^{-3}$
+\end{itemize}
 \end{block}
+Objective: verify that the dissipative terms does not affect the volume fraction profile
 \end{frame}
 %************************************************
 \begin{frame}{$1$-D shock tube with two independent fluids}
@@ -1028,7 +1168,21 @@ if $\alpha_k \to 1$, the multi-D Euler equations are retrieved
 \end{frame}
 %************************************************
 \begin{frame}{$1$-D shock tube with infinite relaxation coefficients}
-
+\begin{block}{}
+\begin{itemize}
+\setlength{\itemsep}{5pt}
+\item same fluids, same initial conditions and same equation of state
+\item relaxation parameters are turned on and computed with $A_{int,max} = 10^4 m^{-1}$
+\begin{align}
+\mu_p = \frac{A_{int}}{Z_1+Z_2} \nonumber \\
+\lambda_u = \frac{\mu_P}{2} Z_1 Z_2 \nonumber \\
+A_{int} = A_{int,max} \nonumber
+\end{align}
+\item volume fraction will vary because of the pressure relaxation term
+\item NO exact solution available
+\end{itemize}
+\end{block}
+Objective: verify that the volume fraction is correctly stabilized by the EVM
 \end{frame}
 %************************************************
 \begin{frame}{$1$-D shock tube with infinite relaxation coefficients}
@@ -1077,9 +1231,26 @@ if $\alpha_k \to 1$, the multi-D Euler equations are retrieved
 \end{figure}
 \end{frame}
 %************************************************
-\section{Conclusion}
-\begin{frame}{Conclusion}
-
+\section{Conclusion and future works}
+\begin{frame}{Conclusion and future works}
+\begin{block}{The multi-D Euler equations with variable area}
+\begin{itemize}
+\item extended the viscous regularization to Euler equation with variable area
+\item we have extended the EVM to low-Mach flows
+\item validated our approach with $1$ and $2$-D simulations
+\item applied the EVM with the Stiffened Gas equation of state
+\end{itemize}
+\end{block}
+\begin{block}{The seven equation model (SEM)}
+\begin{itemize}
+\item derived a viscous regularization for the SEM
+\item defined the viscosity coefficients
+\item our approach was validated by $1$-D results
+\end{itemize}
+\end{block}
+\begin{block}{Future work}
+Use the viscous regularization for the SEM to run $2$-D simulations $\to$ require a preconditioner
+\end{block}
 \end{frame}
 %************************************************
 \begin{frame}{}
