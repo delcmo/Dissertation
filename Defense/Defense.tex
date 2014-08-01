@@ -63,7 +63,7 @@ Marc-Olivier Delchini
 
 Co-chairs: J. Ragusa\footnote{Nuclear Engineering Department, Texas A\&M University.} and J.L. Guermond\footnote{Department of Mathematics, Texas A\&M University.}. \\
 Committee members: J. Morel\footnotemark[1], Y. Hassan\footnotemark[1] and R. Berry\footnote{Idaho National Laboratory.}. \\
-Substitute: R. McClaren
+Substitute: R. McClarren\footnotemark[1]
 \end{center}
 \end{frame}
 %
@@ -169,26 +169,22 @@ BurGer's Equation \\
                 \centering
                 \includegraphics[width=\textwidth]{../figures/1D_sol_free.png}
                 \caption{Without stabilization.}
-                \label{fig:1d_burger_free}
         \end{subfigure}%
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/1D_sol_fo.png}
                 \caption{With first-order viscosity.}
-                \label{fig:1d_burger_fo}
         \end{subfigure}
         
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/1D_sol_ev.png}
                 \caption{With the EVM.}
-                \label{fig:1d_burger_ev}
         \end{subfigure}
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/1D_visc.png}
                 \caption{Viscosity coefficient profiles.}
-                \label{fig:1d_burger_visc}
         \end{subfigure}
 \end{figure}
 \end{frame}
@@ -301,7 +297,6 @@ $\to$ two positive viscosity coefficients $\mu$ and $\kappa$. Requires a concave
 \begin{frame}{Non-dimensionalized multi-D Euler equation}
 We define some reference variables denoted by subscript $\infty$:
 \begin{multline}
-\label{eq:norm_param}
 \rho^*   = \frac{\rho}{\rho_\infty}           ,\
 u^*      = \frac{u}{u_\infty}                 ,\
 P^*      = \frac{P}{\rho_\infty c^2_\infty}   ,\
@@ -317,7 +312,7 @@ We also define the following reference numbers:
 &\text{Mach number: }M_\infty = \frac{u_\infty}{c_\infty}, \nonumber\\
 &\text{Numerical Reynolds number: }\Re_\infty = \frac{u_\infty L_\infty}{\textcolor{blue}{\mu_\infty}} , \nonumber \\
 &\text{Numerical P\'echlet number: }\Pe_\infty = \frac{u_\infty L_\infty}{\textcolor{blue}{\kappa_\infty}} , \nonumber \\
-&\text{Numerical Prandlt number: }\Pr_\infty = \Pe_\infty / \Re_\infty \nonumber \nonumber
+&\text{Numerical Prandlt number: }\Pr_\infty = \Pe_\infty / \Re_\infty = \mu_\infty / \kappa_\infty \nonumber \nonumber
 \end{align}
 \end{frame}
 %************************************************
@@ -561,7 +556,6 @@ and the entropy viscosity coefficients by
 where
 %
 \begin{equation}
-\label{eq:norm_ent2}
 \norm_P^\mu = \Re_\infty \rho_\infty c_\infty^2 =  \left\{
 \begin{array}{ll}
  \rho ||\mbold u ||^2       & \text{ if } \left| \resinew^* \right| \geq M \text{ (i.e., non-isentropic flow)} \\
@@ -577,6 +571,28 @@ J = || \vec{u} || \max \Big ( [[ \grad P \cdot \vec{n} ]], c^2 [[\grad \rho \cdo
 \end{equation}
 \end{subequations}
 \end{frame}
+%************************************************
+%\begin{frame}
+%\begin{block}{Comparison with the 'former version'}
+%Main difference lies in the definition of the high-order viscosity coefficients:
+%\begin{subequations}
+%\begin{equation}
+%\mu_e(\vec{r},t) =  (h)^2 \frac{\max\left( | \resi(\vec{r},t) |, J[s](t) \right)}{|| s - \bar{s} ||_\infty}  \nonumber
+%\end{equation}
+%\begin{equation}
+%\kappa_e(\vec{r},t) = \frac{\gamma}{\gamma-1} Pr \, \mu_e(\vec{r},t) \nonumber
+%\end{equation}
+%and $Pr$ is supplied by the user.
+%\begin{equation}
+%\resi(\vec{r}, t) := \partial_t s + \vec{u} \cdot \grad s \nonumber
+%\end{equation}
+%\end{subequations}
+%\end{block}
+%\begin{block}{New definition}
+%$Pr=M^2$ in the shock region \\
+%$Pr=1$ otherwise
+%\end{block}
+%\end{frame}
 %************************************************
 \begin{frame}{Numerical results:}
 \begin{block}{$1$-D converging-diverging nozzle}
@@ -1077,7 +1093,6 @@ and the entropy viscosity coefficients by
 where
 %
 \begin{equation}
-\label{eq:norm_ent2}
 \norm_{P,k}^\mu =  \left\{
 \begin{array}{ll}
  \rho_k ||\vec{u}_k ||^2       & \text{ if } \left| \resinew_k^* \right| \geq M_k \text{ (i.e., non-isentropic flow)} \\
@@ -1236,8 +1251,8 @@ Objective: verify that the volume fraction is correctly stabilized by the EVM
 \begin{block}{The multi-D Euler equations with variable area}
 \begin{itemize}
 \item extended the viscous regularization to Euler equation with variable area
-\item we have extended the EVM to low-Mach flows
-\item validated our approach with $1$ and $2$-D simulations
+\item extended the EVM to low-Mach flows by doing a low-Mach asymptotic limit
+\item validated our approach with $1$ and $2$-D simulations and convergence tests
 \item applied the EVM with the Stiffened Gas equation of state
 \end{itemize}
 \end{block}
@@ -1270,6 +1285,14 @@ The $1$-D Radiation-Hydrodynamic EquAtion \\
 \end{center}
 \end{frame}
 %************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
 \begin{frame}{}
 \begin{center}
 $1$-D Euler equations numerical results
@@ -1283,7 +1306,6 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/Leblanc_exact_and_numerical_stt_density_6000.png}
                 \caption{Density}
-                \label{fig:1d_leblanc_vel}
         \end{subfigure}%
         %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
           %(or a blank line to force the subfigure onto a new line)
@@ -1291,14 +1313,12 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/Leblanc_exact_and_numerical_stt_momentum_6000.png}
                 \caption{Momentum}
-                \label{fig:1d_leblanc_density}
         \end{subfigure}
 
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/Leblanc_exact_and_numerical_stt_total_energy_6000.png}
                 \caption{Total energy}
-                \label{fig:1d_leblanc_press}
         \end{subfigure}
           %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
           %(or a blank line to force the subfigure onto a new line)
@@ -1306,7 +1326,6 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/Leblanc_viscosity_numerical_6000.png}
                 \caption{Viscosity coefficients}
-                \label{fig:1d_leblanc_visc}
         \end{subfigure}
 \end{figure}
 \end{frame}
@@ -1318,13 +1337,11 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/LiquidSrongShock_density_velocity_pressure_profiles.png}
                 \caption{Density, velocity and pressure profiles.}
-                \label{fig:1d_strong_shock_var}
         \end{subfigure}%
         \begin{subfigure}[b]{0.5\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/LiquidSrongShock_viscosity.png}
                 \caption{Viscosity coefficients profile.}
-                \label{fig:1d_strong_shock_visc}
         \end{subfigure}
 \end{figure}
 \end{frame}
@@ -1336,13 +1353,11 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/SlowMovingShock_density_velocity_pressure_profiles.png}
                 \caption{Velocity, density and pressure}
-                \label{fig:profiles_sms}
         \end{subfigure}%
         \begin{subfigure}[b]{0.5\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/SlowMovingShock_viscosity.png}
                 \caption{Viscosity coefficients}
-                \label{fig:viscosity_sms}
         \end{subfigure} 
 \end{figure} 
 \end{frame}
@@ -1418,6 +1433,212 @@ $2$-D Euler equations numerical results
                 \includegraphics[width=\textwidth]{../figures/DWOViscosityStt.png}
                 \caption{Viscosity coefficient}
         \end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}
+\begin{center}
+Seven equation model
+\end{center}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D converging-diverging nozzle with relaxation terms}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_two_phases_pressure.png}
+\caption{Pressure}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_two_phases_velocity.png}
+\caption{Velocity}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_two_phases_density.png}
+\caption{Density}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_two_phases_volume_fraction.png}
+\caption{Volume fraction}
+\end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D converging-diverging nozzle with relaxation terms}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_liquid_viscosity_kappa_mu.png}
+\caption{Liquid water}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_vapor_viscosity_kappa_mu.png}
+\caption{Vapor}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_liquid_beta.png}
+\caption{$\beta$}
+\end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D converging-diverging nozzle with all source terms}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e3MassOn_two_phases_pressure.png}
+\caption{Pressure}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e3MassOn_two_phases_velocity.png}
+\caption{Velocity}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e3MassOn_two_phases_density.png}
+\caption{Density}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e3MassOn_two_phases_volume_fraction.png}
+\caption{Volume fraction}
+\end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D converging-diverging nozzle with all source terms}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_liquid_viscosity_kappa_mu.png}
+\caption{Liquid water}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_vapor_viscosity_kappa_mu.png}
+\caption{Vapor}
+\end{subfigure}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=0.38\textwidth]{../figures/SEM/Aint1e4_liquid_beta.png}
+\caption{$\beta$}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}
+\begin{center}
+$1$-D Grey Radiation-Hydrodynamic equations
+\end{center}
+\end{frame}
+%************************************************
+\begin{frame}{Equations}
+\begin{block}{}
+\begin{align}
+&\partial_t \left( \rho \right) + \partial_x\left( \rho u \right) = \partial_x \left( \kappa \partial_x \rho \right) \nonumber \\
+&\partial_t \left( \rho u\right) + \partial_x \left(\rho u^2 + P + \frac{\epsilon}{3} \right) = \partial_x \left( \kappa \partial_x \rho u \right) \nonumber \\
+&\partial_t \left( \rho E\right) + \partial_x \left[ u \left( \rho E + P \right) \right] + \frac{u}{3} \partial_x \epsilon = \partial_x \left( \kappa \partial_x(\rho E) \right) \nonumber \\
+&\partial_t \epsilon + \frac{4}{3} \partial_x \left( u \epsilon \right) - \frac{u}{3} \partial_x \epsilon = \partial_x \left( \kappa \partial_x \epsilon \right) \nonumber 
+\end{align}
+\end{block}
+\end{frame}
+%************************************************
+\begin{frame}{Steady-state solution for Mach $1.05$}
+\begin{figure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_1p05_nel_500_temperature.png}
+        \caption{Temperatures.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_1p05_nel_500_density}
+        \caption{Material density.}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}
+                \centering
+                \includegraphics[width=0.35\textwidth]{../figures/Mach_1p05_nel_500_viscosity.png}
+        \caption{Viscosity coefficients}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{Steady-state solution for Mach $2$}
+\begin{figure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_2_nel_2000_temperature.png}
+        \caption{Temperatures.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_2_nel_2000_density.png}
+        \caption{Material density.}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}
+                \centering
+                \includegraphics[width=0.35\textwidth]{../figures/Mach_2_nel_2000_viscosity.png}
+        \caption{Viscosity coefficients}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{Steady-state solution for Mach $5$}
+\begin{figure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_5_nel_1000_temperature.png}
+        \caption{Temperatures.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_5_nel_2000_density.png}
+        \caption{Material density.}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}
+                \centering
+                \includegraphics[width=0.35\textwidth]{../figures/Mach_5_nel_2000_viscosity.png}
+        \caption{Viscosity coefficients}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{Steady-state solution for Mach $50$}
+\begin{figure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_50_nel_1000_temperature.png}
+        \caption{Temperatures.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_50_nel_1000_density.png}
+        \caption{Material density.}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}
+                \centering
+                \includegraphics[width=0.35\textwidth]{../figures/Mach_50_nel_1000_viscosity.png}
+        \caption{Viscosity coefficients}
 \end{figure}
 \end{frame}
 %************************************************
