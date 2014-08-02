@@ -274,7 +274,7 @@ The area $A$ is only a function of space.
 \begin{enumerate}
 \setlength{\itemsep}{10pt}
 \item recast the entropy equation as a function of the pressure, the density, the velocity and the speed of sound.
-\item derive a viscous regularization for the multi-D Euler equations (already done) \tcr{???}.
+\item derive a viscous regularization for the multi-D Euler equations (Guermond and Popov (2014)) $\rightarrow$ extended to Euler equation with variable area.
 \item work with the non-dimensionalized version of the multi-D Euler equations in order to understand how the different terms scale $\to$ will define non-dimensionalized numbers (Mach number, numerical Reynolds number, $\dots$)
 \item derive a definition for the viscosity coefficients that ensures well-scaled dissipative terms for a wide range of Mach numbers $\to$ will consider two cases: isentropic and non-isentropic (with shocks) flows.
 \end{enumerate}
@@ -573,7 +573,7 @@ and the entropy viscosity coefficients by
 \mu_{e}(\vec{r},t)    = \frac{h^2 \max(\resinew, J)}{ \norm_P^\mu} \nonumber
 \end{equation}
 %
-where \tcr{you never address the issue of how to determine the reference length $L_\infty$ for a given simulation}
+where %\tcr{you never address the issue of how to determine the reference length $L_\infty$ for a given simulation}
 %
 \begin{equation}
 \norm_P^\mu = \Re_\infty \rho_\infty c_\infty^2 =  \left\{
@@ -584,7 +584,7 @@ where \tcr{you never address the issue of how to determine the reference length 
 \right. \nonumber
 \end{equation}
 % 
-with the jumps given by vectors
+with the jumps given by
 %
 \begin{equation}
 J = || \vec{u} || \max \Big ( [[ \grad P \cdot \vec{n} ]], c^2 [[\grad \rho \cdot \vec{n}]] \Big) \nonumber
@@ -955,7 +955,8 @@ The SEVEN-EquAtion Model with variable area\\
 \item Exchange terms between phases: relaxation terms. These terms were derived using \emph{rational thermodynamic} $\rightarrow$ consistent with the entropy minimum principle
 \item {\color{red}The system of equations is well-posed and has seven waves}
 \item The SEM degenerates to single-phase Euler equations when one phase disappears
-\item The SEM degenerates into the 5-equation model \tcr{is there only one 5-eq model? should you add that is happens when relax param are set to be very large?}
+\item The SEM degenerates into the 5-equation model of Kapila (2001) when using infinite relaxation coefficients
+%\tcr{is there only one 5-eq model? should you add that is happens when relax param are set to be very large?}
 \end{itemize}
 \end{block}
 \end{frame}
@@ -1013,7 +1014,7 @@ A_{int} = 6.25 \cdot A_{int,max} \alpha_k \left( 1-\alpha_k \right)^2
 \end{array}
 \right.
 \end{equation}
-\tcr{$A_{int}$ expression is not symmetric. is this correct?}
+%\tcr{$A_{int}$ expression is not symmetric. is this correct?}
 \end{frame}
 %************************************************
 \begin{frame}{The seven-equation model (SEM)}
@@ -1073,7 +1074,7 @@ P_{int} \vec{u}_{int} A \grad \alpha_k - {\color{red}\mu_P \bar{P}_{int} \left( 
 %************************************************
 \begin{frame}{How to derive the dissipative term $\vec{l}$ ?}
 \begin{equation}
-\partial_t \left( \alpha_k  A\right) + \vec{u}_{int} A \grad \alpha_k = {\color{blue}\div \vec{l}_k} \nonumber
+\partial_t \left( \alpha_k  A\right) + A \vec{u}_{int} \cdot \grad \alpha_k = {\color{blue}\div \vec{l}_k} \nonumber
 \end{equation}
 \begin{block}{}
 \begin{itemize}
@@ -1272,7 +1273,7 @@ Objective: verify that the volume fraction is correctly stabilized by the EVM
 \begin{block}{The multi-D Euler equations with variable area}
 \begin{itemize}
 \item extended the viscous regularization to Euler equation with variable area
-\item extended the EVM to low-Mach flows by doing a low-Mach asymptotic limit
+\item extended the EVM to low-Mach flows by doing a low-Mach asymptotic limit $\rightarrow$ worked with non-dimensionalized equations
 \item validated our approach with $1$ and $2$-D simulations and convergence tests
 \item applied the EVM with the Stiffened Gas equation of state
 \end{itemize}
@@ -1280,7 +1281,7 @@ Objective: verify that the volume fraction is correctly stabilized by the EVM
 \begin{block}{The seven equation model (SEM)}
 \begin{itemize}
 \item derived a viscous regularization for the SEM
-\item defined the viscosity coefficients
+\item defined the viscosity coefficients using the same methodology as for single-phase flow equation
 \item our approach was validated by $1$-D results
 \end{itemize}
 \end{block}
@@ -1633,13 +1634,25 @@ $1$-D Grey Radiation-Hydrodynamic equations
                 \includegraphics[width=\textwidth]{../figures/Mach_5_nel_2000_density.png}
         \caption{Material density.}
 \end{subfigure}
+
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_5_nel_2000_viscosity.png}
+        \caption{Viscosity coefficients.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_5_comparison.png}
+        \caption{Location of the peak.}
+\end{subfigure}
 \end{figure}
 
-\begin{figure}
-                \centering
-                \includegraphics[width=0.35\textwidth]{../figures/Mach_5_nel_2000_viscosity.png}
-        \caption{Viscosity coefficients}
-\end{figure}
+%\begin{figure}
+%                \centering
+%                \includegraphics[width=0.35\textwidth]{../figures/Mach_5_nel_2000_viscosity.png}
+%        \caption{Viscosity coefficients}
+%\end{figure}
+
 \end{frame}
 %************************************************
 \begin{frame}{Steady-state solution for Mach $50$}
