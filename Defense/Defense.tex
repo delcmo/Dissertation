@@ -1321,6 +1321,29 @@ $1$-D Euler equations numerical results
 \end{center}
 \end{frame}
 %************************************************
+\begin{frame}{}
+\begin{block}{An other normalization function for $\mu_e$}
+\begin{equation}
+\mu_e = h^2 \frac{\max \left( |\resinew|, J_P \right)}{\norm_P^\mu} \nonumber
+\end{equation}
+\begin{equation}
+\norm_P^\mu = (1 - \mathbb{G}(M) ) \rho c^2 + \mathbb{G}(M) \rho || \vec{u} ||^2 \text{ where } \lim_{M\to 0} \mathbb{G} = 0\nonumber
+\end{equation}
+\end{block}
+\begin{block}{Example}
+\begin{equation}
+\mathbb{G}(M) = \frac{\tanh (M-M_\infty) + |\tanh (M-M_\infty)|}{2} \nonumber
+\end{equation}
+\end{block}
+\end{frame}
+%************************************************
+\begin{frame}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{function_Mach_nb.png}
+\end{figure}
+\end{frame}
+%************************************************
 \begin{frame}{Leblanc shock tube}
 \begin{figure}[H]
         \centering
@@ -1646,13 +1669,6 @@ $1$-D Grey Radiation-Hydrodynamic equations
         \caption{Location of the peak.}
 \end{subfigure}
 \end{figure}
-
-%\begin{figure}
-%                \centering
-%                \includegraphics[width=0.35\textwidth]{../figures/Mach_5_nel_2000_viscosity.png}
-%        \caption{Viscosity coefficients}
-%\end{figure}
-
 \end{frame}
 %************************************************
 \begin{frame}{Steady-state solution for Mach $50$}
