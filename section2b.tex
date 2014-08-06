@@ -57,7 +57,6 @@ where $\vec{n}$ is a vector whom definition depends on the dimension of the doma
 \item $u(\vec{r},t) $ is negative: the wave enters the computational domain and thus, information needs to be supplied to the code. This boundary condition can be enforced either weakly or strongly. In the former case, the boundary value is specified in the input file, for instance, and used to compute the flux at the boundary. In the later case, the boundary value is still specified but strongly enforced with a Dirichlet boundary condition. This approach is valid for both implicit and explicit temporal integrators.
 \item $u(\vec{r},t) $ is positive: the wave exits the computational domain. The flux is computed with the value of the solution from the last Krylov iteration supplied by the temporal implicit solver. Because of the iterative process, the information normally carried by the waves is transmitted to the boundary. This approach is only valid with an implicit solver. When using an explicit solver, the solution at the new time on the boundary is obtained from the characteristic equation that is integrated over the first cell in.
 \end{itemize}
-\tcr{can you say a few words about the incoming and outgoing waves WHEN explicit time integration is used, for completeness} \tcb{done}
 % The above method for is a-dimensional and was used to obtain the numerical results presented in \eqt{sec:num_sct2b}.
 
 %==============================================================================
