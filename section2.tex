@@ -296,10 +296,9 @@ multi-physics problems over the last 20 years, and has branched out
 into a number of different disciplines~\cite{Knoll_2004}.
 
 In what follows, a brief description of the JFNK method is given.  The FEM-discretized equations are first written as
-\tcr{try $\mbold{0}$ so that you do not keep vector arrows. it would be good to check throughout for vec in equations}
 \begin{equation}
   \label{eqn:F}
-  \mathcal{R} (\mbold U) = \partial_t \mbold U(\mbold r, t) + \div \mbold F(\mbold U(\mbold r, t)) - \mbold S(\mbold U(\mbold r, t)) = \vec{0}
+  \mathcal{R} (\mbold U) = \partial_t \mbold U(\mbold r, t) + \div \mbold F(\mbold U(\mbold r, t)) - \mbold S(\mbold U(\mbold r, t)) = \mbold{0}
 \end{equation}
 where $\mathcal{R}$ represents the nonlinear residual and $\mbold U$
 is the solution vector. Newton's method requires an initial guess,
@@ -355,8 +354,7 @@ right preconditioning),
   J^\ell P^{-1} \left(P \delta \mbold U^{k+1} \right)= -\mbold r^\ell
 \end{equation}
 where $P$ is the preconditioning matrix. For $1$-D simulations, the Jacobian matrix is numerically computed by finite difference (FDP) according to \eqt{eqn:jacobian_matrix}, and passed to the underlying numerical solver
-library as the matrix $P$ for preconditioning purposes. For multi-D simulations, the same method would be inefficient because very slow. Instead, an expression of the Jacobian matrix is derived by hand and hard coded in the code. This process is significantly faster than the FDP method since the entries of the Jacobian matrix are simple read.
- \tcr{really? analytical jacobian as preconditioner for multi-D? if so, maybe you should mention that preconditioning is not the focused of the dissertation and therefore the analytical jacobian is used instead but I wouldn't recommend just stating that analytical jacobians are used in multi-D without giving a sense that we know this is probably the most cost-/memory-effective preconditioner} \tcb{what I meant by analytical Jacobian matrix is the one you derive by hand and hard coded. I modified it so that it is clearer.}
+library as the matrix $P$ for preconditioning purposes. For multi-D simulations, the same method would be inefficient because very slow. Instead, an expression of the Jacobian matrix is derived by hand and hard coded in the code. This process is significantly faster than the FDP method since the entries of the Jacobian matrix are simply read.
 
 %==============================================================================
 \section{Implementation of the entropy viscosity method (EVM) with continuous Galerkin finite element method}\label{sect:ev_impl_sect2}
@@ -387,7 +385,6 @@ R(\mbold r,t) = \partial_t \left( \eta(\mbold r,t)\right) +  \div \left( \boldsy
 \end{equation}
 \end{subequations}
 where $u(\mbold r,t)$ is a conservative variable that depends on both space and time. The entropy function $\eta$ and the conservative flux in the entropy residual $R$ are defined as $\eta(\mbold r,t) = \frac{u(\mbold r,t)^2}{2}$ and $\psi = \frac{u(\mbold r,t)^3}{3}$, respectively. It is also interesting to note that the corresponding physical entropy $s$ is $s(\mbold r,t) = -\frac{u(\mbold r,t)^2}{2} + \max\left( \eta(\mbold r,t) \right)$ and that it is concave. The Burger's equation is known to admit an unique eigenvalue $\lambda = u(\mbold r,t)$. 
-\tcr{I think this section is the occasion to make sure that $s$ and $\eta$ are consistent with what you said earlier in chapter 2. first, recall that you said $\eta$ needs to be convex (and $s$ concave). In 1D, a convex function has a positive second derivative. I CHOOSE $\eta(u)=u^2/2$ and, indeed, $eta^{\prime\prime}=2>0$ thus $\eta$ is convex. Thus, you $s$ is not correct. (it is also not correct because you forgot the square). Furthermore, you had in chapter 2 that $\psi' = \eta' f'$. here, this means $\psi'= u^2$ so it looks like your $\psi=u^3/3$ is correct BUT I have one more question: the mathematical entropy pair you had in chapter 2 was $\eta,\psi$ and the physical pair was $(s=-\eta, ???$) but how do we define the entropy flux that goes with $s$? is it $\psi$ or $\psi$?. This discussion, maybe in chapter 2, would be useful.} \tcb{It is because it should be $\eta$ and not $s$ in the above equations. I modified it.}
 %
 The vector $\boldsymbol{\hat{n}}$ is defined as follows:
 \begin{eqnarray}\label{eq:bg_hat_sect2}
@@ -421,10 +418,9 @@ The next step consists of determining the viscosity coefficient $\mu$ that is no
 The maximum eigenvalue is involved in the definition of the first-order viscosity coefficient. For a given quadrature point $q$ in a element $e$ of the mesh, the first-order viscosity coefficient $\mu_{max,}^{e,q}$ is given by  $\mu_{max}^{e,q} = \frac{h^e}{2} | u^{e,q} |$ where $u^{e,q}(\mbold r,t) = \sum_j u_{j}^e(t) \phi^e_j(\mbold r_q)$. The high-order viscosity coefficient is more involved to compute since it necessitates the evaluation of the entropy residual $R$ at the quadrature points and the jumps $J$ at the interface between cells. The entropy residual $R$ is a PDE but is not discretized in a finite element sense. Instead, each term of the entropy residual is locally computed using the test functions but without integration over the computational domain as follows:
 %
 \begin{equation}\label{eq:res_disc_sct2}
-R_{e}^{q,n} = w_0 s^{n,e,q} + w_1 s^{n-1,e,q} + w_2 s^{n-2,e,q} +  \boldsymbol{\hat{n}} \cdot  \sum_j \phi_{j}^e\grad \phi^{e,q}_j
+R_{e}^{q,n} = w_0 s^{n,e,q} + w_1 s^{n-1,e,q} + w_2 s^{n-2,e,q} +  \boldsymbol{\hat{n}} \cdot  \sum_j s_{j}^e \grad \phi^{e,q}_j
 \end{equation}
-\tcr{what is $\Phi_{j}^e$?}\tcb{ It is $\phi$. I modified it}\tcr{shouldn't it be $s_j^e$?}
-when considering three successive entropy values $s^{n,e,q}$, $s^{n-1,e,q}$ and $s^{n-2,e,q}$ in time. The BDF2 weights $w_0$, $w_1$ and $w_2$ were defined in \sect{sec:bdf2}. The values of the entropy function $s$ at the quadrature points is computed using test functions: $s^q_e = \sum_j s_{e,j} \phi^q_j = \sum_j \frac{(u_{j}^e)^2}{2} \phi^q_j$, which requires to access the values of solution $u$ at the nodes $j$ and the test functions at quadrature points. The same method is used for the entropy flux $\psi$. It is noted that the entropy residual can be recast under a non-conservative form as shown in \eqt{eq:res_disc2_sct2} that can be easier to evaluate depending on what is available to the user.
+when considering three successive entropy values $s^{n,e,q}$, $s^{n-1,e,q}$ and $s^{n-2,e,q}$ in time. The BDF2 weights $w_0$, $w_1$ and $w_2$ were defined in \sect{sec:bdf2}. The values of the entropy function $s$ at the quadrature points is computed using test functions: \tcr{sub/superscripts: check}  $s^q_e = \sum_j s_{e,j} \phi^q_j = \sum_j \frac{(u_{j}^e)^2}{2} \phi^q_j$, which requires to access the values of solution $u$ at the nodes $j$ and the test functions at quadrature points. The same method is used for the entropy flux $\psi$. It is noted that the entropy residual can be recast under a non-conservative form as shown in \eqt{eq:res_disc2_sct2} that can be easier to evaluate depending on what is available to the user.
 %
 \begin{equation}\label{eq:res_disc2_sct2}
 R(\mbold r,t) = \partial_t \left( \frac{u(\mbold r,t)^2}{2} \right) +  u(\mbold r,t)^2 \div \left( \boldsymbol{\hat{n}} u(\mbold r,t) \right)

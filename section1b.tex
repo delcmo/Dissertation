@@ -42,7 +42,6 @@ where $u$ and $\mbold f(u)$ are the solution and the inviscid flux, respectively
 %
 \begin{subequations}\label{eq:ivp2_sct1b}
 %
-\tcr{$a$ is a vector, otherwise $\mbold{f}_1$ is not a flux, so it should be $\mbold{a}$. I have done the first few changes but carry them throughout the document}
 \begin{equation}\label{eq:trans_sct1b}
 \partial_t u + \div \mbold f_1(u) = \partial_t u(\mbold{r},t) + \div \left( \mbold{a}u \right) = 0
 \end{equation}
@@ -66,7 +65,6 @@ Once the eigenvalues are determined, the next step consists of deriving the char
 &&\frac{Du}{Dt} = \partial_t u + \frac{dx}{dt} \partial_x u = 0 \text{ along } \frac{dx}{dt} = f'(u) = \lambda 
 \end{eqnarray}
 %
-\tcr{to be clearer, it would be better to add the equation with $du/dt=0$}
 \eqt{eq:ivp3_sct1b} represents the rate of change of the solution $u$ along the curve $\frac{dx}{dt} = f'(u) = \lambda$. It tells us that the solution $u$ is constant along the curve $\frac{dx}{dt} = \lambda$ since its rate of change is zero. The eigenvalue is the slope of the characteristic curve and is referred to as the characteristic speed. 
 For a given characteristic curve, the characteristic speed is a constant, since the solution $u$ is constant as well, and given by the initial condition, $f'(u(x,0))=f'(u_0)$ which allows us to integrate in order to obtain an analytical expression for $x(t)$:
 %
@@ -128,7 +126,7 @@ Taking the limit $dx \to 0$ and using the definition of the derivative, \eqt{eq:
 \begin{equation}\label{eq:cc2_sct1b}
 T_{shock} = \frac{-1}{f''(u_0) u_0'(x_0)} = \frac{-1}{f'(u_0(x_0))},
 \end{equation} 
-The trivial case $f''(u_0) = 0$ implies two options. The first case verifying $f''(u_0) = 0$ corresponds to a linear-flux which is ruled out since we assumed a non-linear flux. However, if one considers the linear advection equation, then $f'(u_0)=0$ \tcr{are you missing a prime here? for a linear flux, f' is not zero} and by taking the limit of \eqt{eq:cc2_sct1b} yields $T_{shock} \to \infty$ which means that a shock wave never forms. This result is consistent with the conclusion made earlier in this section when studying the linear advection equation. The second case corresponds to a non-linear flux whose second-order derivative is locally zero. However, a shock occurs first where the derivative of the flux is negative to ensure positivity of $T_{shock}$, and its absolute value is maximum (so that $\frac{1}{f'(u_0)}$ is minimal). These conditions do not correspond to the case $f''(u_0) = 0$ which implies $f'(u_0) = 0$ locally \tcr{this is not clear, how does f''=0 implies f'=0?} and allow us to rule out the second case. Thus, the time the shock forms at is:
+The trivial case $f''(u_0) = 0$ implies two options. The first case verifying $f''(u_0) = 0$ corresponds to a linear-flux which is ruled out since we assumed a non-linear flux. However, if one considers the linear advection equation, then $f''(u_0)=0$ and by taking the limit of \eqt{eq:cc2_sct1b} yields $T_{shock} \to \infty$ which means that a shock wave never forms. This result is consistent with the conclusion made earlier in this section when studying the linear advection equation. The second case corresponds to a non-linear flux whose second-order derivative is locally zero. However, a shock occurs first where the derivative of the flux is negative to ensure positivity of $T_{shock}$, and its absolute value is maximum (so that $\frac{1}{f'(u_0)}$ is minimal). These conditions do not correspond to the case $f''(u_0) = 0$ which implies $f'(u_0) = 0$ locally \tcr{this is not clear, how does f''=0 implies f'=0?} and allow us to rule out the second case. Thus, the time the shock forms at is:
 %
 \begin{equation}
 T_{shock} = \frac{-1}{\min\left( f'(u_0) \right)} 
@@ -455,7 +453,7 @@ The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} req
 %%%%%%%%%%%%%%%%%%%%%
 In this section, the entropy viscosity method is applied to non-linear hyperbolic systems of equations. The reader can refer to \cite{Toro} and \cite{Leveque} for an extension of the theoretical notions (eigenvalues, characteristic curves, $\ldots$) in the case of non-linear hyperbolic conservation laws. The objective of this section is to provide the reader with a methodology on how to apply the EVM to any hyperbolic system of equations. For academic purpose, we will rely on the latest published version of the EVM \cite{valentin} for the multi-D Euler equations in order to understand the main steps of the method. Other more recent publications will be also used. \cite{jlg, jlg2} are good prerequites to \cite{valentin} to observe the evolution of the EVM in the recent years. For hyperbolic system of equation, it is customary to work with the physical entropy $s$ that is of opposite sign of the mathematical entropy $\eta$.\\
 
-To the best of our knowledge \tcr{certainly not true, by now, Murtazo must have several publications. Find out} \tcb{I already did. I checked his webpage and google searched but a lot of papers are in preparation}, the EVM was successfully applied to one hyperbolic system of equation: the multi-D Euler equations with the ideal gas equation of state \cite{jlg, valentin}. Good agreements with the exact solutions were obtained in 1- and 2-D results when using discontinuous schemes (finite volume and discontinuous Galerkin finite element methods), spectral and Fourier methods. We now recall the details of the latest version of the method \cite{valentin} and remind the reader that this version will be used as a starting point and modified during this dissertation. The viscous regularization derived from the entropy condition for the multi-D Euler equations with the ideal gas equation of state is as follows:
+To the best of our knowledge, the EVM was successfully applied to one hyperbolic system of equation: the multi-D Euler equations with the ideal gas equation of state \cite{jlg, valentin}. Good agreements with the exact solutions were obtained in 1- and 2-D results when using discontinuous schemes (finite volume and discontinuous Galerkin finite element methods), spectral and Fourier methods. We now recall the details of the latest version of the method \cite{valentin} and remind the reader that this version will be used as a starting point and modified during this dissertation. The viscous regularization derived from the entropy condition for the multi-D Euler equations with the ideal gas equation of state is as follows:
 %
 \begin{subequations}\label{eq:euler_visc_sct1b}
 %
@@ -478,7 +476,7 @@ P = \left( \gamma-1 \right) \rho e = \left( \gamma-1 \right) C_v \rho T
 \end{subequations}
 %
 where $\rho$, $\rho \vec{u}$ and $\rho E $ are the fluid density, momentum and total energy, respectively, and will be referred to as the conservative variables. The pressure $P$ and the temperature $T$ are computed from the Ideal 
-Gas equation of state (IGEOS) recalled in \eqt{eq:eos_sct1b} which is a function of the density $\rho$ and the specific internal energy $e$. The heat capacity $C_v$ is constant by definition \tcr{is this true?}\tcb{It is always true for IGEOS}. The viscosity coefficients $\mu$ and $\kappa$ are space- and time-dependent and are taken proportional to an entropy residual $R$ as follows:
+Gas equation of state (IGEOS) recalled in \eqt{eq:eos_sct1b} which is a function of the density $\rho$ and the specific internal energy $e$. The heat capacity $C_v$ is constant by definition. The viscosity coefficients $\mu$ and $\kappa$ are space- and time-dependent and are taken proportional to an entropy residual $R$ as follows:
 % 
 \begin{subequations}
 %
