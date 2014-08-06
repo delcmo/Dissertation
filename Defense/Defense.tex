@@ -173,7 +173,7 @@ BurGer's Equation \\
 \end{block}
 \end{frame}
 %************************************************
-\begin{frame}{$1$-D numerical results (100 cells, CFL $=1$ and $t_f=0.24$ $s$)}
+\begin{frame}{$1$-D numerical results (100 cells, CFL $=1$)}% and $t_f=0.24$ $s$)}
 \begin{figure}[H]
         \centering
         \begin{subfigure}[b]{0.37\textwidth}
@@ -408,7 +408,7 @@ Leading and first-order momentum equations:
 \end{align}
 Second-order momentum equation:
 \begin{align}
-&\partial_t (\rho \vec{u} )_0 + \div \left( \rho \vec{u}\otimes \vec{u} \right)_0 + \textcolor{magenta}{P_2} = \textcolor{blue}{ \div \left( \rho \mu \gradd{s} \vec{u} \right)_0}
+&\partial_t (\rho \vec{u} )_0 + \div \left( \rho \vec{u}\otimes \vec{u} \right)_0 + \textcolor{magenta}{\grad P_2} = \textcolor{blue}{ \div \left( \rho \mu \gradd{s} \vec{u} \right)_0}
 +
 \textcolor{blue}{ \div \left(\vec{u}\otimes \kappa \grad  \rho \right)_0} \nonumber
 \end{align}
@@ -450,7 +450,7 @@ Derive an expression for $\kappa_\infty$:
 \begin{align}
 &\kappa_e(\vec{r},t) = h^2 \frac{\max \left( \tilde{D}_e(\vec{r},t), J \right)}{\norm_P^\kappa} \longrightarrow \kappa_\infty = \frac{ \rho_\infty c_\infty^2 u_\infty L }{ \norm_{P,\infty}^\kappa } \nonumber 
 \end{align}
-Then, use the substitute the above expression for $\norm_P^\kappa$ into $\Pe_\infty$ to obtain:
+Then, substitute the above expression for $\norm_P^\kappa$ into $\Pe_\infty$ to obtain:
 \begin{align}
 &\norm_{P,\infty}^{\kappa} = \Pe_\infty \rho_\infty c_\infty^2 = \rho_\infty c_\infty^2 \nonumber
 \end{align}
@@ -549,7 +549,7 @@ Derive an expression for $\kappa_\infty$:
 \begin{align}
 &\kappa_e(\vec{r},t) = h^2 \frac{\max \left( \tilde{D}_e(\vec{r},t), J \right)}{\norm_P^\kappa} \longrightarrow \kappa_\infty = \frac{ \rho_\infty c_\infty^2 u_\infty L }{ \norm_{P,\infty}^\kappa } \nonumber 
 \end{align}
-Then, use the substitute the above expression for $\norm_P^\kappa$ into $\Pe_\infty$ to obtain:
+Then, substitute the above expression for $\norm_P^\kappa$ into $\Pe_\infty$ to obtain:
 \begin{align}
 &\norm_{P,\infty}^{\kappa} = \Pe_\infty \rho_\infty c_\infty^2 = \rho_\infty c_\infty^2 \to \text{\color{blue}{ same as for low-Mach flows}}\nonumber
 \end{align}
@@ -950,8 +950,9 @@ The SEVEN-EquAtion Model with variable area\\
 \setlength{\itemsep}{10pt}
 \item Each phase obeys the single-phase Euler equations: two continuity equations, two momentum equations and two energy equations
 \item Seventh equation: void fraction equation $\rightarrow$ an internal boundary condition between the two phases at the interface
-\item Exchange terms between phases: relaxation terms. These terms were derived using \emph{rational thermodynamic} $\rightarrow$ consistent with the entropy minimum principle
-\item {\color{red}The system of equations is well-posed and has seven waves}
+\item Exchange terms between phases: relaxation terms. These terms were derived using \emph{rational thermodynamic}
+% $\rightarrow$ consistent with the entropy minimum principle
+\item {\color{red}The system of equations is well-posed and has seven waves} (some other two-phase flow model are not)
 \item The SEM degenerates to single-phase Euler equations when one phase disappears
 \item The SEM degenerates into a 5-equation model when using infinite relaxation coefficients
 %\tcr{is there only one 5-eq model? should you add that is happens when relax param are set to be very large?}
@@ -1608,6 +1609,39 @@ Seven equation model
 \centering
 \includegraphics[width=0.38\textwidth]{../figures/SEM/Aint1e4_liquid_beta.png}
 \caption{$\beta$}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D shock tube with infinite relaxation coefficients}
+\begin{figure}
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_pressure.png}
+                \caption{Pressure at $t=305$ $\mu s$}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_velocity.png}
+                \caption{Velocity at $t=305$ $\mu s$}
+        \end{subfigure}%
+
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_density.png}
+                \caption{Density at $t=305$ $\mu s$}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_volume_fraction.png}
+                \caption{Volume fraction at $t=305$ $\mu s$}
+        \end{subfigure}%
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/saurel_7_eqn_model.png}
 \end{figure}
 \end{frame}
 %************************************************
