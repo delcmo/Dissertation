@@ -12,6 +12,7 @@
 %\usepackage{amsthm}
 %\usepackage{amsfonts}
 \usepackage{color}
+\usepackage{draftwatermark}
 %\usepackage{listings}
 %\lstset{language=C++}
 %\usepackage{lscape} 
@@ -35,9 +36,9 @@
 \newcommand{\resi}{R}
 \newcommand{\resinew}{\widetilde{\resi}}
 \newcommand{\resisource}{\widetilde{\resi}^{source}}
-\renewcommand{\div}{\boldsymbol{\nabla}\! \cdot \!}
-\newcommand{\grad}{\boldsymbol{\nabla}}
-\newcommand{\divv}[1]{\boldsymbol{\nabla}^{#1}\! \cdot \!}
+\renewcommand{\div}{\vec{\nabla}\! \cdot \!}
+\newcommand{\grad}{\vec{\nabla}}
+\newcommand{\divv}[1]{\vec{\nabla}^{#1}\! \cdot \!}
 \newcommand{\gradd}[1]{\vec{\nabla}^{#1}}
 \newcommand{\mbold}[1]{\boldsymbol#1}
 \newcommand{\norm}{\textrm{norm}}
@@ -57,7 +58,7 @@
 %\end{frame}
 \begin{frame}
 \begin{center}
-Extension of the entropy viscosity method to the low Mach multi-D Euler equations and the seven-equation model.
+Extension of the entropy viscosity method to the low Mach Euler equations and the seven-equation two-phase model.
 \begin{center}
 by \\
 Marc-Olivier Delchini
@@ -85,13 +86,13 @@ Substitute: R. McClarren
 \item Systems of equations that accurately describe the physical phenomena
 \item Need for accurate and robust modeling for engineering applications
 \item Require good understanding of the mathematical properties (eigenvalues, characteristic equations and variables , shock formation, $\dots$ )
-\item Numerical stabilizations: approximate Riemann solvers (HLL, HLLC), flux limiters, artificial dissipative methods, $\dots$
+\item Numerical stabilizations: approximate Riemann solvers (HLL, HLLC), flux limiters, artificial dissipative methods (explicitly add the artificial dissipative terms), $\dots$
 \end{itemize}
 \end{block}
 \end{frame}
 %************************************************
 \begin{frame}{Some mathematical properties}
-\tcr{consistency issue: use vector or bold but do not mix them}
+%\tcr{consistency issue: use vector or bold but do not mix them}
 Let us consider a hyperbolic conservation law of the form:
 \begin{equation} \partial_t \vec{U} + \div \vec{F} ( \vec{U} ) = \vec{0}  \nonumber \text{ (strong form)}\end{equation} 
 \begin{itemize}
@@ -99,11 +100,11 @@ Let us consider a hyperbolic conservation law of the form:
 \item known to form shocks even with smooth initial conditions: characteristic equations and variables, Riemann invariants
 \item uniqueness of the weak solution is ensured by an \textbf{\emph{entropy condition}}: the associated entropy equation satisfies an inequality and is \emph{peaked in the shock region}.
 \begin{equation}
-\partial_t S ( \vec{U} ) + \grad \Psi ( \vec{U} ) \geq 0  \nonumber
+\partial_t S ( \vec{U} ) + \div \vec{\Psi} ( \vec{U} ) \geq 0 \text{ entropy inequality} \nonumber
 \end{equation}
-\tcr{this reads a grad of psi but it should be div of vector psi}
+%\tcr{this reads a grad of psi but it should be div of vector psi}
 $S$: physical entropy \\
-$\left( S, \Psi \right)$ is an entropy pair
+$\left( S, \vec{\Psi} \right)$ is an entropy pair
 \end{itemize}
 \end{frame}
 %************************************************
@@ -112,16 +113,17 @@ $\left( S, \Psi \right)$ is an entropy pair
 \begin{block}{}
 \begin{itemize}
 \setlength{\itemsep}{10pt}
-\item it requires a viscous regularization: the dissipative terms are consistent with the entropy inequality. \tcr{why requires? why not ``is a viscous regularization technique''?\\} \tcr{entropy inequality is vague and not yet defined}
+\item it is a viscous regularization technique: the dissipative terms are consistent with the entropy inequality. 
+%\tcr{why requires? why not ``is a viscous regularization technique''?\\} \tcr{entropy inequality is vague and not yet defined}
 \item each viscosity coefficient is function of a high-order viscosity coefficient and an upper bound called first-order viscosity coefficient.
 \item the high-order viscosity coefficient is defined proportional to the entropy residual.
 \item the first-order viscosity coefficient is function of the local maximum eigenvalue.
-\item also accounts for the inter element jumps $\to$ make the definition of the viscosity coefficients also sensitive to all discontinuities. 
+\item also accounts for the inter element jumps $\to$ make the definition of the viscosity coefficients also sensitive to discontinuities other than shock. 
 \end{itemize}
 \end{block}
 \end{frame}
 %************************************************
-\begin{frame}{The Multiphysics Object-Oriented Simulations Environment (MOOSE)}
+\begin{frame}{The Multiphysics Object-Oriented Simulation Environment (MOOSE)}
 \begin{block}{}
 \begin{itemize}
 \setlength{\itemsep}{10pt}
@@ -129,13 +131,15 @@ $\left( S, \Psi \right)$ is an entropy pair
 \item Continuous and Discontinuous Galerkin Finite Element Method
 \item Mesh adaptivity, time step adaptivity
 \item Support parallel runs
-\item Buildt on PETSc and Libmesh
-\item For implicit solve, requires a preconditioner $\to$ either FDP \tcr{acronym not defined} or hard-coded preconditioner
+\item Built on PETSc and Libmesh
+\item For implicit solves, requires a preconditioner $\to$ either Finite Difference Preconditioner (FDP) 
+%\tcr{acronym not defined} 
+or hard-coded preconditioner
 \item C++ language, open-source
 \end{itemize}
 \end{block}
 \begin{block}{}
-All numerical solutions were run with BDF2 and linear test functions $\to$ second-order accuracy in time and space \tcr{for smooth solutions only!}.
+All numerical solutions were run with BDF2 and linear test functions $\to$ second-order accuracy in time and space for smooth solutions only!
 \end{block}
 \end{frame}
 %************************************************
@@ -161,40 +165,37 @@ BurGer's Equation \\
 &\mu(x,t) = \min \left( \mu_e(x,t), \mu_{max}(x,t) \right) \nonumber \\
 &\mu_{max} (x,t) = \frac{h}{2} | u(x,t) | \nonumber \\
 &\mu_e(x,t) = h^2 \frac{\max \left( R(x,t), J \right)}{|| \eta(u) - \bar{\eta}(t) ||_\infty} \nonumber \\
-& \text{Entropy residual: }R(x,t) = \partial_t \eta(u) + \partial_x \Phi(u) \leq 0 \text{ with } \eta(u) = u^2 / 2 \nonumber \\
+& \text{Entropy residual: }R(x,t) = \partial_t \eta(u) + \partial_x \Phi(u) \leq 0 \nonumber \\ 
+&\text{ with } \eta(u) = u^2 / 2 \text{ and } \Phi(u) = u^3 / 3 \nonumber \\
 &\text{Jump: } J = [[ \partial_x \Phi(u) ]] \nonumber
 \end{align}
 \tcr{phi not defined}
 \end{block}
 \end{frame}
 %************************************************
-\begin{frame}{$1$-D numerical results (100 cells and CFL $=1$)}
+\begin{frame}{$1$-D numerical results (100 cells, CFL $=1$)}% and $t_f=0.24$ $s$)}
 \begin{figure}[H]
         \centering
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/1D_sol_free.png}
                 \caption{Without stabilization.}
-                \label{fig:1d_burger_free}
         \end{subfigure}%
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/1D_sol_fo.png}
                 \caption{With first-order viscosity.}
-                \label{fig:1d_burger_fo}
         \end{subfigure}
         
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/1D_sol_ev.png}
                 \caption{With the EVM.}
-                \label{fig:1d_burger_ev}
         \end{subfigure}
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/1D_visc.png}
                 \caption{Viscosity coefficient profiles.}
-                \label{fig:1d_burger_visc}
         \end{subfigure}
 \end{figure}
 \end{frame}
@@ -211,6 +212,7 @@ The MULti-D Euler Equations with variable area \\
 \end{figure}
 \end{frame}
 %************************************************
+\subsection{Background}
 \begin{frame}
 \begin{block}{Numerical methods for continuous and discontinuous schemes}
 \begin{itemize}
@@ -218,46 +220,55 @@ The MULti-D Euler Equations with variable area \\
 \item multi-wave problem, can develop shock waves and other types of discontinuities. 
 \item Numerical methods for both continuous and discontinuous schemes: approximate Riemann solvers (HLL, HLLC, Roe scheme, $\cdots$), flux limiters
 , Lapidus viscosity, Pressure-based viscosity, SUPG, C-method, Entropy Viscosity Method (EVM). 
-\item Numerical method can be ill-scaled in the low-Mach limit, yielding the wrong incompressible system $\to$ use of a Mach-based preconditioner for the dissipative terms to obtain the correct behavior in the low-Mach limit.
+\item Numerical methods can be ill-scaled in the low-Mach limit, yielding the wrong incompressible system 
+%$\to$ use of a Mach-based preconditioner for the dissipative terms to obtain the correct behavior in the low-Mach limit.
 \item Low-Mach steady-state solution: time-dependent term preconditioner to accelerate the convergence of the solution to the steady-state (Turkel) when using an explicit scheme $\to$ the transient is no longer accurate. \emph{Implicit solvers do not have this issue}. 
 \end{itemize}
 \end{block}
 \end{frame}
 %************************************************
 \begin{frame}
+\begin{block}{The multi-D Euler equations with variable area}
+%\tcr{fix alignment; it looks out of whack; maybe use subequations with the text in between the equations}
+\begin{subequations}
+Mass conservation
+\begin{align}
+&\partial_t ( \rho A ) + \div \left( \rho A \vec{u} \right) = 0 \nonumber
+\end{align}
+Momentum conservation
+\begin{align}
+&\partial_t ( \rho \vec{u} A ) + \div \left( \rho A \vec{u} \otimes \vec{u} + P \mathbb{I} \right) = P \grad A \nonumber
+\end{align}
+Energy conservation
+\begin{align}
+&\partial_t ( \rho E A ) + \div \left[ \vec{u} \left( \rho E + P \right) A \right] = 0 \nonumber
+\end{align}
+Equation of state
+\begin{align}
+& P = eos \left( \rho, e \right) \nonumber 
+\end{align}
+\end{subequations}
+\end{block}
+Multi-wave problem: $\lambda_1 = \vec{u} \cdot \vec{n} - c $, $\lambda_2 = \vec{u} \cdot \vec{n} + c $ and $\lambda_{3, \dots, 3+D} = \vec{u} \cdot \vec{n}$. \\
+The area $A$ is only a function of space.
+\end{frame}
+%************************************************
+\begin{frame}
 \begin{block}{}
-\tcr{vector consistency issue}
+%\tcr{vector consistency issue}
 \begin{itemize}
 \setlength{\itemsep}{10pt}
 \item The isentropic compressible multi-D Euler equations degenerate into an incompressible system in the low-Mach asymptotic limit.
 \begin{align}
 &\partial_t \rho + \vec{u} \cdot \grad \rho = 0 \nonumber \\
 &\partial_t \vec{u} + \vec{u}\text{ } \div \vec{u} + \frac{1}{\rho}\grad P = 0 \nonumber \\
-& \div \vec{u} = 0 \nonumber \\
-&P( \vec{r},t) = P_0(t) + M^2 P_2(\vec{r},t)\nonumber
+&\textcolor{blue}{\div \left( \vec{u}A \right) = 0} \nonumber \\
+&\textcolor{blue}{P( \vec{r}) = P_0 + M^2 P_2(\vec{r})}\nonumber
 \end{align}
 $\to$ no energy equation since the flow is assumed isentropic \\
-$\to$ pressure fluctuations of the order of the Mach number square \tcr{isn't that only at steady state?}
+$\to$ pressure fluctuations of the order of the Mach number square \emph{at steady state}% \tcr{isn't that only at steady state?}
 \end{itemize}
 \end{block}
-\end{frame}
-%************************************************
-\begin{frame}
-\begin{block}{The multi-D Euler equations with variable area}
-\tcr{fix alignment; it looks out of whack; maybe use subequations with the text in between the equations}
-\begin{align}
-&\text{Mass conservation} \nonumber \\
-&\partial_t ( \rho A ) + \div \left( \rho A \vec{u} \right) = 0 \nonumber \\
-&\text{Momentum conservation} \nonumber \\
-&\partial_t ( \rho \vec{u} A ) + \div \left( \rho A \vec{u} \otimes \vec{u} + P \mathbb{I} \right) = P \grad A \nonumber \\
-&\text{Energy conservation} \nonumber \\
-&\partial_t ( \rho E A ) + \div \left[ \vec{u} \left( \rho E + P \right) A \right] = 0 \nonumber \\
-&\text{Equation of state} \nonumber \\
-& P = eos \left( \rho, e \right) \nonumber 
-\end{align}
-\end{block}
-Multi-wave problem: $\lambda_1 = \vec{u} \cdot \vec{n} - c $, $\lambda_2 = \vec{u} \cdot \vec{n} + c $ and $\lambda_{2, \dots, 2+D} = \vec{u} \cdot \vec{n}$. \tcr{initial subscript should be 3} \\
-The area $A$ is only a function of space.
 \end{frame}
 %************************************************
 \begin{frame}
@@ -266,9 +277,14 @@ The area $A$ is only a function of space.
 \begin{enumerate}
 \setlength{\itemsep}{10pt}
 \item recast the entropy equation as a function of the pressure, the density, the velocity and the speed of sound.
-\item derive a viscous regularization for the multi-D Euler equations (already done) \tcr{???}.
-\item work with the non-dimensionalized version of the multi-D Euler equations in order to understand how the different terms scale $\to$ will define non-dimensionalized numbers (Mach number, numerical Reynolds number, $\dots$)
-\item derive a definition for the viscosity coefficients that ensures well-scaled dissipative terms for a wide range of Mach numbers $\to$ will consider two cases: isentropic and non-isentropic (with shocks) flows.
+\begin{equation}
+\mu_e(\vec{r},t) = h^2 \frac{\max \left( R(\vec{r},t), J \right)}{|| s - \bar{s}(t) ||_\infty} \nonumber
+\end{equation}
+%\item derive a viscous regularization for the multi-D Euler equations (Guermond and Popov (2014)) $\rightarrow$ extended to Euler equation with variable area.
+\item work with the non-dimensionalized version of the multi-D Euler equations in order to understand how the different terms scale
+%$\to$ will define non-dimensionalized numbers (Mach number, numerical Reynolds number, $\dots$)
+\item derive a definition for the viscosity coefficients that ensures well-scaled dissipative terms for a wide range of Mach numbers
+%$\to$ will consider two cases: isentropic and non-isentropic (with shocks) flows.
 \end{enumerate}
 \end{block}
 \end{frame}
@@ -276,7 +292,7 @@ The area $A$ is only a function of space.
 \begin{frame}{Recast the entropy residual}
 \begin{block}{New entropy residual}
 \begin{equation}
-D_e(\vec{r},t) = \partial_t s + \vec{u} \cdot \grad s = \frac{s_e}{P_e} \underbrace{\left( \frac{d P}{dt} - c^2 \frac{d \rho}{dt} \right)}_{\tilde{D}_e(\vec{r},t)} \nonumber
+D_e(\vec{r},t) = \partial_t s + \vec{u} \cdot \grad s = \frac{s_e}{P_e} \underbrace{\left( \frac{d P}{dt} - c^2 \frac{d \rho}{dt} \right)}_{\tilde{D}_e(\vec{r},t)} \to c^2 =\frac{dP}{d \rho} \nonumber
 \end{equation}
 \end{block}
 \begin{block}{The viscosity coefficients}
@@ -306,10 +322,10 @@ D_e(\vec{r},t) = \partial_t s + \vec{u} \cdot \grad s = \frac{s_e}{P_e} \underbr
 $\to$ two positive viscosity coefficients $\mu$ and $\kappa$. Requires a concave physical entropy $s(\rho,e)$.
 \end{frame}
 %************************************************
+\subsection{Low-Mach asymptotic limit}
 \begin{frame}{Non-dimensionalized multi-D Euler equations}
 We define some reference variables denoted by subscript $\infty$:
 \begin{multline}
-\label{eq:norm_param}
 \rho^*   = \frac{\rho}{\rho_\infty}           ,\
 u^*      = \frac{u}{u_\infty}                 ,\
 P^*      = \frac{P}{\rho_\infty c^2_\infty}   ,\
@@ -324,8 +340,8 @@ We also define the following reference numbers:
 \begin{align}
 &\text{Mach number: }M_\infty = \frac{u_\infty}{c_\infty}, \nonumber\\
 &\text{Numerical Reynolds number: }\Re_\infty = \frac{u_\infty L_\infty}{\textcolor{blue}{\mu_\infty}} , \nonumber \\
-&\text{Numerical P\'echlet number: }\Pe_\infty = \frac{u_\infty L_\infty}{\textcolor{blue}{\kappa_\infty}} , \nonumber \\
-&\text{Numerical Prandlt number: }\Pr_\infty = \Pe_\infty / \Re_\infty \nonumber \nonumber
+&\text{Numerical P\'echlet number: }\Pe_\infty = \frac{u_\infty L_\infty}{\textcolor{blue}{\kappa_\infty}} , \nonumber
+%&\text{Numerical Prandlt number: }\Pr_\infty = \Pe_\infty / \Re_\infty = \mu_\infty / \kappa_\infty \nonumber \nonumber
 \end{align}
 \end{frame}
 %************************************************
@@ -358,24 +374,24 @@ We also define the following reference numbers:
 \end{align}
 %
 \end{subequations}
-The above equations are valid for both isentropic and non-isentropic flows and for all Mach numbers.
+The above equations are valid for all-Mach flows.
 \end{frame}
 %************************************************
-\begin{frame}{For an isentropic flow}
-$\to$ choose $\Re_\infty$ and $\Pe_\infty$ so that we recover the incompressible equations in the low-Mach limit.
+\begin{frame}{For a low-Mach flow}
+$\to$ choose $\Re_\infty$ and $\Pe_\infty$ so that we recover the incompressible equations in the low-Mach limit (pressure fluctuations and $\div \vec{u}_0 = 0$).
 \begin{block}{}
 \begin{itemize}
 \setlength{\itemsep}{10pt}
 \item assume Ideal gas equation of state for simplicity: $P = ( \gamma-1) \rho e$
-\item choose $\Re_\infty = \Pe_\infty = 1$
 \item expand each variable in powers of the Mach number: $P(\vec{r}, t) = P_0(\vec{r}, t) + P_1(\vec{r}, t) M_\infty + P_2(\vec{r}, t) M_\infty^2 + \dots $
+\item choose $\Re_\infty = \Pe_\infty = 1$
 \item derive the leading, first and second-order momentum equations
 \item derive the leading-order energy and mass equations
 \end{itemize}
 \end{block}
 \end{frame}
 %************************************************
-\begin{frame}{For an isentropic flow: momentum equation}
+\begin{frame}{For a low-Mach flow: momentum equation}
 \begin{align}
 \partial_{t} \left( \rho \vec{u} \right) 
 + \div \left( \rho \vec{u}\otimes \vec{u} \right) 
@@ -388,18 +404,18 @@ $\to$ choose $\Re_\infty$ and $\Pe_\infty$ so that we recover the incompressible
 \begin{block}{}
 Leading and first-order momentum equations:
 \begin{align}
-&\grad P_0 = \grad P_1 = 0 \longrightarrow P(\vec{r}, t) = \tilde{P}_0(t) + P_2(\vec{r}, t) M_\infty^2\nonumber 
+&\grad P_0 = \grad P_1 = 0 \longrightarrow P(\vec{r}) = \tilde{P}_0 + P_2(\vec{r}) M_\infty^2\nonumber 
 \end{align}
 Second-order momentum equation:
 \begin{align}
-&\partial_t (\rho \vec{u} )_0 + \div \left( \rho \vec{u}\otimes \vec{u} \right)_0 + \textcolor{magenta}{P_2} = \textcolor{blue}{ \div \left( \rho \mu \gradd{s} \vec{u} \right)_0}
+&\partial_t (\rho \vec{u} )_0 + \div \left( \rho \vec{u}\otimes \vec{u} \right)_0 + \textcolor{magenta}{\grad P_2} = \textcolor{blue}{ \div \left( \rho \mu \gradd{s} \vec{u} \right)_0}
 +
 \textcolor{blue}{ \div \left(\vec{u}\otimes \kappa \grad  \rho \right)_0} \nonumber
 \end{align}
 \end{block}
 \end{frame}
 %************************************************
-\begin{frame}{For an isentropic flow: energy and mass equations}
+\begin{frame}{For a low-Mach flow: energy and mass equations}
 \begin{align}
 \partial_{t^*} \left( \rho^* E^* \right) 
 + \divv{*}  \left[ \vec{u}^* \left( \rho^* E^* + P^* \right) \right] 
@@ -427,14 +443,14 @@ Leading-order mass equation:
 \end{block}
 \end{frame}
 %************************************************
-\begin{frame}{For an isentropic flow: derivation of $\norm_P^{\mu, \kappa}$ }
+\begin{frame}{For a low-Mach flow: derivation of $\norm_P^{\mu, \kappa}$ }
 We were able to recover the incompressible equations by choosing $\Re_\infty = \Pe_\infty = 1$. What does that imply for $\norm_P^\mu$ and $\norm_P^\kappa$?
 \begin{block}{}
 Derive an expression for $\kappa_\infty$:
 \begin{align}
 &\kappa_e(\vec{r},t) = h^2 \frac{\max \left( \tilde{D}_e(\vec{r},t), J \right)}{\norm_P^\kappa} \longrightarrow \kappa_\infty = \frac{ \rho_\infty c_\infty^2 u_\infty L }{ \norm_{P,\infty}^\kappa } \nonumber 
 \end{align}
-Then, use the substitute the above expression for $\norm_P^\kappa$ into $\Pe_\infty$ to obtain:
+Then, substitute the above expression for $\norm_P^\kappa$ into $\Pe_\infty$ to obtain:
 \begin{align}
 &\norm_{P,\infty}^{\kappa} = \Pe_\infty \rho_\infty c_\infty^2 = \rho_\infty c_\infty^2 \nonumber
 \end{align}
@@ -455,7 +471,7 @@ Same derivation using $\mu_e$ and $\Re_\infty$ leads to:
 \item the low-Mach asymptotic study is no longer valid
 \item directly work with the non-dimensionalized Euler equations
 \item determine the scaling of $\Re_\infty$ and $\Pe_\infty$ to stabilize the equations
-\item look at the low-Mach limit
+%\item look at the low-Mach limit
 \end{itemize}
 \end{block}
 \end{frame}
@@ -470,7 +486,7 @@ Same derivation using $\mu_e$ and $\Re_\infty$ leads to:
 \textcolor{blue}{\frac{1}{\Pe_\infty} \div \left(\vec{u}\otimes \kappa \grad  \rho \right)} \nonumber
 \end{align}
 \begin{block}{}
-In the shock region, the term $\textcolor{magenta}{\frac{1}{M_\infty^2}\grad  P}  $ will become dominant and will need to be stabilize by a dissipative term of the same scaling:
+In the shock region, the term $\textcolor{magenta}{\frac{1}{M_\infty^2}\grad  P}  $ will become dominant and will need to be stabilized by a dissipative term of the same scaling:
 \begin{itemize}
 \setlength{\itemsep}{10pt}
 \item (a) $\Re_\infty = M_\infty^2$ and $\Pe_\infty = 1$
@@ -495,7 +511,7 @@ $\to$ the dissipative term is \emph{well-scaled}
 \begin{equation}
 \partial_{t} \rho+ \div  \left(  \rho \vec{u}  \right) = \textcolor{blue}{\frac{1}{M_\infty^2} \div  ( \kappa \grad \rho )} \nonumber
 \end{equation}
-$\to$ the dissipative term is \emph{ill-scaled}
+$\to$ over-dissipation in the contact wave
 \end{block}
 Options (b) and (c) are not inappropriate. Thus, we are left with option (a): $\Re_\infty = M_\infty^2$ and $\Pe_\infty = 1$
 \end{frame}
@@ -533,59 +549,89 @@ Derive an expression for $\kappa_\infty$:
 \begin{align}
 &\kappa_e(\vec{r},t) = h^2 \frac{\max \left( \tilde{D}_e(\vec{r},t), J \right)}{\norm_P^\kappa} \longrightarrow \kappa_\infty = \frac{ \rho_\infty c_\infty^2 u_\infty L }{ \norm_{P,\infty}^\kappa } \nonumber 
 \end{align}
-Then, use the substitute the above expression for $\norm_P^\kappa$ into $\Pe_\infty$ to obtain:
+Then, substitute the above expression for $\norm_P^\kappa$ into $\Pe_\infty$ to obtain:
 \begin{align}
-&\norm_{P,\infty}^{\kappa} = \Pe_\infty \rho_\infty c_\infty^2 = \rho_\infty c_\infty^2 \to \text{\color{blue}{ same as for isentropic flows}}\nonumber
+&\norm_{P,\infty}^{\kappa} = \Pe_\infty \rho_\infty c_\infty^2 = \rho_\infty c_\infty^2 \to \text{\color{blue}{ same as for low-Mach flows}}\nonumber
 \end{align}
 \end{block}
 \begin{block}{}
 Same derivation using $\mu_e$ and $\Re_\infty$ leads to:
 \begin{align}
-\norm_{P,\infty}^{\mu} = \Re_\infty \rho_\infty c_\infty^2 = \rho_\infty u_\infty^2 \to \text{\color{blue}{ different from isentropic flows}}\nonumber
+\norm_{P,\infty}^{\mu} = \Re_\infty \rho_\infty c_\infty^2 = \rho_\infty u_\infty^2 \to \text{\color{red}{ different from low-Mach flows}}\nonumber
 \end{align}
 \end{block}
 \end{frame}
 %************************************************
 \begin{frame}{How to merge the two cases?}
-\begin{subequations}
 %
+\begin{block}{}
 \begin{equation}
 \mu(\vec{r},t)    = \min \Big (\mu_{\max}(\vec{r},t), \mu_e (\vec{r},t)    \Big) \text{  and  }
 \kappa(\vec{r},t) = \min \Big (\mu_{\max}(\vec{r},t), \kappa_e (\vec{r},t) \Big ) \nonumber
 \end{equation}
 %
-where the first-order viscosity is given by
-\begin{equation}
-  \kappa_{\max}(\vec{r},t)  = \mu_{\max} (\vec{r},t) = \frac{h}{2} \Big ( ||\mbold u|| + c \Big ) \nonumber
-\end{equation}
+where
+$\kappa_{\max}(\vec{r},t)  = \mu_{\max} (\vec{r},t) = \frac{h}{2} \Big ( ||\vec{u}|| + c \Big )$.
+\end{block}
 %
-and the entropy viscosity coefficients by 
-%
-\begin{equation}
-\kappa_{e}(\vec{r},t) = \frac{h^2 \max(\resinew, J)}{ \rho c^2 }  \text{  and  }
-\mu_{e}(\vec{r},t)    = \frac{h^2 \max(\resinew, J)}{ \norm_P^\mu} \nonumber
-\end{equation}
-%
-where \tcr{you never address the issue of how to determine the reference length $L_\infty$ for a given simulation}
+\begin{block}{}
 %
 \begin{equation}
-\label{eq:norm_ent2}
-\norm_P^\mu = \Re_\infty \rho_\infty c_\infty^2 =  \left\{
-\begin{array}{ll}
- \rho ||\mbold u ||^2       & \text{ if } \left| \resinew^* \right| \geq M \text{ (i.e., non-isentropic flow)} \\
- \rho c^2 = \norm_P^\kappa & \text{ otherwise} 
-\end{array}
-\right. \nonumber
+\kappa_{e}(\vec{r},t) = \frac{h^2 \max(\resinew, J)}{ \textcolor{blue}{\rho c^2} }  \text{  and  }
+\mu_{e}(\vec{r},t)    = \frac{h^2 \max(\resinew, J)}{ \textcolor{red}{\norm_P^\mu}} \nonumber
 \end{equation}
+%
+where %\tcr{you never address the issue of how to determine the reference length $L_\infty$ for a given simulation}
+%
+\begin{equation}
+\textcolor{red}{\norm_P^\mu} = \mathbb{G}(M) \rho || \vec{u} ||^2 + (1-\mathbb{G}(M)) \rho c^2 \text{ and } \mathbb{G}(M) \lim_{M \to 0} 0\nonumber
+\end{equation}
+An example:
+\begin{equation}
+\mathbb{G}(M) = \frac{\tanh (a(M-M_\infty)) + |\tanh (a(M-M_\infty))|}{2} \nonumber
+\end{equation}
+\end{block}
+%
+%\begin{equation}
+%\norm_P^\mu = \Re_\infty \rho_\infty c_\infty^2 =  \left\{
+%\begin{array}{ll}
+% \rho ||\mbold u ||^2       & \text{ if } \left| \resinew^* \right| \geq M \text{ (i.e., non-isentropic flow)} \\
+% \rho c^2 = \norm_P^\kappa & \text{ otherwise} 
+%\end{array}
+%\right. \nonumber
+%\end{equation}
 % 
-with the jumps given by \tcr{vectors}
 %
+\begin{block}{}
 \begin{equation}
 J = || \vec{u} || \max \Big ( [[ \grad P \cdot \vec{n} ]], c^2 [[\grad \rho \cdot \vec{n}]] \Big) \nonumber
 \end{equation}
-\end{subequations}
+\end{block}
 \end{frame}
 %************************************************
+%\begin{frame}
+%\begin{block}{Comparison with the 'former version'}
+%Main difference lies in the definition of the high-order viscosity coefficients:
+%\begin{subequations}
+%\begin{equation}
+%\mu_e(\vec{r},t) =  (h)^2 \frac{\max\left( | \resi(\vec{r},t) |, J[s](t) \right)}{|| s - \bar{s} ||_\infty}  \nonumber
+%\end{equation}
+%\begin{equation}
+%\kappa_e(\vec{r},t) = \frac{\gamma}{\gamma-1} Pr \, \mu_e(\vec{r},t) \nonumber
+%\end{equation}
+%and $Pr$ is supplied by the user.
+%\begin{equation}
+%\resi(\vec{r}, t) := \partial_t s + \vec{u} \cdot \grad s \nonumber
+%\end{equation}
+%\end{subequations}
+%\end{block}
+%\begin{block}{New definition}
+%$Pr=M^2$ in the shock region \\
+%$Pr=1$ otherwise
+%\end{block}
+%\end{frame}
+%************************************************
+\subsection{Numerical results}
 \begin{frame}{Numerical results:}
 \begin{block}{$1$-D converging-diverging nozzle}
 $\longrightarrow$ steady-state solution and exact solution\\
@@ -781,7 +827,7 @@ $640$ & $5.2191$ $10^{-2}$  & $0.44190$ & $9.4217$ $10^{3}$ & $0.43790$ & $16.91
 \item The velocity at the top of the cylinder is twice the incoming velocity set at the inlet
 \item The pressure fluctuations are proportional to the square of inlet Mach number, i.e., 
 \begin{equation}
-\delta P = \frac{\max(P(\vec{r},t)) - \min(P(\vec{r},t))}{\max(P(\vec{r},t))}  \propto M_\infty^2 \nonumber
+\delta P = \frac{\max(P(\vec{r})) - \min(P(\vec{r}))}{\max(P(\vec{r}))}  \propto M_\infty^2 \nonumber
 \end{equation}
 where $\delta P$ and $M_\infty$ denote the pressure fluctuations and the inlet Mach number, respectively.
 \end{itemize}
@@ -833,26 +879,6 @@ where $\delta P$ and $M_\infty$ denote the pressure fluctuations and the inlet M
 \centering
 \includegraphics[width=\textwidth]{../figures/pressure_fluctuation.png}
 \end{figure}
-\end{frame}
-%************************************************
-\begin{frame}{$2$-D low-Mach flow over a cylinder}
-\begin{center}
-Velocity ratio for different Mach numbers
-\end{center}
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-Mach number & inlet velocity & velocity at the top of the cylinder & ratio \\ \hline
-$10^{-3}$ & $2.348$ $10^{-3}$ & $1.176$ $10^{-3}$& $1.99$  \\ \hline
-$10^{-4}$ & $2.285$ $10^{-4}$ & $1.145$ $10^{-4}$& $1.99$  \\ \hline
-$10^{-5}$ & $2.283$ $10^{-5}$ & $1.144$ $10^{-5}$ & $1.99$ \\ \hline
-$10^{-6}$ & $2.283$ $10^{-6}$ & $1.144$ $10^{-6}$ & $1.99$ \\ \hline
-$10^{-7}$ & $2.283$ $10^{-7}$ & $1.144$ $10^{-7}$ & $1.99$ \\ \hline
-\end{tabular}
-\end{center}
-\nonumber
-\end{table}
 \end{frame}
 %************************************************
 \begin{frame}{$2$-D low-Mach flow over a bump}
@@ -924,10 +950,12 @@ The SEVEN-EquAtion Model with variable area\\
 \setlength{\itemsep}{10pt}
 \item Each phase obeys the single-phase Euler equations: two continuity equations, two momentum equations and two energy equations
 \item Seventh equation: void fraction equation $\rightarrow$ an internal boundary condition between the two phases at the interface
-\item Exchange terms between phases: relaxation terms. These terms were derived using \emph{rational thermodynamic} $\rightarrow$ consistent with the entropy minimum principle
-\item {\color{red}The system of equations is well-posed and has seven waves}
+\item Exchange terms between phases: relaxation terms. These terms were derived using \emph{rational thermodynamic}
+% $\rightarrow$ consistent with the entropy minimum principle
+\item {\color{red}The system of equations is well-posed and has seven waves} (some other two-phase flow model are not)
 \item The SEM degenerates to single-phase Euler equations when one phase disappears
-\item The SEM degenerates into the 5-equation model \tcr{is there only one 5-eq model? should you add that is happens when relax param are set to be very large?}
+\item The SEM degenerates into a 5-equation model when using infinite relaxation coefficients
+%\tcr{is there only one 5-eq model? should you add that is happens when relax param are set to be very large?}
 \end{itemize}
 \end{block}
 \end{frame}
@@ -979,13 +1007,14 @@ P_{int} = \bar{P}_{int} - \frac{\grad \alpha_k}{||\grad \alpha_k||} \frac{Z_k Z_
 \text{ and }
 \left\{
 \begin{array}{l}
+Z_k = \rho_k c_k \\
 \mu_P = \frac{A_{int}}{Z_k+Z_j} \\
 \lambda_u = \frac{\mu_P}{2} Z_k Z_j \\
 A_{int} = 6.25 \cdot A_{int,max} \alpha_k \left( 1-\alpha_k \right)^2
 \end{array}
 \right.
 \end{equation}
-\tcr{$A_{int}$ expression is not symmetric. is this correct?}
+%\tcr{$A_{int}$ expression is not symmetric. is this correct?}
 \end{frame}
 %************************************************
 \begin{frame}{The seven-equation model (SEM)}
@@ -993,9 +1022,9 @@ A_{int} = 6.25 \cdot A_{int,max} \alpha_k \left( 1-\alpha_k \right)^2
 \begin{enumerate}
 \item derive the entropy equation WITHOUT the dissipative terms
 \begin{align}
-(s_e)_k^{-1} \alpha_k \rho_k A \frac{D s_k}{Dt} =& \textcolor{red}{\mu_P \frac{Z_k}{Z_k+Z_j} (P_j - P_k)^2} +
+(s_e)_k^{-1} \alpha_k \rho_k A \frac{d s_k}{dt} =& \textcolor{red}{\mu_P \frac{Z_k}{Z_k+Z_j} (P_j - P_k)^2} +
 \textcolor{red}{ \lambda_u \frac{Z_j}{Z_k+Z_j} (\mbold u_j - \mbold u_k)^2} \nonumber \\ 
-+& \textcolor{red}{|| \grad \alpha_k || \frac{Z_k }{\left( Z_k+Z_j \right)^2} \left[ Z_j (\vec{u}_j-\vec{u}_k)\right.+\left. \frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)\right]^2 }\nonumber
++& \textcolor{red}{|| \grad \alpha_k || \frac{Z_k }{\left( Z_k+Z_j \right)^2} \left[ Z_j (\vec{u}_j-\vec{u}_k)+\frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)\right]^2 }\nonumber
 \end{align}
 \item same steps as for the multi-D Euler equations: recast the entropy residual, viscous regularization, non-dimensionalized equations, viscosity coefficients.
 \end{enumerate}
@@ -1045,7 +1074,7 @@ P_{int} \vec{u}_{int} A \grad \alpha_k - {\color{red}\mu_P \bar{P}_{int} \left( 
 %************************************************
 \begin{frame}{How to derive the dissipative term $\vec{l}$ ?}
 \begin{equation}
-\partial_t \left( \alpha_k  A\right) + \vec{u}_{int} A \grad \alpha_k = {\color{blue}\div \vec{l}_k} \nonumber
+\partial_t \left( \alpha_k  A\right) + A \vec{u}_{int} \cdot \grad \alpha_k = {\color{blue}\div \vec{l}_k} \nonumber
 \end{equation}
 \begin{block}{}
 \begin{itemize}
@@ -1054,7 +1083,7 @@ P_{int} \vec{u}_{int} A \grad \alpha_k - {\color{red}\mu_P \bar{P}_{int} \left( 
 \item this regularization ensures positivity of $\alpha_k$
 \item $\beta_k$ is a positive viscosity coefficient:
 \begin{align}
-&\beta_k = \max ( \beta_{k,e}, \beta_{max}) \text{ where }\nonumber \\
+&\beta_k = \min ( \beta_{k,e}, \beta_{max}) \text{ where }\nonumber \\
 &\beta_{max} = \frac{h}{2} || \vec{u}_{int} || \text{ and } \beta_{k,e} = h^2 \frac{\max( R_\alpha, J_\alpha )}{|| \eta - \bar{\eta} ||_\infty} \nonumber \\
 &R_\alpha = \partial_t \eta + \vec{u}_{int}\cdot \grad \eta \text{ with } \eta = \frac{\alpha_k^2}{2}  \nonumber
 \end{align}
@@ -1064,43 +1093,45 @@ $\rightarrow$ when assuming $\mu_k = \kappa_k = \beta_k$, the parabolic regulari
 \end{frame}
 %************************************************
 \begin{frame}{What about the viscosity coefficients $\mu_k$ and $\kappa_k$?}
-\begin{subequations}
-%
-\begin{equation}
-\mu_k(\vec{r},t)    = \min \Big (\mu_{\max ,k}(\vec{r},t), \mu_{e,k} (\vec{r},t)    \Big) \text{  and  }
-\kappa_k(\vec{r},t) = \min \Big (\mu_{\max ,k}(\vec{r},t), \kappa_{e,k} (\vec{r},t) \Big ) \nonumber
-\end{equation}
-%
-where the first-order viscosity is given by
-\begin{equation}
-  \kappa_{\max ,k}(\vec{r},t)  = \mu_{\max ,k} (\vec{r},t) = \frac{h}{2} \Big ( ||\vec{u}_k|| + c_k \Big ) \nonumber
-\end{equation}
-%
-and the entropy viscosity coefficients by 
-%
-\begin{equation}
-\kappa_{e,k}(\vec{r},t) = \frac{h^2 \max(\resinew_k, J_k)}{ \rho_k c_k^2 }  \text{  and  }
-\mu_{e,k}(\vec{r},t)    = \frac{h^2 \max(\resinew_k, J_k)}{ \norm_{P,k}^\mu} \nonumber
-\end{equation}
-%
-where
-%
-\begin{equation}
-\label{eq:norm_ent2}
-\norm_{P,k}^\mu =  \left\{
-\begin{array}{ll}
- \rho_k ||\vec{u}_k ||^2       & \text{ if } \left| \resinew_k^* \right| \geq M_k \text{ (i.e., non-isentropic flow)} \\
- \rho_k c_k^2 = \norm_{P,k}^\kappa & \text{ otherwise} 
-\end{array}
-\right. \nonumber
-\end{equation}
-% 
-with the jumps given by
-%
-\begin{equation}
-J_k = || \vec{u}_k || \max \Big ( [[ \grad P_k \cdot \vec{n} ]], c_k^2 [[\grad \rho_k \cdot \vec{n}]] \Big) \nonumber
-\end{equation}
-\end{subequations}
+\begin{center}
+\textcolor{blue}{\Large{Same as single-phase equations}}
+\end{center}
+%\begin{subequations}
+%%
+%\begin{equation}
+%\mu_k(\vec{r},t)    = \min \Big (\mu_{\max ,k}(\vec{r},t), \mu_{e,k} (\vec{r},t)    \Big) \text{  and  }
+%\kappa_k(\vec{r},t) = \min \Big (\mu_{\max ,k}(\vec{r},t), \kappa_{e,k} (\vec{r},t) \Big ) \nonumber
+%\end{equation}
+%%
+%where the first-order viscosity is given by
+%\begin{equation}
+%  \kappa_{\max ,k}(\vec{r},t)  = \mu_{\max ,k} (\vec{r},t) = \frac{h}{2} \Big ( ||\vec{u}_k|| + c_k \Big ) \nonumber
+%\end{equation}
+%%
+%and the entropy viscosity coefficients by 
+%%
+%\begin{equation}
+%\kappa_{e,k}(\vec{r},t) = \frac{h^2 \max(\resinew_k, J_k)}{ \rho_k c_k^2 }  \text{  and  }
+%\mu_{e,k}(\vec{r},t)    = \frac{h^2 \max(\resinew_k, J_k)}{ \norm_{P,k}^\mu} \nonumber
+%\end{equation}
+%%
+%where
+%%
+%\begin{equation}
+%\norm_{P,k}^\mu =  \left\{
+%\begin{array}{ll}
+% \rho_k ||\vec{u}_k ||^2       & \text{ if } \left| \resinew_k^* \right| \geq M_k \text{ (i.e., non-isentropic flow)} \\
+% \rho_k c_k^2 = \norm_{P,k}^\kappa & \text{ otherwise} 
+%\end{array}
+%\right. \nonumber
+%\end{equation}
+%% 
+%with the jumps given by
+%%
+%\begin{equation}
+%J_k = || \vec{u}_k || \max \Big ( [[ \grad P_k \cdot \vec{n} ]], c_k^2 [[\grad \rho_k \cdot \vec{n}]] \Big) \nonumber
+%\end{equation}
+%\end{subequations}
 \end{frame}
 %************************************************
 \begin{frame}{Numerical results}
@@ -1146,12 +1177,12 @@ Objective: verify that the dissipative terms does not affect the volume fraction
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/SEM/two_phases_density.png}
-                \caption{Pressure at $t=305$ $\mu s$}
+                \caption{Density at $t=305$ $\mu s$}
         \end{subfigure}%
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/SEM/two_phases_volume_fraction.png}
-                \caption{Velocity at $t=305$ $\mu s$}
+                \caption{Volume fraction at $t=305$ $\mu s$}
         \end{subfigure}%
 \end{figure}
 \end{frame}
@@ -1210,12 +1241,12 @@ Objective: verify that the volume fraction is correctly stabilized by the EVM
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_density.png}
-                \caption{Pressure at $t=305$ $\mu s$}
+                \caption{Density at $t=305$ $\mu s$}
         \end{subfigure}%
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_volume_fraction.png}
-                \caption{Velocity at $t=305$ $\mu s$}
+                \caption{Volume fraction at $t=305$ $\mu s$}
         \end{subfigure}%
 \end{figure}
 \end{frame}
@@ -1245,15 +1276,15 @@ Objective: verify that the volume fraction is correctly stabilized by the EVM
 \begin{block}{The multi-D Euler equations with variable area}
 \begin{itemize}
 \item extended the viscous regularization to Euler equation with variable area
-\item we have extended the EVM to low-Mach flows
-\item validated our approach with $1$ and $2$-D simulations
+\item extended the EVM to low-Mach flows by doing a low-Mach asymptotic limit $\rightarrow$ worked with non-dimensionalized equations
+\item validated our approach with $1$ and $2$-D simulations and convergence tests
 \item applied the EVM with the Stiffened Gas equation of state
 \end{itemize}
 \end{block}
 \begin{block}{The seven equation model (SEM)}
 \begin{itemize}
 \item derived a viscous regularization for the SEM
-\item defined the viscosity coefficients
+\item defined the viscosity coefficients using the same methodology as for single-phase flow equation
 \item our approach was validated by $1$-D results
 \end{itemize}
 \end{block}
@@ -1279,10 +1310,44 @@ The $1$-D Radiation-Hydrodynamic EquAtion \\
 \end{center}
 \end{frame}
 %************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
+%************************************************
 \begin{frame}{}
 \begin{center}
 $1$-D Euler equations numerical results
 \end{center}
+\end{frame}
+%************************************************
+\begin{frame}{}
+\begin{block}{An other normalization function for $\mu_e$}
+\begin{equation}
+\mu_e = h^2 \frac{\max \left( |\resinew|, J_P \right)}{\norm_P^\mu} \nonumber
+\end{equation}
+\begin{equation}
+\norm_P^\mu = (1 - \mathbb{G}(M) ) \rho c^2 + \mathbb{G}(M) \rho || \vec{u} ||^2 \text{ where } \lim_{M\to 0} \mathbb{G} = 0\nonumber
+\end{equation}
+\end{block}
+\begin{block}{Example}
+\begin{equation}
+\mathbb{G}(M) = \frac{\tanh (a(M-M_\infty)) + |\tanh (a(M-M_\infty))|}{2} \nonumber
+\end{equation}
+$a$ and $M_\infty$ are two constants to set
+\end{block}
+\end{frame}
+%************************************************
+\begin{frame}
+\begin{block}{$a=10$}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{function_Mach_nb.png}
+\end{figure}
+\end{block}
 \end{frame}
 %************************************************
 \begin{frame}{Leblanc shock tube}
@@ -1292,7 +1357,6 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/Leblanc_exact_and_numerical_stt_density_6000.png}
                 \caption{Density}
-                \label{fig:1d_leblanc_vel}
         \end{subfigure}%
         %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
           %(or a blank line to force the subfigure onto a new line)
@@ -1300,14 +1364,12 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/Leblanc_exact_and_numerical_stt_momentum_6000.png}
                 \caption{Momentum}
-                \label{fig:1d_leblanc_density}
         \end{subfigure}
 
         \begin{subfigure}[b]{0.37\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/Leblanc_exact_and_numerical_stt_total_energy_6000.png}
                 \caption{Total energy}
-                \label{fig:1d_leblanc_press}
         \end{subfigure}
           %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
           %(or a blank line to force the subfigure onto a new line)
@@ -1315,7 +1377,6 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/Leblanc_viscosity_numerical_6000.png}
                 \caption{Viscosity coefficients}
-                \label{fig:1d_leblanc_visc}
         \end{subfigure}
 \end{figure}
 \end{frame}
@@ -1327,13 +1388,11 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/LiquidSrongShock_density_velocity_pressure_profiles.png}
                 \caption{Density, velocity and pressure profiles.}
-                \label{fig:1d_strong_shock_var}
         \end{subfigure}%
         \begin{subfigure}[b]{0.5\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/LiquidSrongShock_viscosity.png}
                 \caption{Viscosity coefficients profile.}
-                \label{fig:1d_strong_shock_visc}
         \end{subfigure}
 \end{figure}
 \end{frame}
@@ -1345,13 +1404,11 @@ $1$-D Euler equations numerical results
                 \centering
                 \includegraphics[width=\textwidth]{../figures/SlowMovingShock_density_velocity_pressure_profiles.png}
                 \caption{Velocity, density and pressure}
-                \label{fig:profiles_sms}
         \end{subfigure}%
         \begin{subfigure}[b]{0.5\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{../figures/SlowMovingShock_viscosity.png}
                 \caption{Viscosity coefficients}
-                \label{fig:viscosity_sms}
         \end{subfigure} 
 \end{figure} 
 \end{frame}
@@ -1388,6 +1445,26 @@ $1$-D Euler equations numerical results
 \begin{center}
 $2$-D Euler equations numerical results
 \end{center}
+\end{frame}
+%************************************************
+\begin{frame}{$2$-D low-Mach flow over a cylinder}
+\begin{center}
+Velocity ratio for different Mach numbers
+\end{center}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Mach number & inlet velocity & velocity at the top of the cylinder & ratio \\ \hline
+$10^{-3}$ & $2.348$ $10^{-3}$ & $1.176$ $10^{-3}$& $1.99$  \\ \hline
+$10^{-4}$ & $2.285$ $10^{-4}$ & $1.145$ $10^{-4}$& $1.99$  \\ \hline
+$10^{-5}$ & $2.283$ $10^{-5}$ & $1.144$ $10^{-5}$ & $1.99$ \\ \hline
+$10^{-6}$ & $2.283$ $10^{-6}$ & $1.144$ $10^{-6}$ & $1.99$ \\ \hline
+$10^{-7}$ & $2.283$ $10^{-7}$ & $1.144$ $10^{-7}$ & $1.99$ \\ \hline
+\end{tabular}
+\end{center}
+\nonumber
+\end{table}
 \end{frame}
 %************************************************
 \begin{frame}{$2$-D explosion: solution at $t=0.2$ $s$}
@@ -1427,6 +1504,250 @@ $2$-D Euler equations numerical results
                 \includegraphics[width=\textwidth]{../figures/DWOViscosityStt.png}
                 \caption{Viscosity coefficient}
         \end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}
+\begin{center}
+Seven equation model
+\end{center}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D converging-diverging nozzle with relaxation terms}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_two_phases_pressure.png}
+\caption{Pressure}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_two_phases_velocity.png}
+\caption{Velocity}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_two_phases_density.png}
+\caption{Density}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_two_phases_volume_fraction.png}
+\caption{Volume fraction}
+\end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D converging-diverging nozzle with relaxation terms}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_liquid_viscosity_kappa_mu.png}
+\caption{Liquid water}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_vapor_viscosity_kappa_mu.png}
+\caption{Vapor}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_liquid_beta.png}
+\caption{$\beta$}
+\end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D converging-diverging nozzle with all source terms}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e3MassOn_two_phases_pressure.png}
+\caption{Pressure}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e3MassOn_two_phases_velocity.png}
+\caption{Velocity}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e3MassOn_two_phases_density.png}
+\caption{Density}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.37\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e3MassOn_two_phases_volume_fraction.png}
+\caption{Volume fraction}
+\end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D converging-diverging nozzle with all source terms}
+\begin{figure}[H]
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_liquid_viscosity_kappa_mu.png}
+\caption{Liquid water}
+\end{subfigure}
+%
+\begin{subfigure}[b]{0.38\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/SEM/Aint1e4_vapor_viscosity_kappa_mu.png}
+\caption{Vapor}
+\end{subfigure}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=0.38\textwidth]{../figures/SEM/Aint1e4_liquid_beta.png}
+\caption{$\beta$}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{$1$-D shock tube with infinite relaxation coefficients}
+\begin{figure}
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_pressure.png}
+                \caption{Pressure at $t=305$ $\mu s$}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_velocity.png}
+                \caption{Velocity at $t=305$ $\mu s$}
+        \end{subfigure}%
+
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_density.png}
+                \caption{Density at $t=305$ $\mu s$}
+        \end{subfigure}%
+        \begin{subfigure}[b]{0.37\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/SEM/relaxation_two_phases_volume_fraction.png}
+                \caption{Volume fraction at $t=305$ $\mu s$}
+        \end{subfigure}%
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{../figures/saurel_7_eqn_model.png}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}
+\begin{center}
+$1$-D Grey Radiation-Hydrodynamic equations
+\end{center}
+\end{frame}
+%************************************************
+\begin{frame}{Equations}
+\begin{block}{}
+\begin{align}
+&\partial_t \left( \rho \right) + \partial_x\left( \rho u \right) = \partial_x \left( \kappa \partial_x \rho \right) \nonumber \\
+&\partial_t \left( \rho u\right) + \partial_x \left(\rho u^2 + P + \frac{\epsilon}{3} \right) = \partial_x \left( \kappa \partial_x \rho u \right) \nonumber \\
+&\partial_t \left( \rho E\right) + \partial_x \left[ u \left( \rho E + P \right) \right] + \frac{u}{3} \partial_x \epsilon = \partial_x \left( \kappa \partial_x(\rho E) \right) \nonumber \\
+&\partial_t \epsilon + \frac{4}{3} \partial_x \left( u \epsilon \right) - \frac{u}{3} \partial_x \epsilon = \partial_x \left( \kappa \partial_x \epsilon \right) \nonumber 
+\end{align}
+\end{block}
+\end{frame}
+%************************************************
+\begin{frame}{Steady-state solution for Mach $1.05$}
+\begin{figure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_1p05_nel_500_temperature.png}
+        \caption{Temperatures.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_1p05_nel_500_density}
+        \caption{Material density.}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}
+                \centering
+                \includegraphics[width=0.35\textwidth]{../figures/Mach_1p05_nel_500_viscosity.png}
+        \caption{Viscosity coefficients}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{Steady-state solution for Mach $2$}
+\begin{figure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_2_nel_2000_temperature.png}
+        \caption{Temperatures.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_2_nel_2000_density.png}
+        \caption{Material density.}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}
+                \centering
+                \includegraphics[width=0.35\textwidth]{../figures/Mach_2_nel_2000_viscosity.png}
+        \caption{Viscosity coefficients}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{Steady-state solution for Mach $5$}
+\begin{figure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_5_nel_1000_temperature.png}
+        \caption{Temperatures.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_5_nel_2000_density.png}
+        \caption{Material density.}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_5_nel_2000_viscosity.png}
+        \caption{Viscosity coefficients.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_5_comparison.png}
+        \caption{Location of the peak.}
+\end{subfigure}
+\end{figure}
+\end{frame}
+%************************************************
+\begin{frame}{Steady-state solution for Mach $50$}
+\begin{figure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_50_nel_1000_temperature.png}
+        \caption{Temperatures.}
+\end{subfigure}
+\begin{subfigure}[b]{0.35\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{../figures/Mach_50_nel_1000_density.png}
+        \caption{Material density.}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}
+                \centering
+                \includegraphics[width=0.35\textwidth]{../figures/Mach_50_nel_1000_viscosity.png}
+        \caption{Viscosity coefficients}
 \end{figure}
 \end{frame}
 %************************************************
