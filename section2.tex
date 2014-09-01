@@ -284,7 +284,7 @@ recommended for most transient simulations.
 %==================================================
 \subsection{Jacobian-free Newton Krylov Solver\label{sec:jfnk}}
 %==================================================
-The Moose framework allows to solve coupled multi-physics problems using the
+The Moose framework allows coupled multi-physics problems to be solved using the
 Jacobian-free Newton Krylov (JFNK) approach. 
 The JFNK method is a fully-coupled method for solving large systems of
 nonlinear equations. In general, it consists of at least two
@@ -292,7 +292,7 @@ levels: the outer Newton loop for the nonlinear solve and the inner
 Krylov loop for the linear systems of equations associated with each Newton
 iteration.  The JFNK method has become an increasingly popular option
 for solving large nonlinear equation systems arising from
-multi-physics problems over the last 20 years, and has branched out
+multi-physics problems over the last 20 years, and has been incorporated
 into a number of different disciplines~\cite{Knoll_2004}.
 
 In what follows, a brief description of the JFNK method is given.  The FEM-discretized equations are first written as
@@ -354,7 +354,7 @@ right preconditioning),
   J^\ell P^{-1} \left(P \delta \mbold U^{k+1} \right)= -\mbold r^\ell
 \end{equation}
 where $P$ is the preconditioning matrix. For $1$-D simulations, the Jacobian matrix is numerically computed by finite difference (FDP) according to \eqt{eqn:jacobian_matrix}, and passed to the underlying numerical solver
-library as the matrix $P$ for preconditioning purposes. For multi-D simulations, the same method would be inefficient because very slow. Instead, an expression of the Jacobian matrix is derived by hand and hard coded in the code. This process is significantly faster than the FDP method since the entries of the Jacobian matrix are simply read.
+library as the matrix $P$ for preconditioning purposes. For multi-D simulations, the same method would be very slow and inefficient. Instead, an expression of the Jacobian matrix is derived by hand and hard coded in the code. This process is significantly faster than the FDP method since the entries of the Jacobian matrix are simply evaluated.
 
 %==============================================================================
 \section{Implementation of the entropy viscosity method (EVM) with continuous Galerkin finite element method}\label{sect:ev_impl_sect2}

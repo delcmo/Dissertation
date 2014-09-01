@@ -16,18 +16,18 @@
 %
 \chapter{\uppercase {Hyperbolic conservation laws}}\label{chap:theory_chp1}
 %
-In this chapter, some key properties of hyperbolic conservation laws are recalled. The objective is to introduce the reader to the notion of shocks, weak solution, and entropy condition by first studying a simple hyperbolic scalar equation. The mathematical properties of the hyperbolic scalar equation are studied; these include the derivation of the Jacobian eigenvalues and the characteristic equations. Then, we explain how shock are formed which leads to a discussion of solution non-uniqueness and weak solutions. Finally, it will be explained how the entropy condition is used to ensure uniqueness of the weak solution and, more importantly, we discuss convergence of the numerical solution to the physical one. In the last section of this chapter, the notions introduced for the hyperbolic scalar equation are generalized to hyperbolic systems of equations.
+In this chapter, some key properties of hyperbolic conservation laws are recalled. The objective is to introduce the reader to the notion of shocks, weak solutions, and entropy conditions by first studying a simple hyperbolic scalar equation. The mathematical properties of the hyperbolic scalar equation are studied, including the derivation of the Jacobian eigenvalues and the characteristic equations. Then, we explain how a shock is formed which leads to a discussion of solution non-uniqueness and weak solutions. We explained how the entropy condition is used to ensure uniqueness of the weak solution and, finally, we discuss convergence of the numerical solution to the physical one. In the last section of this chapter, the notions introduced for the hyperbolic scalar equation are generalized to hyperbolic systems of equations.
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Hyperbolic scalar equations}\label{sec:hyp_scalar_sct1b}
 %%%%%%%%%%%%%%%%%%%%
 
-The study of a hyperbolic scalar equation is given here in order to provide the reader with an understanding of the  mathematical properties that are needed to aid in the comprehension of shock formation, among other topics.
+The study of a hyperbolic scalar equation is first given in order to provide the reader with an understanding of the  mathematical properties that are needed to aid in the comprehension of shock formation, among other topics.
 
 %=============================
 \subsection{Eigenvalue and characteristic curves}\label{sec:mat_ppr_sct1b}
 %=============================
-For academic purpose, we consider a simple hyperbolic scalar equation with initial conditions to form what is called an \emph{Initial Boundary Value Problem} (IBVP) as shown in \eqt{eq:ivp_sct1b}. We denote the computational domain by $\Omega$ of dimension $d$, bounded by the boundary $\Gamma$ of dimension $d-1$. Each variable is assumed to be a function of space, $\mbold{r} \in R^d$, and time $t \in \mathbb{R}_+$.
+Consider a simple hyperbolic scalar equation with initial and boundary conditions to form what is called an \emph{Initial Boundary Value Problem} (IBVP), as shown in \eqt{eq:ivp_sct1b}. We denote the computational domain by $\Omega$ of dimension $d$, bounded by the boundary $\Gamma$ of dimension $d-1$. Each variable is assumed to be a function of space, $\mbold{r} \in R^d$, and time $t \in \mathbb{R}_+$.
 %
 \begin{equation}\label{eq:ivp_sct1b}
 \left\{
@@ -38,7 +38,7 @@ u(\mbold{r},0) = u_0( \mbold{r})
 \right.
 \end{equation}
 %
-where $u$ and $\mbold f(u)$ are the solution and the inviscid flux, respectively. The inviscid flux $\mbold f(u)$ is assumed to be a differential function of the solution $u$. Two definitions of the inviscid flux will be considered in this chapter in order to illustrate the differences between linear and non-linear hyperbolic scalar systems: a linear flux $\mbold f_1$ and a non-linear flux $\mbold f_2$, as follows:
+where $u$ and $\mbold f(u)$ are the solution and the inviscid flux, respectively. The inviscid flux $\mbold f(u)$ is assumed to be a differentiable function of the solution $u$. Two definitions of the inviscid flux will be considered in this chapter in order to illustrate the differences between linear and non-linear hyperbolic scalar systems: a linear flux $\mbold f_1$ and a non-linear flux $\mbold f_2$, as follows:
 %
 \begin{subequations}\label{eq:ivp2_sct1b}
 %
@@ -55,9 +55,9 @@ where $u$ and $\mbold f(u)$ are the solution and the inviscid flux, respectively
 %
 \eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b} are respectively known as the linear advection and Burger's equations. They have been widely studied in the literature and are well understood \cite{Toro, Leveque}. 
 
-The eigenvalue, denoted by $\lambda$, of the hyperbolic equation is obtained by looking at the jacobian matrix of the inviscid flux, $\mbold f(u)$, with respect to the solution $u$, and corresponds to the wave propagation speed. When considering the fluxes $\mbold f_1$ and $\mbold f_2$, it is found that their eigenvalues are $\lambda_1 = \|\mbold{a}\|$ and $\lambda_2 = u$, respectively. For the linear advection equation, the wave speed is a constant through the computational domain (provided that $a$ is not a function of space). On the other hand, the wave speed for Burger's equation is a function of space and time since it is equal to the solution itself.
+The eigenvalue, denoted by $\lambda$, of the hyperbolic equation is obtained from the Jacobian of the inviscid flux, $\mbold f(u)$, with respect to the solution $u$, and corresponds to the wave propagation speed. When considering the fluxes $\mbold f_1$ and $\mbold f_2$, it is found that their eigenvalues are $\lambda_1 = \|\mbold{a}\|$ and $\lambda_2 = u$, respectively. For the linear advection equation, the wave speed is a constant throughout the computational domain (provided that $a$ is not a function of space). On the other hand, the wave speed for Burger's equation is a function of space and time since it is equal to the solution itself.
 
-Once the eigenvalues are determined, the next step consists of deriving the characteristic equation and the characteristic curves. For simplicity purpose, we limit ourselves to the $x-t$ plane. Under this assumption, characteristic curves are defined as curves $x = x(t)$ in the plane $x-t$ and the PDE is turned into an ODE \cite{Toro}. To determine the characteristic curves, \eqt{eq:ivp_sct1b} is recast as a function of the eigenvalue, $\lambda$, by using the chain rule as shown in \eqt{eq:ivp3_sct1b}.
+Once the eigenvalues are determined, the next step consists of deriving the characteristic equation and the characteristic curves. For $1$-D analysis, the phase space is limited to the $x-t$ plane. Under this assumption, characteristic curves are defined as curves $x = x(t)$ and the PDE transforms into an ODE \cite{Toro} along these curves. To determine the characteristic curves, \eqt{eq:ivp_sct1b} is recast as a function of the eigenvalue, $\lambda$, by using the chain rule as shown in \eqt{eq:ivp3_sct1b}.
 %
 \begin{eqnarray}\label{eq:ivp3_sct1b}
 &&\partial_t u + \frac{df}{du}\partial_x u = 0 \nonumber\\
@@ -65,26 +65,26 @@ Once the eigenvalues are determined, the next step consists of deriving the char
 &&\frac{Du}{Dt} = \partial_t u + \frac{dx}{dt} \partial_x u = 0 \text{ along } \frac{dx}{dt} = f'(u) = \lambda 
 \end{eqnarray}
 %
-\eqt{eq:ivp3_sct1b} represents the rate of change of the solution $u$ along the curve $\frac{dx}{dt} = f'(u) = \lambda$. It tells us that the solution $u$ is constant along the curve $\frac{dx}{dt} = \lambda$ since its rate of change is zero. The eigenvalue is the slope of the characteristic curve and is referred to as the characteristic speed. 
-For a given characteristic curve, the characteristic speed is a constant, since the solution $u$ is constant as well, and given by the initial condition, $f'(u(x,0))=f'(u_0)$ which allows us to integrate in order to obtain an analytical expression for $x(t)$:
+\eqt{eq:ivp3_sct1b} represents the rate of change of the solution $u$ along the curve $\frac{dx}{dt} = f'(u) = \lambda$. It states that the solution $u$ is constant along the curve $\frac{dx}{dt} = \lambda$ because its rate of change is zero. The eigenvalue is the inverse slope of the characteristic curve and is referred to as the characteristic speed. 
+For a given characteristic curve, the characteristic speed is a constant, since the solution $u$ is constant as well, and given by the initial condition, $f'(u(x,0))=f'(u_0)$ which allows us to integrate to obtain an analytical expression for $x(t)$:
 %
 \begin{eqnarray}\label{eq:ivp4_sct1b}
 \frac{dx}{dt} &=& f'(u_0) \nonumber \\
 \Leftrightarrow x(t) &=& x_0 + f'(u_0)t
 \end{eqnarray}
 %
-where we set $x(t=0) = x_0$ that can be seen as the initial position of a particle traveling along the characteristic curve. It is common to represent the characteristic curves in a $x-t$ plane and examples will be given for the linear advection equation and for Burger's equation. \eqt{eq:ivp4_sct1b} informs us on the position $x$ of a particle carrying the initial value $u_0$ at each time value $t$. Now, assuming that the initial value of the solution is $u_0(x_0)$ along the characteristic curve passing through the point $x_0$ given by \eqt{eq:ivp4_sct1b}, the solution $u(x,t)$ at position $x$ and time $t$ can be expressed as follows:
+where setting $x(t=0) = x_0$ can be seen as the initial position of a particle traveling along the characteristic curve. It is common to represent the characteristic curves in a $x-t$ plane and examples will be given for the linear advection equation and for Burger's equation. \eqt{eq:ivp4_sct1b} informs us of the position $x$ of a particle carrying the initial value $u_0$ at each time value $t$. Assuming that the initial value of the solution is $u_0(x_0)$ along the characteristic curve passing through the point $x_0$ given by \eqt{eq:ivp4_sct1b}, the solution $u(x,t)$ at position $x$ and time $t$ can be expressed as follows:
 %
 \begin{equation}\label{eq:ivp5_sct1b}
 u(x,t) = u_0(x_0) = u_0(x - f'(u_0)t) .
 \end{equation}
 %
-\eqt{eq:ivp5_sct1b} can be seen as an analytical solution of the hyperbolic scalar equation (\eqt{eq:ivp_sct1b}). It is also understood that the derivative of the flux that corresponds to the eigenvalue of the system, has profound consequences on the behavior of the solution as will be explained in the next Section. %\sect{sec:shock_form_sct1b}. 
+\eqt{eq:ivp5_sct1b} can be seen as an analytical solution of the hyperbolic scalar equation (\eqt{eq:ivp_sct1b}). It is also understood that the derivative of the flux, that corresponds to the eigenvalue of the scalar system, has direct consequence on the behavior of the solution, as will be explained in the next Section. %\sect{sec:shock_form_sct1b}. 
 
 %=============================
 \subsection{Shocks formation and vanishing viscosity equation/solution}\label{sec:shock_form_sct1b}
 %=============================
-Hyperbolic scalar equations are known to develop shocks, even with a smooth initial condition. This section aims at detailing how shocks form based on the mathematical properties introduced in \sect{sec:mat_ppr_sct1b} and the two examples of \eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b}, i.e., the 1-D linear advection and Burger's equations.\\
+Nonlinear hyperbolic scalar equations are known to develop shocks, even with a smooth initial condition. This section aims at detailing how shocks form based on the mathematical properties introduced in \sect{sec:mat_ppr_sct1b} and the two examples of \eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b}, i.e., the 1-D linear advection and Burger's equations.\\
 
 When considering the 1-D linear advection equation (with the flux $f_1(u) = au$), the eigenvalue is found equal to $\lambda_1=a$ and is constant. Thus, the slope of the characteristic curve remains constant and each particle travels at the same velocity through the computational domain. In other word, the initial profile $u_0(x)$ of the solution is simply translated at speed $a$ to the right if $a \geq 0$ or to the left if $a \leq 0$. Obviously, if $a=0$, the flux is also null and the solution does not evolve in time. A representation of the characteristic curve for the linear advection equation, \eqt{eq:trans_sct1b}, is given in \fig{fig:char_curve_sct1b} in the $x-t$ plane: all of the characteristic curves are parallel since their slope is given by the eigenvalue $\lambda_1=a$ that is constant.
 %
@@ -95,7 +95,7 @@ When considering the 1-D linear advection equation (with the flux $f_1(u) = au$)
 \label{fig:char_curve_sct1b}
 \end{figure}
 %
-In the case of the 1-D Burger's equation, the eigenvalue is no longer constant and equal to the solution itself $\lambda_2 = u(x,t)$. The slope of the characteristic curve is now a function of space and more precisely of the initial solution $u_0$ which requires us to analyze two distinct cases: a constant and a non-constant initial solution. In the former case, the slope of the characteristic is constant which is the same situation as with the linear advection equation previously discussed. In the latter case, the characteristic curves will not have the same slope and thus, may intersect. When two characteristic curves intersect, it means that, at a given time and position, two values of the solution are allowed (each characteristic curve carries different initial values of the solution): the solution displays an infinite gradient also called shock wave as shown in \fig{fig:char_curve_bg_sct1b}. 
+In the case of the 1-D Burger's equation, the eigenvalue is no longer constant and is equal to the solution itself $\lambda_2 = u(x,t)$. The slope of the characteristic curve is now a function of space and more precisely of the initial solution $u_0$ which requires us to analyze two distinct cases: a constant and a non-constant initial solution. In the former case, the slope of the characteristic is constant which is the same situation as with the linear advection equation previously discussed. In the latter case, the characteristic curves will not have the same slope and thus, may intersect. When two characteristic curves intersect, it means that, at a given time and position, two values of the solution are allowed (each characteristic curve carries different initial values of the solution): the solution displays an infinite gradient also called shock wave as shown in \fig{fig:char_curve_bg_sct1b}. 
 \tcr{how do we see the infinite gradient in the equation?}\tcb{You see it with the characteristic equation: two values of u at a given point x -> infinite gradient}
 %
 \begin{figure}[H]
@@ -105,20 +105,20 @@ In the case of the 1-D Burger's equation, the eigenvalue is no longer constant a
 \label{fig:char_curve_bg_sct1b}
 \end{figure}
 %
-The time $T_{shock}$ at which the shock occurs can be analytically determined. Let consider a 1-D non-linear flux $f(u)$ and two characteristic curves originating from the position $x_0$ and $x_0+dx$ carrying the initial values $u_0(x_0)$ and $u_0(x_0+dx)$, respectively. The characteristic curves are:
+The time $T_{shock}$ at which the shock occurs can be analytically determined. Consider a 1-D non-linear flux $f(u)$ and two characteristic curves originating from the position $x_0$ and $x_0+dx$ carrying the initial values $u_0(x_0)$ and $u_0(x_0+dx)$, respectively. The characteristic curves are:
 %
 \begin{eqnarray}\label{eq:cc1_sct1b}
 &&x_1(t) = x_0 + f'(u_0(x_0)) t \nonumber \\ 
 &&x_2(t) = (x_0 + dx) + f'(u_0(x_0+dx)) t \, .
 \end{eqnarray}
 %
-Let now assume that the two characteristic curves intersect at time $T_{shock}$, which implies $x_1(T_{shock}) = x_2(T_{shock})$. Using \eqt{eq:cc1_sct1b}, it yields:
+Now assume that the two characteristic curves intersect at time $T_{shock}$, which implies $x_1(T_{shock}) = x_2(T_{shock})$. Using \eqt{eq:cc1_sct1b} yields:
 %
 \begin{equation}\label{eq:cc1b_sct1b}
 x_0 + f'(u_0(x_0)) T_{shock} = (x_0 + dx) + f'(u_0(x_0+dx)) T_{shock}
 \end{equation}
 %
-From \eqt{eq:cc1b_sct1b} and, after a few lines of algebra, an expression for $T_{shock}$ can be obtained: 
+From \eqt{eq:cc1b_sct1b}, after a few lines of algebra, an expression for $T_{shock}$ can be obtained: 
 \begin{equation}\label{eq:cc2a_sct1b}
 T_{shock} = \frac{-dx}{f'(u_0(x_0+dx))-f'(u_0(x_0))}
 \end{equation} 
@@ -126,7 +126,7 @@ Taking the limit $dx \to 0$ and using the definition of the derivative, \eqt{eq:
 \begin{equation}\label{eq:cc2_sct1b}
 T_{shock} = \frac{-1}{f''(u_0) u_0'(x_0)} = \frac{-1}{f'(u_0(x_0))},
 \end{equation} 
-The trivial case $f''(u_0) = 0$ implies two options. The first case verifying $f''(u_0) = 0$ corresponds to a linear-flux which is ruled out since we assumed a non-linear flux. However, if one considers the linear advection equation, then $f''(u_0)=0$ and by taking the limit of \eqt{eq:cc2_sct1b} yields $T_{shock} \to \infty$ which means that a shock wave never forms. This result is consistent with the conclusion made earlier in this section when studying the linear advection equation. The second case corresponds to a non-linear flux whose second-order derivative is locally zero. However, a shock occurs first where the derivative of the flux is negative to ensure positivity of $T_{shock}$, and its absolute value is maximum (so that $\frac{1}{f'(u_0)}$ is minimal). These conditions do not correspond to the case $f''(u_0) = 0$ which implies $f'(u_0) = 0$ locally \tcr{this is not clear, how does f''=0 implies f'=0?} and allow us to rule out the second case. Thus, the time the shock forms at is:
+The trivial case $f''(u_0) = 0$ implies two options. The first case verifying $f''(u_0) = 0$ corresponds to a linear-flux which is ruled out since we assumed a non-linear flux. However, if one considers the linear advection equation, then $f''(u_0)=0$ and taking the limit of \eqt{eq:cc2_sct1b} yields $T_{shock} \to \infty$, which means that a shock wave never forms. This result is consistent with the conclusion made earlier in this section when studying the linear advection equation. The second case corresponds to a non-linear flux whose second-order derivative is locally zero. However, a shock occurs first where the derivative of the flux is negative to ensure positivity of $T_{shock}$, and its absolute value is maximum (so that $\frac{1}{f'(u_0)}$ is minimal). These conditions do not correspond to the case $f''(u_0) = 0$ which implies $f'(u_0) = 0$ locally \tcr{this is not clear, how does f''=0 implies f'=0?} and allow us to rule out the second case. Thus, the time of shock formation is:
 %
 \begin{equation}
 T_{shock} = \frac{-1}{\min\left( f'(u_0) \right)} 
@@ -142,13 +142,13 @@ Once the shock is formed, at a time $t \geq T_{shock}$, more than two characteri
 \label{fig:triple_pt_bg_sct1b}
 \end{figure}
 %
-In this case, uniqueness of the solution is not ensured since for a given position and time the solution admits three values. This particular phenomenon makes sense when solving the shallow-water equation that is used to model a breaking wave on a sloping beach. However, when considering gas flows, uniqueness of the thermodynamic properties is required to ensure a point-wise single-valued density. From the last example, we understand that preventing the tripled-value situation from forming may be the key to obtaining the correct physical behavior when solving hyperbolic scalar equations and hyperbolic systems of equations (e.g., Euler equations). A solution to this problem could come from the study of an advection-diffusion equation type that is used, for instance, to model the propagation of particles in a material by both advection and diffusion phenomena. This type of equation is known to have unconditionally \emph{smooth solution} for all time and spatial location. A 1-D generic form is given in \eqt{eq:adv_diff_sct1b}.
+In this case, uniqueness of the solution is not ensured since for a given position and time the solution admits three values. This particular phenomenon makes sense when solving the $3$-D shallow-water equations that are used to model a breaking wave on a sloping beach. However, when considering gas flows, uniqueness of the thermodynamic properties is required to ensure a point-wise single-valued density. From the last example, we understand that preventing the tripled-value situation from forming may be the key to obtaining the correct physical behavior when solving hyperbolic scalar equations and hyperbolic systems of equations (e.g., Euler equations). A solution to this problem could come from the study of an advection-diffusion equation type that is used, for instance, to model the propagation of particles in a material by both advection and diffusion phenomena. This type of equation is known to have unconditionally \emph{smooth solution} for all time and spatial location. A 1-D generic form is given in \eqt{eq:adv_diff_sct1b}.
 %
 \begin{equation}\label{eq:adv_diff_sct1b}
 \partial_t u + \partial_x f(u) = \epsilon \partial_{xx} u \,,
 \end{equation}
 % 
-where $\epsilon$ is a diffusion coefficient that can be solution-dependent in theory but is assumed constant for the purpose of this section. Since the main difference between the hyperbolic problem given in \eqt{eq:ivp_sct1b} and \eqt{eq:adv_diff_sct1b} lies in the diffusion term $\epsilon \partial_xx u(x,t)$, it is proposed to investigate its effect on the numerical solution. If the solution $u(x,t)$ is smooth, the diffusion term $\epsilon \partial_{xx} u(x,t)$ in \eqt{eq:adv_diff_sct1b} is negligible and the numerical solution is driven by the advection term $\partial_x f(u(x,t))$ so that \eqt{eq:adv_diff_sct1b} and \eqt{eq:ivp_sct1b} have similar behaviors. As the solution becomes stiffer, the diffusion terms becomes large enough to influence the behavior of the numerical solution and will prevent the wave from breaking as it happens in hyperbolic problems. In other terms, the diffusion term, by monitoring the change of curvature in the numerical solution, locally affects the numerical solution where needed. The diffusion coefficient $\epsilon$ can be seen as a tuning coefficient that will also affect the smoothness of the numerical solution as shown in \fig{fig:epsilon}. As $\epsilon$ goes to zero, the numerical solution becomes sharper and tends to the solution obtained when solving the hyperbolic problem given in \eqt{eq:adv_diff_sct1b}. On the opposite, with a very large diffusion (viscosity) coefficient, the shock is smoothed out.
+where $\epsilon$ is a diffusion coefficient that can be solution-dependent in theory but is assumed constant for the purpose of this section. Since the main difference between the hyperbolic problem given in \eqt{eq:ivp_sct1b} and \eqt{eq:adv_diff_sct1b} lies in the diffusion term $\epsilon \partial_xx u(x,t)$, it is proposed to investigate its effect on the numerical solution. If the solution $u(x,t)$ is smooth, the diffusion term $\epsilon \partial_{xx} u(x,t)$ in \eqt{eq:adv_diff_sct1b} is negligible and the numerical solution is driven by the advection term $\partial_x f(u(x,t))$ so that \eqt{eq:adv_diff_sct1b} and \eqt{eq:ivp_sct1b} have similar behaviors. As the solution becomes steeper, the diffusion terms becomes large enough to influence the behavior of the numerical solution and will prevent the wave from breaking as it happens in hyperbolic problems. In other terms, the diffusion term, by monitoring the change of curvature in the numerical solution, locally affects the numerical solution where needed. The diffusion coefficient $\epsilon$ can be seen as a tuning coefficient that will also affect the smoothness of the numerical solution as shown in \fig{fig:epsilon}. As $\epsilon$ goes to zero, the numerical solution becomes sharper and tends to the solution obtained when solving the hyperbolic problem given in \eqt{eq:adv_diff_sct1b}. On the opposite, with a very large diffusion (viscosity) coefficient, the shock is smoothed out.
 %
 \begin{figure}[H]
 \centering
@@ -184,10 +184,10 @@ We assume that the position of the shock is given by a function of time denoted 
 \frac{d}{dt} \int_{x_1}^{s(t)} u(x,t) dx + \frac{d}{dt} \int_{s(t)}^{x_2} u(x,t) dx + f(x_2,t) - f(x_1,t) = 0
 \end{equation}
 % 
-The first two integrals can be recast by using the following chain rule:
+The first two integrals can be recast by using the Leibnitz Rule:
 %
 \begin{equation}\label{eq:rh3_sct1b}
-\frac{d}{dt} \int_{y_1(t)}^{y_2(t)} g(y,t) dy =  \int_{y_1(t)}^{y_2(t)} g(y,t) dy + g(y_2,t) \frac{d y_2(t)}{dt} - g(y_1,t) \frac{d y_1(t)}{dt} \,.
+\frac{d}{dt} \int_{y_1(t)}^{y_2(t)} g(y,t) dy =  \int_{y_1(t)}^{y_2(t)} \frac{\partial g(y,t)}{\partial y} dy + g(y_2,t) \frac{d y_2(t)}{dt} - g(y_1,t) \frac{d y_1(t)}{dt} \,.
 \end{equation}
 % 
 By noticing that $x_1$ and $x_2$ are fixed and thus not functions of time, we obtain:
@@ -221,7 +221,7 @@ Then, \eqt{eq:weak_sol_sct1b} is integrating by parts to obtain:
 -\int_{-\infty}^{+\infty}\text{dx} \phi(x,t) u(x,t) \left. \right|_0^{+\infty} - \int_0^{+\infty}\text{dt} \phi(x,t) f(u(x,t)) \left. \right|_{-\infty}^{+\infty}
 \end{eqnarray}
 %
-where the two integrals on the right-hand-side of \eqt{eq:weak_sol2_sct1b} correspond to the boundary terms. Recalling that the test function is identically zero outside a bounded set which means $\phi(x,t) \to 0$ as $x \to \pm  \infty$ and $t \to +\infty$, \tcr{why does the test function depends on time and tends to 0 as time tends to infty?} \tcb{ I think it is for generality purpose. But the same derivation could be done with $\phi(x)$. In Leveque it is done with $\phi(x,t)$ p. 27 but they do not really justify this choice}\tcr{ok, please put the appropriate ref to Leveque's book, including the page number} all of the boundary terms vanish but for $t=0$. The resulting equation contains only one boundary term that is function of the initial condition as shown in \eqt{eq:weak_sol3_sct1b}.
+where the two integrals on the right-hand-side of \eqt{eq:weak_sol2_sct1b} correspond to the boundary terms. Recalling that the test function is identically zero outside a bounded set which means $\phi(x,t) \to 0$ as $x \to \pm  \infty$ and $t \to +\infty$, \tcr{why does the test function depends on time and tends to 0 as time tends to infty?} \tcb{ I think it is for generality purpose. But the same derivation could be done with $\phi(x)$. In Leveque it is done with $\phi(x,t)$ p. 27 but they do not really justify this choice}\tcr{ok, please put the appropriate ref to Leveque's book, including the page number} all of the boundary terms vanish but for $t=0$. The resulting equation contains only one boundary term that is a function of the initial condition as shown in \eqt{eq:weak_sol3_sct1b}.
 %
 \begin{eqnarray}\label{eq:weak_sol3_sct1b}
 \int_0^{+\infty}\text{dt}\int_{-\infty}^{+\infty}\text{dx} \left[ u(x,t) \partial_t \phi(x,t)   + f(u) \partial_x \phi(x,t)  \right] = \nonumber \\
@@ -257,7 +257,7 @@ As a matter of fact, we can show that \eqt{eq:weak_sol3_sct1b} and \eqt{eq:weak_
 \end{array}\right.
 \end{equation}
 %
-where $\delta$ is the width of the intermediate strip. Since the test function $\phi$ verifying \eqt{eq:weak_sol5_sct1b} vanish as $x \to \pm  \infty$ and $t \to \infty$, \eqt{eq:weak_sol3_sct1b} is still valid. The temporal and spatial derivatives of the test function $\phi(x,t)$ are zero everywhere but in the intermediate strip, and approach delta function as $\delta \to 0$. Thus, in the limit $\delta \to 0$, \eqt{eq:weak_sol3_sct1b} is shown to be equivalent to the integral form of the conservation law given in \eqt{eq:weak_sol4_sct1b}. A direct consequence of this result is that the weak solution in the sense of \eqt{eq:weak_sol3_sct1b} includes the solution of the hyperbolic conservation law we are looking for and the vanishing viscosity generalized solution. However, uniqueness of the weak solution is not ensured by \eqt{eq:weak_sol3_sct1b} and can be demonstrated by considering a 1-D Riemann problem for a hyperbolic conservation law. The reader is referred to \cite{Toro} and \cite{Leveque} for additional details. The question arising from the previous statement is: how to identify the correct weak solution that corresponds to the physically vanishing viscosity solution? The answer lies in the entropy condition that is defined by analogy to the gas dynamics case. Mathematically, the entropy condition can be defined in multiple ways using either the speed of shock $S$ (see page 37 in \cite{Leveque}) or an entropy function that will be further detailed next. Because our focus is on hyperbolic system of equations, we have chosen to define the entropy condition through the derivation of an entropy residual for an hyperbolic conservation law. 
+where $\delta$ is the width of the intermediate strip. Since the test function $\phi$ verifying \eqt{eq:weak_sol5_sct1b} vanish as $x \to \pm  \infty$ and $t \to \infty$, \eqt{eq:weak_sol3_sct1b} is still valid. The temporal and spatial derivatives of the test function $\phi(x,t)$ are zero everywhere but in the intermediate strip, and approach delta function as $\delta \to 0$. Thus, in the limit $\delta \to 0$, \eqt{eq:weak_sol3_sct1b} is shown to be equivalent to the integral form of the conservation law given in \eqt{eq:weak_sol4_sct1b}. A direct consequence of this result is that the weak solution in the sense of \eqt{eq:weak_sol3_sct1b} includes the solution of the hyperbolic conservation law we are seeking and also the vanishing viscosity generalized solution. However, uniqueness of the weak solution is not ensured by \eqt{eq:weak_sol3_sct1b} and can be demonstrated by considering a 1-D Riemann problem for a hyperbolic conservation law. The reader is referred to \cite{Toro} and \cite{Leveque} for additional details. The question arising from the previous statement is: how to identify the correct weak solution that corresponds to the physically vanishing viscosity solution? The answer lies in the entropy condition that is defined by analogy to the gas dynamics case. Mathematically, the entropy condition can be defined in multiple ways using either the speed of shock $S$ (see page 37 in \cite{Leveque}) or an entropy function that will be further detailed next. Because our focus is on hyperbolic system of equations, we have chosen to define the entropy condition through the derivation of an entropy residual for an hyperbolic conservation law. 
 
 Before detailing the steps employed to obtain an entropy residual, we recall the meaning of the entropy condition for gas dynamics. In gas dynamics, the physical entropy is constant along a smooth path flow but experiences a jump to a higher value across a shock wave. Thus, the physical entropy is expected to increase if the flow contains a shock wave, which gives us a condition in order to pick out the correct weak solution. It remains to translate this condition into a mathematical statement. Before doing so, we want to emphasize the difference between the mathematical and physical entropies in order to clear any confusion. The physical entropy is by definition positive and increases as a function of time to reach a maximum value at steady-state. The mathematical entropy is defined convex and decreases as a function of time. In order to avoid any confusion, the mathematical and physical entropies will be referred to as $\eta$ and $s$, respectively. These two entropies are related to each other by the following relation:
 %
@@ -319,7 +319,7 @@ where $\mu(\mbold r,t )$ is a positive viscosity coefficient that is typically s
 By integrating per parts the right-hand-side of \eqt{eq:weak_sol8_sct1b}, one obtains: 
 %
 \begin{equation}\label{eq:weak_sol9_sct1b}
-\partial_t \eta (u) + \div \mbold \psi (u) =  \div \left( \eta_u \mu \grad u \right) - \mu( \grad u \cdot \grad \eta_u \,.
+\partial_t \eta (u) + \div \mbold \psi (u) =  \div \left( \eta_u \mu \grad u \right) - \mu( \grad u \cdot \grad \eta_u) \,.
 \end{equation}
 %
 Since we are interested in the weak solution, \eqt{eq:weak_sol9_sct1b} is integrated over the space-time domain $\Theta = \left[ \mbold r_1,\mbold r_2 \right] \times \left[ t_1,t_2 \right]$ on the same model as in \eqt{eq:weak_sol4_sct1b}. It is also assumed that the shock remains within $\Theta$ for all time $t \in \left[ t_1, t_2 \right]$ and away from the boundaries. Thus, \eqt{eq:weak_sol9_sct1b} becomes:
