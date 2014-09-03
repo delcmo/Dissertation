@@ -20,6 +20,20 @@
 \pagenumbering{roman} % Roman numerals
 \setcounter{page}{2}
 
-\indent
+The work presented in this dissertation focuses onto the application of the entropy viscosity method to single and two-phase flow equations when using a continuous Galerkin finite element method and the temporal implicit capabilities of the MOOSE framework \cite{Moose}. First,  
+the entropy viscosity method, introduced by Guermond et al. \cite{jlg1, jlg2}, is extended to the multi-dimensional Euler 
+equations for both subsonic (very low Mach numbers) and supersonic flows. 
+We show that the current definition of the viscosity coefficients \cite{jlg1, jlg2} is not adapted to low-Mach flows 
+and we provide a robust alternate definition valid for any Mach number value. The new definitions are derived from a 
+low-Mach asymptotic study, is valid for a wide range of Mach numbers and no longer requires an analytical expression of the entropy function. In addition, the entropy minimum principle is used to derive 
+the viscous regularization terms for Euler equations with variable area for nozzle flow problems and was proved valid for any equation of state with a concave entropy. 
+The new definition of the entropy viscosity method is tested on various 1-D and 2-D numerical benchmarks employing the ideal and the stiffened gas equation of states: flow in a converging-diverging nozzle, Leblanc shock tube, slow moving 
+shock, strong shock for liquid phase, subsonic flows around a 2-D cylinder and over a circular hump, and supersonic flow in a 
+compression corner. Convergence studies are performed using analytical solutions in 1-D and proved the entropy viscosity method to be second-order accurate for smooth solutions.
 
+In a second part, the entropy viscosity method is applied to the seven-equation two-phase flow model \cite{SEM}. After deriving the dissipative terms using the same method as for the multi-D Euler equations, a low-Mach asymptotic study is performed in order to obtain a definition for the viscosity coefficients. Because the seven-equation model is derived by assuming that each phase obeys to the Euler equation, the dissipative terms and the definition of the viscosity coefficients are analogous to the ones obtained for the single-phase system of equations. Then, $1$-D numerical tests were performed to demonstrate that the entropy viscosity method can properly stabilize the seven-equation model.
+
+Another focus of this work was to investigate the impact of source terms (gravity, friction, etc) onto the entropy viscosity method. The theoretical approach adopted here consists of deriving the entropy residual when accounting for the source terms and investigate the sign of the new terms in order to adapt the definition of the viscosity coefficient. Numerical $1$-D tests were performed to validate this approach for both single and two-phase flow models.
+
+In the last part of this dissertation, the entropy viscosity method is applied to the $1$-D grey radiation-hydrodynamic equations: the $1$-D Euler equations are coupled to a transport diffusion equation through relaxation terms. The method of manufactured solution was used to prove second-order accuracy of the numerical stabilization method and also show that the entropy viscosity method yields the correct asymptotic diffusion limit. $1$-D tests for inlet Mach number ranging from $1.2$ to $50$ are presented and show good agreement with the semi-analytical solutions.  
 \pagebreak{}

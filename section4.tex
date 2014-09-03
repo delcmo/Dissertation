@@ -896,16 +896,16 @@ We consider a 1-D straight pipe of length $L=1$ $m$ filled with two gas phases i
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/liquid_volume_fraction.png}
-                \caption{Volume fraction of phase 1.}
-                \label{fig:vf-liq-7-eqn-sect4}
+%                \caption{Volume fraction of phase 1.}
+                \caption{\label{fig:vf-liq-7-eqn-sect4}}
         \end{subfigure}%
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/liquid_beta.png}
-                \caption{Viscosity coefficients for volume fraction equation of phase 1.}
-                \label{fig:beta-liq-7-eqn-sect4}
+%                \caption{Viscosity coefficients for volume fraction equation of phase 1.}
+                \caption{\label{fig:beta-liq-7-eqn-sect4}}
         \end{subfigure}
-        \caption{\label{fig:beta-visc-7-sect4}}
+        \caption{Volume fraction (left) and viscosity coefficients for volume fraction equation (right) of phase 1\label{fig:beta-visc-7-sect4}}
 \end{figure}
 %
 \begin{figure}[H]
@@ -913,16 +913,16 @@ We consider a 1-D straight pipe of length $L=1$ $m$ filled with two gas phases i
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/liquid_pressure.png}
-                \caption{Pressure of phase 1.}
-                \label{fig:press-1-7-eqn-sect4}
+%                \caption{Pressure of phase 1.}
+                \caption{\label{fig:press-1-7-eqn-sect4}}
         \end{subfigure}%
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/vapor_pressure.png}
-                \caption{Pressure of phase $2$.}
-                \label{fig:press-2-7-eqn-sect4}
+%                \caption{Pressure of phase $2$.}
+                \caption{\label{fig:press-2-7-eqn-sect4}}
         \end{subfigure}
-        \caption{\label{fig:press-7-sect4}}
+        \caption{Pressure profiles of phase $1$ (left) and $2$ (right)\label{fig:press-7-sect4}}
 \end{figure}
 %
 \begin{figure}[H]
@@ -930,16 +930,16 @@ We consider a 1-D straight pipe of length $L=1$ $m$ filled with two gas phases i
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/liquid_velocity.png}
-                \caption{Velocity of phase 1.}
-                \label{ig:vel-1-7-eqn-sect4}
+%                \caption{Velocity of phase 1.}
+                \caption{\label{ig:vel-1-7-eqn-sect4}}
         \end{subfigure}%
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/vapor_velocity.png}
-                \caption{Velocity of phase $2$.}
-                \label{ig:vel-2-7-eqn-sect4}
+%                \caption{Velocity of phase $2$.}
+                \caption{\label{ig:vel-2-7-eqn-sect4}}
         \end{subfigure}
-        \caption{\label{fig:vel-7-sect4}}
+        \caption{Velocity profiles of phase $1$ (left) and $2$ (right)\label{fig:vel-7-sect4}}
 \end{figure}
 %
 \begin{figure}[H]
@@ -947,16 +947,16 @@ We consider a 1-D straight pipe of length $L=1$ $m$ filled with two gas phases i
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/liquid_viscosity.png}
-                \caption{Viscosity coefficients of phase 1.}
-                \label{ig:visc-1-7-eqn-sect4}
+%                \caption{Viscosity coefficients of phase 1.}
+                \caption{\label{ig:visc-1-7-eqn-sect4}}
         \end{subfigure}%
         \begin{subfigure}[b]{0.495\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/vapor_viscosity.png}
-                \caption{Viscosity coefficients of phase $2$.}
-                \label{fig:visc-2-7-eqn-sect4}
+%                \caption{Viscosity coefficients of phase $2$.}
+                \caption{\label{fig:visc-2-7-eqn-sect4}}
         \end{subfigure}
-        \caption{\label{fig:visc-7-sect4}}
+        \caption{Viscosity coefficient profiles of phase $1$ (left) and $2$ (right)\label{fig:visc-7-sect4}}
 \end{figure}
 %
 The stabilization numerical method preserves the uniform pressure (\fig{fig:press-7-sect4}) and velocity (\fig{fig:vel-7-sect4}) flow conditions while correctly resolving the discontinuity in the volume fraction profile as shown in \fig{fig:vf-liq-7-eqn-sect4}. The viscosity coefficients $\mu_k$ and $\kappa_k$ are equal to zero for both phases as shown in \fig{fig:visc-7-sect4}, since the flow conditions are uniform. However, the viscosity coefficient $\beta_k$ is peaked in the discontinuity region as expected. This test clearly shows that the stabilization method does not induce any artificial waves due to the smearing of the discontinuity in the volume fraction profile.

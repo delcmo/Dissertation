@@ -121,18 +121,21 @@ x_0 + f'(u_0(x_0)) T_{shock} = (x_0 + dx) + f'(u_0(x_0+dx)) T_{shock}
 From \eqt{eq:cc1b_sct1b}, after a few lines of algebra, an expression for $T_{shock}$ can be obtained: 
 \begin{equation}\label{eq:cc2a_sct1b}
 T_{shock} = \frac{-dx}{f'(u_0(x_0+dx))-f'(u_0(x_0))}
-\end{equation} 
+\end{equation}
 Taking the limit $dx \to 0$ and using the definition of the derivative, \eqt{eq:cc2a_sct1b} becomes:
 \begin{equation}\label{eq:cc2_sct1b}
-T_{shock} = \frac{-1}{f''(u_0) u_0'(x_0)} = \frac{-1}{f'(u_0(x_0))},
+T_{shock} = \frac{-1}{f''(u_0) u_0'(x_0)}, 
+%= \frac{-1}{f'(u_0(x_0))},
 \end{equation} 
-The trivial case $f''(u_0) = 0$ implies two options. The first case verifying $f''(u_0) = 0$ corresponds to a linear-flux which is ruled out since we assumed a non-linear flux. However, if one considers the linear advection equation, then $f''(u_0)=0$ and taking the limit of \eqt{eq:cc2_sct1b} yields $T_{shock} \to \infty$, which means that a shock wave never forms. This result is consistent with the conclusion made earlier in this section when studying the linear advection equation. The second case corresponds to a non-linear flux whose second-order derivative is locally zero. However, a shock occurs first where the derivative of the flux is negative to ensure positivity of $T_{shock}$, and its absolute value is maximum (so that $\frac{1}{f'(u_0)}$ is minimal). These conditions do not correspond to the case $f''(u_0) = 0$ which implies $f'(u_0) = 0$ locally \tcr{this is not clear, how does f''=0 implies f'=0?} and allow us to rule out the second case. Thus, the time of shock formation is:
+The trivial case $f''(u_0) = 0$ implies two options. The first case verifying $f''(u_0) = 0$ corresponds to a linear-flux which is ruled out since we assumed a non-linear flux. When taking the limit of \eqt{eq:cc2_sct1b}, it yields $T_{shock} \to \infty$, which means that a shock wave never forms. This result is consistent with the conclusion made earlier in this section when studying the linear advection equation. The second case corresponds to a non-linear flux whose second-order derivative is locally zero: at this particular point, a shock wave cannot form. 
+From \eqt{eq:cc2_sct1b}, it is understood that the convexity of the flux will determine whether or not a shock wave can form. If $f(u)$ is a convex function, such that $f''(u) \leq 0$ for all $u$, a shock wave will form where the slope of the initial solution $u_0'$ is negative. On the other hand, when assuming a concave flux, i.e. $f''(u) \geq 0$, the initial data must have points where the slope is positive. By minimizing the denominator of \eqt{eq:cc2_sct1b}, the time the wave will brake at, is obtained as follows: 
+%However, a shock occurs first where the derivative of the flux is negative to ensure positivity of $T_{shock}$, and reaches a minimum value (so that $\frac{-1}{f'(u_0)}$ is minimal). These conditions do not correspond to the case $f''(u_0) = 0$ which implies $f'(u_0) = 0$ locally \tcr{this is not clear, how does f''= 0 implies f'=0?} and allow us to rule out the second case. 
 %
 \begin{equation}
-T_{shock} = \frac{-1}{\min\left( f'(u_0) \right)} 
+T_{shock} = \frac{-1}{\min\left( {f''(u_0) u_0'(x_0)} \right)} 
 \end{equation}
 % 
-\tcr{that is not enough, $f''(u)0$ could be 0 at a given $x_0$. How can we modify this sentence?\\also, isn't the time of shock the minimum over all values of $x_0$?} \tcb{Is it better?} \tcr{not yet}
+\tcr{that is not enough, $f''(u)0$ could be 0 at a given $x_0$. How can we modify this sentence?\\also, isn't the time of shock the minimum over all values of $x_0$?} \tcb{Is it better?} \tcr{not yet} \tcb{done}
 Once the shock is formed, at a time $t \geq T_{shock}$, more than two characteristic curves may intersect leading to a triple-valued situation as shown in \fig{fig:triple_pt_bg_sct1b}. 
 %
 \begin{figure}[H]
