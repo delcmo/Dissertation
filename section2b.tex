@@ -28,15 +28,15 @@ We recall the multi-D Burger's equation (\eqt{eq:burger_eq_sct2b}) with the visc
 \begin{subequations}\label{eq:burger_sct2b}
 %
 \begin{equation}\label{eq:burger_eq_sct2b}
-\partial_t u(\vec{r},t) + \div \left( \frac{u(\vec{r},t)^2}{2} \vec{n} \right) = \div \left( \mu(\vec{r},t) \grad u(\vec{r},t) \right)
+\partial_t u(\mbold{r},t) + \div \left( \frac{u(\mbold{r},t)^2}{2} \hat{\mbold{n}} \right) = \div \left( \mu(\mbold{r},t) \grad u(\mbold{r},t) \right)
 \end{equation}
 %
 \begin{equation}\label{eq:burger_visc_sct2b}
 \left\{
 \begin{array}{l}
-\mu(\vec{r},t) = \min \left( \mu_{max} (\vec{r},t),  \mu_e(\vec{r},t)\right) \\
-\mu_{max} (\vec{r},t) = \frac{h}{2} | u(\vec{r},t) | \\
-\mu_e(\vec{r},t) = h^2 \frac{\max\left( R_e(\vec{r},t), J \right)}{|| s(\vec{r},t) - \bar{s}(t) ||_\infty}
+\mu(\mbold{r},t) = \min \left( \mu_{max} (\mbold{r},t),  \mu_e(\mbold{r},t)\right) \\
+\mu_{max} (\mbold{r},t) = \frac{h}{2} | u(\mbold{r},t) | \\
+\mu_e(\mbold{r},t) = h^2 \frac{\max\left( R_e(\mbold{r},t), J \right)}{|| s(\mbold{r},t) - \bar{s}(t) ||_\infty}
 \end{array}
 \right.
 \end{equation}
@@ -44,18 +44,18 @@ We recall the multi-D Burger's equation (\eqt{eq:burger_eq_sct2b}) with the visc
 \begin{equation}\label{eq:burger_res_sct2b}
 \left\{
 \begin{array}{l}
-R_e(\vec{r},t) = \partial_t s(\vec{r},t) + \grad \left( u(\vec{r},t) s(\vec{r},t) \right) \\
-J = \left[ u(\vec{r},t) s(\vec{r},t) \right]
+R_e(\mbold{r},t) = \partial_t s(\mbold{r},t) + \grad \left( u(\mbold{r},t) s(\mbold{r},t) \right) \\
+J = \left[ u(\mbold{r},t) s(\mbold{r},t) \right]
 \end{array}
 \right.
 \end{equation}
 %
 \end{subequations}
 %
-where $\vec{n}$ is a vector whom definition depends on the dimension of the domain: $\vec{n} = \left(1, 0, 0 \right)$ in 1-D, $\vec{n} = \left(1, 1, 0 \right)$ in $2$-D and $\vec{n} = \left(1, 1, 1 \right)$ in $3$-D. The entropy function is denoted by $\eta$ and is taken equal to the convex function $\eta(\vec{r},t) = u(\vec{r},t)^2/2$ for the two examples presented in \sect{sec:num_sct2b}. The continuous Galerkin finite element method described in \chap{chap:disc_chap2} along with the second-order temporal integrator BDF2 are used to discretize \eqt{eq:burger_eq_sct2b}. Such discretization requires to compute the flux at the boundary of the computational domain \eqt{en:va_system_weak5}. Our implementation of the boundary condition for Burger's equation is based on the sign of the dot product $u(\vec{r},t) \vec{n} \cdot \hat{n} $ at the boundary, where $\hat{n}$ is the outward normal to the boundary. For Burger's equation it was demonstrated in \sect{sec:mat_ppr_sct1b} that the eigenvalue is the solution itself $\lambda = u$. Being at the boundary, two cases have to be distinguished: 
+where $\hat{\mbold{n}}$ was previously defined in \sect{sec:mat_ppr_sct1b} as: $\hat{\mbold{n}} = \left(1, 0, 0 \right)$ in 1-D, $\hat{\mbold{n}} = \left(1, 1, 0 \right)$ in $2$-D and $\hat{\mbold{n}} = \left(1, 1, 1 \right)$ in $3$-D. The entropy function is denoted by $\eta$ and is taken equal to the convex function $\eta(\mbold{r},t) = u(\mbold{r},t)^2/2$ for the two examples presented in \sect{sec:num_sct2b}. The continuous Galerkin finite element method described in \chap{chap:disc_chap2} along with the second-order implicit itemporal integrator BDF2 are used to discretize \eqt{eq:burger_eq_sct2b}. Such discretization requires to compute the flux at the boundary of the computational domain \eqt{en:va_system_weak5}. Our implementation of the boundary condition for Burger's equation is based on the sign of the dot product $u(\mbold{r},t) \hat{\mbold{n}} \cdot \mbold{n} $ at the boundary, where $\mbold{n}$ is the outward normal to the boundary. For Burger's equation it was demonstrated in \sect{sec:mat_ppr_sct1b} that the eigenvalue is the solution itself $\lambda = u$. Being at the boundary, two cases have to be distinguished: 
 \begin{itemize}
-\item $u(\vec{r},t) $ is negative: the wave enters the computational domain and thus, information needs to be supplied to the code. This boundary condition can be enforced either weakly or strongly. In the former case, the boundary value is specified in the input file, for instance, and used to compute the flux at the boundary. In the later case, the boundary value is still specified but strongly enforced with a Dirichlet boundary condition. This approach is valid for both implicit and explicit temporal integrators.
-\item $u(\vec{r},t) $ is positive: the wave exits the computational domain. The flux is computed with the value of the solution from the last Krylov iteration supplied by the temporal implicit solver. Because of the iterative process, the information normally carried by the waves is transmitted to the boundary. This approach is only valid with an implicit solver. When using an explicit solver, the solution at the new time on the boundary is obtained from the characteristic equation that is integrated over the first cell in.
+\item $u(\mbold{r},t) $ is negative: the wave enters the computational domain and thus, information needs to be supplied to the code. This boundary condition can be enforced either weakly or strongly. In the former case, the boundary value is specified in the input file, for instance, and used to compute the flux at the boundary. In the later case, the boundary value is still specified but strongly enforced with a Dirichlet boundary condition. This approach is valid for both implicit and explicit temporal integrators.
+\item $u(\mbold{r},t) $ is positive: the wave exits the computational domain. The flux is computed with the value of the solution from the last Krylov iteration supplied by the temporal implicit solver. Because of the iterative process, the information normally carried by the waves is transmitted to the boundary. This approach is only valid with an implicit solver. When using an explicit solver, the solution at the new time on the boundary is obtained from the characteristic equation that is integrated over the first cell in.
 \end{itemize}
 % The above method for is a-dimensional and was used to obtain the numerical results presented in \eqt{sec:num_sct2b}.
 
@@ -99,14 +99,14 @@ We consider a 1-D computational domain of length $L=1$ $m$ discretized by an uni
         \end{subfigure}
 \end{figure}
 %
-In \fig{fig:1d_burger_free}, no stabilization  is used and numerical instabilities are observed in the shock region. When run with the over-dissipative first-order viscosity coefficient, the solution does not display any instabilities but the shock amplitude is smoothed as shown in \fig{fig:1d_burger_fo}. Lastly, the numerical solution obtained with the EVM in \fig{fig:1d_burger_ev} is very close to the exact solution: the shock amplitude is preserved and the solution is stable. The viscosity coefficients are shown in \fig{fig:1d_burger_visc} on a log-scale: the high-order viscosity coefficient $\mu_e$ is peaked in the shock region and is small anywhere else. This behavior is expected and corresponds to the theoretical approach detailed in \sect{sec:evm_hyp_sc_sct1b}. It was demonstrated in \cite{valentin} that high-order accuracy is preserved with the EVM when the solution is smooth (i.e. away from the shock region). It is also noticed the difference of order of magnitude between the high- and first-order viscosity coefficients away from the shock region.
+In \fig{fig:1d_burger_free}, no stabilization  is used and numerical instabilities are observed in the shock region. When run with the over-dissipative first-order viscosity coefficient, the solution does not display any instabilities but the shock amplitude is smoothed as shown in \fig{fig:1d_burger_fo}. Lastly, the numerical solution obtained with the EVM in \fig{fig:1d_burger_ev} is very close to the exact solution: the shock amplitude is preserved and the solution is stable. The viscosity coefficients are shown in \fig{fig:1d_burger_visc} on a log-scale: the high-order viscosity coefficient $\mu_e$ is peaked in the shock region and is small anywhere else. This behavior is expected and corresponds to the theoretical approach detailed in \sect{sec:evm_hyp_sc_sct1b}. It was demonstrated in \cite{valentin} that high-order accuracy is preserved with the EVM when the solution is smooth (i.e. away from the shock region). It is also noticed in \fig{fig:1d_burger_visc} the difference of order of magnitude between the high- and first-order viscosity coefficients away from the shock region.
 %------------------------------------------------------------------------------------------------------
 \subsection{2-D Riemann problem}\label{sec:2dnum_sct2b}
 %------------------------------------------------------------------------------------------------------
 We now consider a typical 2-D benchmark problem known as Riemann problem. The computational domain consists of a $1 \times 1$ square and the following initial conditions are used:
 %
 \begin{equation}\label{eq:bg_2d_ic_sct2b}
-u(\vec{r},0) = u_0 = \left\{
+u(\mbold{r},0) = u_0 = \left\{
 \begin{array}{l}
 +0.5 \text{ for } x \leq 0.5 \text{ and } y \leq 0.5 \\
 +0.8 \text{ for } x \geq 0.5 \text{ and } y \leq 0.5 \\
@@ -117,7 +117,7 @@ u(\vec{r},0) = u_0 = \left\{
 \right.
 \end{equation}
 %
-An uniform mesh of $100 \times 100$ elements is used. The solution is run until $t=0.5$ $s$ with a $CFL$ of $0.5$. The numerical solution and the viscosity coefficient profiles are plotted at $t=0.2$ and $t=0.5$ $s$. 
+An uniform mesh of $100 \times 100$ elements is used. The solution is run until $t=0.5$ $s$ with a $CFL$ of $0.5$. The numerical solution and the viscosity coefficient profiles are given next. 
 %
 \begin{figure}[H]
 	\centering

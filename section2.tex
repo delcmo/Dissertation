@@ -302,7 +302,7 @@ In what follows, a brief description of the JFNK method is given.  The FEM-discr
 \end{equation}
 where $\mathcal{R}$ represents the nonlinear residual and $\mbold U$
 is the solution vector. Newton's method requires an initial guess,
-$\mbold U^0$, to start the iteration process For the transient
+$\mbold U^0$, to start the iteration process. For the transient
 problems of interest here, the solution at a previous time step is
 generally used as the initial guess for the method. At the $\ell^{th}$
 iteration, the residual vector is defined as
@@ -337,7 +337,7 @@ The Newton iteration is terminated when one of the following conditions is met:
 
 Note that~\eqref{eqn:newton_correction} represents a large
 linear system of equations.  In the JFNK method, we need not
-explicitly form the matrix $J$: only its action on a vector is required. Specifically, given a Krylov vector $v$, the solution subspace construction requires to compute $Jv$. The Jacobian-free appraoch performs this using a finite difference approach
+explicitly to form the matrix $J$: only its action on a vector is required. Specifically, given a Krylov vector $v$, the solution subspace construction requires to compute $Jv$. The Jacobian-free appraoch performs this using a finite difference approach
 \begin{equation}
 J^\ell v \approx \frac{ \mathcal{R} (\mbold U^\ell + \epsilon v) - \mathcal{R} (\mbold U^\ell)}{\epsilon}
 \end{equation}
@@ -354,12 +354,12 @@ right preconditioning),
   J^\ell P^{-1} \left(P \delta \mbold U^{k+1} \right)= -\mbold r^\ell
 \end{equation}
 where $P$ is the preconditioning matrix. For $1$-D simulations, the Jacobian matrix is numerically computed by finite difference (FDP) according to \eqt{eqn:jacobian_matrix}, and passed to the underlying numerical solver
-library as the matrix $P$ for preconditioning purposes. For multi-D simulations, the same method would be very slow and inefficient. Instead, an expression of the Jacobian matrix is derived by hand and hard coded in the code. This process is significantly faster than the FDP method since the entries of the Jacobian matrix are simply evaluated.
+library as the matrix $P$ for preconditioning purposes. For multi-D simulations, the same method would be very slow and inefficient since the FDP is even used to compute the zero entries of the Jacobian matrix. Instead, an expression of the Jacobian matrix is derived by hand and hard coded in the code. This process is significantly faster than the FDP method since the entries of the Jacobian matrix are simply evaluated.
 
 %==============================================================================
 \section{Implementation of the entropy viscosity method (EVM) with continuous Galerkin finite element method}\label{sect:ev_impl_sect2}
 %==============================================================================
-After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient in \chap{chap:theory_chp1}, this section focuses on the implementation of the method in a Galerkin continuous finite element setting. Details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Special attention is required for the jump since their definition is spatial discretization-dependent. A non-uniform 2-D mesh family $\Omega$ is considered. Each member of this family is called element, $e$, and the set of its faces is denoted by $\delta e = \left\{ \delta e_f \right\}$, where $f$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta e$, a quadrature rule, $\mathcal{Q} = \left\{ q \right\}$ is used.
+After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient in \chap{chap:theory_chp1}, this section focuses on the implementation of the method in a continuous Galerkin finite element setting. Details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Special attention is required for the jump since their definition is spatial discretization-dependent. A non-uniform 2-D mesh family $\Omega$ is considered. Each member of this family is called element, $e$, and the set of its faces is denoted by $\delta e = \left\{ \delta e_f \right\}$, where $f$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta e$, a quadrature rule, $\mathcal{Q} = \left\{ q \right\}$ is used.
 
 For academic purpose, the multi-D Burger's equation is considered and recalled here along with the definition of the viscosity coefficients based on \sect{sec:evm_hyp_sc_sct1b}: 
 \begin{subequations}
@@ -426,7 +426,7 @@ when considering three successive entropy values $s^{n,e,q}$, $s^{n-1,e,q}$ and 
 R(\mbold r,t) = \partial_t \left( \frac{u(\mbold r,t)^2}{2} \right) +  u(\mbold r,t)^2 \div \left( \boldsymbol{\hat{n}} u(\mbold r,t) \right)
 \end{equation}
 %
-It remains, now, to compute the jump $J$ that is set constant in each element. In Galerkin continuous finite elements, the variables are continuous at the faces, but their derivative are discontinuous. Thus, the jump of the gradient of a variable to choose, seems to be a good entropy production indicator since it will inform us on the presence of a sharp discontinuity. In the remaining of this section, a generic method is detailed to compute the jump of the gradient of a variable when using Galerkin finite element method. Then, the jump used in the definition of the viscosity coefficient for solving Burger's equation is given. 
+It remains, now, to compute the jump $J$ that is set constant in each element. In continuous Galerkin finite elements, the variables are continuous at the faces, but their derivative are discontinuous. Thus, the jump of the gradient of a variable to choose, seems to be a good entropy production indicator since it will inform us on the presence of a sharp discontinuity. In the remaining of this section, a generic method is detailed to compute the jump of the gradient of a variable when using a continuous Galerkin finite element method. Then, the jump used in the definition of the viscosity coefficient for solving Burger's equation is given. 
 
 To be more specific, let us consider an element $e$ and its set of $n$ boundaries $\delta k = \left\{ \delta e_1, \cdots, \delta e_n \right\}$. We also assume that the outward normal $\mbold n_i$ to each boundary $\delta e_i$ is available to us. The objective is to compute the jump $J_e$ of the gradient of the variable $v(\mbold r,t)$ for the element $e$. Since an element $e$ shares boundaries with $n$ other elements of the computational domain, a jump $J_{e.i}$ can be computed for each boundary $\delta e_i$ and is defined as follows:
 %
@@ -440,7 +440,7 @@ where the quantity $\grad v(\mbold r,t)_{neighbor,i}$ denotes the gradient of $v
 J^e = \max_i \left( J_{i}^e \right)
 \end{equation}
 %
-With the definition given in \eqt{eq:jump_def2_sct2}, the jump $J^e$ is constant in each element $e$ of the computational domain $\Omega$. From this point, the entropy residual $R$ and the jump $J$ are known in the element $e$, at a given time $T^n$ and at every quadrature points $q$. It remains to compute the normalization parameters $|| s - \bar{s} ||_\infty$ that is obtained from a post processing for every new non-linear iteration of the solver and thus is a function of time. The average value of the entropy function of the computational domain is computed from an integral as follows:
+With the definition given in \eqt{eq:jump_def2_sct2}, the jump $J^e$ is constant in each element $e$ of the computational domain $\Omega$. From this point, the entropy residual $R$ and the jump $J$ are known in the element $e$, at a given time $t^n$ and at every quadrature points $q$. It remains to compute the normalization parameters $|| s - \bar{s} ||_\infty$ that is obtained from a post processing for every new non-linear iteration of the solver and thus is a function of time. The average value of the entropy function of the computational domain is computed from an integral as follows:
 %
 \begin{equation}\label{eq:sbar_sct2}
 \bar{\eta} = \frac{1}{\Omega} \int_{\Omega} \eta(\mbold r,t) \text{d}\Omega
