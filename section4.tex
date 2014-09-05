@@ -229,7 +229,7 @@ unstable numerical solutions, just as the classical six-equation
 two-phase model does, with sufficiently fine spatial resolution, as
 confirmed in~\cite{SEM,Herrard_2005}.
 
-Even though the implementation of the seven equation two-phase
+Even though the implementation of the seven-equation two-phase
 model does not use
 the generalized approach of DEM, the interfacial pressure and velocity
 closures as well as the pressure and velocity relaxation coefficients
@@ -349,7 +349,7 @@ state.
 %-----------------------------------------------------------------------------------------
 \subsubsection{Stiffened Gas Equation of State for Two-phase Flows} \label{sec:SGEOS}
 %-----------------------------------------------------------------------------------------
-With the seven equation two-phase model each phase is compressible and
+With the seven-equation two-phase model each phase is compressible and
 behaves with its own convex equation of state (EOS).  For initial
 development purposes it was decided to use a simple form capable of
 capturing the essential physics.  For this purpose the stiffened
@@ -405,9 +405,9 @@ yield reasonable approximations over a temperature range from 298K to
 refit.
 
 Unlike van der Waals type modeling where mass transfer is a
-thermodynamic path, with the seven equation two-phase model the mass
+thermodynamic path, with the seven-equation two-phase model the mass
 transfer modeling, which produces a relaxation toward thermodynamic
-equilibrium, is achieved by a kinetic process.  Thus the seven equation
+equilibrium, is achieved by a kinetic process.  Thus the seven-equation
 model preserves hyperbolicity during mass transfer.
 From equation~\eqref{E-R:99} it is readily seen that the phase
 $k$ specific enthalpy evaluated at the interface condition from
@@ -777,14 +777,14 @@ For now, the definition of the viscosity coefficients is simply derived by analo
 \Pe_{k,\infty} = \frac{u_{k,\infty} L_\infty}{\kappa_{k,\infty}} \, .
 \end{equation}
 %
-Because the viscous regularization derived previously in \sect{sec:sev-equ-visc-reg-sect4} requires an extra viscosity coefficient $\beta_k$ for the volume fraction equation, a new P\'echlet number, $\Pe_{k,\infty}^\beta$ is defined as follows,
+Because the viscous regularization derived previously in \sect{sec:sev-equ-visc-reg-sect4} requires an extra viscosity coefficient $\beta_k$ for the volume fraction equation, a new P\'echlet number, $\Pe_{k,\infty}^\beta$ is also defined as follows,
 %
 \begin{equation}
 \label{eq:ref_numb_7eq_beta}
 \Pe_{k,\infty}^\beta = \frac{u_{k,\infty} L_\infty}{\beta_{k,\infty}} \,
 \end{equation}
 %
-that will allow us to derive the proper scaling for $\beta_{k,\infty}$. Once the scaled equations are obtained, the scaling of the numerical numbers can be chosen in order to meet the different criteria already listed in \sect{sec:lowMach}. The scaling of the new P\'echlet number we defined, $\Pe_{k,\infty}^\beta$, is derived from the scaled volume fraction equation that does not contain any term weighted by the reference Mach number $M_\infty$, which yields $\Pe_{k,\infty}^\beta=1$. This scaling is the same as for $\Pe_{k,\infty}$: the volume fraction and continuity equations have similar behavior since they are both advection-type equations. Thus, based on the reasoning used in \sect{sec:sev-equ-visc-reg-sect4}, the following definitions for the viscosity coefficients is proposed in \eqt{eq:final_def_visc_coeff-sem}: 
+that will allow us to derive the proper scaling for $\beta_{k,\infty}$. Once the scaled equations are obtained, the scaling of the numerical numbers can be chosen in order to meet the different criteria already listed in \sect{sec:lowMach}. The scaling of the new P\'echlet number we defined, $\Pe_{k,\infty}^\beta$, is derived from the scaled volume fraction equation that does not contain any term weighted by the reference Mach number $M_\infty$, which yields $\Pe_{k,\infty}^\beta=1$ to have a well-scaled dissipative term. This scaling is the same as for $\Pe_{k,\infty}$ from the continuity equation: the volume fraction and continuity equations have similar behavior since they are both advection-type equations. Thus, based on the reasoning used in \sect{sec:sev-equ-visc-reg-sect4}, the following definitions for the viscosity coefficients is proposed in \eqt{eq:final_def_visc_coeff-sem}: 
 %
 \begin{subequations}
 \label{eq:final_def_visc_coeff-sem}
@@ -906,7 +906,7 @@ With the definition of the viscosity coefficients $\mu_k$ and $\kappa_k$ propose
 %===================================================================================
 \section{Numerical results:}\label{sec:1d-num-res-sect4}
 %===================================================================================
-$1$-D numerical tests are presented in this section. The objective is to test the viscous regularization derived in \sect{sec:sev-equ-visc-reg-sect4} and the definition of the viscosity coefficients proposed in \sect{sec:sev-equ-visc-coeff-sect4} for the 1-D seven equation model. The first test, presented in \sect{sec:1d-advection-7-eq-sct4},  consists of a pure advection of a volume fraction discontinuity. In \sect{sec:1d-2-ind-phases-7-eq-sct4}, a standard shock tube filled with two independent fluids is presented. The same shock tube is considered in \sect{sec:1d-2-phases-rel-7-eq-sct4} but with pressure and velocity relaxation terms. Then in \sect{sec:1d-nozzle-rel-7-eq-sct4}, numerical solutions for a 1-D converging-diverging nozzle are presented for the 1-D seven equation model with relaxation and exchange terms. Lastly, simulation of a two-phase flow in a 1-D straight pipe with friction and wall-heat source is considered in \sect{sec:1d-straight-pipe-7-eq-sct4}. For each test, informational relative to the mesh, the CFL number and the boundary conditions will be detailed when relevant.
+$1$-D numerical tests are presented in this section. The objective is to test the viscous regularization derived in \sect{sec:sev-equ-visc-reg-sect4} and the definition of the viscosity coefficients proposed in \sect{sec:sev-equ-visc-coeff-sect4} for the 1-D seven-equation model. The first test, presented in \sect{sec:1d-advection-7-eq-sct4},  consists of a pure advection of a volume fraction discontinuity. In \sect{sec:1d-2-ind-phases-7-eq-sct4}, a standard shock tube filled with two independent fluids is presented. The same shock tube is considered in \sect{sec:1d-2-phases-rel-7-eq-sct4} but with pressure and velocity relaxation terms. Then in \sect{sec:1d-nozzle-rel-7-eq-sct4}, numerical solutions for a 1-D converging-diverging nozzle are presented for the 1-D seven-equation model with relaxation and exchange terms. Lastly, simulation of a two-phase flow in a 1-D straight pipe with friction and wall-heat source is considered in \sect{sec:1d-straight-pipe-7-eq-sct4}. For each test, informational relative to the mesh, the CFL number and the boundary conditions will be detailed when relevant.
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{1-D advection test: uniform velocity and pressure flow with a volume fraction discontinuity}\label{sec:1d-advection-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -984,7 +984,7 @@ The stabilization numerical method preserves the uniform pressure (\fig{fig:pres
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{1-D shock tube for two independent fluids}\label{sec:1d-2-ind-phases-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-We still consider a 1-D straight pipe of length $L=1$ $m$ filled with the same fluids as in \sect{sec:1d-advection-7-eq-sct4}. The diaphragm separates the pipe in two chambers with a high pressure ($P_{left} = 1$ $MPa$) on the left side and a low pressure ($P_{left} = 0.1$ $MPa$) in the right side. Both fluids are initially at rest. The volume fraction is set to $0.5$ which means each side of the chamber contains a mixture of two fluids with different equation of state parameters. Since the velocity and pressure relaxation coefficients $\mu_P$ and $\lambda_u$ are set to zero, the two fluids will behave independently to each other and the volume fraction is expected to remain uniform during the simulation. An exact solution is available for each fluid which simply corresponds to the single-phase exact solution. The geometry is discretized with an uniform mesh of 500 cells and run with a $CFL$ of one until $t_{final} = 305$ $\mu s$. The numerical and exact solutions are given from \fig{fig:two-indep-fluids-press-7-eqn-sect4} to \ref{fig:two-indep-fluids-vf-visc-1-7-eqn-sect4}.
+We still consider a 1-D straight pipe of length $L=1$ $m$ filled with the same fluids as in \sect{sec:1d-advection-7-eq-sct4}. The diaphragm separates the pipe in two chambers with a high pressure ($P_{left} = 1$ $MPa$) on the left side and a low pressure ($P_{left} = 0.1$ $MPa$) in the right side. Both fluids are initially at rest. The volume fraction is set to $0.5$ which means each side of the chamber contains a mixture of two fluids with different equation of state parameters. Since the velocity and pressure relaxation coefficients $\mu_P$ and $\lambda_u$ are set to zero, the two fluids will behave independently to each other and the volume fraction is expected to remain uniform during the simulation. An exact solution is available for each fluid which simply corresponds to the single-phase exact solution obtained from a Riemann solver. The geometry is discretized with an uniform mesh of 500 cells and run with a $CFL$ of one until $t_{final} = 305$ $\mu s$. The numerical and exact solutions are given from \fig{fig:two-indep-fluids-press-7-eqn-sect4} to \ref{fig:two-indep-fluids-vf-visc-1-7-eqn-sect4}.
 %
 \begin{figure}[H]
 \centering
@@ -1039,7 +1039,7 @@ The pressure, velocity and density profiles given in \fig{fig:two-indep-fluids-p
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{1-D shock tube for two fluids with pressure and velocity relaxation terms}\label{sec:1d-2-phases-rel-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-Once again, we consider a 1-D shock tube with the same initial conditions and the same fluids as in \sect{sec:1d-2-ind-phases-7-eq-sct4}. The pressure and velocity relaxation coefficients are no longer set to zero but computed from \eqt{E-R:85} and \eqt{E-R:86} with $A_{int,max} =  10^4$ $m^{-1}$. Thus, because of the relaxation source terms ($\mu_P \sim 4$ and $\lambda_u \sim 5 \times 10^5$ $s^{-1}$), the two fluids will exhibit the same pressure and velocity. The volume fraction will not remain uniform but is expected to vary due to the pressure relaxation source term (\eqt{eqn:multi-d-7-eqn-liq-vol}). For this test, an exact solution is not available but the reader can refer to \cite{Saurel_2007} for comparison. An uniform mesh of 500 cells is used. The code is run until $t_{final} = 305$ $\mu s$ with a of one. The numerical solutions are presented from \fig{fig:two-fluids-rel-press-7-eqn-sect4} to \ref{fig:two-fluids-rel-vf-visc-1-7-eqn-sect4}.
+Once again, we consider a 1-D shock tube with the same initial conditions and the same fluids as in \sect{sec:1d-2-ind-phases-7-eq-sct4}. The pressure and velocity relaxation coefficients are no longer set to zero but computed from \eqt{E-R:85} and \eqt{E-R:86} with $A_{int,max} =  10^4$ $m^{-1}$. Thus, because of the relaxation source terms ($\mu_P \sim 4$ and $\lambda_u \sim 5 \times 10^5$ $s^{-1}$), the two fluids will exhibit the same pressure and velocity. The volume fraction will not remain uniform but is expected to vary due to the pressure relaxation source term (\eqt{eqn:multi-d-7-eqn-liq-vol}). For this test, an exact solution is not available but the reader can refer to \cite{Saurel_2007} for comparison. An uniform mesh of 500 cells is used. The code is run until $t_{final} = 305$ $\mu s$ with a $CFL$ of one. The numerical solutions are presented from \fig{fig:two-fluids-rel-press-7-eqn-sect4} to \ref{fig:two-fluids-rel-vf-visc-1-7-eqn-sect4}.
 %
 \begin{figure}[H]
 \centering
@@ -1090,11 +1090,11 @@ Once again, we consider a 1-D shock tube with the same initial conditions and th
 \label{fig:two-fluids-rel-vf-visc-1-7-eqn-sect4}
 \end{figure}
 %
-As expected, the two fluids have the same pressure and velocity profiles as shown in \fig{fig:two-fluids-rel-press-7-eqn-sect4} and \fig{fig:two-fluids-rel-vel-7-eqn-sect4}, respectively. The shock is well resolved and does not display any instability. The main difference with the numerical results obtained in \sect{sec:1d-2-ind-phases-7-eq-sct4} lies in the volume fraction profiles that are no longer uniform but display a shock wave around $x=0.7$ $m$ as shown in \fig{fig:two-fluids-rel-vf-7-eqn-sect4}. Consequently, the viscosity coefficient $\beta_k$ is peaked in the shock region.  
+As expected, the two fluids have the same pressure and velocity profiles as shown in \fig{fig:two-fluids-rel-press-7-eqn-sect4} and \fig{fig:two-fluids-rel-vel-7-eqn-sect4}, respectively. The shock is well resolved and does not display any instability. The main difference with the numerical results obtained in \sect{sec:1d-2-ind-phases-7-eq-sct4} lies in the volume fraction profiles that are no longer uniform but display a shock wave around $x=0.7$ $m$ as shown in \fig{fig:two-fluids-rel-vf-7-eqn-sect4}. Consequently, the viscosity coefficient $\beta_k$ is peaked in the same region.  
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{1-D converging-diverging nozzle test}\label{sec:1d-nozzle-rel-7-eq-sct4}
 %-------------------------------------------------------------------------------------------------------------------------------------------------
-In this test, we propose to investigate the behavior of two fluids in a one-meter long 1-D converging-diverging nozzle with $A(x) = 1 + 0.5 \cos \left( 2\pi x \right)$. This test was first introduced by Saurel et al. in \cite{SEM} for the 1-D seven equation model and consists of a mixture of liquid water and vapor described by the SGEOS with the parameters given in \tbl{tbl:stff_gas_eos-sect4}.
+In this test, we propose to investigate the behavior of two fluids in a one meter long 1-D converging-diverging nozzle with $A(x) = 1 + 0.5 \cos \left( 2\pi x \right)$. This test was first introduced by Saurel et al. in \cite{SEM} for the 1-D seven-equation model and consists of a mixture of liquid water and vapor described by the SGEOS with the parameters given in \tbl{tbl:stff_gas_eos-sect4}.
 %
 \begin{table}[!htbp]
 \begin{center}
@@ -1109,9 +1109,9 @@ steam          & 1.43     & 1040                       & 0                 & $ 2
 \end{center}
 \end{table}
 %
-Stagnation boundary conditions are specified on the left of the nozzle (inlet) for both phases with a stagnation temperature $T_0 = 453 $ $K$ and a stagnation pressure $P_0 = 1$ $MPa$. At the outlet, a static pressure boundary condition is specified with $P = 0.5$ $MPa$ for both phases. The volume fraction is set to $\alpha_k = 0.5$ at the inlet. The initial conditions are computed from the boundary conditions by assuming the two fluids at rest and linearly interpolating the pressure and temperature between the boundary values. The geometry is discretized with an uniform mesh of 100 cells and run until steady-state. The pressure and velocity relaxation coefficients are computed from \eqt{E-R:85} and \eqt{E-R:86} and the use of \eqt{eq:Aint-sect4} for different values of $A_{int,max}$ that will be given later. The reader can refer to \sect {sec:liquid_nozzle} and \sect{sec:steam_nozzle} for numerical solutions in a 1-D nozzle when considering two independent fluids (i.e., without relaxation source terms). This section is organized as follows: first numerical results are presented when considering only the pressure and velocity relaxation terms for different values of $A_{int,max}$. Then, the same simulation is run when adding the mass and energy exchange source terms. \\
+Stagnation boundary conditions are specified on the left of the nozzle (inlet) for both phases with a stagnation temperature $T_0 = 453 $ $K$ and a stagnation pressure $P_0 = 1$ $MPa$. At the outlet, a static pressure boundary condition is specified with $P = 0.5$ $MPa$ for both phases. The volume fraction is set to $\alpha_k = 0.5$ at the inlet. The initial conditions are computed from the boundary conditions by assuming the two fluids at rest and linearly interpolating the pressure and temperature between the boundary values. The geometry is discretized with an uniform mesh of 100 cells and run until steady-state. The pressure and velocity relaxation coefficients are computed from \eqt{E-R:85} and \eqt{E-R:86} and the use of \eqt{eq:Aint-sect4} for different values of $A_{int,max}$ that will be specified. The reader can refer to \sect {sec:liquid_nozzle} and \sect{sec:steam_nozzle} for numerical solutions in a 1-D nozzle when considering two independent fluids (i.e., without relaxation source terms). First numerical results are presented when considering only the pressure and velocity relaxation terms for different values of $A_{int,max}$. Then, the same simulation is run when adding the mass and energy exchange source terms. \\
 
-We first consider the 1-D seven equation model with on the relaxation source terms for different values of $A_{int,max} = 10^2 \text{, } 10^3$ and $10^4$ $m^{-1}$. The pressure profiles are given for all of the value of $A_{int,max}$ for comparison. The density, velocity, volume fraction and viscosity coefficients are only given for $A_{int,max} = 10^4$ $m^{-1}$. The numerical results are presented from \fig{fig:two-fluids-rel-nozzle-press-Aint4-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-sem-sect4}.
+We first consider the 1-D seven-equation model with on the relaxation source terms for different values of $A_{int,max} = 10^2 \text{, } 10^3$ and $10^4$ $m^{-1}$. The pressure profiles are given for all of the value of $A_{int,max}$ for comparison. The density, velocity, volume fraction and viscosity coefficients are only given for $A_{int,max} = 10^4$ $m^{-1}$. The numerical results are presented from \fig{fig:two-fluids-rel-nozzle-press-Aint4-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-sem-sect4}.
 %
 \begin{figure}[H]
 \centering
