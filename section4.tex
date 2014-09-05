@@ -769,7 +769,22 @@ Because \eqt{eq:vf-sem2-sct4} is identical to \eqt{eq:weak_sol8_sct1b}, it is co
 %------------------------------------------------------------------------------------------------------
 In order to have a complete definition for the viscosity coefficients $\beta_k$, $\mu_k$ and $\kappa_k$, the normalization parameters introduced in the definition of the entropy viscosity viscosity coefficients $\beta_{e,k}$, $\mu_{e,k}$ and $\kappa_{e,k}$ have to be determined. In \chap{chap:euler}, the normalization parameters were derived from the non-dimensionalized multi-D Euler equations in order to get well-scaled dissipative terms. Thus, it is proposed to follow the same method to derive the three normalization parameters $\norm_{P,k}^\mu$, $\norm_{P,k}^\kappa$ and $\norm_{k}^\beta$ used in the definition of the viscosity coefficients involved in the viscous regularization of the seven-equation model. For simplicity, the Ideal Gas equation of state is considered through the derivations.
 
-For now, the definition of the viscosity coefficients is simply derived by analogy to \sect{sec:lowMach} and is given in \eqt{eq:final_def_visc_coeff-sem}. A more rigorous derivation is under investigation.
+For now, the definition of the viscosity coefficients is simply derived by analogy to \sect{sec:lowMach}. First, we define the far-field or stagnation coefficients for each phase as it is done in \eqt{eq:norm_param} by substituting the subscript $\infty$ into $k,\infty$. Then, the scaled equations are derived for each phase which leads to the definition of a phasic P\'echlet and Reynolds numbers referred to as $\Pe_k$ and $\Re_k$, respectively, that are tied to the far-field or stagnation quantities of the viscosity coefficients $\mu_{k,\infty}$ and $\kappa_{k,\infty}$ as shown in \eqt{eq:ref_numb_7eq}:
+%  
+\begin{equation}
+\label{eq:ref_numb_7eq}
+\Re_{k,\infty} = \frac{u_{k,\infty} L_\infty}{\mu_{k,\infty}} \text{ and }
+\Pe_{k,\infty} = \frac{u_{k,\infty} L_\infty}{\kappa_{k,\infty}} \, .
+\end{equation}
+%
+Because the viscous regularization derived previously in \sect{sec:sev-equ-visc-reg-sect4} requires an extra viscosity coefficient $\beta_k$ for the volume fraction equation, a new P\'echlet number, $\Pe_{k,\infty}^\beta$ is defined as follows,
+%
+\begin{equation}
+\label{eq:ref_numb_7eq_beta}
+\Pe_{k,\infty}^\beta = \frac{u_{k,\infty} L_\infty}{\beta_{k,\infty}} \,
+\end{equation}
+%
+that will allow us to derive the proper scaling for $\beta_{k,\infty}$. Once the scaled equations are obtained, the scaling of the numerical numbers can be chosen in order to meet the different criteria already listed in \sect{sec:lowMach}. The scaling of the new P\'echlet number we defined, $\Pe_{k,\infty}^\beta$, is derived from the scaled volume fraction equation that does not contain any term weighted by the reference Mach number $M_\infty$, which yields $\Pe_{k,\infty}^\beta=1$. This scaling is the same as for $\Pe_{k,\infty}$: the volume fraction and continuity equations have similar behavior since they are both advection-type equations. Thus, based on the reasoning used in \sect{sec:sev-equ-visc-reg-sect4}, the following definitions for the viscosity coefficients is proposed in \eqt{eq:final_def_visc_coeff-sem}: 
 %
 \begin{subequations}
 \label{eq:final_def_visc_coeff-sem}
@@ -798,19 +813,24 @@ J_k = || \mbold u_k || \max \Big ( [[ \grad P_k \cdot \mbold n ]], c_k^2 [[\grad
 \end{equation}
 \end{subequations}
 %
-where $\norm_{P,k}^\kappa$ is computed from \eqt{eq:norm_ent2-sem}. The jump $J_k$ is a function of the jump of pressure and density gradients across the face with respect to its normal vector $\mbold n$. Then, the largest value over all faces is determined and used in the definition of the viscosity coefficients.
+where $\norm_{P,k}^\kappa$ is computed from \eqt{eq:norm_ent3-7eq}.
 %
 \begin{equation}
-\label{eq:norm_ent2-sem}
-\norm_{P,k}^\mu =  \left\{
-\begin{array}{ll}
- \rho_k ||\mbold u_k ||^2       & \text{ if } \left| \resinew_k^* \right| \geq M_k \text{ (i.e., non-isentropic flow)} \\
- \rho_k c_k^2 = \norm_{P,k}^\kappa & \text{ otherwise}
-\end{array}
-\right. \,.
+\label{eq:norm_ent3-7eq}
+\norm_P^\mu = (1-\sigma(M)) \rho c^2  + \sigma(M)  \rho ||\mbold{u} ||^2  
 \end{equation}
 %
-where $M_k$ is the local Mach number for phase $k$. Lastly, the viscosity coefficient for the volume fraction equation is given by:
+%\begin{equation}
+%\label{eq:norm_ent2-sem}
+%\norm_{P,k}^\mu =  \left\{
+%\begin{array}{ll}
+% \rho_k ||\mbold u_k ||^2       & \text{ if } \left| \resinew_k^* \right| \geq M_k \text{ (i.e., non-isentropic flow)} \\
+% \rho_k c_k^2 = \norm_{P,k}^\kappa & \text{ otherwise}
+%\end{array}
+%\right. \,.
+%\end{equation}
+%
+where $M_k$ is the local Mach number for phase $k$. The function $\sigma(M)$ is taken from \eqt{eq:sigma_fct} with the same parameters as for the single-phase flow equations: $a=3$ and $M^{thres} = 0.05$. The jump $J_k$ is a function of the jump of pressure and density gradients across the face with respect to its normal vector $\mbold n$. Then, the largest value over all faces is determined and used in the definition of the viscosity coefficients. Lastly, the viscosity coefficient for the volume fraction equation is given by:
 %
 \begin{equation}\label{eq:first-order-beta-sct4-sem}
 \beta_k(\mbold r,t) = \min \Big (\beta_{\max,k}(\mbold r,t), \beta_{e,k} (\mbold r,t) \Big ) 
@@ -826,12 +846,12 @@ and the corresponding entropy viscosity coefficient, $\beta_{e,k}$, by
 \begin{equation}
 \beta_{e,k}(\mbold r,t) = \frac{h^2 \max(R_{\alpha,k}, J_{\alpha,k})}{|| \alpha_k - \bar{\alpha}_k ||_\infty},
 \end{equation}
-where $\bar{\alpha}_k$ is the average value of the volume fraction over the entire computational domain, and $|| \cdot ||_\infty$ denotes the infinite norm. The jump is given by:
+where $\bar{\alpha}_k$ is the average value of the volume fraction over the entire computational domain, and $|| \cdot ||_\infty$ denotes the infinite norm. The definition of the $\beta_{e,k}$ is consistent with the scaling of $\Pe^\beta_{k,\infty} = 1$. The jump is given by:
 %
 \begin{equation}
 J_{\alpha,k} = || \mbold u_{int} || \cdot [[ \grad \alpha_k \cdot \mbold n ]] 
 \end{equation}
-With the definition of the viscosity coefficients $\mu_k$ and $\kappa_k$ proposed in \eqt{eq:final_def_visc_coeff}, the low-Mach asymptotic limit is ensured for isentropic flow, and transonic flows with shocks will be correctly resolved for each phase $k$. Furthermore, the definition of the viscosity coefficient $\beta_k$ is consistent with the EVM used for the scalar hyperbolic equations and thus should efficiently stabilize shocks forming the in the volume fraction profile. In order to validate the proposed definition of the viscosity coefficients, 1-D numerical simulations are performed in \sect{sec:1d-num-res-sect4}.
+With the definition of the viscosity coefficients $\mu_k$ and $\kappa_k$ proposed in \eqt{eq:final_def_visc_coeff}, the low-Mach asymptotic limit is ensured for isentropic flow, and transonic flows with shocks will be correctly resolved for each phase $k$. Furthermore, the definition of the viscosity coefficient $\beta_k$ is consistent with the EVM used for the scalar hyperbolic equations and thus should efficiently stabilize shocks forming the in the volume fraction profile. Plus, it is noted that the viscous regularization and the definition of the viscosity coefficients proposed for the seven-equation two-phase flow model degenerates into the EVM used for the single-phase Euler equations. In order to validate the proposed definition of the viscosity coefficients, 1-D numerical simulations are performed in \sect{sec:1d-num-res-sect4}.
 %
 %First we recall the set of equations with the viscous regularization verified by a phase $k$ (expression for the dissipative terms is give in \eqt{eq:visc-reg-7-equ-sect4}):
 %%
