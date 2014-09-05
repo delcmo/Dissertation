@@ -110,7 +110,7 @@ where $|| \cdot ||_\infty$ and $\bar{\cdot}$ denote the L$_\infty$-norm and the 
 %
 \begin{equation}
 \label{eq:jump_CFEM}
-J^e[s](t) = \max_{f\in\partial e}  \max_{\mbold r_q \in f} \jmp{\grad s(\mbold r_q,t) \cdot \mbold{n}(\mbold r_q) }_f \, ,
+J^e[s](t) = \max_{f\in\partial e}  \max_{\mbold r_q \in f} \left( || \mbold u || \jmp{\grad s(\mbold r_q,t) \cdot \mbold{n}(\mbold r_q) }_f \right) \, ,
 \end{equation}
 %
 where $\jmp{a(\mbold r_q)}_f$ denotes the inter-element jump in $a(\mbold r)$ at quadrature point $\mbold r_q$ on face $f$ (the quadrature points $\mbold r_q$ are taken on the faces $f$ of the element $e$). With the definition given in \eqt{eq:jump_CFEM}, the jump is constant over each element $e$ of the computational domain. 
