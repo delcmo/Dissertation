@@ -46,7 +46,6 @@ where $u$ and $\mbold f(u)$ are the solution and the inviscid flux, respectively
 \partial_t u + \div \mbold f_1(u) = \partial_t u(\mbold{r},t) + \div \left( u \hat{\mbold{n}} \right) = 0
 \end{equation}
 %
-\tcr{this would be a more appropriate location to introduce the $\hat{\mbold{n}}$ vector to make the flux $\mbold{f}_2$ be a flux and be consistent with your notation in later chapters}\tcb{done}
 \begin{equation}\label{eq:burger_sct1b}
 \partial_t u + \div \mbold f_2(u) = \partial_t u(\mbold{r},t) + \div \left( \frac{u^2}{2} \hat{\mbold{n}}\right) = 0
 \end{equation}
@@ -96,7 +95,6 @@ When considering the 1-D linear advection equation (with the flux $f_1(u) = au$)
 \end{figure}
 %
 In the case of the 1-D Burger's equation, the eigenvalue is no longer constant and is equal to the solution itself $\lambda_2 = u(x,t)$. The slope of the characteristic curve is now a function of space and more precisely of the initial solution $u_0$ which requires us to analyze two distinct cases: a constant and a non-constant initial solution. In the former case, the slope of the characteristic is constant which is the same situation as with the linear advection equation previously discussed. In the latter case, the characteristic curves will not have the same slope and thus, may intersect. When two characteristic curves intersect, it means that, at a given time and position, two values of the solution are allowed (each characteristic curve carries different initial values of the solution): the solution displays an infinite gradient also called shock wave as shown in \fig{fig:char_curve_bg_sct1b}. 
-\tcr{how do we see the infinite gradient in the equation?}\tcb{You see it with the characteristic equation: two values of u at a given point x -> infinite gradient}
 %
 \begin{figure}[H]
 \centering
@@ -135,7 +133,6 @@ From \eqt{eq:cc2_sct1b}, it is understood that the convexity of the flux will de
 T_{shock} = \frac{-1}{\min\left( {f''(u_0) u_0'(x_0)} \right)} 
 \end{equation}
 % 
-\tcr{that is not enough, $f''(u)0$ could be 0 at a given $x_0$. How can we modify this sentence?\\also, isn't the time of shock the minimum over all values of $x_0$?} \tcb{Is it better?} \tcr{not yet} \tcb{done}
 Once the shock is formed, at a time $t \geq T_{shock}$, more than two characteristic curves may intersect leading to a triple-valued situation as shown in \fig{fig:triple_pt_bg_sct1b}. 
 %
 \begin{figure}[H]
@@ -224,7 +221,7 @@ Following the method detailed in Leveque's book \cite{Leveque} (page 27), the 1-
 -\int_{-\infty}^{+\infty}\text{dx} \phi(x,t) u(x,t) \left. \right|_0^{+\infty} - \int_0^{+\infty}\text{dt} \phi(x,t) f(u(x,t)) \left. \right|_{-\infty}^{+\infty}
 \end{eqnarray}
 %
-where the two integrals on the right-hand-side of \eqt{eq:weak_sol2_sct1b} correspond to the boundary terms. Recalling that the test function is identically zero outside a bounded set which means $\phi(x,t) \to 0$ as $x \to \pm  \infty$ and $t \to +\infty$, \tcr{why does the test function depends on time and tends to 0 as time tends to infty?} \tcb{ I think it is for generality purpose. But the same derivation could be done with $\phi(x)$. In Leveque it is done with $\phi(x,t)$ p. 27 but they do not really justify this choice}\tcr{ok, please put the appropriate ref to Leveque's book, including the page number} \tcb{done} all of the boundary terms vanish but for $t=0$. The resulting equation contains only one boundary term that is a function of the initial condition as shown in \eqt{eq:weak_sol3_sct1b}.
+where the two integrals on the right-hand-side of \eqt{eq:weak_sol2_sct1b} correspond to the boundary terms. Recalling that the test function is identically zero outside a bounded set which means $\phi(x,t) \to 0$ as $x \to \pm  \infty$ and $t \to +\infty$, all of the boundary terms vanish but for $t=0$. The resulting equation contains only one boundary term that is a function of the initial condition as shown in \eqt{eq:weak_sol3_sct1b}.
 %
 \begin{eqnarray}\label{eq:weak_sol3_sct1b}
 \int_0^{+\infty}\text{dt}\int_{-\infty}^{+\infty}\text{dx} \left[ u(x,t) \partial_t \phi(x,t)   + f(u) \partial_x \phi(x,t)  \right] = \nonumber \\
@@ -298,7 +295,6 @@ which can be simplified to
 %
 The relation given in \eqt{eq:weak_sol6c_sct1b} is a conservation law for $\eta$ which means that the mathematic entropy is conserved in a smooth flow. The entropy conservation law can also be recast as a function of the entropy flux $\mbold \psi$ by setting $\mbold \psi '(u) = \eta_u \mbold f'(u)$, which yields\footnote{here, $\eta$ depends only on $u$, so we could have written $\mbold \psi '(u) = \eta'(u) \mbold f'(u)$}:
 %
-\tcr{$\psi$ and $\mbold \psi$ look different, so when you want to denote a vector quantity, use the latter. For example, the equation need the bold. Check elsewhere as well} \tcb{done}
 \begin{equation}
 \partial_t \eta( u) +  \div \mbold{\psi}(u) = 0 \,.
 \end{equation}
@@ -447,7 +443,6 @@ The jump of the entropy flux $\mbold \psi$, denoted by $J$, is included in the d
 %
 \begin{remark}
 The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} requires an isotropic mesh in order to be able to define the grid size $h$. An alternative definition without $h$ is under investigation for the case of hyperbolic scalar equations.
-\tcr{not true; if you if you define $\mu$ per cell $K$, then you can use $h_K$, the diameter of cell $K$ in multi-D, and then you do not need to require mesh uniformity. This may be a detail but your remark is not necessarily 100\% true} \tcb{Is it better or am I still missing something?} \tcr{I do not understand why you say isentropic mesh. I changed that to uniform mesh but you changed it back to isentropic. What is an isentropic mesh?}\tcb{done}
 \end{remark}
 
 
