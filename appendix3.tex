@@ -20,21 +20,21 @@ This appendix aims at showing that the entropy residual is null when assuming an
 The entropy residual as a function of the pressure, the density, the velocity and the speed of sound is recalled here:
 %
 \begin{equation}\label{eq:app_entr}
-\resinew = \frac{dP}{dt} - c^2 \frac{d \rho}{dt}
+\resinew = \frac{dP}{dt} - c^2 \frac{d \rho}{dt} .
 \end{equation}
 %
 Assuming an isentropic flow, the pressure is only a function of the density as follows: $P = f( \rho )$ or $\rho = f^{-1}( P )$. Using the definition of the speed of sound $c^2 = \left. \frac{\partial P}{\partial \rho} \right)_s$ and the above form the equation of state, the following relation is derived:
 %
 \begin{equation}\label{eq:app_sp}
-c^2 = \left. \frac{\partial P}{\partial \rho} \right)_s = \frac{d P}{d \rho} = \frac{d f(\rho)}{d \rho}
+c^2 = \left. \frac{\partial P}{\partial \rho} \right)_s = \frac{d P}{d \rho} = \frac{d f(\rho)}{d \rho} .
 \end{equation}
 %
 Using the chain rule, the entropy residual of \eqt{eq:app_entr} can be recast as a function of the density, the velocity and the speed of sound, and proven equal to zero:
 %
 \begin{eqnarray*}
 \resinew &=& \frac{d f(\rho)}{d \rho} \frac{d\rho}{dt} - c^2 \frac{d \rho}{dt} \\
-\resinew &=& c^2 \frac{d\rho}{dt} - c^2 \frac{d \rho}{dt} \\
-\resinew &=&  0 
+ &=& c^2 \frac{d\rho}{dt} - c^2 \frac{d \rho}{dt} \\
+ &=&  0 
 \end{eqnarray*}
 
 

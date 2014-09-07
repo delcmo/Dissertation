@@ -15,19 +15,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{\uppercase{Entropy equation for the multi-D seven equation model without viscous regularization}\label{app:sev-equ-model-entropy}}
-This appendix aims at detailing the steps that lead to the derivation of the phase wise entropy equation of the seven equations model \cite{SEM}. For the purpose of this paper, two phases are considered and denoted by the indexes $j$ and $k$. In the seven equations model, each phase obeys to the following set of equations $(\eqt{eq:sev_equ-app})$:
+This appendix provides the steps that lead to the derivation of the phasic entropy equation of the seven-equation model \cite{SEM}. For the purpose of this dissertation, two phases are considered and denoted by the indexes $j$ and $k$. In the seven-equation model, each phase obeys to the following set of equations $(\eqt{eq:sev_equ-app})$:
 \begin{equation}
 \label{eq:sev_equ-app}
 \left\{
 \begin{array}{llll}
-\partial_t \left( \alpha_k  A\right) + \mbold u_{int} A \grad \alpha_k = A \mu \left( P_k - P_j \right)\\
+\partial_t \left( \alpha_k  A\right) + A \mbold u_{int} \cdot \grad \alpha_k = A \mu \left( P_k - P_j \right)\\
 \partial_t \left( \alpha_k \rho_k A \right) + \div \left( \alpha_k \rho_k \mbold u_k A \right) = 0 \\
 \partial_t \left( \alpha_k \rho_k \mbold u_k A \right) + \div \left[ \alpha_k A \left( \rho_k \mbold u_k \otimes \mbold u_k + P_k \mathbb{I} \right) \right] = \alpha_k P_k \grad A + P_{int} A \grad \alpha_k + A \lambda \left( \mbold u_j - \mbold u_k \right) \\
-\partial_t \left( \alpha_k \rho_k E_k A \right) + \div \left[ \alpha_k A \mbold u_k \left( \rho_k E_k + P_k \right) \right] = P_{int} \mbold u_{int} A \grad \alpha_k - \mu \bar{P}_{int} \left( P_k-P_j \right) + \bar{\mbold u}_{int} A \lambda \left( \mbold u_j - \mbold u_k \right)
+\partial_t \left( \alpha_k \rho_k E_k A \right) + \div \left[ \alpha_k A \mbold u_k \left( \rho_k E_k + P_k \right) \right] = P_{int} A \mbold u_{int} \cdot \grad \alpha_k - \mu \bar{P}_{int} \left( P_k-P_j \right) + \bar{\mbold u}_{int} A \lambda \left( \mbold u_j - \mbold u_k \right)
 \end{array}
 \right.
 \end{equation}
-where $\rho_k$, $\mbold u_k$, $E_k$ and $P_k$ are the density, the velocity, the specific total energy and the pressure of $k^{th}$ phase, respectively. The pressure and velocity relaxation parameters are denoted by $\mu$ and $\lambda$, respectively. The variables with index $_{int}$ correspond to the interfacial variables and a definition is given in \eqt{eq:sev_equ2-app}. The cross-section $A$ is only function of space: $\partial_t A = 0$. 
+where $\rho_k$, $\mbold u_k$, $E_k$ and $P_k$ are the density, the velocity, the specific total energy and the pressure of $k^{th}$ phase, respectively. The pressure and velocity relaxation parameters are denoted by $\mu_P$ and $\lambda_u$, respectively. The variables with index $_{int}$ correspond to the interfacial variables and a definition is given in \eqt{eq:sev_equ2-app}. The cross section $A$ is only function of space: $\partial_t A = 0$. 
 \begin{equation}
 \label{eq:sev_equ2-app}
 \left\{
@@ -40,57 +40,57 @@ P_{int} = \bar{P}_{int} - \frac{\grad \alpha_k}{|| \grad \alpha_k ||} \frac{Z_k 
 \right.
 \end{equation}
 where $Z_k = \rho_k c_k$ and $Z_j = \rho_j c_j$ are the impedance of the phase $k$ and $j$, respectively. The speed of sound is denoted by the variable $c$. The function $sgn(x)$ returns the sign of the variable $x$.\\
-The first step consists of rearranging the equations given in \eqt{eq:sev_equ2-app} using the primitive variables $(\alpha_k, \rho_k, \mbold u_k, e_k)$, where $e_k$ is the specific internal energy of $k^{th}$ phase. We introduce the material derivative $\frac{d \cdot}{dt} = \partial_t (\cdot) + \mbold u_k \cdot \grad (\cdot)$ for simplicity. \\
+The first step consists of rearranging the equations given in \eqt{eq:sev_equ2-app} using the primitive variables $(\alpha_k, \rho_k, \mbold u_k, e_k)$, where $e_k$ is the specific internal energy of $k^{th}$ phase. We introduce the material derivative $\frac{D (\cdot)}{Dt} = \partial_t (\cdot) + \mbold u_k \cdot \grad (\cdot)$ for simplicity. \\
 The void fraction is unchanged. The continuity equation is modified as follows:
 \begin{equation}
 \label{eq:cont1-app}
-\alpha_k A \frac{d \rho_k}{dt} + \rho_k A \mu \left( P_k-P_j \right) + \rho_k A \left( \mbold u_k-\mbold u_j \right) \grad \alpha_k + \rho_k \alpha_k \div \left( A \mbold u_k \right) = 0
+\alpha_k A \frac{D \rho_k}{Dt} + \rho_k A \mu \left( P_k-P_j \right) + \rho_k A \left( \mbold u_k-\mbold u_j \right) \cdot \grad \alpha_k + \rho_k \alpha_k \div \left( A \mbold u_k \right) = 0
 \end{equation}
 The momentum and continuity equations are combined to yield the velocity equation:
 \begin{equation}
 \label{eq:vel1-app}
-\alpha_k \rho_k A \frac{d\mbold u_k}{dt} + \partial_x \left( \alpha_k A P_k \right) = \alpha_k P_k \grad A + P_{int} A \grad \alpha_k + A \lambda \left( \mbold u_j-\mbold u_k \right)
+\alpha_k \rho_k A \frac{D\mbold u_k}{Dt} + \partial_x \left( \alpha_k A P_k \right) = \alpha_k P_k \grad A + P_{int} A \grad \alpha_k + A \lambda_u \left( \mbold u_j-\mbold u_k \right)
 \end{equation}
 The internal energy is obtained from the total energy and the kinetic equation ($\mbold u_k * $\eqt{eq:vel1-app}):
 \begin{align}\label{eq:internal1}
-\alpha_k \rho_k A \frac{d e_k}{dt} + \div\left( \alpha_k \mbold u_k A P_k \right) - \mbold u_k \grad \left( \alpha_k A P_k \right) &= \left(\mbold u_{int}-\mbold u_k \right) P_{int} A \grad \alpha_k \nonumber \\
-- \mbold u_k \alpha_k P_k \grad A 
- - \bar{P}_{int} A \mu \left(P_k-P_j \right) &+ A \lambda \left(\mbold u_j-\mbold u_k  \right) \left(\bar{\mbold u}_{int}-\mbold u_k \right)
+\alpha_k \rho_k A \frac{D e_k}{Dt} + \div\left( \alpha_k \mbold u_k A P_k \right) - \mbold u_k \cdot \grad \left( \alpha_k A P_k \right) &= P_{int} A \left(\mbold u_{int}-\mbold u_k \right) \cdot \grad \alpha_k \nonumber \\
+- \alpha_k P_k \mbold u_k \cdot \grad A 
+ - \bar{P}_{int} A \mu_P \left(P_k-P_j \right) &+ A \lambda_u \left(\mbold u_j-\mbold u_k  \right) \cdot \left(\bar{\mbold u}_{int}-\mbold u_k \right)
 \end{align}
 In the next step, we assume the existence of a phase wise entropy $s_k$ function of the density $\rho_k$ and the internal energy $e_k$. Using the chain rule,
 \begin{equation}
-\frac{ds}{dt} = (s_\rho)_k \frac{d \rho}{dt} + (s_e)_k \frac{de}{dt},
+\frac{Ds_k}{Dt} = (s_\rho)_k \frac{D \rho_k}{Dt} + (s_e)_k \frac{De_k}{Dt},
 \end{equation}
 along with the internal energy and the continuity equations, the following entropy equation is obtained:
 \begin{eqnarray}
 \label{eq:ent1}
-\alpha_k \rho_k A \frac{ds}{dt} + \underbrace{\alpha_k \left( P_k (s_e)_k + \rho_k^2 (s_\rho)_k \right) \grad \alpha_k + \alpha_k \mbold u_k \left( P_k (s_e)_k + \rho_k^2 (s_\rho)_k \right) \grad A}_\textrm{(a)} = \nonumber\\
-(s_e)_k \left[ (\mbold u_{int}-\mbold u_k)P_{int}A \grad \alpha_k - \bar{P}_{int} A \mu (P_k-P_j) + A \lambda (\bar{\mbold u}_{int}-\mbold u_k) (\mbold u_j-\mbold u_k)\right] - \\
-\rho^2 (s_\rho)_k \left[ \mu A (P_k-P_j) + A(\mbold u_k-\mbold u_{int}) \grad \alpha_k\right] \nonumber
+\alpha_k \rho_k A \frac{Ds_k}{Dt} + \underbrace{A \left( P_k (s_e)_k + \rho_k^2 (s_\rho)_k \right)\mbold u_k \cdot \grad \alpha_k + \alpha_k \left( P_k (s_e)_k + \rho_k^2 (s_\rho)_k \right) \mbold u_k \cdot \grad A}_\textrm{(a)} = \nonumber\\
+(s_e)_k P_{int}A \left[ (\mbold u_{int}-\mbold u_k)\cdot \grad \alpha_k - \bar{P}_{int} A \mu_P (P_k-P_j) + A \lambda_u (\bar{\mbold u}_{int}-\mbold u_k) \cdot (\mbold u_j-\mbold u_k)\right] - \\
+\rho^2 (s_\rho)_k \left[ \mu_P A (P_k-P_j) + A(\mbold u_k-\mbold u_{int}) \cdot \grad \alpha_k\right] \nonumber
 \end{eqnarray}
 where $(s_e)_k$ and $(s_\rho)_k$ denote the partial derivatives of the entropy $s_k$ with respect to the internal energy $e_k$ and the density $\rho_k$, respectively.
 The second term, (a), in the left hand side of \eqt{eq:ent1} can be set to zero by assuming the following relation between the partial derivatives of the entropy $s_k$:
 \begin{equation}
 \label{eq:ent2}
- P_k (s_e)_k + \rho_k^2 (s_\rho)_k = 0
+ P_k (s_e)_k + \rho_k^2 (s_\rho)_k = 0 .
 \end{equation} 
 The above equation is equivalent to the application of the second thermodynamic law when assuming reversibility:
 \begin{equation}
-T ds = de - \frac{P_k}{\rho_k^2} d \rho_k \text{ with } (s_e)_k = \frac{1}{T_k} \text{ and } (s_\rho)_k = - \frac{P_k}{\rho_k^2} (s_e)_k
+T_k ds_k = de_k - \frac{P_k}{\rho_k^2} d \rho_k \text{ with } (s_e)_k = \frac{1}{T_k} \text{ and } (s_\rho)_k = - \frac{P_k}{\rho_k^2} (s_e)_k
 \end{equation}
-Thus, equation \eqt{eq:ent1} can be rearranged using the relation $(s_\rho)_k = - \frac{P}{\rho^2} (s_e)_k$:
+Thus, equation \eqt{eq:ent1} can be rearranged using the relation $(s_\rho)_k = - \frac{P_k}{\rho_k^2} (s_e)_k$:
 \begin{eqnarray}
 \label{eq:ent3}
-((s_e)_k)^{-1} \alpha_k \rho_k \frac{ds}{dt} = \underbrace{\left[ (\mbold u_{int}-\mbold u_k)P_{int} + (\mbold u_k-\mbold u_{int})P_k \right] \grad \alpha_k}_\textrm{(b)} + \nonumber\\ 
-\underbrace{\mu (P_k-P_j)(P_k-\bar{P}_{int})}_\textrm{(c)} + \underbrace{\lambda(\mbold u_j-\mbold u_k)(\bar{\mbold u}_{int}-\mbold u_k)}_\textrm{(d)}
+((s_e)_k)^{-1} \alpha_k \rho_k \frac{Ds}{Dt} = \underbrace{\left[ P_{int} (\mbold u_{int}-\mbold u_k) + P_k (\mbold u_k-\mbold u_{int}) \right] \cdot \grad \alpha_k}_\textrm{(b)} + \nonumber\\ 
+\underbrace{\mu (P_k-P_j)(P_k-\bar{P}_{int})}_\textrm{(c)} + \underbrace{\lambda(\mbold u_j-\mbold u_k)\cdot(\bar{\mbold u}_{int}-\mbold u_k)}_\textrm{(d)}
 \end{eqnarray}
-The right hand side of equation \eqt{eq:ent3} is split into three terms (b), (c) and (d) that will be treated independently from each other. The terms (c) and (d) are simpler to start with, and can be easily recast by using the definitions of $\bar{\mbold u}_{int}$ and $\bar{P}_{int}$ given in equation \eqt{eq:sev_equ2-app}:
+The right hand side of equation \eqt{eq:ent3} is split into three terms (b), (c) and (d) that will be treated independently from each other. The terms (c) and (d) are simpler to start with and can be easily recast by using the definitions of $\bar{\mbold u}_{int}$ and $\bar{P}_{int}$ given in equation \eqt{eq:sev_equ2-app}:
 \begin{eqnarray}
 \label{eq:ent4}
-\mu (P_k-P_j)(P_k-\bar{P}_{int}) = \mu \frac{Z_k}{Z_k+Z_j} (P_j - P_k)^2\nonumber\\
-\lambda(\mbold u_j-\mbold u_k)(\bar{\mbold u}_{int}-\mbold u_k) = \lambda \frac{Z_j}{Z_k+Z_j} (\mbold u_j - \mbold u_k)^2 
+\mu (P_k-P_j)(P_k-\bar{P}_{int}) = \mu_P \frac{Z_k}{Z_k+Z_j} (P_j - P_k)^2\nonumber\\
+\lambda(\mbold u_j-\mbold u_k)\cdot(\bar{\mbold u}_{int}-\mbold u_k) = \lambda_u \frac{Z_j}{Z_k+Z_j} (\mbold u_j - \mbold u_k)^2 
 \end{eqnarray}
-By definition, $\mu$, $\lambda$ and $Z_k$ are all positive. Thus, the above terms are unconditionally positive. \\
+By definition, $\mu_P$, $\lambda_u$ and $Z_k$ are all positive. Thus, the above terms are unconditionally positive. \\
 It remains to look at the last term (b). Once again, by using the definition of $P_{int}$ and $\mbold u_{int}$, and the following relations:
 \begin{eqnarray}
 \label{eq:ent4bis}
@@ -100,13 +100,18 @@ P_{int}-P_k &=& \frac{Z_k}{Z_k+Z_j} (P_j-P_k) - \frac{\grad \alpha_k}{|| \grad \
 (b) yields:
 \begin{eqnarray}
 \label{eq:ent5}
-\left[ (\mbold u_{int}-\mbold u_k)P_{int} + (\mbold u_k-\mbold u_{int})P_k \right] \grad \alpha_k = (\mbold u_{int}-\mbold u_k)(P_{int}-P_k) \grad \alpha_k=  \nonumber\\ \frac{Z_k}{\left( Z_k+Z_j \right)^2} \grad \alpha_k \cdot \left[ Z_j (\mbold u_j-\mbold u_k)(P_j-P_k)+\frac{\grad \alpha_k}{|| \grad \alpha_k ||} Z_j^2 (\mbold u_j-\mbold u_k)^2 \right. + \\ \left. \frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)^2 +  \frac{\grad \alpha_k \cdot \grad \alpha_k}{|| \grad \alpha_k ||^2}(P_k-P_j)Z_j (\mbold u_k-\mbold u_j) \right] \nonumber
+\left[ P_{int} (\mbold u_{int}-\mbold u_k) + P_k (\mbold u_k-\mbold u_{int}) \right] \cdot \grad \alpha_k = (P_{int}-P_k)(\mbold u_{int}-\mbold u_k)\cdot \grad \alpha_k=  \nonumber\\ \frac{Z_k}{\left( Z_k+Z_j \right)^2} \grad \alpha_k \cdot \left[ Z_j (\mbold u_j-\mbold u_k)(P_j-P_k)+\frac{\grad \alpha_k}{|| \grad \alpha_k ||} Z_j^2 (\mbold u_j-\mbold u_k)^2 \right. + \\ \left. \frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)^2 +  \frac{\grad \alpha_k \cdot \grad \alpha_k}{|| \grad \alpha_k ||^2}(P_k-P_j)Z_j (\mbold u_k-\mbold u_j) \right] \nonumber
 \end{eqnarray}
 The above equation is factorized by $|| \grad \alpha_k ||$ and then recast under a quadratic form when noticing that $\frac{\grad \alpha_k \cdot \grad \alpha_k}{|| \grad \alpha_k ||^2} = 1$, which yields:
-\begin{eqnarray}
+\begin{align}
 \label{eq:ent6}
-\left[ (\mbold u_{int}-\mbold u_k)P_{int} + (\mbold u_k-\mbold u_{int})P_k \right] \grad \alpha_k =  \nonumber\\
-|| \grad \alpha_k || \frac{Z_k }{\left( Z_k+Z_j \right)^2} \left[ Z_j (\mbold u_j-\mbold u_k)+\frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)\right]^2
-\end{eqnarray}
-Thus, using results from \eqt{eq:ent3}, \eqt{eq:ent4}, \eqt{eq:ent5} and \eqt{eq:ent6}, the entropy equation obtained in \cite{SEM} holds.
+\left[ (\mbold u_{int}-\mbold u_k)P_{int} + (\mbold u_k-\mbold u_{int})P_k \right] \grad \alpha_k &=  \nonumber \\
+|| \grad \alpha_k || \frac{Z_k }{\left( Z_k+Z_j \right)^2} \left[ Z_j (\mbold u_j-\mbold u_k)\right.&+\left.\frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)\right]^2
+\end{align}
+Thus, using results from \eqt{eq:ent3}, \eqt{eq:ent4}, \eqt{eq:ent5} and \eqt{eq:ent6}, the entropy equation obtained in \cite{SEM} holds and is recalled here for convenience:
+\begin{align}
+(s_{e})_k^{-1} \alpha_k \rho_k A \frac{Ds_k}{Dt} &= \mu_P \frac{Z_k}{Z_k+Z_j} (P_j - P_k)^2 + \lambda_u \frac{Z_j}{Z_k+Z_j} (\mbold u_j -\mbold  u_k)^2 \nonumber
+\\
+& \frac{Z_k}{\left( Z_k+Z_j \right)^2} \left[ Z_j (\mbold u_j-\mbold u_k)+\frac{\grad \alpha_k}{|| \grad \alpha_k ||}(P_k-P_j)\right]^2. \nonumber
+\end{align}
 \pagebreak{}
