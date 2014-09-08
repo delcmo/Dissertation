@@ -649,14 +649,14 @@ The sign of $\resisource$ remains positive since it is given by the viscous term
 %% 
 %\begin{equation}
 %\label{eq:euler_source_terms_energy2}
-%\partial_t \left( \rho E A \right) + \partial_x \left[ u A \left( \rho E + P \right) \right] = h_t a_w (T_w - T)
+%\partial_t \left( \rho E A \right) + \partial_x \left[ u A \left( \rho E + P \right) \right] = h_t P_w (T_w - T)
 %\end{equation}
 %\end{subequations}
 %%
-%where $f_c$ denotes a constant friction coefficient. The parameter $D_h$ is the hydraulic diameter and is computed from the area $A$ and the wet perimeter $P_h$ of the geometry: $D_h = A / (4 P_h)$. The heat source is function of a heat transfer coefficient $h_w$ that can be either constant or computed from a correlation, a spatial- and temporal-dependent wall temperature $T_w$, and a wall heating surface $a_w$. In order to understand how the source terms scale, the entropy residual given in \eqt{eq:ent_res_source_term3} is non-dimensionalized using the reference numbers defined in \eqt{eq:norm_param} and the IGEOS for simplicity. It is obtained:
+%where $f_c$ denotes a constant friction coefficient. The parameter $D_h$ is the hydraulic diameter and is computed from the area $A$ and the wet perimeter $P_h$ of the geometry: $D_h = A / (4 P_h)$. The heat source is function of a heat transfer coefficient $h_w$ that can be either constant or computed from a correlation, a spatial- and temporal-dependent wall temperature $T_w$, and a wall heating surface $P_w$. In order to understand how the source terms scale, the entropy residual given in \eqt{eq:ent_res_source_term3} is non-dimensionalized using the reference numbers defined in \eqt{eq:norm_param} and the IGEOS for simplicity. It is obtained:
 %%
 %\begin{equation}\label{eq:ent_res_source_nd}
-%\left(\resisource\right)^* = \left(\resinew\right)^* - (\gamma-1) \left( - M^2_\infty \frac{f_c^*}{D_h^*} \rho^* u^{3,*} + M^2_\infty \frac{St_\infty}{Ec_\infty} \frac{h_t^* a_w^*}{\rho^* } \right)
+%\left(\resisource\right)^* = \left(\resinew\right)^* - (\gamma-1) \left( - M^2_\infty \frac{f_c^*}{D_h^*} \rho^* u^{3,*} + M^2_\infty \frac{St_\infty}{Ec_\infty} \frac{h_t^* P_w^*}{\rho^* } \right)
 %\end{equation}
 %%
 %where $P_e=(\gamma-1) \rho$ and $T$ is the fluid temperature and are both computed from the IGEOS. We also define the Eckert and Stanton dimensionless numbers denoted by the symbols $Ec_\infty$ and $St_\infty$, respectively:
@@ -1410,7 +1410,7 @@ This section illustrates the theoretical approach developed in \sect{sec:ev_sour
 % 
 \begin{equation}
 \label{eq:euler_source_terms_energy3}
-\partial_t \left( \rho E A \right) + \partial_x \left[ u A \left( \rho E + P \right) \right] = h_t a_w (T_w - T) - \rho g u A
+\partial_t \left( \rho E A \right) + \partial_x \left[ u A \left( \rho E + P \right) \right] = h_t P_w (T_w - T) - \rho g u A
 \end{equation}
 \end{subequations}
 %
@@ -1507,7 +1507,7 @@ The pressure, velocity, density and viscosity coefficients profiles show similar
 %---------------------------------------------------------------------------------------------------
 \subsection{Vapor and liquid water flows in a straight pipe with wall-friction and wall-heat source} \label{sec:1d-wall-heat-source}
 %---------------------------------------------------------------------------------------------------
-Once again, the same set up as in \sect{sec:1d-wall-fricition-vapor} and in \sect{sec:1d-wall-fricition-liquid} is used to simulate the behavior of liquid water and vapor phases with a wall-heat source. The wall temperature is assumed constant and set to $T_w=600$ $K$ for both phases. The wall heat transfer coefficients are also constant and are chosen so that a significant change in the temperature profile can be observed: $h_t^{liquid} = 1000$ $W/(K-m^2)$ and $h_t^{vapor} = 100$ $W/(K-m^2)$. The wall heated surface $a_w$ is the same for both phases since function of the geometry and set to $a_w = 0.0314156$ $m$. The steady-state profiles are shown in \fig{fig:1d-liquid-friction-heat-sct3} for liquid water and in \fig{fig:1d-vapor-friction-heat-sct3} for vapor. 
+Once again, the same set up as in \sect{sec:1d-wall-fricition-vapor} and in \sect{sec:1d-wall-fricition-liquid} is used to simulate the behavior of liquid water and vapor phases with a wall-heat source. The wall temperature is assumed constant and set to $T_w=600$ $K$ for both phases. The wall heat transfer coefficients are also constant and are chosen so that a significant change in the temperature profile can be observed: $h_t^{liquid} = 1000$ $W/(K-m^2)$ and $h_t^{vapor} = 100$ $W/(K-m^2)$. The wall heated perimeter $P_w$ is the same for both phases since function of the geometry and set to $P_w = 0.0314156$ $m$. The steady-state profiles are shown in \fig{fig:1d-liquid-friction-heat-sct3} for liquid water and in \fig{fig:1d-vapor-friction-heat-sct3} for vapor. 
 %
 \begin{figure}[H]
         \centering
@@ -1576,7 +1576,7 @@ Both phases show similar spatial variations. Because of the wall heat source, th
 %---------------------------------------------------------------------------------------------------
 \subsection{$1$-D Pressurized Water Reactor} \label{sec:1d-pwr}
 %---------------------------------------------------------------------------------------------------
-Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854 \times 10^{-5}$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the heat transfer coefficient $h_w$ is set to a constant $5.33 \times 10^4$ $W/(K-m)$, the heated surface $a_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$. The wall temperature $T_w$ is no longer constant and computed using the model available in RELAP-7 for PWR \cite{Relap7PWR}. 
+Numerical tests are performed for a $1$-D pipe of cross-section $A = 7.854 \times 10^{-5}$ $m^2$ and length $L=3.865$ $m$ with the following parameters: the heat transfer coefficient $h_w$ is set to a constant $5.33 \times 10^4$ $W/(K-m)$, the heated surface $P_w$ is computed from $A$ and $L$ and set to $0.0298$ $m$, and the friction factor is constant and equal to $0.01$. The wall temperature $T_w$ is no longer constant and computed using the model available in RELAP-7 for PWR \cite{Relap7PWR}. 
 For boundary conditions, we impose, at the inlet, a mass inflow ($\rho u = 3359.62$ $kg/(m^2 s))$ and a specific enthalpy ($H_{inlet} = 1.28 \times 10^6$ $J/kg$) and employ a static pressure condition at the exit ($P_s = 155$ bar) . The stiffened gas equation of state (SGEOS) is used \cite{SGEOS} with the parameters given in \tbl{tbl:stff_gas_eos2} for liquid water. The steady-state is reached at around $t=150$ sec with a time step of $\Delta t = 0.5$ sec. Figures~\ref{fig:Pressure} through~\ref{fig:Viscosity} represent the results obtained using 20 mesh cells, using either the overly-dissipative first-order viscosity (FO), the higher-order entropy viscosity (EV), or the SUPG \cite{SUPG} method to stabilize the numerical scheme. From these figures, it is clear that employing the first-order viscosity leads to erroneous answers, while the entropy-viscosity results are correct and look similar to those obtained with the SUPG method. Plots obtained using a finer spatial resolution ($100$ cells) are also shown in these figures.
 %
 \begin{figure}[H]
