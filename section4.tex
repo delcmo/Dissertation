@@ -66,6 +66,9 @@ The liquid phase obeys the following mass, momentum and energy balance equations
   \\
   + \bar{\mbold u}_{int} A \lambda_u (\mbold u_{vap} - \mbold u_{liq})
 &  + \Gamma A_{int} \left( \frac{P_{int}}{\rho_{int}} - H_{liq, int} \right) A
+\nonumber 
+\\
+& + Q_{wall,liq} + Q_{int,liq}
 \end{align}
 \begin{align}
   % liquid volume fraction
@@ -98,12 +101,15 @@ On the same model, the equations for the vapor phase are:
 \begin{align}
   % vapor total energy
   \frac{\partial \left( \alpha \rho E \right)_{vap} A}{\partial t}
-  &+ \div \left[ \alpha_{vap} \mbold u_{vap} A \left( \rho E + P \right)_{vap} \right]
-  = P_{int} \mbold u_{int} A \grad \alpha_{vap} - \bar{P}_{int} A \mu_P (P_{vap} - P_{liq})
+  + \div \left[ \alpha_{vap} \mbold u_{vap} A \left( \rho E + P \right)_{vap} \right]
+  &= P_{int} \mbold u_{int} A \grad \alpha_{vap} - \bar{P}_{int} A \mu_P (P_{vap} - P_{liq})
+    \nonumber
   \\
-  \nonumber
-  &+ \bar{\mbold u}_{int} A \lambda_u (\mbold u_{liq} - \mbold u_{vap})
-- \Gamma A_{int} \left( \frac{P_{int}}{\rho_{int}} - H_{vap, int} \right) A
+  + \bar{\mbold u}_{int} A \lambda_u (\mbold u_{liq} - \mbold u_{vap})
+&- \Gamma A_{int} \left( \frac{P_{int}}{\rho_{int}} - H_{vap, int} \right) A
+\nonumber 
+\\
+& + Q_{wall,vap} + Q_{int,vap}
 \end{align}
 \begin{align}
   % vapor phase volume fraction
@@ -113,7 +119,7 @@ On the same model, the equations for the vapor phase are:
 \end{align}
 \end{subequations}
 %
-where $\alpha_k$, $\rho_k$, $\mbold u_k$ and $E_k$ denote the volume fraction, the density, the velocity vector and the total specific energy of phase $k=\left\{ liq, vap \right\}$, respectively. The phase pressure $P_k$ is computed from an equation of state. The interfacial variables are denoted by the subscript $int$ and their definition will be given in \sect{sec:source-terms-7-eqt-sect5}. The interfacial pressure and velocity and their corresponding average values are denoted by $P_{int}$, $\mbold u_{int}$, $\bar{P}_{int}$ and $\bar{\mbold u}_{int}$, respectively. $\Gamma$ is the net mass transfer rate per unit interfacial area from the liquid to the vapor phase and $A_{int}$ is the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$ and $H_{vap, int}$ are the liquid and gas total specific enthalpies at the interface, respectively, with the following definition: $H_k = h_k + 0.5 || \mbold u ||^2$. $\mu_P$ is the pressure relaxation coefficient and $\lambda_u$ denotes the velocity relaxation coefficient. Lastly, the cross section $A$ is assumed spatially dependent. In the case of two-phase flows, the equation for the vapor volume fraction, \eqt{eqn:multi-d-7-eqn-vap-vol}, is simply replaced by the algebraic relation
+where $\alpha_k$, $\rho_k$, $\mbold u_k$ and $E_k$ denote the volume fraction, the density, the velocity vector and the total specific energy of phase $k=\left\{ liq, vap \right\}$, respectively. The phase pressure $P_k$ is computed from an equation of state. The interfacial variables are denoted by the subscript $int$ and their definition will be given in \sect{sec:source-terms-7-eqt-sect5}. The interfacial pressure and velocity and their corresponding average values are denoted by $P_{int}$, $\mbold u_{int}$, $\bar{P}_{int}$ and $\bar{\mbold u}_{int}$, respectively. $\Gamma$ is the net mass transfer rate per unit interfacial area from the liquid to the vapor phase and $A_{int}$ is the interfacial area per unit volume of mixture.  Also, $H_{liq, int}$ and $H_{vap, int}$ are the liquid and gas total specific enthalpies at the interface, respectively, with the following definition: $H_k = h_k + 0.5 || \mbold u ||^2$. $\mu_P$ is the pressure relaxation coefficient and $\lambda_u$ denotes the velocity relaxation coefficient. The wall and interfacial heat sources are denoted by $Q_{wall,k}$ and $Q_{int,k}$, respectively, and are detailed in \sect{sec:source-terms-7-eqt-sect5}. Lastly, the cross section $A$ is assumed spatially dependent. In the case of two-phase flows, the equation for the vapor volume fraction, \eqt{eqn:multi-d-7-eqn-vap-vol}, is simply replaced by the algebraic relation
 %
 \begin{align}
  \alpha_{vap}= 1 - \alpha_{liq}
@@ -129,7 +135,7 @@ The set of eight equations given in \eqt{eq:liq-7-eqn-sect5} and in \eqt{eq:vap-
 \end{align}
 %
 where $\bar{\mbold n}$ is a unit vector pointing to a given direction.
-For each phase $k$, an entropy equation can be derived when accounting only for the pressure and velocity relaxation terms (all of the terms proportional to the net mass transfer term $\Gamma$ are removed). The entropy function for a phase $k$ is denoted by $s_k$ and function of the density $\rho_k$ and the internal energy $e_k$. The derivation is detailed in \app{app:sev-equ-model-entropy} and only the final result is recalled here when assuming that the phase $k$ is in interaction with a phase $j$:
+For each phase $k$, an entropy equation can be derived when accounting only for the pressure and velocity relaxation terms (all of the terms proportional to the net mass transfer term $\Gamma$ and the interfacial heat transfer $Q_{int,k}$ are removed). The entropy function for a phase $k$ is denoted by $s_k$ and function of the density $\rho_k$ and the internal energy $e_k$. The derivation is detailed in \app{app:sev-equ-model-entropy} and only the final result is recalled here when assuming that the phase $k$ is in interaction with a phase $j$:
 %
 \begin{align}\label{eq:ent-eqn-7-eqn-model}
 (s_{e})_k^{-1} \alpha_k \rho_k A \frac{Ds_k}{Dt} &= \mu_P \frac{Z_k}{Z_k+Z_j} (P_j - P_k)^2 + \lambda_u \frac{Z_j}{Z_k+Z_j} (\mbold u_j -\mbold  u_k)^2 \nonumber
@@ -809,7 +815,7 @@ and the entropy viscosity coefficients by
 with the jumps given by
 %
 \begin{equation}
-J_k = || \mbold u_k || \max \Big ( [[ \grad P_k \cdot \mbold n ]], c_k^2 [[\grad \rho_k \cdot \mbold n]] \Big) 
+J_k =  \max \Big ( || \mbold u_k || [[ \grad P_k \cdot \mbold n ]], || \mbold u_k || c_k^2 [[\grad \rho_k \cdot \mbold n]] \Big) 
 \end{equation}
 \end{subequations}
 %

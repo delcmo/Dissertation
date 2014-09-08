@@ -622,7 +622,7 @@ where $f_s$ is a surface force and does not necessarily have an associated work 
 where $s_e$ was determined to be the inverse of the temperature and thus is positive. We note that the body forces do not affect the entropy residual. Using the result from \eqt{eq:ent_res}, \eqt{eq:ent_res_source_term} is recast as follows:
 %
 \begin{align}\label{eq:ent_res_source_term2}
-\rho \resinew = \frac{\rho}{P_e} \left( \frac{DP}{Dt} -c^2 \frac{D \rho}{Dt} \right)  = \left( -f_s u + q \right).
+\rho \resinew = \rho \left( \frac{DP}{Dt} -c^2 \frac{D \rho}{Dt} \right)  = P_e \left( -f_s u + q \right).
 \end{align}
 %
 The sign of $\resinew$ is given by the right hand-side of \eqt{eq:ent_res_source_term2} which is function of the surface force $f_s$, the fluid velocity $u$ and the heat source term $q$. Let us assume that $q$ is a large heat sink ($q\leq0$) such as $| q| \geq -f_s u$. Under this assumption, $\resinew$ becomes negative and violates the entropy inequality. On the other hand, if $q$ is positive, the entropy residual remains positive and does not violate the entropy inequality. This example illustrates the fact that source terms can affect the sign of the entropy residual in both ways. Thus, in order to be consistent with the entropy inequality, it is proposed to include the right hand-side of \eqt{eq:ent_res_source_term2} in the definition of the entropy residual such as:
