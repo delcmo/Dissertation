@@ -243,8 +243,9 @@ if \eqt{eq:weak_sol3_sct1b} holds for all test functions $\phi(\mbold r, t) \in 
 The formulation obtained in \eqt{eq:weak_sol3_sct1b} presents some similarities with the 1-D conservation law when integrated over a rectangle $\left[ x_1,x_2 \right] \times \left[ t_1,t_2 \right]$:
 %
 \begin{align}\label{eq:weak_sol4_sct1b}
-\partial_t u(x,t) + \partial_x f(u) = 0 \to
-\int_{x_1}^{x_2} \left[ x(x,t_2) - u(x,t_1) \right] dx + \int_{t_1}^{t_2} \left[ f(u(x_2,t)) - f(u(x_1,t)) \right]dt = 0
+&\partial_t u(x,t) + \partial_x f(u) = 0 \to \nonumber \\
+&\int_{x_1}^{x_2} \left[ x(x,t_2) - u(x,t_1) \right] dx + 
+\int_{t_1}^{t_2} \left[ f(u(x_2,t)) - f(u(x_1,t)) \right]dt = 0
 \end{align}
 %
 As a matter of fact, we can show that \eqt{eq:weak_sol3_sct1b} and \eqt{eq:weak_sol4_sct1b} are equivalent. To do so, we consider a test function $\phi(x,t)$ with the following properties:

@@ -61,7 +61,7 @@ This chapter is organized as follows. In \sect{sec:entropy-visc-meth_sct5}, the 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The entropy-based viscosity method applied to the 1-D Radiation-Hydrodynamic equations}\label{sec:entropy-visc-meth_sct5}
+\section{The Entropy Viscosity Method applied to the 1-D Radiation-Hydrodynamic equations}\label{sec:entropy-visc-meth_sct5}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -294,7 +294,7 @@ The inlet and outlet boundary conditions (BCs) are given next. The Euler equatio
 For this test, the inlet Mach number is set to $1.05$. The radiation field and material are in equilibrium. The initial conditions are given in \tbl{tbl:table3}.
 \begin{table}[h]
 \begin{center}
-\caption{\label{tbl:table3} Initial conditions for Mach $1.05$.}
+\caption{\label{tbl:table3} Initial conditions for mach $1.05$.}
 \begin{tabular}{|c|c|c|}
 \hline 
  & left  & right \\ \hline
@@ -325,12 +325,12 @@ The computational domain is of size $L=0.08$ $cm$ and the initial step is at $x_
 The energy transfer between the material and radiation fields is not large enough to form a shock in the material. Thus, all of the material variables are smooth (\fig{fig:Mach105_temp} and \fig{fig:Mach105_density}) as well as the radiation temperature $\theta$. Because of the smoothness of the solution, the viscosity coefficient $\kappa$ is three order of magnitude smaller than the first-order viscosity coefficient $\kappa_{max}$ (\fig{fig:Mach105_viscosity}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{A $1.2$ Mach hydrodynamic shock}
+\subsubsection{A $1.2$ mach hydrodynamic shock}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this test, the material experiences a shock and the radiation energy density remains smooth. The initial conditions, corresponding to a Mach number of $1.2$ at the inlet, are as follows: 
 \begin{table}[H]
-\caption{\label{tbl:table4} Initial conditions for Mach $1.2$.}
+\caption{\label{tbl:table4} Initial conditions for mach $1.2$.}
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline 
@@ -363,12 +363,12 @@ Overall, the numerical solution behaves as expected in the shock and the entropy
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{A Mach $2$ shock}
+\subsubsection{A mach $2$ shock}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The Mach $2$ shock test has two features: a hydrodynamic shock and a Zeldovich spike, which make it interesting for testing the robustness of the entropy-based viscosity method. The initial conditions are specified in \tbl{tbl:table5} for a slab of length $L=0.04$ $cm$ with $x_0 = 0.$ $cm$.
 \begin{table}[H]
-\caption{\label{tbl:table5} Initial conditions for Mach $2$.}
+\caption{\label{tbl:table5} Initial conditions for mach $2$.}
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline 
@@ -406,12 +406,12 @@ For comparison purpose, the same simulation was run with the first-order viscosi
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Mach $5$ shock}
+\subsubsection{mach $5$ shock}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 A Mach $5$ test is run with the initial conditions of \tbl{tbl:table6} on a computational domain of length $L=0.05$ $cm$ ($x_0 = 0$ $cm$). Steady-state results are shown in \fig{fig:Mach5_temp}, \fig{fig:Mach5_density}, and \fig{fig:Mach5_viscosity} for the material and radiation temperatures, the density and the viscosity coefficients, respectively.
 \begin{table}[H]
-\caption{\label{tbl:table6} Initial conditions for Mach $5$.}
+\caption{\label{tbl:table6} Initial conditions for mach $5$.}
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline 
@@ -447,12 +447,12 @@ In \fig{fig:Mach5_temp}, the radiation temperature profile is smooth. The materi
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Mach $50$ shock} 
+\subsubsection{mach $50$ shock} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The Mach $50$ test is known to be challenging. The initial conditions are given in \tbl{tbl:table7}. The computational domain is of length $L=0.2$ $cm$. Results are once again given at steady state.
 \begin{table}[H]
-\caption{\label{tbl:table7} Initial conditions for Mach $50$.}
+\caption{\label{tbl:table7} Initial conditions for mach $50$.}
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline 

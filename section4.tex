@@ -160,7 +160,7 @@ Note that when one phase disappears, \eqt{eq:tot-ent-res-sct4} degenerates into 
 %-----------------------------------------------------------------------------------------
 In this section, insights about the relaxation terms, the net mass transfer term and the interfacial heat transfer terms are given.
 %---------------------------------------------------------------------------------------------------------------
-\subsubsection{Interface Pressure and Velocity, Mechanical Relaxation Coefficients}
+\subsubsection{Interface pressure and velocity, mechanical relaxation coefficients}
 %---------------------------------------------------------------------------------------------------------------
 The mechanical relaxation terms are used to bring the two phases into equilibrium by making pressure and velocity equal. The mechanical relaxation coefficients $\mu_P$ and $\lambda_u$ can be seen as inverse relaxation times: the larger the relaxation coefficients, the faster the two phases will be brought to equilibrium. Derivation of the relaxation terms is achieved by using rational thermodynamic to ensure consistency with the second thermodynamic law for the two-phase mixture \cite{Truesdell}. The methodology is very similar to what is done for the derivation of the dissipative terms using the entropy inequality.
 
@@ -241,7 +241,7 @@ the generalized approach of DEM \cite{SEM}, the interfacial pressure and velocit
 closures as well as the pressure and velocity relaxation coefficients
 of Equations~\eqref{E-R:83} to~\eqref{E-R:86} are utilized.
 %-----------------------------------------------------------------------------------------
-\subsubsection{Interphase Mass Transfer}
+\subsubsection{Interphase mass transfer}
 %-----------------------------------------------------------------------------------------
 For vapor to be formed from the liquid phase (vaporization) energy
 must be added to the liquid to produce vapor at nucleation sites;
@@ -254,7 +254,7 @@ boiling.  This heat input can occur through a solid/liquid
 interface with the solid typically hotter than the liquid, or through
 a liquid/gas interface with the gas being hotter than the liquid.
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   %\fbox{
    \includegraphics[clip=true,viewport=200 50 550 500,width=.8\textwidth]{figures/SEM/saturation}
@@ -296,10 +296,10 @@ for the case with $T_{liq} < T_{vap}$).
 To better illustrate the model for vaporization or condensation,
 Figure~\ref{Berry-Fig:3} shows pure liquid and pure vapor regions
 separated by an interface.
-\begin{figure}
+\begin{figure}[H]
   \centering
   %\fbox{
-   \includegraphics[clip=true,viewport=175 50 625 525,width=.8\textwidth]{figures/SEM/vaporization_condensation}
+   \includegraphics[clip=true,viewport=200 50 550 500,width=.8\textwidth]{figures/SEM/vaporization_condensation}
  %}
    \caption{Vaporization and condensation at a liquid-vapor interface
      (after Moody~\cite{Moody_1990}).\label{Berry-Fig:3}}
@@ -332,7 +332,7 @@ equations of state.  The interfacial density corresponds to the liquid
 saturated density $\rho_{int} = \rho_{liq, sat}(P_{int})$.
 
 %-----------------------------------------------------------------------------------------
-\subsubsection{Interface Direct Heat Transfer}
+\subsubsection{Interface direct heat transfer}
 %-----------------------------------------------------------------------------------------
 Without wall boiling, a simple model for the direct convective heat transfer $Q{ \text{wall}}$
 from the wall to fluid phase $k$ will be the same as that of a single-phase
@@ -353,7 +353,7 @@ between the interface and phase $k$. The phasic bulk
 temperature $T_k$ is determined from the respective phase's equation of
 state.
 %-----------------------------------------------------------------------------------------
-\subsubsection{Stiffened Gas Equation of State for Two-phase Flows} \label{sec:SGEOS}
+\subsubsection{Stiffened Gas Equation of State (SGEOS) for two-phase flows} \label{sec:SGEOS}
 %-----------------------------------------------------------------------------------------
 With the seven-equation two-phase model each phase is compressible and
 behaves with its own convex equation of state (EOS).  For initial
@@ -700,7 +700,7 @@ However, the definition of $\mbold l_k$ proposed in \eqt{eq:def-l-k-wrong-sect4}
 
 A rotation invariant viscous regularization for the multi-D seven-equation model is now available involving three viscosity coefficients $\beta_k$, $\mu_k$ and $\kappa_k$, for each phase $k$. Definition of these viscosity coefficients is the purpose of the next section (\sect{sec:sev-equ-visc-coeff-sect4}).
 %===================================================================================
-\section{Low-Mach asymptotic limit and viscosity coefficients}\label{sec:sev-equ-visc-coeff-sect4}
+\section{Low-mach asymptotic limit and viscosity coefficients}\label{sec:sev-equ-visc-coeff-sect4}
 %===================================================================================
 This section aims at deriving a definition of the viscosity coefficients involved in the viscous regularization for the multi-D seven-equation model. We propose to follow the same methodology as in \chap{chap:euler} for the multi-D Euler equations: after obtaining the non-dimensional equations, a definition for the viscosity coefficients is derived based on the entropy residual and consistent with the low-Mach asymptotic limit. Particular attention is paid to the definition of the viscosity coefficient $\beta_k$ used in the volume fraction equation.
 
@@ -771,7 +771,7 @@ R_{\alpha,k} = \partial_t \left(A \eta(\alpha_k) \right) + A \mbold u_{int} \cdo
 % 
 Because \eqt{eq:vf-sem2-sct4} is identical to \eqt{eq:weak_sol8_sct1b}, it is concluded that $R_{\alpha,k} \geq 0$ when assuming $\eta$ convex with respect to $\alpha_k$, which justifies the definition of the entropy viscosity viscosity coefficient $\beta_{e,k}$ given in \eqt{eq:def-beta-sen-sect4} based on \eqt{sec:evm_hyp_sc_sct1b}. The entropy function is taken equal to $\eta(\alpha_k) = \frac{\alpha_k^2}{2}$ which is convex.
 %------------------------------------------------------------------------------------------------------
-\subsection{Low-Mach asymptotic limit of the seven-equation model}\label{sec:low-Mach-sem}
+\subsection{Low-mach asymptotic limit of the seven-equation model}\label{sec:low-Mach-sem}
 %------------------------------------------------------------------------------------------------------
 In order to have a complete definition for the viscosity coefficients $\beta_k$, $\mu_k$ and $\kappa_k$, the normalization parameters introduced in the definition of the entropy viscosity coefficients $\beta_{e,k}$, $\mu_{e,k}$ and $\kappa_{e,k}$ have to be determined. In \chap{chap:euler}, the normalization parameters were derived from the non-dimensionalized multi-D Euler equations in order to obtain well-scaled dissipative terms. Thus, it is proposed to follow the same method to derive the three normalization parameters $\norm_{P,k}^\mu$, $\norm_{P,k}^\kappa$ and $\norm_{k}^\beta$ used in the definition of the viscosity coefficients involved in the viscous regularization of the seven-equation model. For simplicity, the Ideal Gas equation of state is considered through the derivations.
 
@@ -1104,7 +1104,7 @@ In this test, we propose to investigate the behavior of two fluids in a one mete
 %
 \begin{table}[H]
 \begin{center}
-\caption{ Stiffened Gas Equation of State parameters for steam and liquid water.}
+\caption{ Stiffened Gas Equation of State (SGEOS) parameters for steam and liquid water.}
 \label{tbl:stff_gas_eos-sect4}
 \begin{tabular}{|c|c|c|c|c|}
  \hline

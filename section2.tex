@@ -21,13 +21,13 @@
 This chapter is organized in two mains sections. In \sect{sec:disc_sect2}, the spatial and temporal discretization methods are detailed for a generic hyperbolic system of equations. Then, the implementation of the EVM is explained in \sect{sect:ev_impl_sect2} using an hyperbolic scalar equation as an example. 
 
 %==============================================================================
-\section{Spatial and Temporal Discretizations}\label{sec:disc_sect2}
+\section{Spatial and temporal discretizations}\label{sec:disc_sect2}
 %==============================================================================
 %Because the stabilization of the numerical solution of hyperbolic equation systems is intimately connected with the temporal and
 %spatial discretization, before discussing the implementation of the entropy viscosity stabilization method, a short summary of the
 %numerical methods it employs is given.
 %
-\subsection{Spatial Discretization Algorithm\label{sec:spatial_discretization}}
+\subsection{Spatial discretization algorithm\label{sec:spatial_discretization}}
 %
 The continuous Galerkin finite element method is employed
 via the INL MOOSE framework.  This section focuses on
@@ -282,7 +282,7 @@ Since BDF2 requires two old time-steps, the method must be
 for start-up at the beginning of a transient.  The BDF2 method is 
 recommended for most transient simulations.
 %==================================================
-\subsection{Jacobian-free Newton Krylov Solver\label{sec:jfnk}}
+\subsection{Jacobian-Free Newton Krylov solver\label{sec:jfnk}}
 %==================================================
 The Moose framework allows coupled multi-physics problems to be solved using the
 Jacobian-free Newton Krylov (JFNK) approach. 
@@ -357,7 +357,7 @@ where $P$ is the preconditioning matrix. For $1$-D simulations, the Jacobian mat
 library as the matrix $P$ for preconditioning purposes. For multi-D simulations, the same method would be very slow and inefficient since the FDP is even used to compute the zero entries of the Jacobian matrix. Instead, an expression of the Jacobian matrix is derived by hand and hard coded in the code. This process is significantly faster than the FDP method since the entries of the Jacobian matrix are simply evaluated.
 
 %==============================================================================
-\section{Implementation of the entropy viscosity method (EVM) with continuous Galerkin finite element method}\label{sect:ev_impl_sect2}
+\section{Implementation of the Entropy Viscosity Method (EVM) with continuous Galerkin finite element method}\label{sect:ev_impl_sect2}
 %==============================================================================
 After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient in \chap{chap:theory_chp1}, this section focuses on the implementation of the method in a continuous Galerkin finite element setting. Details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Special attention is required for the jump since their definition is spatial discretization-dependent. A non-uniform 2-D mesh family $\Omega$ is considered. Each member of this family is called element, $e$, and the set of its faces is denoted by $\delta e = \left\{ \delta e_f \right\}$, where $f$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta e$, a quadrature rule, $\mathcal{Q} = \left\{ q \right\}$ is used.
 

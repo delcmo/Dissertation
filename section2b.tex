@@ -70,33 +70,30 @@ We consider a 1-D computational domain of length $L=1$ $m$ discretized by an uni
 %
 \begin{figure}[H]
         \centering
-        \begin{subfigure}[b]{0.495\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/1D_sol_free.png}
-                \caption{Solution profile without stabilization.}
-                \label{fig:1d_burger_free}
-        \end{subfigure}%
+        \includegraphics[width=0.8\textwidth]{figures/1D_sol_free.png}
+        \caption{Solution profile without stabilization at $t=0.2$ $s$.}
+        \label{fig:1d_burger_free}
+\end{figure}
 %
-        \begin{subfigure}[b]{0.495\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/1D_sol_fo.png}
-                \caption{Solution profile with first-order viscosity.}
-                \label{fig:1d_burger_fo}
-        \end{subfigure}
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{figures/1D_sol_fo.png}
+        \caption{Solution profile with first-order viscosity at $t=0.2$ $s$.}
+        \label{fig:1d_burger_fo}
+\end{figure}
         
-        \begin{subfigure}[b]{0.495\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/1D_sol_ev.png}
-                \caption{Solution profile with the EVM.}
-                \label{fig:1d_burger_ev}
-        \end{subfigure}
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{figures/1D_sol_ev.png}
+        \caption{Solution profile with the EVM at $t=0.2$ $s$.}
+        \label{fig:1d_burger_ev}
+\end{figure}
 %       
-        \begin{subfigure}[b]{0.495\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/1D_visc.png}
-                \caption{Viscosity coefficient profiles.}
-                \label{fig:1d_burger_visc}
-        \end{subfigure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/1D_visc.png}
+    \caption{Viscosity coefficient profiles at $t=0.2$ $s$.}
+    \label{fig:1d_burger_visc}
 \end{figure}
 %
 In \fig{fig:1d_burger_free}, no stabilization  is used and numerical instabilities are observed in the shock region. When run with the over-dissipative first-order viscosity coefficient, the solution does not display any instabilities but the shock amplitude is smoothed as shown in \fig{fig:1d_burger_fo}. Lastly, the numerical solution obtained with the EVM in \fig{fig:1d_burger_ev} is very close to the exact solution: the shock amplitude is preserved and the solution is stable. The viscosity coefficients are shown in \fig{fig:1d_burger_visc} on a log-scale: the high-order viscosity coefficient $\mu_e$ is peaked in the shock region and is small anywhere else. This behavior is expected and corresponds to the theoretical approach detailed in \sect{sec:evm_hyp_sc_sct1b}. It was demonstrated in \cite{valentin} that high-order accuracy is preserved with the EVM when the solution is smooth (i.e. away from the shock region). It is also noticed in \fig{fig:1d_burger_visc} the difference of order of magnitude between the high- and first-order viscosity coefficients away from the shock region.
@@ -129,7 +126,7 @@ An uniform mesh of $100 \times 100$ elements is used. The solution is run until 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/Burger2D_visc_t0p2.png}
-	\caption{Solution profile at $t=0.2$ $s$.}
+	\caption{Viscosity profile at $t=0.2$ $s$.}
 	\label{fig:2d_burger_visc_t0p2}
 \end{figure}
 %
@@ -143,7 +140,7 @@ An uniform mesh of $100 \times 100$ elements is used. The solution is run until 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{figures/Burger2D_visc_t0p5.png}
-	\caption{Solution profile at $t=0.5$ $s$.}
+	\caption{Viscosity profile at $t=0.5$ $s$.}
 	\label{fig:2d_burger_visc_t0p5}
 \end{figure}
 %
