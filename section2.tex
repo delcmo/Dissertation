@@ -19,7 +19,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This chapter is organized in two mains sections. In \sect{sec:disc_sect2}, the spatial and temporal discretization methods are detailed for a generic hyperbolic system of equations. Then, the implementation of the EVM is explained in \sect{sect:ev_impl_sect2} using an hyperbolic scalar equation as an example. 
-
+%
 %==============================================================================
 \section{Spatial and temporal discretizations}\label{sec:disc_sect2}
 %==============================================================================
@@ -355,10 +355,11 @@ right preconditioning),
 \end{equation}
 where $P$ is the preconditioning matrix. For $1$-D simulations, the Jacobian matrix is numerically computed by finite difference (FDP) according to \eqt{eqn:jacobian_matrix}, and passed to the underlying numerical solver
 library as the matrix $P$ for preconditioning purposes. For multi-D simulations, the same method would be very slow and inefficient since the FDP is even used to compute the zero entries of the Jacobian matrix. Instead, an expression of the Jacobian matrix is derived by hand and hard coded in the code. This process is significantly faster than the FDP method since the entries of the Jacobian matrix are simply evaluated.
-
+%
 %==============================================================================
 \section{Implementation of the Entropy Viscosity Method (EVM) with continuous Galerkin finite element method}\label{sect:ev_impl_sect2}
 %==============================================================================
+%
 After describing the theoretical approach that leads to the derivation of the dissipative terms consistent with the entropy minimum principle and the definition of the viscosity coefficient in \chap{chap:theory_chp1}, this section focuses on the implementation of the method in a continuous Galerkin finite element setting. Details are given on how to implement and compute the jump, the entropy residual and the dissipative terms, for instance. Special attention is required for the jump since their definition is spatial discretization-dependent. A non-uniform 2-D mesh family $\Omega$ is considered. Each member of this family is called element, $e$, and the set of its faces is denoted by $\delta e = \left\{ \delta e_f \right\}$, where $f$ is the number of faces. To integrate the integral over each element $e$ and the boundaries $\delta e$, a quadrature rule, $\mathcal{Q} = \left\{ q \right\}$ is used.
 
 For academic purpose, the multi-D Burger's equation is considered and recalled here along with the definition of the viscosity coefficients based on \sect{sec:evm_hyp_sc_sct1b}: 
@@ -412,9 +413,10 @@ The dissipative term $\mbold g^h$ is function of the viscosity coefficient and t
 \grad u(\mbold r,t) = \sum_j u_j(t) \grad \phi_j(\mbold r)
 \end{equation}
 %
-On the other hand, computing the viscosity coefficient at the same quadrature points require a little bit more of computational work and is explained in the following. \\
+On the other hand, computing the viscosity coefficient at the same quadrature points require a little bit more of computational work and is explained in the following. 
 
-The next step consists of determining the viscosity coefficient $\mu$ that is not obtained by solving a PDE but computed on the fly from the definition recalled in \eqt{eq:visc_sct2}. The definition of the viscosity coefficient $\mu(\mbold r,t)$ involves two other viscosity coefficients: a first-order viscosity coefficient $\mu_{max}(\mbold r,t)$ that is an upper bound and a high-order viscosity coefficient often also called entropy-viscosity coefficient that is denoted by $\mu_e(\mbold r,t)$. A common element to the definition of $\mu_{max}(\mbold r,t)$ and $\mu_e(\mbold r,t)$ is the mesh size $h$ that can vary through the computational domain and is defined as the shortest distance between two nodes of an element. Thus, when considering a $1$-D mesh with linear test function, the local mesh size is simply $\Delta x$. For a shape regular mesh, the mesh size is finite and usually available through a function call. For instance, when using libMesh, a function can be called in order to get the mesh size or diameter of the cell under consideration. Once the mesh size $h$ is available, it remains to compute the local maximum eigenvalue, the entropy residual $R$ and the jump $J$. \\
+The next step consists of determining the viscosity coefficient $\mu$ that is not obtained by solving a PDE but computed on the fly from the definition recalled in \eqt{eq:visc_sct2}. The definition of the viscosity coefficient $\mu(\mbold r,t)$ involves two other viscosity coefficients: a first-order viscosity coefficient $\mu_{max}(\mbold r,t)$ that is an upper bound and a high-order viscosity coefficient often also called entropy-viscosity coefficient that is denoted by $\mu_e(\mbold r,t)$. A common element to the definition of $\mu_{max}(\mbold r,t)$ and $\mu_e(\mbold r,t)$ is the mesh size $h$ that can vary through the computational domain and is defined as the shortest distance between two nodes of an element. Thus, when considering a $1$-D mesh with linear test function, the local mesh size is simply $\Delta x$. For a shape regular mesh, the mesh size is finite and usually available through a function call. For instance, when using libMesh, a function can be called in order to get the mesh size or diameter of the cell under consideration. Once the mesh size $h$ is available, it remains to compute the local maximum eigenvalue, the entropy residual $R$ and the jump $J$. 
+
 The maximum eigenvalue is involved in the definition of the first-order viscosity coefficient. For a given quadrature point $q$ in a element $e$ of the mesh, the first-order viscosity coefficient $\mu_{max,}^{e,q}$ is given by  $\mu_{max}^{e,q} = \frac{h^e}{2} | u^{e,q} |$ where $u^{e,q}(\mbold r,t) = \sum_j u_{j}^e(t) \phi^e_j(\mbold r_q)$. The high-order viscosity coefficient is more involved to compute since it necessitates the evaluation of the entropy residual $R$ at the quadrature points and the jumps $J$ at the interface between cells. The entropy residual $R$ is a PDE but is not discretized in a finite element sense. Instead, each term of the entropy residual is locally computed using the test functions but without integration over the computational domain as follows:
 %
 \begin{equation}\label{eq:res_disc_sct2}

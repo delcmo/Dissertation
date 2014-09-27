@@ -83,7 +83,7 @@ u(x,t) = u_0(x_0) = u_0(x - f'(u_0)t) .
 %=============================
 \subsection{Shocks formation and vanishing viscosity equation/solution}\label{sec:shock_form_sct1b}
 %=============================
-Nonlinear hyperbolic scalar equations are known to develop shocks, even with a smooth initial condition. This section aims at detailing how shocks form based on the mathematical properties introduced in \sect{sec:mat_ppr_sct1b} and the two examples of \eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b}, i.e., the 1-D linear advection and Burger's equations.\\
+Nonlinear hyperbolic scalar equations are known to develop shocks, even with a smooth initial condition. This section aims at detailing how shocks form based on the mathematical properties introduced in \sect{sec:mat_ppr_sct1b} and the two examples of \eqt{eq:trans_sct1b} and \eqt{eq:burger_sct1b}, i.e., the 1-D linear advection and Burger's equations.
 
 When considering the 1-D linear advection equation (with the flux $f_1(u) = au$), the eigenvalue is found equal to $\lambda_1=a$ and is constant. Thus, the slope of the characteristic curve remains constant and each particle travels at the same velocity through the computational domain. In other word, the initial profile $u_0(x)$ of the solution is simply translated at speed $a$ to the right if $a \geq 0$ or to the left if $a \leq 0$. Obviously, if $a=0$, the flux is also null and the solution does not evolve in time. A representation of the characteristic curve for the linear advection equation, \eqt{eq:trans_sct1b}, is given in \fig{fig:char_curve_sct1b} in the $x-t$ plane: all of the characteristic curves are parallel since their slope is given by the eigenvalue $\lambda_1=a$ that is constant.
 %
@@ -203,10 +203,11 @@ S = \frac{f(x_2,t) - f(x_1,t)}{u(s^-(t)) - u(s^+(t))} = \frac{\Delta f}{\Delta u
 \end{equation}
 %
 The above expression for the speed of shock (\eqt{eq:rh5_sct1b}) is known as the Rankine-Hugoniot jump condition. The hyperbolic scalar equation given \eqt{eq:rh_sct1b} is only valid in smooth parts of the solution, and thus, require the use of the Rankine-Hugoniot jump condition in order to solve for the shock region.   
-
+%
 %===============================
 \subsection{Weak solution and entropy condition}\label{weak_sct1b}
 %===============================
+%
 As mentioned in \sect{sec:shock_form_sct1b}, another way to define a generalized solution is to use a mathematical technique that consists of multiplying the hyperbolic scalar equation by a smooth test function that is continuously differentiable within a compact support. Then, integration per parts is performed in order to transfer the derivative from the solution $u$ and onto the test function. The resulting equation involves fewer derivatives on $u$ and, hence, requires less smoothness. It is assumed that the test functions are only non-zero and continuously differentiable within a bounded set such as: $\phi(\mbold{r},t) \in C_0^1 \left( \mathbb{R}^d \times \mathbb{R^+} \right)$. 
 Following the method detailed in Leveque's book \cite{Leveque} (page 27), the 1-D conservation law $\partial_t u + \partial_x f(u) = 0$ is multiplied by a test function $\phi(x,t)$ and integrated over space and time to yield:
 %
@@ -374,10 +375,11 @@ is satisfied in a weak sense.}
 \end{definition}
 %
 The entropy inequality is used to analyze numerical methods in order to demonstrate that the numerical solution converges to the entropy solution. It is now proposed to see how the entropy inequality is used in the theoretical derivation of the entropy viscosity method for an hyperbolic scalar equation. 
-
+%
 %===============================
 \subsection{Entropy Viscosity Method (EVM) and hyperbolic scalar equations}\label{sec:evm_hyp_sc_sct1b}
 %===============================
+%
 This section aims at making the link between the theoretical results presented from \sect{sec:mat_ppr_sct1b} through \sect{weak_sct1b} and the entropy viscosity method (EVM) that is the focus of this dissertation. The results presented in this section rely on the work by Guermond et al. \cite{jlg1, jlg2, jlg3, valentin} and are used to familiarize the reader with the EVM.
 
 In \sect{sec:shock_form_sct1b} and \sect{weak_sct1b}, we emphasized on the importance of ensuring uniqueness of the weak solution: this is achieved (i) by adding a viscosity term to the hyperbolic scalar equation in order to prevent triple-value points from forming and (ii) by using the entropy inequality (\eqt{eq:weak_sol14_sct1b}), which is mathematically equivalent to:
@@ -445,12 +447,12 @@ The jump of the entropy flux $\mbold \psi$, denoted by $J$, is included in the d
 \begin{remark}
 The definition of the viscosity coefficients given in \eqt{eq:evm_def_sct1b} requires an isotropic mesh in order to be able to define the grid size $h$. An alternative definition without $h$ is under investigation for the case of hyperbolic scalar equations.
 \end{remark}
-
-
+%
 %%%%%%%%%%%%%%%%%%%%%
 \section{Hyperbolic system of equations}\label{sec:hyp_sect1b}
 %%%%%%%%%%%%%%%%%%%%%
-In this section, the entropy viscosity method is applied to non-linear hyperbolic systems of equations. The reader can refer to \cite{Toro} and \cite{Leveque} for an extension of the theoretical notions (eigenvalues, characteristic curves, $\ldots$) in the case of non-linear hyperbolic conservation laws. The objective of this section is to provide the reader with a methodology on how to apply the EVM to any hyperbolic system of equations. For academic purpose, we will rely on the latest published version of the EVM \cite{valentin} for the multi-D Euler equations in order to understand the main steps of the method. Other more recent publications will be also used. \cite{jlg, jlg2} are good prerequites to \cite{valentin} to observe the evolution of the EVM in the recent years. For hyperbolic system of equation, it is customary to work with the physical entropy $s$ that is of opposite sign of the mathematical entropy $\eta$.\\
+%
+In this section, the entropy viscosity method is applied to non-linear hyperbolic systems of equations. The reader can refer to \cite{Toro} and \cite{Leveque} for an extension of the theoretical notions (eigenvalues, characteristic curves, $\ldots$) in the case of non-linear hyperbolic conservation laws. The objective of this section is to provide the reader with a methodology on how to apply the EVM to any hyperbolic system of equations. For academic purpose, we will rely on the latest published version of the EVM \cite{valentin} for the multi-D Euler equations in order to understand the main steps of the method. Other more recent publications will be also used. \cite{jlg, jlg2} are good prerequites to \cite{valentin} to observe the evolution of the EVM in the recent years. For hyperbolic system of equation, it is customary to work with the physical entropy $s$ that is of opposite sign of the mathematical entropy $\eta$.
 
 To the best of our knowledge, the EVM was successfully applied to one hyperbolic system of equation: the multi-D Euler equations with the ideal gas equation of state \cite{jlg, valentin}. Good agreements with the exact solutions were obtained in 1- and 2-D results when using discontinuous schemes (finite volume and discontinuous Galerkin finite element methods), spectral and Fourier methods. We now recall the details of the latest version of the method \cite{valentin} and remind the reader that this version will be used as a starting point and modified during this dissertation. The viscous regularization derived from the entropy condition for the multi-D Euler equations with the ideal gas equation of state is as follows:
 %

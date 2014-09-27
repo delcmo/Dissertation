@@ -61,7 +61,7 @@ This chapter is organized as follows. In \sect{sec:entropy-visc-meth_sct5}, the 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The Entropy Viscosity Method applied to the 1-D Radiation-Hydrodynamic equations}\label{sec:entropy-visc-meth_sct5}
+\section{The Entropy Viscosity Method applied to the 1-D radiation-hydrodynamic equations}\label{sec:entropy-visc-meth_sct5}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -120,7 +120,8 @@ s( \rho, e, \epsilon) = \hat{s}(\rho, e) + \frac{\rho_0}{\rho}\tilde{s}(\epsilon
 \end{array}
 \right.
 \end{equation}
-where $\tilde{s}$ is concave with respect to the radiation energy density $\epsilon$ and $\hat{s}$ is concave with respect to the internal energy $e$ and the specific volume $\rho^{-1}$. The constant $\rho_0$ is of order one and appears only for dimensionality purposes. The function $\hat{s}$ and $\tilde{s}$ are both physical entropy functions.\\
+where $\tilde{s}$ is concave with respect to the radiation energy density $\epsilon$ and $\hat{s}$ is concave with respect to the internal energy $e$ and the specific volume $\rho^{-1}$. The constant $\rho_0$ is of order one and appears only for dimensionality purposes. The function $\hat{s}$ and $\tilde{s}$ are both physical entropy functions.
+
 Once the dissipative terms are obtained, it remains to define the local viscosity coefficient $\kappa(x,t)$. Note that at the difference of the multi-D Euler equations of \sect{chap:euler}, only one viscosity coefficient is required since the low Mach asymptotic limit is not investigated in this chapter. In other word, it is assumed that $\mu(x,t) = \kappa(x,t)$ following the notations used in \sect{chap:euler}. 
 We require the following to hold in the prescription for $\kappa$:
 \begin{itemize}
@@ -142,7 +143,8 @@ The definition of the second order viscosity coefficient $\kappa_e(x,t)$ is base
 \label{eq:equation9}
 R(x,t) = \frac{s_e}{P_e} \underbrace{ \left( \frac{dP}{dt} - c_{Euler}^2 \frac{d\rho}{dt} \right)}_\textrm{$\hat{R}(x,t)$}
 \end{equation}
-The term $s_e$ is the inverse of the material temperature (\app{app:appendixA}) and $P_e$ is computed from the IGEOS. These two terms are positive so that the sign of the entropy residual $R(x,t)$ can be determined by simply inspecting the terms inside the parentheses, denoted by $\hat{R}(x,t)$. Such an expression is easier to compute than the one given in \eqt{eq:equation6} which required an analytical expression for the entropy function. In addition to the entropy residual, inter-element jumps in the pressure and density gradients, $J$, are also accounted for. The objective is to be able to also detect discontinuities that are not shocks, such as contact waves (there is no entropy production in a contact wave), in order to stabilize them as well. \\
+The term $s_e$ is the inverse of the material temperature (\app{app:appendixA}) and $P_e$ is computed from the IGEOS. These two terms are positive so that the sign of the entropy residual $R(x,t)$ can be determined by simply inspecting the terms inside the parentheses, denoted by $\hat{R}(x,t)$. Such an expression is easier to compute than the one given in \eqt{eq:equation6} which required an analytical expression for the entropy function. In addition to the entropy residual, inter-element jumps in the pressure and density gradients, $J$, are also accounted for. The objective is to be able to also detect discontinuities that are not shocks, such as contact waves (there is no entropy production in a contact wave), in order to stabilize them as well. 
+
 Thus, the entropy viscosity coefficient $\kappa_e(x,t)$ is set to be proportional to $\hat{R}(x,t)$ and $J$ with the following form: 
 \begin{equation}
 \label{eq:equation12}
@@ -292,7 +294,7 @@ The inlet and outlet boundary conditions (BCs) are given next. The Euler equatio
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 For this test, the inlet Mach number is set to $1.05$. The radiation field and material are in equilibrium. The initial conditions are given in \tbl{tbl:table3}.
-\begin{table}[h]
+\begin{table}[H]
 \begin{center}
 \caption{\label{tbl:table3} Initial conditions for mach $1.05$.}
 \begin{tabular}{|c|c|c|}

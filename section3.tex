@@ -17,9 +17,11 @@
 \chapter{\uppercase {Application of the entropy viscosity method to the multi-D Euler equations with variable area}}\label{chap:euler}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Over the past years an increasing interest has been raised for computational methods that can solve both compressible and incompressible flows. In engineering applications, there is often the need to solve for complex flows where a near incompressible regime or low Mach flow coexists with a supersonic flow domain. For example, such flows are encountered in aerodynamics in the study of airships. In the nuclear industry, flows are nearly in the incompressible regime but compressible effects cannot be neglected because of the heat source and because of postulated accident scenarios, and thus needs to be accurately resolved. \\
-When solving the multi-D Euler equations for a wide range of Mach numbers, multiple problems must be addressed: stability, accuracy and acceleration of the convergence in the low Mach regime. Because of the hyperbolic nature of the equations, shocks can form during transonic and supersonic flows, and require the use of numerical methods in order to stabilize the scheme and correctly resolve the discontinuities. The literature offers a wide range of stabilization methods: flux-limiter \cite{FluxLimiter, FluxLimiter2}, pressure-based viscosity method (\cite{PBV_book}), Lapidus method (\cite{Lapidus_paper, LMP, Lapidus_book}), and the entropy-viscosity method(\cite{jlg1, jlg2}) among others. These numerical methods are usually developed using simple equations of state and tested for transonic and supersonic flows where the disparity between the acoustic wave speed and the fluid speed is not large because the Mach number is of order one. This approach, however, leads to a well-known accuracy problem in the low Mach regime where the fluid velocity is smaller that the speed of sound by multiple orders of magnitude. The numerical dissipative terms become ill-scaled in the low Mach regime and lead to the wrong numerical solution by changing the nature of the equations solved. This behavior is well documented in the literature \cite{LowMach1, LowMach2, LowMach3} and often treated by performing a low Mach asymptotic study of the multi-D Euler equation. This method was originally used \cite{LowMach1} to show convergence of the compressible multi-D Euler equations to the incompressible ones. Thus, by using the same method, the effect of the dissipative terms in the low Mach regime, can be understood and, when needed, a fix is developed in order to ensure the convergence of the equations to the correct physical solution. This approach was used as a "fixing" method for multiple well known stabilization methods alike Roe scheme (\cite{Roe}) and SUPG \cite{LowMach3} while preserving the original stabilization properties of shocks for supersonic flows. Furthermore, it is also of common knowledge that low-Mach steady-state solutions can be difficult to obtain with a temporal explicit solver. For stability purpose, the time step must be chosen inversely proportional to the largest eigenvalue of the system which is approximately the speed of sound, c, for slow flows. However, other waves are convected at the fluid speed, which is much slower. Hence, these waves do not change very much over a time step. Thus, thousands of time steps are required to reach a steady state. Acceleration techniques were developed and proved efficient \cite{LowMach2}, but require the modification of the temporal derivatives of the equation and thus, can only be used for steady-state flows. To avoid modifying the temporal derivatives, the temporal implicit capabilities of the MOOSE multiphysics framework \cite{Moose} is used. Such a choice should allow us to quickly obtain low-Mach steady-state solutions, while preserving the accuracy of the transient solution; but it also requires a preconditioner.\\
-We propose in this chapter to investigate how the entropy viscosity method, when applied to the multi-D Euler equations with variable area, behaves in the low Mach regime. This method was initially introduced by Guermond et al. to solve for the hyperbolic systems and has shown good results when used for solving the multi-D Euler equations for supersonic flows with various discretization schemes. More importantly, it is simple to implement, can be used with unstructured grids,  and its dissipative terms are consistent with the entropy minimum principle and it has proven valid for any equation of state under certain conditions \cite{jlg}. \\
+Over the past years an increasing interest has been raised for computational methods that can solve both compressible and incompressible flows. In engineering applications, there is often the need to solve for complex flows where a near incompressible regime or low Mach flow coexists with a supersonic flow domain. For example, such flows are encountered in aerodynamics in the study of airships. In the nuclear industry, flows are nearly in the incompressible regime but compressible effects cannot be neglected because of the heat source and because of postulated accident scenarios, and thus needs to be accurately resolved.
+
+When solving the multi-D Euler equations for a wide range of Mach numbers, multiple problems must be addressed: stability, accuracy and acceleration of the convergence in the low Mach regime. Because of the hyperbolic nature of the equations, shocks can form during transonic and supersonic flows, and require the use of numerical methods in order to stabilize the scheme and correctly resolve the discontinuities. The literature offers a wide range of stabilization methods: flux-limiter \cite{FluxLimiter, FluxLimiter2}, pressure-based viscosity method (\cite{PBV_book}), Lapidus method (\cite{Lapidus_paper, LMP, Lapidus_book}), and the entropy-viscosity method(\cite{jlg1, jlg2}) among others. These numerical methods are usually developed using simple equations of state and tested for transonic and supersonic flows where the disparity between the acoustic wave speed and the fluid speed is not large because the Mach number is of order one. This approach, however, leads to a well-known accuracy problem in the low Mach regime where the fluid velocity is smaller that the speed of sound by multiple orders of magnitude. The numerical dissipative terms become ill-scaled in the low Mach regime and lead to the wrong numerical solution by changing the nature of the equations solved. This behavior is well documented in the literature \cite{LowMach1, LowMach2, LowMach3} and often treated by performing a low Mach asymptotic study of the multi-D Euler equation. This method was originally used \cite{LowMach1} to show convergence of the compressible multi-D Euler equations to the incompressible ones. Thus, by using the same method, the effect of the dissipative terms in the low Mach regime, can be understood and, when needed, a fix is developed in order to ensure the convergence of the equations to the correct physical solution. This approach was used as a "fixing" method for multiple well known stabilization methods alike Roe scheme (\cite{Roe}) and SUPG \cite{LowMach3} while preserving the original stabilization properties of shocks for supersonic flows. Furthermore, it is also of common knowledge that low-Mach steady-state solutions can be difficult to obtain with a temporal explicit solver. For stability purpose, the time step must be chosen inversely proportional to the largest eigenvalue of the system which is approximately the speed of sound, c, for slow flows. However, other waves are convected at the fluid speed, which is much slower. Hence, these waves do not change very much over a time step. Thus, thousands of time steps are required to reach a steady state. Acceleration techniques were developed and proved efficient \cite{LowMach2}, but require the modification of the temporal derivatives of the equation and thus, can only be used for steady-state flows. To avoid modifying the temporal derivatives, the temporal implicit capabilities of the MOOSE multiphysics framework \cite{Moose} is used. Such a choice should allow us to quickly obtain low-Mach steady-state solutions, while preserving the accuracy of the transient solution; but it also requires a preconditioner.
+
+We propose in this chapter to investigate how the entropy viscosity method, when applied to the multi-D Euler equations with variable area, behaves in the low Mach regime. This method was initially introduced by Guermond et al. to solve for the hyperbolic systems and has shown good results when used for solving the multi-D Euler equations for supersonic flows with various discretization schemes. More importantly, it is simple to implement, can be used with unstructured grids,  and its dissipative terms are consistent with the entropy minimum principle and it has proven valid for any equation of state under certain conditions \cite{jlg}.
 
 In \sect{sec:entro_visc} the current definition of the entropy viscosity method is recalled, and inconsistency with the low Mach regime is pointed out. Since our interest is in the variable area version of the multi-D Euler equation, the reader is guided trough the steps leading to the derivation of the dissipative terms on the model of \cite{jlg}. Then in \sect{sec:extension}, a new definition of the viscosity coefficient is introduced and derived from a low Mach asymptotic study. 1-D and 2-D numerical results are presented in \sect{sec:results} for a wide range of Mach numbers: low Mach flow over a cylinder and a circular bump, and supersonic flows over various geometries. Convergence studies are performed in 1-D, in order to demonstrate the accuracy of the solution.
 
@@ -839,7 +841,7 @@ Once again, implementation of subsonic and supersonic boundary conditions is inv
 %========================================================
 In the case of a subsonic outlet boundary, three waves exit the domain and one wave enters it, as shown in \fig{fig:sub_flow_outlet}. This is the opposite situation as the subsonic inlet boundary described in \sect{sec:sub-flow-inlet-bc}. Thus, following the same reasoning as before, only one boundary value needs to be supplied to the code that we denote by $U_4^{bc}$, whereas the other boundary values are given by the solver: $\left(U_1^{\ell}, U_2^{\ell}, U_3^{\ell}\right)$. The most common subsonic outlet boundary condition is the static pressure boundary. It consists of supplying the code with a background static pressure $P_b$. Details of the implementation relative to the implicit scheme are given in \tbl{tbl:sub-outlet-flow-bc}. 
 %
-\begin{table}[!htbp]
+\begin{table}[H]
 \begin{center}
 \caption{ Subsonic flow outlet boundary conditions.}
 \label{tbl:sub-outlet-flow-bc}
@@ -969,7 +971,8 @@ Then, a strong shock for a liquid phase is also investigated\cite{abgrall}.
 Finally, numerical tests with source terms are performed in order to test our approach detailed in \sect{sec:ev_source_terms}.
 
 The initial conditions (density in $kg.m^{-3}$, velocity in $m.s^{-1}$, pressure in $Pa$) for the afore mentioned 1-D shock tubes are given in \tbl{tbl:ic_1d_tests}.
-\begin{table}[!htbp]
+\begin{table}[H]
+\caption{\label{tbl:ic_1d_tests} Initial conditions for the 1-D shock tube tests.}
 \begin{center}
 \begin{tabular}{|c|c|c || c|c|c|}
 \hline
@@ -982,7 +985,6 @@ $1000$ & $0$ & $10^{9}$ & $1000$ & $0$ & $10^{5}$                         \\ \hl
 $1$ & $-0.81$ & $1$ & $3.86$ & $-3.44$ & $10.33$                                     \\ \hline
 \end{tabular}
 \end{center}
-\caption{\label{tbl:ic_1d_tests} Initial conditions for the 1-D shock tube tests.}
 \end{table} 
 
 2-D simulations are presented next. 
@@ -999,7 +1001,7 @@ P = (\gamma-1) \rho (e-q) - \gamma P_\infty
 %
 where the parameters $\gamma$, $q$, and $P_\infty$ are fluid-dependent and are given in \tbl{tbl:stff_gas_eos}. The ideal gas equation of state is recovered by setting $q=P_\infty=0$ in \eqt{eq:eos}. 
 %
-\begin{table}[!htbp]
+\begin{table}[H]
 \begin{center}
 \caption{ Stiffened Gas Equation of State (SGEOS) parameters for steam and liquid water.}
 \label{tbl:stff_gas_eos}
@@ -1111,7 +1113,7 @@ cells& density            & rate & pressure          & rate & velocity          
 \end{table}
 % \tcr{check the rates in this table as well.} \tcb{I did and changed the values \\}
 It is observed that the convergence rate for the L$_1$ and L$_2$ norm of the error is 2; the entropy viscosity method preserves the high-order accuracy when the numerical solution is smooth, and the new definition of the entropy viscosity coefficient behaves appropriately in the low-Mach limit.
-
+%
 %---------------------------------------------------------------------------------------------------
 \subsection{Steam in a 1-D converging-diverging nozzle} \label{sec:steam_nozzle}
 %---------------------------------------------------------------------------------------------------
@@ -1416,7 +1418,7 @@ This section illustrates the theoretical approach developed in \sect{sec:ev_sour
 %
 where $g$ is the gravity acceleration and is equal to $9.8$ $m^2/s$. For each of the tests, the source terms parameters, the boundary conditions and information relative to the geometry, the mesh and the time step will be given. The SGEOS is used for vapor and liquid water with the parameters of \tbl{tbl:stff_gas_eos2}:
 %
-\begin{table}[!htbp]
+\begin{table}[H]
 \begin{center}
 \caption{ Stiffened Gas Equation of State parameters for steam and liquid water used to solve the $1$-D Euler equations with source terms.}
 \label{tbl:stff_gas_eos2}

@@ -19,10 +19,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The multi-D Burger's equation is solved using the entropy viscosity method described in \sect{sec:evm_hyp_sc_sct1b}. The equation with the viscous regularization and the definition of the viscosity coefficients are recalled, and the treatment of the boundary condition in also explained in \sect{sec:burger_sct2b}. 1- and 2-D numerical results are presented in \sect{sec:num_sct2b}. The objective of this section is to present numerical results obtained with the entropy viscosity method for the simple hyperbolic scalar Burger's equation before dealing with hyperbolic system of equations. The multi-physics framework MOOSE \cite{Moose} was used to implement the multi-D Burger's equation. The code name is Badger.
-
+%
 %==============================================================================
 \section{The multi-D Burger's equation}\label{sec:burger_sct2b}
 %==============================================================================
+%
 We recall the multi-D Burger's equation (\eqt{eq:burger_eq_sct2b}) with the viscous regularization and the definition of the viscosity coefficient (\eqt{eq:burger_visc_sct2b}).
 %
 \begin{subequations}\label{eq:burger_sct2b}
@@ -144,6 +145,6 @@ An uniform mesh of $100 \times 100$ elements is used. The solution is run until 
 	\label{fig:2d_burger_visc_t0p5}
 \end{figure}
 %
-The numerical solution is plotted in \fig{fig:2d_burger_sol_t0p2} and \fig{fig:2d_burger_sol_t0p5} at $t=0.2$ and $t=0.5$ $s$, respectively. The numerical solution does not display any oscillations and the shocks are well resolved. The high-order viscosity coefficient is showed in \fig{fig:2d_burger_visc_t0p2} and \fig{fig:2d_burger_visc_t0p5}: the shock is well tracked by the EVM and sufficient dissipation is only added in the shock regions, where saturation to the first-order viscosity is achieved.\\
+The numerical solution is plotted in \fig{fig:2d_burger_sol_t0p2} and \fig{fig:2d_burger_sol_t0p5} at $t=0.2$ and $t=0.5$ $s$, respectively. The numerical solution does not display any oscillations and the shocks are well resolved. The high-order viscosity coefficient is showed in \fig{fig:2d_burger_visc_t0p2} and \fig{fig:2d_burger_visc_t0p5}: the shock is well tracked by the EVM and sufficient dissipation is only added in the shock regions, where saturation to the first-order viscosity is achieved.
 
 The above examples were simple illustrations of the capabilities of the EVM when applied to hyperbolic scalar equations. We now focus our attention to the application of the EVM to various hyperbolic systems of equations.
