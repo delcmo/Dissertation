@@ -260,7 +260,7 @@ a liquid/gas interface with the gas being hotter than the liquid.
    \includegraphics[clip=true,viewport=200 50 550 500,width=.8\textwidth]{figures/SEM/saturation}
    % }
    \caption{Interface control volume (top); $T$-$p$ state space around
-     saturation line, $T_{liq} < T_{vap}$, (bottom).\label{Berry-Fig:2}}
+     saturation line, $T_{liq} < T_{vap}$, (bottom) \cite{SEM}.\label{Berry-Fig:2}}
 \end{figure}
 
 To examine the mass flow rate between phases, local mechanisms of the
@@ -522,26 +522,26 @@ where $\frac{D \cdot}{Dt}$ is the material derivative. The terms $(s_e)_k$ and $
 We first recast \eqt{eq:sev_equ-with-diss-terms} in terms of the primitive variables: the volume fraction equation remains unchanged. The equation for the primitive variable $\rho_k$ is derived by combining \eqt{eq:sev_equ-with-diss-terms-vf} and \eqt{eq:sev_equ-with-diss-terms-cont}:
 %
 \begin{equation}\label{eq:rho-7-eqn-model-sect4}
-\alpha_k A \left[ \partial_t \rho_k + \left( \mbold u_k - \textcolor{blue}{\mbold u_{int}} \right) \cdot \grad \rho_k \right] = \textcolor{blue}{A \rho_k \mu_P \left( P_k - P_j \right)} + \div \mbold f_k - \rho_k \div \mbold l_k
+\alpha_k A \left[ \partial_t \rho_k + \left( \mbold u_k - \underline{\underline{\mbold u_{int}}} \right) \cdot \grad \rho_k \right] = \underline{\underline{A \rho_k \mu_P \left( P_k - P_j \right)}} + \div \mbold f_k - \rho_k \div \mbold l_k
 \end{equation}
 %
 The velocity equation is obtained by subtracting the density equation from the momentum equation:
 %
 \begin{align}\label{eq:vel-7-eqn-model-sect4}
 \alpha_k \rho_k  A \left[ \partial_t \mbold u_k + \mbold u_k \cdot \div \mbold u_k \right]  + \div \left( \alpha_k \rho_k A P_k \mathbb{I} \right) &=\nonumber\\
-\textcolor{blue}{\alpha_k P_k \grad A + P_{int} A \grad \alpha_k + A \lambda \left( \mbold u_j - \mbold u_k \right)} &+ \div \mbold g_k - \mbold u_k \otimes \mbold f_k
+\underline{\underline{\alpha_k P_k \grad A + P_{int} A \grad \alpha_k + A \lambda \left( \mbold u_j - \mbold u_k \right)}} &+ \div \mbold g_k - \mbold u_k \otimes \mbold f_k
 \end{align}
 %
 After multiplying \eqt{eq:vel-7-eqn-model-sect4} by the velocity vector $\mbold u_k$, the resulting kinetic energy equation is subtracted from the total energy equation to obtain the internal energy equation for phase $k$:
 %
 \begin{align}\label{eq:int-ener-7-eqn-model-sect4}
 \alpha_k \rho_k  A \left[ \partial_t \mbold e_k + \mbold u_k \cdot \div \mbold e_k \right]  + \alpha_k \rho_k A P_k \grad \mbold u_k &=\nonumber\\
-\textcolor{blue}{P_{int} A \left(\mbold u_{int}-\mbold u_k \right) \cdot \grad \alpha_k} &-  \textcolor{blue}{\alpha_k P_k \mbold u_k \grad A} \nonumber \\ 
-\textcolor{blue}{-\bar{P}_{int} A \mu_P \left(P_k-P_j \right)} &+ \textcolor{blue}{A \lambda_u \left(\mbold u_j-\mbold u_k  \right) \cdot \left(\bar{\mbold u}_{int}- \mbold u_k \right)}\nonumber \\
+\underline{\underline{P_{int} A \left(\mbold u_{int}-\mbold u_k \right) \cdot \grad \alpha_k}} &-  \underline{\alpha_k P_k \mbold u_k \grad A} \nonumber \\ 
+\underline{\underline{-\bar{P}_{int} A \mu_P \left(P_k-P_j \right)}} &+ \underline{A \lambda_u \left(\mbold u_j-\mbold u_k  \right) \cdot \left(\bar{\mbold u}_{int}- \mbold u_k \right)}\nonumber \\
 &+ \div \mbold h_k + \mbold g_k : \grad \mbold u_k + || \mbold u ||^2_k \mbold f_k
 \end{align}
 %
-The blue terms in \eqt{eq:rho-7-eqn-model-sect4} and \eqt{eq:int-ener-7-eqn-model-sect4} yield the positive terms in the right-hand-side of \eqt{eq:ent-eqn-7-eqn-model} and thus are ignored in the remaining of the derivation. The entropy equation is now obtained by combining the density equation (\eqt{eq:rho-7-eqn-model-sect4}) and the internal energy equation (\eqt{eq:int-ener-7-eqn-model-sect4}) through the chain rule given in \eqt{eq:chain_rule-sct4} to yield:
+The underline terms in \eqt{eq:rho-7-eqn-model-sect4} and \eqt{eq:int-ener-7-eqn-model-sect4} yield the positive terms in the right-hand-side of \eqt{eq:ent-eqn-7-eqn-model} and thus are ignored in the remaining of the derivation. The entropy equation is now obtained by combining the density equation (\eqt{eq:rho-7-eqn-model-sect4}) and the internal energy equation (\eqt{eq:int-ener-7-eqn-model-sect4}) through the chain rule given in \eqt{eq:chain_rule-sct4} to yield:
 %
 \begin{equation}\label{eq:ent-res-7-eqn-diss-terms}
 \alpha_k \rho_k A \frac{Ds_k}{Dt} = \left(s_e\right)_k \left[ \div \mbold h_k + \mbold g_k : \grad \mbold u_k +  \left( || \mbold u ||^2_k - e_k\right) \div \mbold f_k  \right] + (\rho s_\rho)_k \left[ \div \mbold f_k - \rho_k \div \mbold l_k \right].
@@ -932,7 +932,7 @@ We consider a 1-D straight pipe of length $L=1$ $m$ filled with two gas phases i
 %                \caption{Viscosity coefficients for volume fraction equation of phase 1.}
                 \caption{\label{fig:beta-liq-7-eqn-sect4}}
         \end{subfigure}
-        \caption{Volume fraction (left) and viscosity coefficients for volume fraction equation (right) of phase 1\label{fig:beta-visc-7-sect4}}
+        \caption{1-D advection test: volume fraction (left) and viscosity coefficients for volume fraction equation (right) of phase 1\label{fig:beta-visc-7-sect4}}
 \end{figure}
 %
 \begin{figure}[H]
@@ -949,7 +949,7 @@ We consider a 1-D straight pipe of length $L=1$ $m$ filled with two gas phases i
 %                \caption{Pressure of phase $2$.}
                 \caption{\label{fig:press-2-7-eqn-sect4}}
         \end{subfigure}
-        \caption{Pressure profiles of phase $1$ (left) and $2$ (right)\label{fig:press-7-sect4}}
+        \caption{1-D advection test:: pressure profiles of phase $1$ (left) and $2$ (right)\label{fig:press-7-sect4}}
 \end{figure}
 %
 \begin{figure}[H]
@@ -966,7 +966,7 @@ We consider a 1-D straight pipe of length $L=1$ $m$ filled with two gas phases i
 %                \caption{Velocity of phase $2$.}
                 \caption{\label{ig:vel-2-7-eqn-sect4}}
         \end{subfigure}
-        \caption{Velocity profiles of phase $1$ (left) and $2$ (right)\label{fig:vel-7-sect4}}
+        \caption{1-D advection test:: velocity profiles of phase $1$ (left) and $2$ (right)\label{fig:vel-7-sect4}}
 \end{figure}
 %
 \begin{figure}[H]
@@ -983,7 +983,7 @@ We consider a 1-D straight pipe of length $L=1$ $m$ filled with two gas phases i
 %                \caption{Viscosity coefficients of phase $2$.}
                 \caption{\label{fig:visc-2-7-eqn-sect4}}
         \end{subfigure}
-        \caption{Viscosity coefficient profiles of phase $1$ (left) and $2$ (right)\label{fig:visc-7-sect4}}
+        \caption{1-D advection test: viscosity coefficient profiles of phase $1$ (left) and $2$ (right)\label{fig:visc-7-sect4}}
 \end{figure}
 %
 The stabilization numerical method preserves the uniform pressure (\fig{fig:press-7-sect4}) and velocity (\fig{fig:vel-7-sect4}) flow conditions while correctly resolving the discontinuity in the volume fraction profile as shown in \fig{fig:vf-liq-7-eqn-sect4}. The viscosity coefficients $\mu_k$ and $\kappa_k$ are equal to zero for both phases as shown in \fig{fig:visc-7-sect4}, since the flow conditions are uniform. However, the viscosity coefficient $\beta_k$ is peaked in the discontinuity region as expected. This test clearly shows that the stabilization method does not induce any artificial waves due to the smearing of the discontinuity in the volume fraction profile.
@@ -995,49 +995,49 @@ We still consider a 1-D straight pipe of length $L=1$ $m$ filled with the same f
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/two_phases_pressure.png}
-\caption{Pressure profiles at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two independent fluids: pressure profiles at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-press-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/two_phases_velocity.png}
-\caption{Velocity profiles at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two independent fluids: velocity profiles at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-vel-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/two_phases_density.png}
-\caption{Density profiles at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two independent fluids: density profiles at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-dens-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/two_phases_volume_fraction.png}
-\caption{Volume fraction profiles at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two independent fluids: volume fraction profiles at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-vf-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/two_phases_liquid_viscosity_kappa_mu.png}
-\caption{Viscosity coefficient profiles for phase $2$ at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two independent fluids: viscosity coefficient profiles for phase $2$ at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-visc-2-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/two_phases_vapor_viscosity_kappa_mu.png}
-\caption{Viscosity coefficient profiles for phase 1 at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two independent fluids: viscosity coefficient profiles for phase 1 at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-visc-1-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/two_phases_liquid_beta.png}
-\caption{Viscosity coefficient profiles for volume fraction equation of phase 1 at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two independent fluids: viscosity coefficient profiles for volume fraction equation of phase 1 at $t=305$ $\mu s$.}
 \label{fig:two-indep-fluids-vf-visc-1-7-eqn-sect4}
 \end{figure}
 %
@@ -1050,49 +1050,49 @@ Once again, we consider a 1-D shock tube with the same initial conditions and th
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_pressure.png}
-\caption{Pressure profiles at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two fluids with relaxation terms: pressure profiles at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-press-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_velocity.png}
-\caption{Velocity profiles at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two fluids with relaxation terms: velocity profiles at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-vel-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_density.png}
-\caption{Density profiles at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two fluids with relaxation terms: density profiles at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-rho-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_volume_fraction.png}
-\caption{Volume fraction profiles at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two fluids with relaxation terms: volume fraction profiles at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-vf-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_liquid_viscosity_kappa_mu.png}
-\caption{Viscosity coefficient profiles for phase 1 at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two fluids with relaxation terms: viscosity coefficient profiles for phase 1 at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-visc-2-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_vapor_viscosity_kappa_mu.png}
-\caption{Viscosity coefficient profiles for phase $2$ at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two fluids with relaxation terms: viscosity coefficient profiles for phase $2$ at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-visc-1-7-eqn-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/relaxation_two_phases_liquid_beta.png}
-\caption{Viscosity coefficient profiles for volume fraction equation of phase 1 at $t=305$ $\mu s$.}
+\caption{1-D shock tube for two fluids with relaxation terms: viscosity coefficient profiles for volume fraction equation of phase 1 at $t=305$ $\mu s$.}
 \label{fig:two-fluids-rel-vf-visc-1-7-eqn-sect4}
 \end{figure}
 %
@@ -1122,21 +1122,21 @@ We first consider the 1-D seven-equation model with the relaxation source terms 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e2_two_phases_pressure.png}
-\caption{Pressure profiles at steady state with $A_{int,max} = 10^2$.}
+\caption{1-D converging-diverging nozzle test: pressure profiles at steady state with $A_{int,max} = 10^2$.}
 \label{fig:two-fluids-rel-nozzle-press-Aint2-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e3_two_phases_pressure.png}
-\caption{Pressure profiles at steady state with $A_{int,max} = 10^3$.}
+\caption{1-D converging-diverging nozzle test: pressure profiles at steady state with $A_{int,max} = 10^3$.}
 \label{fig:two-fluids-rel-nozzle-press-Aint3-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e4_two_phases_pressure.png}
-\caption{Pressure profiles at steady state with $A_{int,max} = 10^4$.}
+\caption{1-D converging-diverging nozzle test: pressure profiles at steady state with $A_{int,max} = 10^4$.}
 \label{fig:two-fluids-rel-nozzle-press-Aint4-sem-sect4}
 \end{figure}
 %
@@ -1145,42 +1145,42 @@ The pressure profiles for $A_{int,max} = 10^2 \text{, } 10^3$ and $10^4$ $m^{-1}
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e4_two_phases_velocity.png}
-\caption{Velocity profiles at steady state.}
+\caption{1-D converging-diverging nozzle test: velocity profiles at steady state.}
 \label{fig:two-fluids-rel-nozzle-vel-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e4_two_phases_density.png}
-\caption{Density profiles at steady state.}
+\caption{1-D converging-diverging nozzle test: density profiles at steady state.}
 \label{fig:two-fluids-rel-nozzle-rho-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e4_two_phases_volume_fraction.png}
-\caption{Volume fraction profiles at steady state.}
+\caption{1-D converging-diverging nozzle test: volume fraction profiles at steady state.}
 \label{fig:two-fluids-rel-nozzle-vf-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e4_liquid_viscosity_kappa_mu.png}
-\caption{Viscosity coefficients profiles for liquid phase at steady state.}
+\caption{1-D converging-diverging nozzle test: viscosity coefficients profiles for liquid phase at steady state.}
 \label{fig:two-fluids-rel-nozzle-visc-liq-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e4_vapor_viscosity_kappa_mu.png}
-\caption{Viscosity coefficients profiles for vapor phase at steady state.}
+\caption{1-D converging-diverging nozzle test: viscosity coefficients profiles for vapor phase at steady state.}
 \label{fig:two-fluids-rel-nozzle-visc-vap-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e4_liquid_beta.png}
-\caption{Viscosity coefficients profiles for liquid volume fraction phase at steady state.}
+\caption{1-D converging-diverging nozzle test: viscosity coefficients profiles for liquid volume fraction phase at steady state.}
 \label{fig:two-fluids-rel-nozzle-visc-vf-sem-sect4}
 \end{figure}
 %
@@ -1191,49 +1191,49 @@ Next, the same converging-diverging nozzle is run with mass and energy exchange 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_two_phases_pressure.png}
-\caption{Pressure profiles at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\caption{1-D converging-diverging nozzle test: pressure profiles at steady state with thermodynamic relaxations and mass and heat exchange terms.}
 \label{fig:two-fluids-rel-nozzle-press-mass-on-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_two_phases_velocity.png}
-\caption{Velocity profiles at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\caption{1-D converging-diverging nozzle test: velocity profiles at steady state with thermodynamic relaxations and mass and heat exchange terms.}
 \label{fig:two-fluids-rel-nozzle-vel-mass-on-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_two_phases_density.png}
-\caption{Density profiles at steady state with thermodynamic relaxations and mass and heat exchange terms}
+\caption{1-D converging-diverging nozzle test: density profiles at steady state with thermodynamic relaxations and mass and heat exchange terms}
 \label{fig:two-fluids-rel-nozzle-rho-mass-on-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_two_phases_volume_fraction.png}
-\caption{Volume fraction profiles at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\caption{1-D converging-diverging nozzle test: volume fraction profiles at steady state with thermodynamic relaxations and mass and heat exchange terms.}
 \label{fig:two-fluids-rel-nozzle-vf-mass-on-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_liquid_viscosity_kappa_mu.png}
-\caption{Viscosity coefficients profiles for liquid phase at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\caption{1-D converging-diverging nozzle test: viscosity coefficients profiles for liquid phase at steady state with thermodynamic relaxations and mass and heat exchange terms.}
 \label{fig:two-fluids-rel-nozzle-visc-liq-mass-on-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_vapor_viscosity_kappa_mu.png}
-\caption{Viscosity coefficients profiles for vapor phase at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\caption{1-D converging-diverging nozzle test: viscosity coefficients profiles for vapor phase at steady state with thermodynamic relaxations and mass and heat exchange terms.}
 \label{fig:two-fluids-rel-nozzle-visc-vap-mass-on-sem-sect4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/SEM/Aint1e3MassOn_liquid_beta.png}
-\caption{Viscosity coefficients profiles for liquid volume fraction at steady state with thermodynamic relaxations and mass and heat exchange terms.}
+\caption{1-D converging-diverging nozzle test: viscosity coefficients profiles for liquid volume fraction at steady state with thermodynamic relaxations and mass and heat exchange terms.}
 \label{fig:two-fluids-rel-nozzle-visc-vf-mass-on-sem-sect4}
 \end{figure}
 %
@@ -1248,35 +1248,35 @@ The pressure, temperature, velocity, volume fraction and viscosity coefficients 
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_pressure.png}
-                \caption{Pressure profiles at steady-state}
+                \caption{1-D straight pipe with source terms: pressure profiles at steady-state}
                 \label{fig:pressure}
         \end{figure}%
 %
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_temperature.png}
-                \caption{Temperature profiles at steady-state}
+                \caption{1-D straight pipe with source terms: temperature profiles at steady-state}
                 \label{fig:temperature}
         \end{figure}%
 %            
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_velocity.png}
-                \caption{Velocity profiles at steady-state}
+                \caption{1-D straight pipe with source terms: velocity profiles at steady-state}
                 \label{fig:velocity}
         \end{figure}
 %
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_volume_fraction.png}
-                \caption{Volume fraction profiles at steady-state}
+                \caption{1-D straight pipe with source terms: volume fraction profiles at steady-state}
                 \label{fig:volume_fraction}
         \end{figure}        
 %
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_viscosity.png}
-                \caption{Viscosity coefficients profiles at steady-state}
+                \caption{1-D straight pipe with source terms: viscosity coefficients profiles at steady-state}
                 \label{fig:viscosity_coeff}
         \end{figure}        
 %

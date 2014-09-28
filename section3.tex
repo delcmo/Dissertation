@@ -19,7 +19,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Over the past years an increasing interest has been raised for computational methods that can solve both compressible and incompressible flows. In engineering applications, there is often the need to solve for complex flows where a near incompressible regime or low Mach flow coexists with a supersonic flow domain. For example, such flows are encountered in aerodynamics in the study of airships. In the nuclear industry, flows are nearly in the incompressible regime but compressible effects cannot be neglected because of the heat source and because of postulated accident scenarios, and thus needs to be accurately resolved.
 
-When solving the multi-D Euler equations for a wide range of Mach numbers, multiple problems must be addressed: stability, accuracy and acceleration of the convergence in the low Mach regime. Because of the hyperbolic nature of the equations, shocks can form during transonic and supersonic flows, and require the use of numerical methods in order to stabilize the scheme and correctly resolve the discontinuities. The literature offers a wide range of stabilization methods: flux-limiter \cite{FluxLimiter, FluxLimiter2}, pressure-based viscosity method (\cite{PBV_book}), Lapidus method (\cite{Lapidus_paper, LMP, Lapidus_book}), and the entropy-viscosity method(\cite{jlg1, jlg2}) among others. These numerical methods are usually developed using simple equations of state and tested for transonic and supersonic flows where the disparity between the acoustic wave speed and the fluid speed is not large because the Mach number is of order one. This approach, however, leads to a well-known accuracy problem in the low Mach regime where the fluid velocity is smaller that the speed of sound by multiple orders of magnitude. The numerical dissipative terms become ill-scaled in the low Mach regime and lead to the wrong numerical solution by changing the nature of the equations solved. This behavior is well documented in the literature \cite{LowMach1, LowMach2, LowMach3} and often treated by performing a low Mach asymptotic study of the multi-D Euler equation. This method was originally used \cite{LowMach1} to show convergence of the compressible multi-D Euler equations to the incompressible ones. Thus, by using the same method, the effect of the dissipative terms in the low Mach regime, can be understood and, when needed, a fix is developed in order to ensure the convergence of the equations to the correct physical solution. This approach was used as a "fixing" method for multiple well known stabilization methods alike Roe scheme (\cite{Roe}) and SUPG \cite{LowMach3} while preserving the original stabilization properties of shocks for supersonic flows. Furthermore, it is also of common knowledge that low-Mach steady-state solutions can be difficult to obtain with a temporal explicit solver. For stability purpose, the time step must be chosen inversely proportional to the largest eigenvalue of the system which is approximately the speed of sound, c, for slow flows. However, other waves are convected at the fluid speed, which is much slower. Hence, these waves do not change very much over a time step. Thus, thousands of time steps are required to reach a steady state. Acceleration techniques were developed and proved efficient \cite{LowMach2}, but require the modification of the temporal derivatives of the equation and thus, can only be used for steady-state flows. To avoid modifying the temporal derivatives, the temporal implicit capabilities of the MOOSE multiphysics framework \cite{Moose} is used. Such a choice should allow us to quickly obtain low-Mach steady-state solutions, while preserving the accuracy of the transient solution; but it also requires a preconditioner.
+When solving the multi-D Euler equations for a wide range of Mach numbers, multiple problems must be addressed: stability, accuracy and acceleration of the convergence in the low Mach regime. Because of the hyperbolic nature of the equations, shocks can form during transonic and supersonic flows, and require the use of numerical methods in order to stabilize the scheme and correctly resolve the discontinuities. The literature offers a wide range of stabilization methods: flux-limiter \cite{FluxLimiter1, FluxLimiter2}, pressure-based viscosity method (\cite{PBV_book}), Lapidus method (\cite{Lapidus_paper, LMP, Lapidus_book}), and the entropy-viscosity method(\cite{jlg1, jlg2}) among others. These numerical methods are usually developed using simple equations of state and tested for transonic and supersonic flows where the disparity between the acoustic wave speed and the fluid speed is not large because the Mach number is of order one. This approach, however, leads to a well-known accuracy problem in the low Mach regime where the fluid velocity is smaller that the speed of sound by multiple orders of magnitude. The numerical dissipative terms become ill-scaled in the low Mach regime and lead to the wrong numerical solution by changing the nature of the equations solved. This behavior is well documented in the literature \cite{LowMach1, LowMach2, LowMach3} and often treated by performing a low Mach asymptotic study of the multi-D Euler equation. This method was originally used \cite{LowMach1} to show convergence of the compressible multi-D Euler equations to the incompressible ones. Thus, by using the same method, the effect of the dissipative terms in the low Mach regime, can be understood and, when needed, a fix is developed in order to ensure the convergence of the equations to the correct physical solution. This approach was used as a "fixing" method for multiple well known stabilization methods alike Roe scheme (\cite{Roe}) and SUPG \cite{LowMach3} while preserving the original stabilization properties of shocks for supersonic flows. Furthermore, it is also of common knowledge that low-Mach steady-state solutions can be difficult to obtain with a temporal explicit solver. For stability purpose, the time step must be chosen inversely proportional to the largest eigenvalue of the system which is approximately the speed of sound, c, for slow flows. However, other waves are convected at the fluid speed, which is much slower. Hence, these waves do not change very much over a time step. Thus, thousands of time steps are required to reach a steady state. Acceleration techniques were developed and proved efficient \cite{LowMach2}, but require the modification of the temporal derivatives of the equation and thus, can only be used for steady-state flows. To avoid modifying the temporal derivatives, the temporal implicit capabilities of the MOOSE multiphysics framework \cite{Moose} is used. Such a choice should allow us to quickly obtain low-Mach steady-state solutions, while preserving the accuracy of the transient solution; but it also requires a preconditioner.
 
 We propose in this chapter to investigate how the entropy viscosity method, when applied to the multi-D Euler equations with variable area, behaves in the low Mach regime. This method was initially introduced by Guermond et al. to solve for the hyperbolic systems and has shown good results when used for solving the multi-D Euler equations for supersonic flows with various discretization schemes. More importantly, it is simple to implement, can be used with unstructured grids,  and its dissipative terms are consistent with the entropy minimum principle and it has proven valid for any equation of state under certain conditions \cite{jlg}.
 
@@ -732,8 +732,7 @@ with the corresponding characteristic equations,
 \right. 
 \end{equation}
 %
-\tcb{ $\partial$ is the correct notation}
-where $\mbold \omega = \left( \omega_1, \omega_2, \omega_3, \omega_4 \right)$ are the characteristic variables and $\mbold \tau = \left( \tau_x, \tau_y \right) = \left( -\eta_y, \eta_x \right)$ is the tangential vector to the boundary. From a theoretical point of view, the eigenvalues are derived by assuming the existence of an unit vector that is taken, here, equal to the outwards normal vector to the boundary since this is a direction of interest. Each of the characteristic equations given in \eqt{eq:charac_euler_sct3} corresponds to the propagation of a particular wave. The characteristic equations for $i=1,4$ are associated with the propagation of acoustic waves or pressure variations through the domain. The entropy wave is described by the second characteristic equation ($i=2$). The remaining characteristic equation, $i=3$, corresponds to the change in the tangential velocity and represents the propagation of the vorticity waves. It is common to recast the characteristic equations in the form $\frac{D w_i}{Dt} = 0$ along $\frac{d\mbold r}{dt} \cdot \mbold n = \lambda_i$, \tcb{ this is the same $\mbold r$ as $\rho( \mbold r,t)$} which is analogous to what was done for the hyperbolic scalar equations in \chap{chap:theory_chp1}. Based on the study of the sign of the eigenvalues at the boundary relative to its outward normal, we determine which quantity enters or exits the computational domain. We consider the entropy wave in order to illustrate the methodology. We first assume that the eigenvalue, $\lambda_2$, associated with the entropy characteristic variable $\omega_2$, is negative. Thus, the entropy wave carrying $\omega_2$ travels from the boundary into the domain and its value must be specified. On the other hand, if $\lambda_2$ is positive, the wave travels in the opposite direction and the variable $\omega_2$ is solved numerically by using the associated characteristic equation. For this simple example, we generalize the process and use the following rule: \emph{the characteristic equations with negative eigenvalues (when assuming an outward normal vector to the boundary) are computed from the boundary conditions that are provided to the code, whereas characteristic equations with positive eigenvalues are numerically solved in order to get a value for the corresponding characteristic variable}. The boundary conditions denote, here, the set of values that are specified for a given boundary and the number of values required is determined by the sign of the eigenvalues. Furthermore, for a given flow, the sign of the eigenvalues associated with the pressure waves can change depending on how the flow speed compares with the speed of sound, which is measured by the Mach number, but also depends upon whether the flow is entering or exiting the domain. In other words, a distinction needs to be made between subsonic boundary, supersonic boundary, flow inlet and flow outlet. Thus, in the remaining of this section, we will look at three different boundary types: subsonic and supersonic flow inlet, subsonic and supersonic flow outlet and free-slip wall boundary, that are illustrated in \fig{fig:inlet_sct3}, \fig{fig:outlet_sct3} and \fig{fig:wall_bc}, respectively.  
+where $\mbold \omega = \left( \omega_1, \omega_2, \omega_3, \omega_4 \right)$ are the characteristic variables and $\mbold \tau = \left( \tau_x, \tau_y \right) = \left( -\eta_y, \eta_x \right)$ is the tangential vector to the boundary. From a theoretical point of view, the eigenvalues are derived by assuming the existence of an unit vector that is taken, here, equal to the outwards normal vector to the boundary since this is a direction of interest. Each of the characteristic equations given in \eqt{eq:charac_euler_sct3} corresponds to the propagation of a particular wave. The characteristic equations for $i=1,4$ are associated with the propagation of acoustic waves or pressure variations through the domain. The entropy wave is described by the second characteristic equation ($i=2$). The remaining characteristic equation, $i=3$, corresponds to the change in the tangential velocity and represents the propagation of the vorticity waves. It is common to recast the characteristic equations in the form $\frac{D w_i}{Dt} = 0$ along $\frac{d\mbold r}{dt} \cdot \mbold n = \lambda_i$, which is analogous to what was done for the hyperbolic scalar equations in \chap{chap:theory_chp1}. Based on the study of the sign of the eigenvalues at the boundary relative to its outward normal, we determine which quantity enters or exits the computational domain. We consider the entropy wave in order to illustrate the methodology. We first assume that the eigenvalue, $\lambda_2$, associated with the entropy characteristic variable $\omega_2$, is negative. Thus, the entropy wave carrying $\omega_2$ travels from the boundary into the domain and its value must be specified. On the other hand, if $\lambda_2$ is positive, the wave travels in the opposite direction and the variable $\omega_2$ is solved numerically by using the associated characteristic equation. For this simple example, we generalize the process and use the following rule: \emph{the characteristic equations with negative eigenvalues (when assuming an outward normal vector to the boundary) are computed from the boundary conditions that are provided to the code, whereas characteristic equations with positive eigenvalues are numerically solved in order to get a value for the corresponding characteristic variable}. The boundary conditions denote, here, the set of values that are specified for a given boundary and the number of values required is determined by the sign of the eigenvalues. Furthermore, for a given flow, the sign of the eigenvalues associated with the pressure waves can change depending on how the flow speed compares with the speed of sound, which is measured by the Mach number, but also depends upon whether the flow is entering or exiting the domain. In other words, a distinction needs to be made between subsonic boundary, supersonic boundary, flow inlet and flow outlet. Thus, in the remaining of this section, we will look at three different boundary types: subsonic and supersonic flow inlet, subsonic and supersonic flow outlet and free-slip wall boundary, that are illustrated in \fig{fig:inlet_sct3}, \fig{fig:outlet_sct3} and \fig{fig:wall_bc}, respectively.  
 %
 \begin{figure}[H]
         \centering
@@ -749,7 +748,7 @@ where $\mbold \omega = \left( \omega_1, \omega_2, \omega_3, \omega_4 \right)$ ar
 %                \caption{Supersonic flow inlet.}
                 \caption{\label{fig:sup_flow_inlet}}
         \end{subfigure}
-        \caption{Subsonic (left) and supersonic (right) flow inlets\label{fig:inlet_sct3} with $u_\eta = \mbold u \cdot \mbold \eta$}
+        \caption{Subsonic (left) and supersonic (right) flow inlets\label{fig:inlet_sct3} with $u_\eta = \mbold u \cdot \mbold \eta$ \cite{RichThesis}}
 \end{figure}
 %
 %
@@ -767,13 +766,13 @@ where $\mbold \omega = \left( \omega_1, \omega_2, \omega_3, \omega_4 \right)$ ar
 %                \caption{Supersonic flow outlet.}
                 \caption{\label{fig:sup_flow_outlet}}
         \end{subfigure}
-        \caption{Subsonic (left) and supersonic (right) flow outlets\label{fig:outlet_sct3}}
+        \caption{Subsonic (left) and supersonic (right) flow outlets\label{fig:outlet_sct3} with $u_\eta = \mbold u \cdot \mbold \eta$ \cite{RichThesis}}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[]{figures/free_slip_wall_bc.png}
-\caption{Free-slip wall boundary.\label{fig:wall_bc}}
+\caption{Free-slip wall boundary.\label{fig:wall_bc} with $u_\eta = \mbold u \cdot \mbold \eta$ \cite{RichThesis}}
 \end{figure}
 %
 As mentioned earlier, discretization of the characteristic equations depends on the numerical scheme used and has to be consistent with the rest of the computational domain in order to maintain accuracy of the method. Morever, a distinction must be made between explicit and implicit temporal integrators. Because an implicit solver has been chosen to update the solution at each time step, a few words about the method to follow with an explicit temporal integrator are given for completeness. 
@@ -820,13 +819,11 @@ stagnation pressure & $P_0$  & $T_0$    & $\theta$  & $u$     \\  \hline
 \end{center}
 \end{table}
 %    
-\tcb{the $u$ in the table is the first component of $\mbold u$}
 where the vector velocity is of the form $\mbold u = \left( u,v \right)$, $\theta$ is defined as the angle between the outward normal to the boundary and the velocity vector ($\mbold u \cdot \mbold n = || \mbold u || \cos \theta$) and $h = E + P / \rho$ is the fluid enthalpy. The stagnation pressure $P_0$ and temperature $T_0$ are function of the Mach number $M$ and the static pressure $P$ and temperature $T$. An analytical expression can be derived from the equation of state. For example, when considering the SGEOS, the stagnation variables are given for isentropic flows in \eqt{eq:stag_bc_sct3} \cite{SEM}:
 \begin{eqnarray}\label{eq:stag_bc_sct3}
 P_0 + P_\infty &=& \left( P + P_\infty \right) \left( 1 + \frac{\gamma-1}{2}M^2 \right)\\
 T_0 &=& T \left( 1 + \frac{\gamma-1}{2}M^2 \right)^{\frac{\gamma-1}{\gamma}}
 \end{eqnarray}   
-\tcb{for non-isentropic flow, the above relations are no longer valid. I would use the Rankine-Hug. relation instead}
 %========================================================
 \subsubsection{Supersonic flow inlet boundary condition} \label{sec:sup-flow-inlet-bc}
 %========================================================
@@ -960,7 +957,7 @@ P^\ell n_y \\
 1-D and 2-D numerical solutions for the Euler equations with viscous regularization using the entropy viscosity method are presented here.
 Our results validate the chosen definitions for the viscosity coefficients in the low-Mach limit and verify that the new definitions resolve shocks appropriately. 
 
-The first set of 1-D simulations consists of liquid water and steam flowing in a converging-diverging nozzle. This test is of interest for multiple reasons: (a) a steady state can be reached (some stabilization methods are known to have difficulties reaching a steady state, \cite{FluxLimiter, FluxLimiter2}), (b) an analytical solution is available and a space-time convergence study can be performed, (c) it can be performed for liquid and gas phases, wherein the gas phase simulation presents a shock while the liquid-phase simulation has a significantly lower Mach number.
+The first set of 1-D simulations consists of liquid water and steam flowing in a converging-diverging nozzle. This test is of interest for multiple reasons: (a) a steady state can be reached (some stabilization methods are known to have difficulties reaching a steady state, \cite{FluxLimiter1, FluxLimiter2}), (b) an analytical solution is available and a space-time convergence study can be performed, (c) it can be performed for liquid and gas phases, wherein the gas phase simulation presents a shock while the liquid-phase simulation has a significantly lower Mach number.
 %
 Next, a 1-D shock tube test (in a straight pipe), taken from the Leblanc test-case suite \cite{Leblanc}, is performed. This test is known to be more challenging than Sod shock tubes and the fluid's Mach number varies spatially between 0 and 5. A convergence study is also performed to demonstrate convergence of the numerical solution to the exact solution. 
 %
@@ -1667,56 +1664,56 @@ The numerical solution was obtained with a $\mathbb Q_1$ continuous Galerkin fin
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/FFSDensityEqualTo0p314.png}
-\caption{Density solution at $t=0.314$ $s$.}
+\caption{Supersonic $2$-D flow over a forward facing step: density solution at $t=0.314$ $s$.}
 \label{fig:2d_ffs_rho_0314}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/FFSVisctEqualTo0p314.png}
-\caption{Viscosity coefficient solution at $t=0.314$ $s$.}
+\caption{Supersonic $2$-D flow over a forward facing step: viscosity coefficient solution at $t=0.314$ $s$.}
 \label{fig:2d_ffs_visc_0314}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/FFSDensityEqualTo0p664.png}
-\caption{Density solution at $t=0.664$ $s$.}
+\caption{Supersonic $2$-D flow over a forward facing step: density solution at $t=0.664$ $s$.}
 \label{fig:2d_ffs_rho_0664}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/FFSViscEqualTo0p664.png}
-\caption{Viscosity coefficient solution at $t=0.664$ $s$.}
+\caption{Supersonic $2$-D flow over a forward facing step: viscosity coefficient solution at $t=0.664$ $s$.}
 \label{fig:2d_ffs_visc_0664}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/FFSDensityEqualTo1p514.png}
-\caption{Density solution at $t=1.514$ $s$.}
+\caption{Supersonic $2$-D flow over a forward facing step: density solution at $t=1.514$ $s$.}
 \label{fig:2d_ffs_rho_1514}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/FFSViscEqualTo0p664.png}
-\caption{Viscosity coefficient solution at $t=1.514$ $s$.}
+\caption{Supersonic $2$-D flow over a forward facing step: viscosity coefficient solution at $t=1.514$ $s$.}
 \label{fig:2d_ffs_visc_1514}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/FFSDensityEqualTo4.png}
-\caption{Density solution at $t=4$ $s$.}
+\caption{Supersonic $2$-D flow over a forward facing step: density solution at $t=4$ $s$.}
 \label{fig:2d_ffs_rho_4}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/FFSViscEqualTo4.png}
-\caption{Viscosity coefficient solution at $t=4$ $s$.}
+\caption{Supersonic $2$-D flow over a forward facing step: viscosity coefficient solution at $t=4$ $s$.}
 \label{fig:2d_ffs_visc_4}
 \end{figure}
 %
@@ -1742,14 +1739,14 @@ The numerical solutions of the density and viscosity coefficient are given in \e
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/Explosion_density_profiles.png}
-\caption{Density solution at $t=0.2$ $s$.}
+\caption{$2$-D circular explosion: density solution at $t=0.2$ $s$.}
 \label{fig:2d_explosion_density_sct3}
 \end{figure}
 %
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{figures/Explosion_viscosity_profiles.png}
-\caption{Viscosity coefficient solution at $t=0.2$ $s$.}
+\caption{$2$-D circular explosion: viscosity coefficient solution at $t=0.2$ $s$.}
 \label{fig:2d_explosion_visc_sct3}
 \end{figure}
 %
@@ -1796,7 +1793,7 @@ The inlet is supersonic and therefore, the pressure, temperature and velocity ar
            \begin{figure}[H]%{0.52\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/CCDensityTime0p00055.png}
-                \caption{Pressure solution at $t=5.5 \times 10^{-4}$.}
+                \caption{Supersonic flow in a compression corner: pressure solution at $t=5.5 \times 10^{-4}$.}
                 \label{fig:2d_cpc_rho_055}
         \end{figure}%
           %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
@@ -1804,13 +1801,13 @@ The inlet is supersonic and therefore, the pressure, temperature and velocity ar
         \begin{figure}[H]%{0.52\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/CCViscosityTime0p00055.png}
-                \caption{Viscosity coefficient at $t=5.5 \times 10^{-4}$.}
+                \caption{Supersonic flow in a compression corner: viscosity coefficient at $t=5.5 \times 10^{-4}$.}
                 \label{fig:2d_cpc_visc_055}
         \end{figure}
           \begin{figure}[H]%{0.52\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/CCDensityTime0p00115.png}
-                \caption{Pressure solution at $t=1.15 \times 10^{-3}$.}
+                \caption{Supersonic flow in a compression corner: pressure solution at $t=1.15 \times 10^{-3}$.}
                 \label{fig:2d_cpc_rho_115}
         \end{figure}%
           %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
@@ -1818,13 +1815,13 @@ The inlet is supersonic and therefore, the pressure, temperature and velocity ar
         \begin{figure}[H]%{0.52\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/CCViscosityTime0p00115.png}
-                \caption{Viscosity coefficient at $t=1.15 \times 10^{-3}$.}
+                \caption{Supersonic flow in a compression corner: viscosity coefficient at $t=1.15 \times 10^{-3}$.}
                 \label{fig:2d_cpc_visc_115}
         \end{figure}
          \begin{figure}[H]%{0.52\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/CCDensityTimeStt.png}
-                \caption{Pressure solution at steady-state.}
+                \caption{Supersonic flow in a compression corner: pressure solution at steady-state.}
                 \label{fig:2d_cpc_rho_stt}
         \end{figure}%
           %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
@@ -1832,7 +1829,7 @@ The inlet is supersonic and therefore, the pressure, temperature and velocity ar
         \begin{figure}[H]%{0.52\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/CCViscosityTimeStt.png}
-                \caption{Viscosity coefficient at steady-state.}
+                \caption{Supersonic flow in a compression corner: viscosity coefficient at steady-state.}
                 \label{fig:2d_cpc_visc_stt}
         \end{figure}
 From the above figures, it is observed that the solution is composed of two regions of constant state. During the transient, the shock moves from the bottom wall to its steady-state solution. The same variations are observed in viscosity coefficient solution. At steady-state, the viscosity coefficient is large in the shock region and small anywhere else and thus, behaves as expected. At the corner of the edge at $x=-0.25$ $m$, the viscosity coefficient is peaked because of the treatment of the wall boundary condition: at this particular node, the normal is not well defined and can cause numerical errors. 
@@ -1841,7 +1838,7 @@ From the above figures, it is observed that the solution is composed of two regi
         \begin{figure}[H]%{0.49\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/mach_number_pressure.png}
-                \caption{Pressure and Mach number profiles at steady-state}
+                \caption{Supersonic flow in a compression corner: pressure and mach number profiles at steady-state}
                 \label{fig:2d_corner_isomach}
         \end{figure}        
           %add desired spacing between images, e. g. ~, \quad, \qquad etc. 
@@ -1849,7 +1846,7 @@ From the above figures, it is observed that the solution is composed of two regi
         \begin{figure}[H]%{0.49\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/CompressionCorner2DQ.png}
-                \caption{Difference between inlet and outlet mass flow rates as a function of time.}
+                \caption{Supersonic flow in a compression corner: difference between inlet and outlet mass flow rates as a function of time.}
                 \label{fig:2d_convergence}
         \end{figure}
 %The steady-state numerical solution is given in \fig{fig:2d_corner}: the Mach number, the viscosity coefficients are plotted in \fig{fig:2d_corner_mach} and \fig{fig:2d_corner_visc}, respectively. The steady-state solution is formed of two regions of constant states, separated by the oblique shock. In \fig{fig:2d_corner_visc}, the viscosity coefficient is large in the shock, small anywhere else, and thus, behaves as expected. 
@@ -1862,14 +1859,14 @@ The last of the $2$-D supersonic example that is proposed to study is a Mach$3$ 
         \begin{figure}[H]%{0.52\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/DWOMachNumberStt.png}
-                \caption{Pressure solution at steady-state.}
+                \caption{Supersonic flow over a $5^\circ$ double-wedge obstruction: pressure solution at steady-state.}
                 \label{fig:2d_dbwd_stt}
         \end{figure}%
 %
         \begin{figure}[H]%{0.52\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{figures/DWOViscosityStt.png}
-                \caption{Viscosity coefficient at steady-state.}
+                \caption{Supersonic flow over a $5^\circ$ double-wedge obstruction: viscosity coefficient at steady-state.}
                 \label{fig:2d_dbw_visc_stt}
         \end{figure}
 The steady-state solution consists of a two shocks that form because of the interaction of the flow with the double wedge. The first wedge generates a shock that reflects on the top wall and then exits the computational domain: the interaction of the shock with the wall close to the outlet boundary requires a robust implentation of the boundary conditions and the stabilization method. The second shock is generated by the trailing wedge. In between the two shock regions, an expansion fan is formed. 
@@ -1881,7 +1878,7 @@ The steady-state solution consists of a two shocks that form because of the inte
 %---------------------------------------------------------------------------------------------------
 \subsection{Subsonic flow over a 2-D cylinder} \label{sec:cylinder}
 %---------------------------------------------------------------------------------------------------
-Fluid flow over a 2-D cylinder is often used as a benchmark case to test numerical schemes in the low-Mach regime \cite{LowMach1, LowMach2, LowMach3}. For this test, an analytical solution is available in the incompressible limit or low-Mach limit and is often referred to as the potential flow solution. The main features of the potential flow are the following:
+Fluid flow over a 2-D cylinder is often used as a benchmark case to test numerical schemes in the low-mach regime \cite{LowMach1, LowMach2, LowMach3}. For this test, an analytical solution is available in the incompressible limit or low-Mach limit and is often referred to as the potential flow solution. The main features of the potential flow are the following:
 %
 \begin{itemize}
 \item The solution is symmetric: the iso-Mach contour lines are used to assess the symmetry of the numerical solution;
@@ -1914,35 +1911,35 @@ Several simulations are performed, with inlet Mach numbers $M_{\text{inlet}}$ ra
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/CylinderMach1em3ZoomIn.png}
-                \caption{$M_{\text{inlet}}=10^{-3}$}
+                \caption{Subsonic flow over a $2$-D cylinder: $M_{\text{inlet}}=10^{-3}$}
                 \label{fig:cyl_1em3}
         \end{figure}%
 
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/CylinderMach1em4ZoomIn.png}
-                \caption{$M_{\text{inlet}}=10^{-4}$}
+                \caption{Subsonic flow over a $2$-D cylinder: $M_{\text{inlet}}=10^{-4}$}
                 \label{fig:cyl_1em4}
         \end{figure}    
 
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/CylinderMach1em5ZoomIn.png}
-                \caption{$M_{\text{inlet}}=10^{-5}$}
+                \caption{Subsonic flow over a $2$-D cylinder: $M_{\text{inlet}}=10^{-5}$}
                 \label{fig:cyl_1em5}
         \end{figure}
 
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/CylinderMach1em6ZoomIn.png}
-                \caption{$M_{\text{inlet}}=10^{-6}$}
+                \caption{Subsonic flow over a $2$-D cylinder: $M_{\text{inlet}}=10^{-6}$}
                 \label{fig:cyl_1em6}
         \end{figure}
 
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/CylinderMach1em7ZoomIn.png}
-                \caption{$M_{\text{inlet}}=10^{-7}$}
+                \caption{Subsonic flow over a $2$-D cylinder: $M_{\text{inlet}}=10^{-7}$}
                 \label{fig:cyl_1em7}
         \end{figure}
 %        \caption{Iso-Mach lines for a subsonic flow over a 2-D cylinder with inlet Mach number values from ranging from $10^{-3}$ to $10^{-7}$ (steady-state solution).}
@@ -1988,28 +1985,28 @@ The static pressure $P_s = 101,325$ $Pa$ is set at the subsonic outlet. The resu
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/Hump2D_mach_0p7.png}
-                \caption{Mach $0.7$}
+                \caption{Subsonic flow over a 2-D hump: mach $0.7$}
                 \label{fig:2d_hump_mach_0p7}
         \end{figure}%
 
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/Hump2D_mach_0p01.png}
-                \caption{Mach $10^{-2}$}
+                \caption{Subsonic flow over a 2-D hump: mach $10^{-2}$}
                 \label{fig:2d_hump_mach_0p01}
         \end{figure}%
         
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/Hump2D_mach_1em4.png}
-                \caption{Mach $10^{-5}$}
+                \caption{Subsonic flow over a 2-D hump: mach $10^{-5}$}
                 \label{fig:2d_hump_mach_0p0001}
         \end{figure}
 
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/Hump2D_mach_1em7.png}
-                \caption{Mach $10^{-7}$}
+                \caption{Subsonic flow over a 2-D hump: mach $10^{-7}$}
                 \label{fig:2d_hump_mach_0p0000001}
         \end{figure}
 %        \caption{Iso-Mach lines for a 2-D flow over a circular bump (steady-state solution).}
