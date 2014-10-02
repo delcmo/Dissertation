@@ -61,10 +61,10 @@ The liquid phase obeys the following mass, momentum and energy balance equations
   % liquid total energy
   \frac{\partial \left( \alpha \rho E \right)_{liq} A}{\partial t}
   + \div \left[ \alpha_{liq} \mbold u_{liq} A \left( \rho E + P \right)_{liq} \right]
-  &= P_{int} \mbold u_{int} A \grad \alpha_{liq} - \bar{P}_{int} A \mu_P (P_{liq} - P_{vap})
+  &= P_{int} \mbold u_{int} A \grad \alpha_{liq} 
         \nonumber
   \\
-  + \bar{\mbold u}_{int} A \lambda_u (\mbold u_{vap} - \mbold u_{liq})
+ - \bar{P}_{int} A \mu_P (P_{liq} - P_{vap}) + \bar{\mbold u}_{int} A \lambda_u (\mbold u_{vap} - \mbold u_{liq})
 &  + \Gamma A_{int} \left( \frac{P_{int}}{\rho_{int}} - H_{liq, int} \right) A
 \nonumber 
 \\
@@ -102,10 +102,10 @@ On the same model, the equations for the vapor phase are:
   % vapor total energy
   \frac{\partial \left( \alpha \rho E \right)_{vap} A}{\partial t}
   + \div \left[ \alpha_{vap} \mbold u_{vap} A \left( \rho E + P \right)_{vap} \right]
-  &= P_{int} \mbold u_{int} A \grad \alpha_{vap} - \bar{P}_{int} A \mu_P (P_{vap} - P_{liq})
+  &= P_{int} \mbold u_{int} A \grad \alpha_{vap}
     \nonumber
   \\
-  + \bar{\mbold u}_{int} A \lambda_u (\mbold u_{liq} - \mbold u_{vap})
+ - \bar{P}_{int} A \mu_P (P_{vap} - P_{liq}) + \bar{\mbold u}_{int} A \lambda_u (\mbold u_{liq} - \mbold u_{vap})
 &- \Gamma A_{int} \left( \frac{P_{int}}{\rho_{int}} - H_{vap, int} \right) A
 \nonumber 
 \\
@@ -225,7 +225,7 @@ captures evolving and spontaneously generated
 interfaces~\cite{Saurel_2009}. Thus the seven-equation model
 can be relaxed locally to couple seamlessly with such a
 multi-dimensional, interface resolving code.
-
+\newpage
 Numerically, the mechanical relaxation coefficients $\mu_P$
 (pressure) and $\lambda_u$ (velocity) can be relaxed independently to
 yield solutions to useful, reduced models (as explained previously).  It
@@ -302,7 +302,7 @@ separated by an interface.
    \includegraphics[clip=true,viewport=200 50 550 500,width=.8\textwidth]{figures/SEM/vaporization_condensation}
  %}
    \caption{Vaporization and condensation at a liquid-vapor interface
-     (after Moody~\cite{Moody_1990}).\label{Berry-Fig:3}}
+     \cite{Moody_1990}.\label{Berry-Fig:3}}
 \end{figure}
 Representative temperature profiles are shown for heat transfer from
 vapor to liquid or liquid to vapor.  As discussed by
@@ -1041,6 +1041,7 @@ We still consider a 1-D straight pipe of length $L=1$ $m$ filled with the same f
 \label{fig:two-indep-fluids-vf-visc-1-7-eqn-sect4}
 \end{figure}
 %
+\newpage
 The pressure, velocity and density profiles given in \fig{fig:two-indep-fluids-press-7-eqn-sect4}, \fig{fig:two-indep-fluids-vel-7-eqn-sect4} and \fig{fig:two-indep-fluids-dens-7-eqn-sect4}, respectively, show good agreement with the exact solutions for both phases. The fluid $2$ is lighter and thus experiences stronger variations: its velocity is larger and the shock moves faster. The viscosity coefficients shown in \fig{fig:two-indep-fluids-visc-2-7-eqn-sect4} and \fig{fig:two-indep-fluids-visc-1-7-eqn-sect4} for both phases have similar profiles: they are peaked in the shock regions and also display a bump in the contact wave. In \fig{fig:two-indep-fluids-vf-7-eqn-sect4}, it is noted that the volume fraction profiles remain uniform and are not altered by the variations in the other variables. The viscosity coefficient $\beta_k$ used in the volume fraction equation is zero (\fig{fig:two-indep-fluids-vf-visc-1-7-eqn-sect4}) as expected since the volume fraction profile is uniform.
 %-------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{1-D shock tube for two fluids with pressure and velocity relaxation terms}\label{sec:1d-2-phases-rel-7-eq-sct4}
@@ -1115,7 +1116,7 @@ steam          & 1.43     & 1040                       & 0                 & $ 2
 \end{center}
 \end{table}
 %
-Stagnation boundary conditions are specified on the left of the nozzle (inlet) for both phases with a stagnation temperature $T_0 = 453 $ $K$ and a stagnation pressure $P_0 = 1$ $MPa$ (the stagnation density can be computed from $T_0$ and $P_0$ and the equation of state). At the outlet, a static pressure boundary condition is specified with $P = 0.5$ $MPa$ for both phases. The volume fraction is set to $\alpha_k = 0.5$ at the inlet. The initial conditions are computed from the boundary conditions by assuming the two fluids at rest and linearly interpolating the pressure and temperature between the boundary values. The geometry is discretized with an uniform mesh of 100 cells and run until steady-state. The pressure and velocity relaxation coefficients are computed from \eqt{E-R:85} and \eqt{E-R:86} and the use of \eqt{eq:Aint-sect4} for different values of $A_{int,max}$ that will be specified. The reader can refer to \sect {sec:liquid_nozzle} and \sect{sec:steam_nozzle} for numerical solutions in a 1-D nozzle when considering two independent fluids (i.e., without relaxation source terms). First numerical results are presented when considering only the pressure and velocity relaxation terms for different values of $A_{int,max}$. Then, the same simulation is run when adding the mass and energy exchange source terms.
+Stagnation boundary conditions are specified on the left of the nozzle (inlet) for both phases with a stagnation temperature $T_0 = 453 $ $K$ and a stagnation pressure $P_0 = 1$ $MPa$ (the stagnation density can be computed from $T_0$ and $P_0$ and the equation of state). At the outlet, a static pressure boundary condition is specified with $P = 0.5$ $MPa$ for both phases. The volume fraction is set to $\alpha_k = 0.5$ at the inlet. The initial conditions are computed from the boundary conditions by assuming the two fluids at rest and linearly interpolating the pressure and temperature between the boundary values. The geometry is discretized with an uniform mesh of 100 cells and run until steady state. The pressure and velocity relaxation coefficients are computed from \eqt{E-R:85} and \eqt{E-R:86} and the use of \eqt{eq:Aint-sect4} for different values of $A_{int,max}$ that will be specified. The reader can refer to \sect {sec:liquid_nozzle} and \sect{sec:steam_nozzle} for numerical solutions in a 1-D nozzle when considering two independent fluids (i.e., without relaxation source terms). First numerical results are presented when considering only the pressure and velocity relaxation terms for different values of $A_{int,max}$. Then, the same simulation is run when adding the mass and energy exchange source terms.
 
 We first consider the 1-D seven-equation model with the relaxation source terms for different values of $A_{int,max} = 10^2 \text{, } 10^3$ and $10^4$ $m^{-1}$. The pressure profiles are given for all of the value of $A_{int,max}$ for comparison. The density, velocity, volume fraction and viscosity coefficients are only given for $A_{int,max} = 10^4$ $m^{-1}$. The numerical results are presented from \fig{fig:two-fluids-rel-nozzle-press-Aint4-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-sem-sect4}.
 %
@@ -1186,7 +1187,7 @@ The pressure profiles for $A_{int,max} = 10^2 \text{, } 10^3$ and $10^4$ $m^{-1}
 %
 The velocity, density, volume fraction and viscosity coefficients profiles are plotted from \fig{fig:two-fluids-rel-nozzle-vel-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-sem-sect4} in the case $A_{int,max} = 10^4$ $m^{-1}$. Because of the velocity relaxation source terms, velocity equilibrium holds between the liquid and vapor phases. The liquid and vapor density profiles are different by two order of magnitude. The volume fraction of both phases varies throughout the nozzle as a consequence of the pressure equilibrium. The viscosity coefficients $\mu_k$ and $\kappa_k$ are equal to each other since there are no shock waves and are large enough to stabilize the strong variations in the pressure and velocity profiles. Lastly, the viscosity coefficient $\beta_k$ follows the variations of the volume fraction for both phases. It is interesting to note that the fast vapor flow yields strong variations in the divergent part of the nozzle. Overall, the viscosity coefficients are large enough to prevent the formation of any numerical instability without altering the physical solution.
 
-Next, the same converging-diverging nozzle is run with mass and energy exchange source terms. The code is run until steady-state with $A_{int,max}=10^3$ $m^{-1}$. The corresponding numerical results are shown from \fig{fig:two-fluids-rel-nozzle-press-mass-on-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-mass-on-sem-sect4}.
+Next, the same converging-diverging nozzle is run with mass and energy exchange source terms. The code is run until steady state with $A_{int,max}=10^3$ $m^{-1}$. The corresponding numerical results are shown from \fig{fig:two-fluids-rel-nozzle-press-mass-on-sem-sect4} to \ref{fig:two-fluids-rel-nozzle-visc-vf-mass-on-sem-sect4}.
 %
 \begin{figure}[H]
 \centering
@@ -1248,35 +1249,35 @@ The pressure, temperature, velocity, volume fraction and viscosity coefficients 
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_pressure.png}
-                \caption{1-D straight pipe with source terms: pressure profiles at steady-state}
+                \caption{1-D straight pipe with source terms: pressure profiles at steady state}
                 \label{fig:pressure}
         \end{figure}%
 %
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_temperature.png}
-                \caption{1-D straight pipe with source terms: temperature profiles at steady-state}
+                \caption{1-D straight pipe with source terms: temperature profiles at steady state}
                 \label{fig:temperature}
         \end{figure}%
 %            
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_velocity.png}
-                \caption{1-D straight pipe with source terms: velocity profiles at steady-state}
+                \caption{1-D straight pipe with source terms: velocity profiles at steady state}
                 \label{fig:velocity}
         \end{figure}
 %
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_volume_fraction.png}
-                \caption{1-D straight pipe with source terms: volume fraction profiles at steady-state}
+                \caption{1-D straight pipe with source terms: volume fraction profiles at steady state}
                 \label{fig:volume_fraction}
         \end{figure}        
 %
         \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth]{figures/SEM/ANS_WINTER_2014_7Eqn_viscosity.png}
-                \caption{1-D straight pipe with source terms: viscosity coefficients profiles at steady-state}
+                \caption{1-D straight pipe with source terms: viscosity coefficients profiles at steady state}
                 \label{fig:viscosity_coeff}
         \end{figure}        
 %
